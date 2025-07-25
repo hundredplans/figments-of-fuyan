@@ -15,7 +15,7 @@ var upgrade_level: int
 
 var shillings: int
 var time: int
-var safe_encounter_count: int
+var world_difficulty: int
 var max_energy: int
 
 var deck_slots: Array # [DeckSlot]
@@ -44,7 +44,7 @@ func onSave() -> SavedData:
 	var time_elapsed: int = getTimeElapsed()
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
-	ally_cards, saved_boons, highest_public_id, safe_encounter_count,\
+	ally_cards, saved_boons, highest_public_id, world_difficulty,\
 	upgrade_level, max_energy, energy_limit, deck_slots, stash_sort_type)
 
 func onLoadData(data: SavedData) -> void:
@@ -71,7 +71,7 @@ func onLoadData(data: SavedData) -> void:
 	
 	shillings = data.shillings
 	time = data.time
-	safe_encounter_count = data.safe_encounter_count
+	world_difficulty = data.world_difficulty
 	upgrade_level = data.upgrade_level
 	
 	timer = Timer.new()
@@ -81,7 +81,7 @@ func onLoadData(data: SavedData) -> void:
 	
 func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
-	var actions: Array = [AddToDeckAction.new(getChampionCard()), AddBoonAction.new(boon_info.id, false),\
+	var actions: Array = [AddToDeckAction.new(getChampionCard()), AddBoonAction.new(boon_info.id, 1),\
 		getPlayerDeckUpgradeAction(0)]
 	
 	onPushAction(actions)
@@ -133,18 +133,22 @@ func onLoadGame() -> void:
 	else: onLoadLevel(area.active_level_data)
 	
 func onAreaFinished() -> void:
-	var new_difficulty: int = area.getWorldDifficulty() + 1
+	world_difficulty += 1
 	area.queue_free()
 	
 	await get_tree().process_frame # Important for everything to despawn
-	onChooseArea(new_difficulty)
+	onChooseArea()
 	onLoadMap()
 	area.init_load.emit()
 	
-func onChooseArea(world: int = 1) -> void:
-	var area_id: int = Helper.getFofInfoArray(AreaInfo)\
-		.filter(func(x: AreaInfo): return x.world != null and x.world.world == world).pick_random().id\
-		if Helper.admin_datastore.starting_area_id == 0 else Helper.admin_datastore.starting_area_id
+func onChooseArea() -> void:
+	var valid_areas: Array = [1, 3]
+	if area != null: valid_areas.erase(area.info.id)
+	if area == null and Helper.admin_datastore.starting_area_id > 0:
+		valid_areas = valid_areas.filter(func(x: int):\
+			return x == Helper.admin_datastore.starting_area_id)
+			
+	var area_id: int = valid_areas.pick_random()
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	area = SavedData.onLoadModel(area_data, get_parent())
 	area.load_level.connect(onLoadLevel)
@@ -163,14 +167,6 @@ func getBoon(boon_id: int) -> BoonGD:
 	for Boon: BoonGD in boons:
 		if Boon.info.id == boon_id: return Boon
 	return null
-#endregion
-
-#region Encounters
-func onUpdateSafeEncounterCount(delta: int) -> void:
-	safe_encounter_count += delta
-	
-func getSafeEncounterCount() -> int:
-	return safe_encounter_count
 #endregion
 
 #region Game Loss
@@ -253,3 +249,6 @@ func getEnergyLimit() -> int:
 func getMaxEnergy() -> int:
 	return max_energy
 #endregion
+
+func getWorldDifficulty() -> int:
+	return world_difficulty

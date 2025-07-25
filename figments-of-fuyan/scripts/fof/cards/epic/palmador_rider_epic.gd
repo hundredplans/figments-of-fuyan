@@ -298,7 +298,7 @@ func onSummon(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		
 		var chosen_tiles: Array = boss_datastore.getTileResults().keys().filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
 		for PalmyTile: TileGD in chosen_tiles:
-			var Palmy: CardGD = Game.getNewFieldCard(PALMY_ID, PalmyTile, team, 0, false, true)
+			var Palmy: CardGD = Game.getNewFieldCard(PALMY_ID, PalmyTile, team, 0, tier, true)
 			actions.append(AwakenAction.new(Palmy, PalmyTile))
 			
 			var camera_change_action := CameraChangeAction.new(Palmy)

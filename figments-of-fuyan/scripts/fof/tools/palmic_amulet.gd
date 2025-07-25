@@ -22,9 +22,6 @@ func onToolHolderAwakened() -> void: # Unit awakens
 func onToolHolderDeath() -> void: # Unit dies
 	super()
 	
-func onToolAscended(state: bool) -> void:
-	super(state)
-	
 func onCardTurnPassed() -> void:
 	super()
 	

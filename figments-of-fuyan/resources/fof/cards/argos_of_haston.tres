@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_o5vfm"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_0y74i"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_5env8"]
-[ext_resource type="Image" uid="uid://dgy7f3eps1o0f" path="res://assets/sprites/game/cards/art_pop/argos_of_haston.png" id="2_dwna4"]
-[ext_resource type="Texture2D" uid="uid://juuksfu3vpx5" path="res://assets/sprites/game/cards/art_mini/argos_of_haston.png" id="2_mohxo"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_ae13p"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_q5riq"]
-[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_1nyn5"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bm5mb"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_a3skp"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_s4qix"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_o4qx4"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_2e418"]
-
-[sub_resource type="Resource" id="Resource_s4qix"]
-script = ExtResource("10_a3skp")
-attack = 1
-health = 3
-speed = 2
-energy = 2
-description = "BLOODTHIRST: Gain [1] SH; TRAUMA: Lose [1] SH"
-active_abilities = Array[ExtResource("11_s4qix")]([])
-traits = Array[ExtResource("2_0y74i")]([])
-
-[sub_resource type="Resource" id="Resource_q8svb"]
-script = ExtResource("10_a3skp")
-attack = 1
-health = 3
-speed = 2
-energy = 2
-description = "BLOODTHIRST: Gain [2] SH; TRAUMA: Lose [2] SH"
-active_abilities = Array[ExtResource("11_s4qix")]([])
-traits = Array[ExtResource("2_0y74i")]([])
-
-[sub_resource type="Resource" id="Resource_o4qx4"]
-script = ExtResource("10_a3skp")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_s4qix")]([])
-traits = Array[ExtResource("2_0y74i")]([])
-
-[sub_resource type="Resource" id="Resource_2e418"]
-script = ExtResource("10_a3skp")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_s4qix")]([])
-traits = Array[ExtResource("2_0y74i")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_o5vfm"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_0y74i"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_5env8"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/argos_of_haston.png" id="2_dwna4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/argos_of_haston.png" id="2_mohxo"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_ae13p"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_q5riq"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_1nyn5"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bm5mb"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_s4qix"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_o4qx4"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_2e418"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_in7hd"]
 script = ExtResource("13_2e418")
 description = "BLOODTHIRST: Gain [1] SH; TRAUMA: Lose [1] SH"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_34d6k"]
 script = ExtResource("12_o4qx4")
@@ -81,15 +40,14 @@ attack = 1
 health = 3
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_in7hd")
-description = ""
-active_abilities = Array[ExtResource("11_s4qix")]([])
 traits = Array[ExtResource("2_0y74i")]([])
+active_abilities = Array[ExtResource("11_s4qix")]([])
+description_datastore = SubResource("Resource_in7hd")
 
 [sub_resource type="Resource" id="Resource_ry2yw"]
 script = ExtResource("13_2e418")
 description = "BLOODTHIRST: Gain [2] SH; TRAUMA: Lose [2] SH"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_6vgdx"]
 script = ExtResource("12_o4qx4")
@@ -97,57 +55,46 @@ attack = 1
 health = 3
 speed = 2
 energy = 2
+traits = Array[ExtResource("2_0y74i")]([])
+active_abilities = Array[ExtResource("11_s4qix")]([])
 description_datastore = SubResource("Resource_ry2yw")
-description = ""
-active_abilities = Array[ExtResource("11_s4qix")]([])
-traits = Array[ExtResource("2_0y74i")]([])
 
-[sub_resource type="Resource" id="Resource_0i8bp"]
+[sub_resource type="Resource" id="Resource_q8svb"]
 script = ExtResource("13_2e418")
-description = ""
-default_values = 0
+description = "BLOODTHIRST: Gain [2] SH; TRAUMA: Lose [2] SH"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_82kgf"]
+[sub_resource type="Resource" id="Resource_o4qx4"]
 script = ExtResource("12_o4qx4")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_0i8bp")
-description = ""
-active_abilities = Array[ExtResource("11_s4qix")]([])
-traits = Array[ExtResource("2_0y74i")]([])
-
-[sub_resource type="Resource" id="Resource_d5308"]
-script = ExtResource("13_2e418")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_4wy38"]
-script = ExtResource("12_o4qx4")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_d5308")
-description = ""
-active_abilities = Array[ExtResource("11_s4qix")]([])
-traits = Array[ExtResource("2_0y74i")]([])
-
-[resource]
-script = ExtResource("3_ae13p")
-tiers = Array[ExtResource("12_o4qx4")]([SubResource("Resource_34d6k"), SubResource("Resource_6vgdx"), SubResource("Resource_82kgf"), SubResource("Resource_4wy38")])
-_tiers = Array[ExtResource("10_a3skp")]([SubResource("Resource_s4qix"), SubResource("Resource_q8svb"), SubResource("Resource_o4qx4"), SubResource("Resource_2e418")])
 attack = 1
 health = 3
 speed = 2
 energy = 2
+traits = Array[ExtResource("2_0y74i")]([])
+active_abilities = Array[ExtResource("11_s4qix")]([])
+description_datastore = SubResource("Resource_q8svb")
+
+[sub_resource type="Resource" id="Resource_2e418"]
+script = ExtResource("13_2e418")
+description = "BLOODTHIRST: Gain [2] SH; TRAUMA: Lose [2] SH"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_0i8bp"]
+script = ExtResource("12_o4qx4")
+attack = 1
+health = 3
+speed = 2
+energy = 2
+traits = Array[ExtResource("2_0y74i")]([])
+active_abilities = Array[ExtResource("11_s4qix")]([])
+description_datastore = SubResource("Resource_2e418")
+
+[resource]
+script = ExtResource("3_ae13p")
+tiers = Array[ExtResource("12_o4qx4")]([SubResource("Resource_34d6k"), SubResource("Resource_6vgdx"), SubResource("Resource_o4qx4"), SubResource("Resource_0i8bp")])
+archetype = ExtResource("2_5env8")
 rarity = 6
-initial_traits = Array[ExtResource("2_0y74i")]([])
-active_abilities = Array[ExtResource("1_o5vfm")]([])
 flavor_text = ""
-description = "BLOODTHIRST: Gain [1] SH; TRAUMA: Lose [1] SH"
-ascended_description = "BLOODTHIRST: Gain [2] SH; TRAUMA: Lose [2] SH"
 art_mini_coordinate = Vector2i(94, 41)
 art_mini = ExtResource("2_mohxo")
 art_pop = ExtResource("2_dwna4")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_0y74i")]([])
-archetype = ExtResource("2_5env8")
+attack = 1
+health = 3
+speed = 2
+energy = 2
+description = "BLOODTHIRST: Gain [1] SH; TRAUMA: Lose [1] SH"
+ascended_description = "BLOODTHIRST: Gain [2] SH; TRAUMA: Lose [2] SH"
+initial_traits = Array[ExtResource("2_0y74i")]([])
+active_abilities = Array[ExtResource("1_o5vfm")]([])
 id = 75
 name = "Argos of Haston"
 gdscript = ExtResource("4_q5riq")

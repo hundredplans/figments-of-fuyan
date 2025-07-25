@@ -1,7 +1,7 @@
 extends CardGD
 
 const DEFAULT_ATTACK: int = 1
-const ASCENDED_ATTACK: int = 2
+const TIER_TWO_ATTACK: int = 2
 const ABILITY_DELAY: float = 2.0
 
 func onProcessAction(action: Action) -> void:
@@ -28,7 +28,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Rousing Hair":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var attack_value: int = DEFAULT_ATTACK if !getAscended() else ASCENDED_ATTACK
+		var attack_value: int = DEFAULT_ATTACK if tier == 1 else TIER_TWO_ATTACK
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(ABILITY_DELAY)
 		

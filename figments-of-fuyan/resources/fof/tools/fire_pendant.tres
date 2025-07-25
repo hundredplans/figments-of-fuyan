@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://bc6y6mej2u1vo"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=21 format=3 uid="uid://rf4ercx3wwgk"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4s66o"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_hrq2s"]
@@ -11,7 +11,6 @@
 
 [sub_resource type="Resource" id="Resource_bsaho"]
 script = ExtResource("1_4s66o")
-exists = 2
 ascended_description = "Gain +1 ATT for [1] Turn"
 ascended_max_charges = 1
 name = "Fire Pendant"
@@ -25,7 +24,7 @@ used = false
 [sub_resource type="Resource" id="Resource_74ajw"]
 script = ExtResource("8_d6b0c")
 description = "Gain +1 ATT"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_rd4il"]
 script = ExtResource("6_44uds")
@@ -46,17 +45,38 @@ used = false
 script = ExtResource("8_d6b0c")
 description = "Gain +1 ATT
 ABILITY [1]: Gain +1 ATT for [1] Turn"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_gs708"]
 script = ExtResource("6_44uds")
 active_abilities = Array[ExtResource("7_qej7a")]([SubResource("Resource_fptrv")])
 description_datastore = SubResource("Resource_iyawe")
 
-[sub_resource type="Resource" id="Resource_qej7a"]
+[sub_resource type="Resource" id="Resource_kgjgu"]
 script = ExtResource("7_qej7a")
 name = "Fire Pendant"
-description = "Gain +1 ATT for [1] Turn"
+description = "Gain +2 ATT for [1] Turn"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_qej7a"]
+script = ExtResource("8_d6b0c")
+description = "Gain +1 ATT
+ABILITY [1]: Gain +2 ATT for [1] Turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_d6b0c"]
+script = ExtResource("6_44uds")
+active_abilities = Array[ExtResource("7_qej7a")]([SubResource("Resource_kgjgu")])
+description_datastore = SubResource("Resource_qej7a")
+
+[sub_resource type="Resource" id="Resource_11wjy"]
+script = ExtResource("7_qej7a")
+name = "Fire Pendant"
+description = "Gain +2 ATT for [1] Turn"
 max_charges = 1
 delay = 0.0
 camera_type = 0
@@ -64,22 +84,28 @@ charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_3g4om"]
+script = ExtResource("8_d6b0c")
+description = "Gain +2 ATT
+ABILITY [1]: Gain +2 ATT for [1] Turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_of1yl"]
 script = ExtResource("6_44uds")
-active_abilities = Array[ExtResource("7_qej7a")]([SubResource("Resource_qej7a")])
-description_datastore = SubResource("Resource_iyawe")
+active_abilities = Array[ExtResource("7_qej7a")]([SubResource("Resource_11wjy")])
+description_datastore = SubResource("Resource_3g4om")
 
 [resource]
 script = ExtResource("1_hrq2s")
-tiers = Array[ExtResource("6_44uds")]([SubResource("Resource_rd4il"), SubResource("Resource_gs708"), SubResource("Resource_3g4om")])
+tiers = Array[ExtResource("6_44uds")]([SubResource("Resource_rd4il"), SubResource("Resource_gs708"), SubResource("Resource_d6b0c"), SubResource("Resource_of1yl")])
 icon = ExtResource("3_owvyx")
-description = "Gain +1 ATT"
-ascended_description = "Gain +1 ATT
-ABILITY [1]: Gain +1 ATT for [1] Turn"
 rarity = 4
-active_abilities = Array[ExtResource("1_4s66o")]([SubResource("Resource_bsaho")])
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+active_abilities = Array[ExtResource("1_4s66o")]([SubResource("Resource_bsaho")])
+description = "Gain +1 ATT"
+ascended_description = "Gain +1 ATT
+ABILITY [1]: Gain +1 ATT for [1] Turn"
 id = 4
 name = "Fire Pendant"
 gdscript = ExtResource("2_4j6bg")

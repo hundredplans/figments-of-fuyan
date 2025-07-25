@@ -87,7 +87,7 @@ func onSoloSpawn(use_type: UseType) -> Array:
 		actions.append(animation_action)
 		var chosen_tiles: Array = boss_datastore.getTileResults().keys().filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
 		for SummonTile: TileGD in chosen_tiles:
-			var AllyCard: CardGD = Game.getNewFieldCard(solo_spawn_ids.pick_random(), SummonTile, team, range(6).pick_random(), false, true)
+			var AllyCard: CardGD = Game.getNewFieldCard(solo_spawn_ids.pick_random(), SummonTile, team, range(6).pick_random(), tier, true)
 			actions.append(AwakenAction.new(AllyCard, SummonTile))
 			actions.append(ChangeTurnStateAction.new(AllyCard, Game.TurnStates.INACTIVE))
 			
@@ -121,7 +121,7 @@ func onDuoSpawn(use_type: UseType) -> Array:
 		actions.append(animation_action)
 		var chosen_tiles: Array = boss_datastore.getTileResults().keys().filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
 		for SummonTile: TileGD in chosen_tiles:
-			var AllyCard: CardGD = Game.getNewFieldCard(duo_spawn_ids.pick_random(), SummonTile, team, range(6).pick_random(), false, true)
+			var AllyCard: CardGD = Game.getNewFieldCard(duo_spawn_ids.pick_random(), SummonTile, team, range(6).pick_random(), tier, true)
 			actions.append(AwakenAction.new(AllyCard, SummonTile))
 			actions.append(ChangeTurnStateAction.new(AllyCard, Game.TurnStates.INACTIVE))
 			

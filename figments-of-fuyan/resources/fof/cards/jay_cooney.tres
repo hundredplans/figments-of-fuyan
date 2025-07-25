@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3 uid="uid://dxmieuidr2qmr"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ko3em"]
-[ext_resource type="Image" uid="uid://dbty0ttijpb5l" path="res://assets/sprites/game/cards/art_pop/jay_cooney.png" id="2_a12c8"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_dw810"]
-[ext_resource type="Texture2D" uid="uid://c8lfky7wmfp43" path="res://assets/sprites/game/cards/art_mini/jay_cooney.png" id="2_t0xb1"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_m3is4"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_di1d5"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_jexj5"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_0du0p"]
-[ext_resource type="PackedScene" uid="uid://mbpb1kmhkjw1" path="res://assets/models/fof/cards/jay_cooney.glb" id="7_6c4c3"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_qk2ta"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_fq11d"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4k43k"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_e6r8l"]
-
-[sub_resource type="Resource" id="Resource_fq11d"]
-script = ExtResource("10_qk2ta")
-attack = 2
-health = 1
-speed = 2
-energy = 1
-description = "ABILITY [1]: STUN a DUELLING enemy in vision"
-active_abilities = Array[ExtResource("11_fq11d")]([])
-traits = Array[ExtResource("3_m3is4")]([])
-
-[sub_resource type="Resource" id="Resource_ibi5b"]
-script = ExtResource("10_qk2ta")
-attack = 2
-health = 1
-speed = 2
-energy = 1
-description = ""
-active_abilities = Array[ExtResource("11_fq11d")]([])
-traits = Array[ExtResource("3_m3is4")]([])
-
-[sub_resource type="Resource" id="Resource_4k43k"]
-script = ExtResource("10_qk2ta")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_fq11d")]([])
-traits = Array[ExtResource("3_m3is4")]([])
-
-[sub_resource type="Resource" id="Resource_e6r8l"]
-script = ExtResource("10_qk2ta")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_fq11d")]([])
-traits = Array[ExtResource("3_m3is4")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ko3em"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/jay_cooney.png" id="2_a12c8"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_dw810"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/jay_cooney.png" id="2_t0xb1"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_m3is4"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_di1d5"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_jexj5"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_0du0p"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/jay_cooney.glb" id="7_6c4c3"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_fq11d"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4k43k"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_e6r8l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.403625, 1.62939, 0.166992)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_r46vs"]
 script = ExtResource("13_e6r8l")
 description = "ABILITY [1]: STUN a DUELLING enemy in vision"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_8j78v"]
 script = ExtResource("12_4k43k")
@@ -81,15 +40,14 @@ attack = 2
 health = 1
 speed = 2
 energy = 1
-description_datastore = SubResource("Resource_r46vs")
-description = ""
-active_abilities = Array[ExtResource("11_fq11d")]([])
 traits = Array[ExtResource("3_m3is4")]([])
+active_abilities = Array[ExtResource("11_fq11d")]([])
+description_datastore = SubResource("Resource_r46vs")
 
 [sub_resource type="Resource" id="Resource_51srm"]
 script = ExtResource("13_e6r8l")
-description = ""
-default_values = 0
+description = "ABILITY [1]: STUN a DUELLING enemy in vision"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_yblop"]
 script = ExtResource("12_4k43k")
@@ -97,57 +55,46 @@ attack = 2
 health = 1
 speed = 2
 energy = 1
+traits = Array[ExtResource("3_m3is4")]([])
+active_abilities = Array[ExtResource("11_fq11d")]([])
 description_datastore = SubResource("Resource_51srm")
-description = ""
-active_abilities = Array[ExtResource("11_fq11d")]([])
-traits = Array[ExtResource("3_m3is4")]([])
 
-[sub_resource type="Resource" id="Resource_225q4"]
+[sub_resource type="Resource" id="Resource_ibi5b"]
 script = ExtResource("13_e6r8l")
-description = ""
-default_values = 0
+description = "ABILITY [1]: STUN a DUELLING enemy in vision"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_l3t3d"]
+[sub_resource type="Resource" id="Resource_4k43k"]
 script = ExtResource("12_4k43k")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_225q4")
-description = ""
-active_abilities = Array[ExtResource("11_fq11d")]([])
-traits = Array[ExtResource("3_m3is4")]([])
-
-[sub_resource type="Resource" id="Resource_53xue"]
-script = ExtResource("13_e6r8l")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_8qeea"]
-script = ExtResource("12_4k43k")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_53xue")
-description = ""
-active_abilities = Array[ExtResource("11_fq11d")]([])
-traits = Array[ExtResource("3_m3is4")]([])
-
-[resource]
-script = ExtResource("7_0du0p")
-tiers = Array[ExtResource("12_4k43k")]([SubResource("Resource_8j78v"), SubResource("Resource_yblop"), SubResource("Resource_l3t3d"), SubResource("Resource_8qeea")])
-_tiers = Array[ExtResource("10_qk2ta")]([SubResource("Resource_fq11d"), SubResource("Resource_ibi5b"), SubResource("Resource_4k43k"), SubResource("Resource_e6r8l")])
 attack = 2
 health = 1
 speed = 2
 energy = 1
-rarity = 3
-initial_traits = Array[ExtResource("3_m3is4")]([])
-active_abilities = Array[ExtResource("1_ko3em")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_m3is4")]([])
+active_abilities = Array[ExtResource("11_fq11d")]([])
+description_datastore = SubResource("Resource_ibi5b")
+
+[sub_resource type="Resource" id="Resource_e6r8l"]
+script = ExtResource("13_e6r8l")
 description = "ABILITY [1]: STUN a DUELLING enemy in vision"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_225q4"]
+script = ExtResource("12_4k43k")
+attack = 2
+health = 1
+speed = 2
+energy = 1
+traits = Array[ExtResource("3_m3is4")]([])
+active_abilities = Array[ExtResource("11_fq11d")]([])
+description_datastore = SubResource("Resource_e6r8l")
+
+[resource]
+script = ExtResource("7_0du0p")
+tiers = Array[ExtResource("12_4k43k")]([SubResource("Resource_8j78v"), SubResource("Resource_yblop"), SubResource("Resource_4k43k"), SubResource("Resource_225q4")])
+archetype = ExtResource("2_dw810")
+rarity = 3
+flavor_text = ""
 art_mini_coordinate = Vector2i(100, 49)
 art_mini = ExtResource("2_t0xb1")
 art_pop = ExtResource("2_a12c8")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_m3is4")]([])
-archetype = ExtResource("2_dw810")
+attack = 2
+health = 1
+speed = 2
+energy = 1
+description = "ABILITY [1]: STUN a DUELLING enemy in vision"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_m3is4")]([])
+active_abilities = Array[ExtResource("1_ko3em")]([])
 id = 30
 name = "Jay Cooney"
 gdscript = ExtResource("4_di1d5")

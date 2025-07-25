@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_iocfo"]
-[ext_resource type="Texture2D" uid="uid://qe6xg7rfo7n3" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
-[ext_resource type="Image" uid="uid://b32fyhkkap3o7" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
-[ext_resource type="Resource" uid="uid://ck2eowtrmk57m" path="res://resources/fof/archetypes/docile.tres" id="2_kurxu"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_qt6uf"]
-[ext_resource type="PackedScene" uid="uid://mv1l5oygneow" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
-[ext_resource type="Script" uid="uid://b1c7dhwye1fm1" path="res://scripts/fof/cards/mr_mildflower.gd" id="4_8tp78"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0qfbd"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_18ovi"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_pkikf"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uo0l6"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_1htg6"]
-
-[sub_resource type="Resource" id="Resource_pkikf"]
-script = ExtResource("10_18ovi")
-attack = 0
-health = 2
-speed = 2
-energy = 1
-description = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [2] Turn"
-active_abilities = Array[ExtResource("11_pkikf")]([])
-traits = Array[ExtResource("1_5wykw")]([])
-
-[sub_resource type="Resource" id="Resource_1htg6"]
-script = ExtResource("10_18ovi")
-attack = 0
-health = 2
-speed = 2
-energy = 1
-description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
-active_abilities = Array[ExtResource("11_pkikf")]([])
-traits = Array[ExtResource("1_5wykw")]([])
-
-[sub_resource type="Resource" id="Resource_gqibu"]
-script = ExtResource("10_18ovi")
-attack = 0
-health = 2
-speed = 2
-energy = 1
-description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
-active_abilities = Array[ExtResource("11_pkikf")]([])
-traits = Array[ExtResource("1_5wykw")]([])
-
-[sub_resource type="Resource" id="Resource_uo0l6"]
-script = ExtResource("10_18ovi")
-attack = 0
-health = 2
-speed = 2
-energy = 1
-description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
-active_abilities = Array[ExtResource("11_pkikf")]([])
-traits = Array[ExtResource("1_5wykw")]([])
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_iocfo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/mr_mildflower.png" id="1_pxu7r"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/docile.tres" id="2_kurxu"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_qt6uf"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
+[ext_resource type="Script" path="res://scripts/fof/cards/mr_mildflower.gd" id="4_8tp78"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0qfbd"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_pkikf"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uo0l6"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_1htg6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g8nrt"]
 size = Vector3(0.334961, 1.28284, 0.197754)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_rc35s"]
 script = ExtResource("13_1htg6")
 description = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [2] Turn"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_8ftlt"]
 script = ExtResource("12_uo0l6")
@@ -81,15 +40,14 @@ attack = 0
 health = 2
 speed = 2
 energy = 1
-description_datastore = SubResource("Resource_rc35s")
-description = ""
-active_abilities = Array[ExtResource("11_pkikf")]([])
 traits = Array[ExtResource("1_5wykw")]([])
+active_abilities = Array[ExtResource("11_pkikf")]([])
+description_datastore = SubResource("Resource_rc35s")
 
 [sub_resource type="Resource" id="Resource_dkeur"]
 script = ExtResource("13_1htg6")
 description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_e6ka1"]
 script = ExtResource("12_uo0l6")
@@ -97,57 +55,46 @@ attack = 0
 health = 2
 speed = 2
 energy = 1
-description_datastore = SubResource("Resource_dkeur")
-description = ""
-active_abilities = Array[ExtResource("11_pkikf")]([])
 traits = Array[ExtResource("1_5wykw")]([])
+active_abilities = Array[ExtResource("11_pkikf")]([])
+description_datastore = SubResource("Resource_dkeur")
+
+[sub_resource type="Resource" id="Resource_gqibu"]
+script = ExtResource("13_1htg6")
+description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_uo0l6"]
+script = ExtResource("12_uo0l6")
+attack = 0
+health = 2
+speed = 2
+energy = 1
+traits = Array[ExtResource("1_5wykw")]([])
+active_abilities = Array[ExtResource("11_pkikf")]([])
+description_datastore = SubResource("Resource_gqibu")
+
+[sub_resource type="Resource" id="Resource_1htg6"]
+script = ExtResource("13_1htg6")
+description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_iddwm"]
-script = ExtResource("13_1htg6")
-description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_n4ibn"]
 script = ExtResource("12_uo0l6")
 attack = 0
 health = 2
 speed = 2
 energy = 1
-description_datastore = SubResource("Resource_iddwm")
-description = ""
-active_abilities = Array[ExtResource("11_pkikf")]([])
 traits = Array[ExtResource("1_5wykw")]([])
-
-[sub_resource type="Resource" id="Resource_haxav"]
-script = ExtResource("13_1htg6")
-description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_wdff0"]
-script = ExtResource("12_uo0l6")
-attack = 0
-health = 2
-speed = 2
-energy = 1
-description_datastore = SubResource("Resource_haxav")
-description = ""
 active_abilities = Array[ExtResource("11_pkikf")]([])
-traits = Array[ExtResource("1_5wykw")]([])
+description_datastore = SubResource("Resource_1htg6")
 
 [resource]
 script = ExtResource("2_qt6uf")
-tiers = Array[ExtResource("12_uo0l6")]([SubResource("Resource_8ftlt"), SubResource("Resource_e6ka1"), SubResource("Resource_n4ibn"), SubResource("Resource_wdff0")])
-_tiers = Array[ExtResource("10_18ovi")]([SubResource("Resource_pkikf"), SubResource("Resource_1htg6"), SubResource("Resource_gqibu"), SubResource("Resource_uo0l6")])
-attack = 0
-health = 2
-speed = 2
-energy = 1
+tiers = Array[ExtResource("12_uo0l6")]([SubResource("Resource_8ftlt"), SubResource("Resource_e6ka1"), SubResource("Resource_uo0l6"), SubResource("Resource_iddwm")])
+archetype = ExtResource("2_kurxu")
 rarity = 1
-initial_traits = Array[ExtResource("1_5wykw")]([])
-active_abilities = Array[ExtResource("1_iocfo")]([])
 flavor_text = ""
-description = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [2] Turn"
-ascended_description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
 art_mini_coordinate = Vector2i(90, 114)
 art_mini = ExtResource("1_lijaw")
 art_pop = ExtResource("1_pxu7r")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("1_5wykw")]([])
-archetype = ExtResource("2_kurxu")
+attack = 0
+health = 2
+speed = 2
+energy = 1
+description = "DOCILE; LAST WILL: Debuff units in vision -1 ATT for [2] Turn"
+ascended_description = "DOCILE; LAST WILL: Debuff units in vision -2 ATT for [2] Turn"
+initial_traits = Array[ExtResource("1_5wykw")]([])
+active_abilities = Array[ExtResource("1_iocfo")]([])
 id = 26
 name = "Mr Mildflower"
 gdscript = ExtResource("4_8tp78")

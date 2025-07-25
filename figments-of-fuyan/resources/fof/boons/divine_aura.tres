@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=15 format=3 uid="uid://dfod534mlbwba"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_5k5bp"]
-[ext_resource type="Script" path="res://scripts/fof/boons/divine_aura.gd" id="1_68bge"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/divine_aura.png" id="2_g2xg0"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yk4ab"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_l2o7w"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_vl5yn"]
+[ext_resource type="Script" uid="uid://s1yxhx6fo0dy" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_5k5bp"]
+[ext_resource type="Script" uid="uid://dje5t6l5mrtsu" path="res://scripts/fof/boons/divine_aura.gd" id="1_68bge"]
+[ext_resource type="Texture2D" uid="uid://cn1cobqr1xipo" path="res://assets/sprites/game/boons/divine_aura.png" id="2_g2xg0"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yk4ab"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_l2o7w"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_vl5yn"]
 
 [sub_resource type="Resource" id="Resource_428m0"]
 script = ExtResource("6_vl5yn")
@@ -25,14 +25,28 @@ default_values = Array[int]([])
 script = ExtResource("5_l2o7w")
 description_datastore = SubResource("Resource_l85c5")
 
-[sub_resource type="Resource" id="Resource_b8sy1"]
+[sub_resource type="Resource" id="Resource_l2o7w"]
+script = ExtResource("6_vl5yn")
+description = "Every 4th unit with limited ability charges gains an extra ability charge when AWAKENED"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_vl5yn"]
 script = ExtResource("5_l2o7w")
-description_datastore = SubResource("Resource_l85c5")
+description_datastore = SubResource("Resource_l2o7w")
+
+[sub_resource type="Resource" id="Resource_b8sy1"]
+script = ExtResource("6_vl5yn")
+description = "Every 4th unit with limited ability charges gains an extra ability charge when AWAKENED"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_h0egr"]
+script = ExtResource("5_l2o7w")
+description_datastore = SubResource("Resource_b8sy1")
 
 [resource]
 script = ExtResource("1_5k5bp")
 champion_id = 2
-tiers = Array[ExtResource("5_l2o7w")]([SubResource("Resource_dajs3"), SubResource("Resource_pyrn4"), SubResource("Resource_b8sy1")])
+tiers = Array[ExtResource("5_l2o7w")]([SubResource("Resource_dajs3"), SubResource("Resource_pyrn4"), SubResource("Resource_vl5yn"), SubResource("Resource_h0egr")])
 icon = ExtResource("2_g2xg0")
 rarity = 8
 curse = false

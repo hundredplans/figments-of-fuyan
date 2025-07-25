@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://cfqbo8g6ycrrf"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_bskh7"]
+
+[resource]
+script = ExtResource("1_bskh7")
+name = "DefensiveStance"
+description = "Gain SHIELD. Phase 2 also gains ARMOR [1] for [3] Turns"
+type = 4
+duration = 1
+default_cooldown = 3
+off_vision_use_cooldown = false
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

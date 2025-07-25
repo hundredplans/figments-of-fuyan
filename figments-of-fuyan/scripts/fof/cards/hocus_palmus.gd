@@ -18,7 +18,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 		var tiles: Array = Game.getAllyUnits(team).map(func(x: CardGD): return x.Tile)
 		
 		var pickable_allies: Array = allies.filter(func(x: CardGD): return x.isHealable())
-		if !ascended and !pickable_allies.is_empty():
+		if tier == 1 and !pickable_allies.is_empty():
 			pickable_allies.sort_custom(func(x: CardGD, y: CardGD): return (x.max_health - x.health) < (y.max_health - y.health))
 			pickable_allies = [pickable_allies[0]]
 			

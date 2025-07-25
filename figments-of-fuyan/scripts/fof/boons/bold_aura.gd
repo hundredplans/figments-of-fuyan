@@ -23,9 +23,6 @@ func onLevelEnded(is_win: bool) -> void:
 		current_points = 0
 		max_kills += 1
 		onResetCharges()
-	
-func onAscend(state: bool) -> void:
-	super(state)
 
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:

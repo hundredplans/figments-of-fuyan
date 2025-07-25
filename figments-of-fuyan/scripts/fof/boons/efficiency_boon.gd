@@ -7,12 +7,9 @@ func onProcessAction(action: Action) -> void:
 			onResetCharges()
 		elif action is PlayCardAction:
 			onPushAction(ChangeBoonChargesAction.new(self, 1))
-	
-func onAscend(state: bool) -> void:
-	super(state)
 
 func onBoon(_action: Action = null) -> void:
-	var energy_gain: int = 1 if !ascended else 2
+	var energy_gain: int = 1 if tier == 1 else 2
 	onPushAction(EnergyAction.new(energy_gain))
 
 func onBoonAdded() -> void:

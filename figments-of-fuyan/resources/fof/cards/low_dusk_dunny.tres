@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wy1ly"]
-[ext_resource type="Texture2D" uid="uid://buanku5dahwvf" path="res://assets/sprites/game/cards/art_mini/low_dusk_dunny.png" id="2_0dbb0"]
-[ext_resource type="Image" uid="uid://t554x2ary785" path="res://assets/sprites/game/cards/art_pop/low_dusk_dunny.png" id="2_ddi1t"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_idih1"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_albhr"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_5c2c6"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_875w4"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tv3ju"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_707qb"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_mextq"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_a2lfj"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_3qrtb"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_cmpd2"]
-
-[sub_resource type="Resource" id="Resource_a2lfj"]
-script = ExtResource("10_mextq")
-attack = 2
-health = 3
-speed = 2
-energy = 3
-description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
-active_abilities = Array[ExtResource("11_a2lfj")]([])
-traits = Array[ExtResource("3_albhr")]([])
-
-[sub_resource type="Resource" id="Resource_8m86x"]
-script = ExtResource("10_mextq")
-attack = 2
-health = 3
-speed = 2
-energy = 3
-description = ""
-active_abilities = Array[ExtResource("11_a2lfj")]([])
-traits = Array[ExtResource("3_albhr")]([])
-
-[sub_resource type="Resource" id="Resource_3qrtb"]
-script = ExtResource("10_mextq")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_a2lfj")]([])
-traits = Array[ExtResource("3_albhr")]([])
-
-[sub_resource type="Resource" id="Resource_cmpd2"]
-script = ExtResource("10_mextq")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_a2lfj")]([])
-traits = Array[ExtResource("3_albhr")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wy1ly"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/low_dusk_dunny.png" id="2_0dbb0"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/low_dusk_dunny.png" id="2_ddi1t"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_idih1"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_albhr"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_5c2c6"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_875w4"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tv3ju"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_707qb"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_a2lfj"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_3qrtb"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_cmpd2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_fcowd"]
 script = ExtResource("13_cmpd2")
 description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_eddm4"]
 script = ExtResource("12_3qrtb")
@@ -81,15 +40,14 @@ attack = 2
 health = 3
 speed = 2
 energy = 3
-description_datastore = SubResource("Resource_fcowd")
-description = ""
-active_abilities = Array[ExtResource("11_a2lfj")]([])
 traits = Array[ExtResource("3_albhr")]([])
+active_abilities = Array[ExtResource("11_a2lfj")]([])
+description_datastore = SubResource("Resource_fcowd")
 
 [sub_resource type="Resource" id="Resource_s0qlj"]
 script = ExtResource("13_cmpd2")
-description = ""
-default_values = 0
+description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_mufg8"]
 script = ExtResource("12_3qrtb")
@@ -97,57 +55,46 @@ attack = 2
 health = 3
 speed = 2
 energy = 3
+traits = Array[ExtResource("3_albhr")]([])
+active_abilities = Array[ExtResource("11_a2lfj")]([])
 description_datastore = SubResource("Resource_s0qlj")
-description = ""
-active_abilities = Array[ExtResource("11_a2lfj")]([])
-traits = Array[ExtResource("3_albhr")]([])
 
-[sub_resource type="Resource" id="Resource_4cbh3"]
+[sub_resource type="Resource" id="Resource_8m86x"]
 script = ExtResource("13_cmpd2")
-description = ""
-default_values = 0
+description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_ws3bg"]
+[sub_resource type="Resource" id="Resource_3qrtb"]
 script = ExtResource("12_3qrtb")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_4cbh3")
-description = ""
-active_abilities = Array[ExtResource("11_a2lfj")]([])
-traits = Array[ExtResource("3_albhr")]([])
-
-[sub_resource type="Resource" id="Resource_f8gwx"]
-script = ExtResource("13_cmpd2")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_j6a3v"]
-script = ExtResource("12_3qrtb")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_f8gwx")
-description = ""
-active_abilities = Array[ExtResource("11_a2lfj")]([])
-traits = Array[ExtResource("3_albhr")]([])
-
-[resource]
-script = ExtResource("7_707qb")
-tiers = Array[ExtResource("12_3qrtb")]([SubResource("Resource_eddm4"), SubResource("Resource_mufg8"), SubResource("Resource_ws3bg"), SubResource("Resource_j6a3v")])
-_tiers = Array[ExtResource("10_mextq")]([SubResource("Resource_a2lfj"), SubResource("Resource_8m86x"), SubResource("Resource_3qrtb"), SubResource("Resource_cmpd2")])
 attack = 2
 health = 3
 speed = 2
 energy = 3
-rarity = 6
-initial_traits = Array[ExtResource("3_albhr")]([])
-active_abilities = Array[ExtResource("1_wy1ly")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_albhr")]([])
+active_abilities = Array[ExtResource("11_a2lfj")]([])
+description_datastore = SubResource("Resource_8m86x")
+
+[sub_resource type="Resource" id="Resource_cmpd2"]
+script = ExtResource("13_cmpd2")
 description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_4cbh3"]
+script = ExtResource("12_3qrtb")
+attack = 2
+health = 3
+speed = 2
+energy = 3
+traits = Array[ExtResource("3_albhr")]([])
+active_abilities = Array[ExtResource("11_a2lfj")]([])
+description_datastore = SubResource("Resource_cmpd2")
+
+[resource]
+script = ExtResource("7_707qb")
+tiers = Array[ExtResource("12_3qrtb")]([SubResource("Resource_eddm4"), SubResource("Resource_mufg8"), SubResource("Resource_3qrtb"), SubResource("Resource_4cbh3")])
+archetype = ExtResource("2_idih1")
+rarity = 6
+flavor_text = ""
 art_mini_coordinate = Vector2i(89, 54)
 art_mini = ExtResource("2_0dbb0")
 art_pop = ExtResource("2_ddi1t")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_albhr")]([])
-archetype = ExtResource("2_idih1")
+attack = 2
+health = 3
+speed = 2
+energy = 3
+description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_albhr")]([])
+active_abilities = Array[ExtResource("1_wy1ly")]([])
 id = 49
 name = "\"Low Dusk\" Dunny"
 gdscript = ExtResource("4_5c2c6")

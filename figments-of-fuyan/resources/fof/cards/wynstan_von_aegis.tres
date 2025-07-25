@@ -1,66 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=30 format=3 uid="uid://bjcr2e60oh3pm"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s5ofe"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_1oyp4"]
-[ext_resource type="Image" uid="uid://clf4ndpg2kgmu" path="res://assets/sprites/game/cards/art_pop/wynstan_von_aegis.png" id="2_2gnrq"]
-[ext_resource type="Texture2D" uid="uid://dlf6opbqslk4m" path="res://assets/sprites/game/cards/art_mini/wynstan_von_aegis.png" id="2_ji40p"]
-[ext_resource type="Resource" uid="uid://r4emkni6o3hx" path="res://resources/fof/archetypes/mercenary.tres" id="2_pdhn2"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_o3jov"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_di4ay"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_mpj45"]
-[ext_resource type="PackedScene" uid="uid://b8q0bcdcdwi2l" path="res://assets/models/fof/cards/wynstan_von_aegis.glb" id="8_rnroe"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_rnroe"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_b4d0y"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4cydo"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_uapb5"]
-
-[sub_resource type="Resource" id="Resource_c2f4w"]
-script = ExtResource("2_1oyp4")
-display_number = 1
-id = 1
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
-
-[sub_resource type="Resource" id="Resource_b4d0y"]
-script = ExtResource("10_rnroe")
-attack = 2
-health = 2
-speed = 2
-energy = 2
-description = "ARMOR [1]"
-active_abilities = Array[ExtResource("11_b4d0y")]([])
-traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_c2f4w")])
-
-[sub_resource type="Resource" id="Resource_6ebbt"]
-script = ExtResource("10_rnroe")
-attack = 3
-health = 2
-speed = 3
-energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_b4d0y")]([])
-traits = Array[ExtResource("2_1oyp4")]([])
-
-[sub_resource type="Resource" id="Resource_4cydo"]
-script = ExtResource("10_rnroe")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_b4d0y")]([])
-traits = Array[ExtResource("2_1oyp4")]([])
-
-[sub_resource type="Resource" id="Resource_uapb5"]
-script = ExtResource("10_rnroe")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_b4d0y")]([])
-traits = Array[ExtResource("2_1oyp4")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_s5ofe"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_1oyp4"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/wynstan_von_aegis.png" id="2_2gnrq"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/wynstan_von_aegis.png" id="2_ji40p"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/mercenary.tres" id="2_pdhn2"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_o3jov"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_di4ay"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_mpj45"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/wynstan_von_aegis.glb" id="8_rnroe"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_b4d0y"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4cydo"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_uapb5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -89,7 +40,15 @@ metadata/_custom_type_script = "uid://dag3a8ejplko8"
 [sub_resource type="Resource" id="Resource_reruq"]
 script = ExtResource("13_uapb5")
 description = "ARMOR [1]"
-default_values = 0
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_c2f4w"]
+script = ExtResource("2_1oyp4")
+display_number = 1
+id = 1
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_6q87q"]
 script = ExtResource("12_4cydo")
@@ -97,15 +56,14 @@ attack = 2
 health = 2
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_reruq")
-description = ""
-active_abilities = Array[ExtResource("11_b4d0y")]([])
 traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_c2f4w")])
+active_abilities = Array[ExtResource("11_b4d0y")]([])
+description_datastore = SubResource("Resource_reruq")
 
 [sub_resource type="Resource" id="Resource_bmecs"]
 script = ExtResource("13_uapb5")
-description = ""
-default_values = 0
+description = "ARMOR [1]"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_fuiwl"]
 script = ExtResource("12_4cydo")
@@ -113,57 +71,46 @@ attack = 3
 health = 2
 speed = 3
 energy = 2
-description_datastore = SubResource("Resource_bmecs")
-description = ""
-active_abilities = Array[ExtResource("11_b4d0y")]([])
 traits = Array[ExtResource("2_1oyp4")]([])
+active_abilities = Array[ExtResource("11_b4d0y")]([])
+description_datastore = SubResource("Resource_bmecs")
+
+[sub_resource type="Resource" id="Resource_6ebbt"]
+script = ExtResource("13_uapb5")
+description = "ARMOR [1]"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_4cydo"]
+script = ExtResource("12_4cydo")
+attack = 3
+health = 2
+speed = 3
+energy = 2
+traits = Array[ExtResource("2_1oyp4")]([])
+active_abilities = Array[ExtResource("11_b4d0y")]([])
+description_datastore = SubResource("Resource_6ebbt")
+
+[sub_resource type="Resource" id="Resource_uapb5"]
+script = ExtResource("13_uapb5")
+description = "ARMOR [1]"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_wbxja"]
-script = ExtResource("13_uapb5")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_bb3k3"]
 script = ExtResource("12_4cydo")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_wbxja")
-description = ""
-active_abilities = Array[ExtResource("11_b4d0y")]([])
+attack = 3
+health = 2
+speed = 3
+energy = 2
 traits = Array[ExtResource("2_1oyp4")]([])
-
-[sub_resource type="Resource" id="Resource_wbnpg"]
-script = ExtResource("13_uapb5")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_4phw1"]
-script = ExtResource("12_4cydo")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_wbnpg")
-description = ""
 active_abilities = Array[ExtResource("11_b4d0y")]([])
-traits = Array[ExtResource("2_1oyp4")]([])
+description_datastore = SubResource("Resource_uapb5")
 
 [resource]
 script = ExtResource("3_o3jov")
-tiers = Array[ExtResource("12_4cydo")]([SubResource("Resource_6q87q"), SubResource("Resource_fuiwl"), SubResource("Resource_bb3k3"), SubResource("Resource_4phw1")])
-_tiers = Array[ExtResource("10_rnroe")]([SubResource("Resource_b4d0y"), SubResource("Resource_6ebbt"), SubResource("Resource_4cydo"), SubResource("Resource_uapb5")])
-attack = 2
-health = 2
-speed = 2
-energy = 2
+tiers = Array[ExtResource("12_4cydo")]([SubResource("Resource_6q87q"), SubResource("Resource_fuiwl"), SubResource("Resource_4cydo"), SubResource("Resource_wbxja")])
+archetype = ExtResource("2_pdhn2")
 rarity = 3
-initial_traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_pdhn2")])
-active_abilities = Array[ExtResource("1_s5ofe")]([])
 flavor_text = ""
-description = "ARMOR [1]"
-ascended_description = ""
 art_mini_coordinate = Vector2i(84, 34)
 art_mini = ExtResource("2_ji40p")
 art_pop = ExtResource("2_2gnrq")
@@ -178,7 +125,14 @@ plus_health = 0
 plus_speed = 1
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_1oyp4")]([])
-archetype = ExtResource("2_pdhn2")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description = "ARMOR [1]"
+ascended_description = ""
+initial_traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_pdhn2")])
+active_abilities = Array[ExtResource("1_s5ofe")]([])
 id = 60
 name = "Wynstan von Aegis"
 gdscript = ExtResource("4_di4ay")

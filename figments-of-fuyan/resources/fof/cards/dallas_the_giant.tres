@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_oyrna"]
-[ext_resource type="Texture2D" uid="uid://1lcegcwya5ir" path="res://assets/sprites/game/cards/art_mini/dallas_the_giant.png" id="2_ft1wx"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_xgvst"]
-[ext_resource type="Image" uid="uid://bbkgjnsy0ah3u" path="res://assets/sprites/game/cards/art_pop/dallas_the_giant.png" id="2_y6nif"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_hvx5a"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_h6hio"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_37xlm"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tx4m7"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_jtomd"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_38yjh"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_pipuu"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_rj6pr"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_of6pa"]
-
-[sub_resource type="Resource" id="Resource_pipuu"]
-script = ExtResource("10_38yjh")
-attack = 4
-health = 5
-speed = 3
-energy = 5
-description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
-active_abilities = Array[ExtResource("11_pipuu")]([])
-traits = Array[ExtResource("3_hvx5a")]([])
-
-[sub_resource type="Resource" id="Resource_bjyr5"]
-script = ExtResource("10_38yjh")
-attack = 4
-health = 5
-speed = 3
-energy = 5
-description = ""
-active_abilities = Array[ExtResource("11_pipuu")]([])
-traits = Array[ExtResource("3_hvx5a")]([])
-
-[sub_resource type="Resource" id="Resource_rj6pr"]
-script = ExtResource("10_38yjh")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_pipuu")]([])
-traits = Array[ExtResource("3_hvx5a")]([])
-
-[sub_resource type="Resource" id="Resource_of6pa"]
-script = ExtResource("10_38yjh")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_pipuu")]([])
-traits = Array[ExtResource("3_hvx5a")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_oyrna"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/dallas_the_giant.png" id="2_ft1wx"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_xgvst"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/dallas_the_giant.png" id="2_y6nif"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_hvx5a"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_h6hio"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_37xlm"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tx4m7"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_jtomd"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_pipuu"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_rj6pr"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_of6pa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_aurn1"]
 script = ExtResource("13_of6pa")
 description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_rbjm8"]
 script = ExtResource("12_rj6pr")
@@ -81,15 +40,14 @@ attack = 4
 health = 5
 speed = 3
 energy = 5
-description_datastore = SubResource("Resource_aurn1")
-description = ""
-active_abilities = Array[ExtResource("11_pipuu")]([])
 traits = Array[ExtResource("3_hvx5a")]([])
+active_abilities = Array[ExtResource("11_pipuu")]([])
+description_datastore = SubResource("Resource_aurn1")
 
 [sub_resource type="Resource" id="Resource_6emjl"]
 script = ExtResource("13_of6pa")
-description = ""
-default_values = 0
+description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_w3frr"]
 script = ExtResource("12_rj6pr")
@@ -97,57 +55,46 @@ attack = 4
 health = 5
 speed = 3
 energy = 5
+traits = Array[ExtResource("3_hvx5a")]([])
+active_abilities = Array[ExtResource("11_pipuu")]([])
 description_datastore = SubResource("Resource_6emjl")
-description = ""
-active_abilities = Array[ExtResource("11_pipuu")]([])
-traits = Array[ExtResource("3_hvx5a")]([])
 
-[sub_resource type="Resource" id="Resource_rjn01"]
+[sub_resource type="Resource" id="Resource_bjyr5"]
 script = ExtResource("13_of6pa")
-description = ""
-default_values = 0
+description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_l5u7i"]
+[sub_resource type="Resource" id="Resource_rj6pr"]
 script = ExtResource("12_rj6pr")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_rjn01")
-description = ""
-active_abilities = Array[ExtResource("11_pipuu")]([])
-traits = Array[ExtResource("3_hvx5a")]([])
-
-[sub_resource type="Resource" id="Resource_oxu63"]
-script = ExtResource("13_of6pa")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_ygsv2"]
-script = ExtResource("12_rj6pr")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_oxu63")
-description = ""
-active_abilities = Array[ExtResource("11_pipuu")]([])
-traits = Array[ExtResource("3_hvx5a")]([])
-
-[resource]
-script = ExtResource("7_jtomd")
-tiers = Array[ExtResource("12_rj6pr")]([SubResource("Resource_rbjm8"), SubResource("Resource_w3frr"), SubResource("Resource_l5u7i"), SubResource("Resource_ygsv2")])
-_tiers = Array[ExtResource("10_38yjh")]([SubResource("Resource_pipuu"), SubResource("Resource_bjyr5"), SubResource("Resource_rj6pr"), SubResource("Resource_of6pa")])
 attack = 4
 health = 5
 speed = 3
 energy = 5
-rarity = 6
-initial_traits = Array[ExtResource("3_hvx5a")]([])
-active_abilities = Array[ExtResource("1_oyrna")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_hvx5a")]([])
+active_abilities = Array[ExtResource("11_pipuu")]([])
+description_datastore = SubResource("Resource_bjyr5")
+
+[sub_resource type="Resource" id="Resource_of6pa"]
+script = ExtResource("13_of6pa")
 description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_rjn01"]
+script = ExtResource("12_rj6pr")
+attack = 4
+health = 5
+speed = 3
+energy = 5
+traits = Array[ExtResource("3_hvx5a")]([])
+active_abilities = Array[ExtResource("11_pipuu")]([])
+description_datastore = SubResource("Resource_of6pa")
+
+[resource]
+script = ExtResource("7_jtomd")
+tiers = Array[ExtResource("12_rj6pr")]([SubResource("Resource_rbjm8"), SubResource("Resource_w3frr"), SubResource("Resource_rj6pr"), SubResource("Resource_rjn01")])
+archetype = ExtResource("2_xgvst")
+rarity = 6
+flavor_text = ""
 art_mini_coordinate = Vector2i(41, 0)
 art_mini = ExtResource("2_ft1wx")
 art_pop = ExtResource("2_y6nif")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_hvx5a")]([])
-archetype = ExtResource("2_xgvst")
+attack = 4
+health = 5
+speed = 3
+energy = 5
+description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_hvx5a")]([])
+active_abilities = Array[ExtResource("1_oyrna")]([])
 id = 50
 name = "Dallas the Giant"
 gdscript = ExtResource("4_h6hio")

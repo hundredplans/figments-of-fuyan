@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_w0630"]
-[ext_resource type="Texture2D" uid="uid://wmbgwti0mn65" path="res://assets/sprites/game/cards/art_mini/kitty_backfire.png" id="2_4ne3p"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_b1ojh"]
-[ext_resource type="Image" uid="uid://c2g35x20orkj6" path="res://assets/sprites/game/cards/art_pop/kitty_backfire.png" id="2_y2mfj"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gvjrl"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_8tttd"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_04tok"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_3d7ue"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_n65xx"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_n4sgi"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_5dscl"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_hmhjp"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_8atxo"]
-
-[sub_resource type="Resource" id="Resource_5dscl"]
-script = ExtResource("10_n4sgi")
-attack = 2
-health = 2
-speed = 2
-energy = 2
-description = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
-active_abilities = Array[ExtResource("11_5dscl")]([])
-traits = Array[ExtResource("3_gvjrl")]([])
-
-[sub_resource type="Resource" id="Resource_ygnx2"]
-script = ExtResource("10_n4sgi")
-attack = 2
-health = 2
-speed = 2
-energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_5dscl")]([])
-traits = Array[ExtResource("3_gvjrl")]([])
-
-[sub_resource type="Resource" id="Resource_hmhjp"]
-script = ExtResource("10_n4sgi")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_5dscl")]([])
-traits = Array[ExtResource("3_gvjrl")]([])
-
-[sub_resource type="Resource" id="Resource_8atxo"]
-script = ExtResource("10_n4sgi")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_5dscl")]([])
-traits = Array[ExtResource("3_gvjrl")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_w0630"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/kitty_backfire.png" id="2_4ne3p"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_b1ojh"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/kitty_backfire.png" id="2_y2mfj"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gvjrl"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_8tttd"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_04tok"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_3d7ue"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_n65xx"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_5dscl"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_hmhjp"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_8atxo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_dvwri"]
 script = ExtResource("13_8atxo")
 description = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_68tep"]
 script = ExtResource("12_hmhjp")
@@ -81,15 +40,14 @@ attack = 2
 health = 2
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_dvwri")
-description = ""
-active_abilities = Array[ExtResource("11_5dscl")]([])
 traits = Array[ExtResource("3_gvjrl")]([])
+active_abilities = Array[ExtResource("11_5dscl")]([])
+description_datastore = SubResource("Resource_dvwri")
 
 [sub_resource type="Resource" id="Resource_ctwei"]
 script = ExtResource("13_8atxo")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ot0ic"]
 script = ExtResource("12_hmhjp")
@@ -97,57 +55,46 @@ attack = 2
 health = 2
 speed = 2
 energy = 2
+traits = Array[ExtResource("3_gvjrl")]([])
+active_abilities = Array[ExtResource("11_5dscl")]([])
 description_datastore = SubResource("Resource_ctwei")
-description = ""
-active_abilities = Array[ExtResource("11_5dscl")]([])
-traits = Array[ExtResource("3_gvjrl")]([])
 
-[sub_resource type="Resource" id="Resource_oju5t"]
+[sub_resource type="Resource" id="Resource_ygnx2"]
 script = ExtResource("13_8atxo")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_3ob7d"]
+[sub_resource type="Resource" id="Resource_hmhjp"]
 script = ExtResource("12_hmhjp")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_oju5t")
-description = ""
-active_abilities = Array[ExtResource("11_5dscl")]([])
-traits = Array[ExtResource("3_gvjrl")]([])
-
-[sub_resource type="Resource" id="Resource_0yyqw"]
-script = ExtResource("13_8atxo")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_18470"]
-script = ExtResource("12_hmhjp")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_0yyqw")
-description = ""
-active_abilities = Array[ExtResource("11_5dscl")]([])
-traits = Array[ExtResource("3_gvjrl")]([])
-
-[resource]
-script = ExtResource("7_n65xx")
-tiers = Array[ExtResource("12_hmhjp")]([SubResource("Resource_68tep"), SubResource("Resource_ot0ic"), SubResource("Resource_3ob7d"), SubResource("Resource_18470")])
-_tiers = Array[ExtResource("10_n4sgi")]([SubResource("Resource_5dscl"), SubResource("Resource_ygnx2"), SubResource("Resource_hmhjp"), SubResource("Resource_8atxo")])
 attack = 2
 health = 2
 speed = 2
 energy = 2
-rarity = 3
-initial_traits = Array[ExtResource("3_gvjrl")]([])
-active_abilities = Array[ExtResource("1_w0630")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_gvjrl")]([])
+active_abilities = Array[ExtResource("11_5dscl")]([])
+description_datastore = SubResource("Resource_ygnx2")
+
+[sub_resource type="Resource" id="Resource_8atxo"]
+script = ExtResource("13_8atxo")
 description = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_oju5t"]
+script = ExtResource("12_hmhjp")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+traits = Array[ExtResource("3_gvjrl")]([])
+active_abilities = Array[ExtResource("11_5dscl")]([])
+description_datastore = SubResource("Resource_8atxo")
+
+[resource]
+script = ExtResource("7_n65xx")
+tiers = Array[ExtResource("12_hmhjp")]([SubResource("Resource_68tep"), SubResource("Resource_ot0ic"), SubResource("Resource_hmhjp"), SubResource("Resource_oju5t")])
+archetype = ExtResource("2_b1ojh")
+rarity = 3
+flavor_text = ""
 art_mini_coordinate = Vector2i(90, 63)
 art_mini = ExtResource("2_4ne3p")
 art_pop = ExtResource("2_y2mfj")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_gvjrl")]([])
-archetype = ExtResource("2_b1ojh")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_gvjrl")]([])
+active_abilities = Array[ExtResource("1_w0630")]([])
 id = 32
 name = "Kitty Backfire"
 gdscript = ExtResource("4_8tttd")

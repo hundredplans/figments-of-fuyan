@@ -2,57 +2,104 @@ extends Node
 
 func onTools() -> void:
 	for tool_info: ToolInfo in Helper.getFofInfoArray(ToolInfo):
-		var datastores: Array[ToolTierDatastore] = []
-		var datastore := ToolTierDatastore.new()
-		var adatastore := ToolTierDatastore.new()
+		var datastores: Array[ToolTierDatastore] = tool_info.tiers
+		datastores.pop_back()
 		
-		datastore.description_datastore = DescriptionDatastore.new()
-		adatastore.description_datastore = DescriptionDatastore.new()
-		datastore.description_datastore.description = tool_info.description
-		var adescription: String = tool_info.ascended_description\
-			if !tool_info.ascended_description.is_empty() else tool_info.description
-		adatastore.description_datastore.description = adescription
-		var active_effects: Array[ActiveEffectDatastore] = []
-		for active_ability: ActiveAbilityDatastore in tool_info.active_abilities:
-			var active_effect := ActiveEffectDatastore.new()
-			active_effect.name = active_ability.name
-			active_effect.camera_type = active_ability.camera_type
-			active_effect.max_charges = active_ability.max_charges
-			active_effect.delay = active_ability.delay	
-			active_effect.description = active_ability.description
-			active_effects.append(active_effect)
+		var tier_two_datastore: ToolTierDatastore = datastores[1]
+		var tier_three_datastore := ToolTierDatastore.new()
+		tier_three_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
+		tier_three_datastore.active_abilities = tier_two_datastore.active_abilities.duplicate()
 		
-		datastore.active_abilities = active_effects
-		adatastore.active_abilities = active_effects.duplicate()
-		datastores.append(datastore)
-		datastores.append(adatastore)
-		datastores.append(adatastore.duplicate())
+		var tier_four_datastore := ToolTierDatastore.new()
+		tier_four_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
+		tier_four_datastore.active_abilities = tier_two_datastore.active_abilities.duplicate()
+		
+		datastores.append(tier_three_datastore)
+		datastores.append(tier_four_datastore)
+		
+		#var datastore := ToolTierDatastore.new()
+		#var adatastore := ToolTierDatastore.new()
+		#
+		#datastore.description_datastore = DescriptionDatastore.new()
+		#adatastore.description_datastore = DescriptionDatastore.new()
+		#datastore.description_datastore.description = tool_info.description
+		#var adescription: String = tool_info.ascended_description\
+			#if !tool_info.ascended_description.is_empty() else tool_info.description
+		#adatastore.description_datastore.description = adescription
+		#var active_effects: Array[ActiveEffectDatastore] = []
+		#for active_ability: ActiveAbilityDatastore in tool_info.active_abilities:
+			#var active_effect := ActiveEffectDatastore.new()
+			#active_effect.name = active_ability.name
+			#active_effect.camera_type = active_ability.camera_type
+			#active_effect.max_charges = active_ability.max_charges
+			#active_effect.delay = active_ability.delay	
+			#active_effect.description = active_ability.description
+			#active_effects.append(active_effect)
+		
+		#datastore.active_abilities = active_effects
+		#adatastore.active_abilities = active_effects.duplicate()
+		#datastores.append(datastore)
+		#datastores.append(adatastore)
+		#datastores.append(adatastore.duplicate())
 		tool_info.tiers = datastores
 		ResourceSaver.save(tool_info)
 
 func onBoons() -> void:
 	for boon_info: BoonInfo in Helper.getFofInfoArray(BoonInfo):
-		var datastores: Array[BoonTierDatastore] = []
-		var datastore := BoonTierDatastore.new()
-		var adatastore := BoonTierDatastore.new()
-		datastore.description_datastore = DescriptionDatastore.new()
-		adatastore.description_datastore = DescriptionDatastore.new()
-		datastore.description_datastore.description = boon_info.description
-		var adescription: String = boon_info.ascended_description\
-			if !boon_info.ascended_description.is_empty() else boon_info.description
-		adatastore.description_datastore.description = adescription
-
-		datastores.append(datastore)
-		datastores.append(adatastore)
-		datastores.append(adatastore.duplicate())
+		var datastores: Array[BoonTierDatastore] = boon_info.tiers
+		datastores.pop_back()
+		
+		var tier_two_datastore: BoonTierDatastore = datastores[1]
+		var tier_three_datastore := BoonTierDatastore.new()
+		tier_three_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
+		
+		var tier_four_datastore := BoonTierDatastore.new()
+		tier_four_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
+		
+		datastores.append(tier_three_datastore)
+		datastores.append(tier_four_datastore)
+		#var datastores: Array[BoonTierDatastore] = []
+		#var datastore := BoonTierDatastore.new()
+		#var adatastore := BoonTierDatastore.new()
+		#datastore.description_datastore = DescriptionDatastore.new()
+		#adatastore.description_datastore = DescriptionDatastore.new()
+		#datastore.description_datastore.description = boon_info.description
+		#var adescription: String = boon_info.ascended_description\
+				#if !boon_info.ascended_description.is_empty() else boon_info.description
+		#adatastore.description_datastore.description = adescription
+#
+		#datastores.append(datastore)
+		#datastores.append(adatastore)
+		#datastores.append(adatastore.duplicate())
 		boon_info.tiers = datastores
 		ResourceSaver.save(boon_info)
 
 func _ready() -> void:
-	onBoons()
-	#for card_info: CardInfo in Helper.getFofInfoArray(CardInfo):
-		#var datastores: Array[CardTierDatastore] = []
+	for card_info: CardInfo in Helper.getFofInfoArray(CardInfo):
+		var datastores: Array[CardTierDatastore] = card_info.tiers
+		for i in range(1, 4):
+			var datastore: CardTierDatastore = datastores[i]
+			var d: String = card_info.description if card_info.ascended_description.is_empty() else card_info.ascended_description
+			datastore.description_datastore.description = d
+		
+		#datastores.resize(2)
 		#
+		#var tier_two_datastore: CardTierDatastore = datastores[1]
+		#var tier_three_datastore := CardTierDatastore.new()
+		#var tier_four_datastore := CardTierDatastore.new()
+		#for p: String in ["traits", "active_abilities", "description_datastore"]:
+			#tier_three_datastore[p] = tier_two_datastore[p].duplicate()
+			#tier_four_datastore[p] = tier_two_datastore[p].duplicate()
+			#
+		#for p: String in ["attack", "health", "energy", "speed"]:
+			#tier_three_datastore[p] = tier_two_datastore[p]
+			#tier_four_datastore[p] = tier_two_datastore[p]
+		#
+		#datastores.append(tier_three_datastore)
+		#datastores.append(tier_four_datastore)
+		card_info.tiers = datastores
+		ResourceSaver.save(card_info)
+		
 		#for tier_datastore: TierDatastore in card_info._tiers:
 			#var card_tier_datastore := CardTierDatastore.new()
 			#card_tier_datastore.active_abilities = tier_datastore.active_abilities

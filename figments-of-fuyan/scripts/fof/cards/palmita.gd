@@ -23,7 +23,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		
 		var actions: Array = [DestroyAction.new(self, self), AddFieldEffectAction.new(FieldEffect)]
 		
-		if ascended:
+		if tier > 1:
 			actions.append(StatAction.new(StatInfo.new(Card, Game.Stats.MAX_HEALTH, 1)))
 		
 		anibility_datastore.setDeathModifier("Ability")

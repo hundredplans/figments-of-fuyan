@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://bjt8vu2b3ok4t"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_aol3b"]
-[ext_resource type="Script" path="res://scripts/fof/boons/mentor_boon.gd" id="1_dou1f"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/mentor_boon.png" id="2_33ble"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yknmt"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_n2mm3"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_ccuhe"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_aol3b"]
+[ext_resource type="Script" uid="uid://lp8mbpj3dklp" path="res://scripts/fof/boons/mentor_boon.gd" id="1_dou1f"]
+[ext_resource type="Texture2D" uid="uid://vg6qhbo7xvhs" path="res://assets/sprites/game/boons/mentor_boon.png" id="2_33ble"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_yknmt"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_n2mm3"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_ccuhe"]
 
 [sub_resource type="Resource" id="Resource_xelib"]
 script = ExtResource("6_ccuhe")
@@ -25,13 +25,27 @@ default_values = Array[int]([])
 script = ExtResource("5_n2mm3")
 description_datastore = SubResource("Resource_litmr")
 
-[sub_resource type="Resource" id="Resource_kbt6t"]
+[sub_resource type="Resource" id="Resource_n2mm3"]
+script = ExtResource("6_ccuhe")
+description = "Gain a [acard=4] until you beat the next boss"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_ccuhe"]
 script = ExtResource("5_n2mm3")
-description_datastore = SubResource("Resource_litmr")
+description_datastore = SubResource("Resource_n2mm3")
+
+[sub_resource type="Resource" id="Resource_kbt6t"]
+script = ExtResource("6_ccuhe")
+description = "Gain a [acard=4] until you beat the next boss"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_s3hd4"]
+script = ExtResource("5_n2mm3")
+description_datastore = SubResource("Resource_kbt6t")
 
 [resource]
 script = ExtResource("1_aol3b")
-tiers = Array[ExtResource("5_n2mm3")]([SubResource("Resource_323kb"), SubResource("Resource_oqglj"), SubResource("Resource_kbt6t")])
+tiers = Array[ExtResource("5_n2mm3")]([SubResource("Resource_323kb"), SubResource("Resource_oqglj"), SubResource("Resource_ccuhe"), SubResource("Resource_s3hd4")])
 icon = ExtResource("2_33ble")
 rarity = 0
 curse = false

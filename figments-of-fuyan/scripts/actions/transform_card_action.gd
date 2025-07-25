@@ -31,7 +31,7 @@ func onTransformByEnergy() -> void:
 		
 		var tool_data: SavedDataTool = null if Card.getTool() == null else Card.getTool().onSave()
 		new_card_data.tool_data = tool_data
-		new_card_data.ascended = Card.ascended
+		new_card_data.tier = Card.tier
 		
 		NewCard = SavedData.onLoadModel(new_card_data, Game.getSaveFile())
 		var actions: Array = [RemoveFromDeckAction.new(Card), AddToDeckAction.new(NewCard)]
@@ -50,7 +50,7 @@ func onTransformByRarity() -> void:
 		
 		var tool_data: SavedDataTool = null if Card.getTool() == null else Card.getTool().onSave()
 		new_card_data.tool_data = tool_data
-		new_card_data.ascended = Card.ascended
+		new_card_data.tier = Card.tier
 		
 		NewCard = SavedData.onLoadModel(new_card_data, Game.getSaveFile())
 		var actions: Array = [RemoveFromDeckAction.new(Card), AddToDeckAction.new(NewCard)]

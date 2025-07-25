@@ -270,10 +270,10 @@ func onToolDragEnd(CardUI: Control, tool_position: Vector2) -> void:
 	if SecondTool == null:
 		actions.append(RemoveToolAction.new(Card, true))
 		actions.append(AddToolAction.new(OtherCard, FirstTool))
-	elif FirstTool.info.id == SecondTool.info.id and !FirstTool.getAscended() and !SecondTool.getAscended():
-		actions.append(RemoveToolAction.new(Card, false))
-		actions.append(AscendToolAction.new(SecondTool, true))
-		FirstTool = null
+	#elif FirstTool.info.id == SecondTool.info.id and !FirstTool.getAscended() and !SecondTool.getAscended():
+		#actions.append(RemoveToolAction.new(Card, false))
+		#actions.append(ToolTierUpAction.new(SecondTool, true))
+		#FirstTool = null
 	else:
 		actions.append(RemoveToolAction.new(Card, true))
 		actions.append(RemoveToolAction.new(OtherCard, true))

@@ -1,37 +1,51 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://2s4ad7bayp45"]
 
-[ext_resource type="Script" path="res://scripts/fof/boons/riders_boon.gd" id="1_4khgn"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_it07u"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/riders_boon.png" id="2_4khgn"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_tl87h"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_tl87h"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_6mifs"]
+[ext_resource type="Script" uid="uid://bjhb6gd1djs88" path="res://scripts/fof/boons/riders_boon.gd" id="1_4khgn"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_it07u"]
+[ext_resource type="Texture2D" uid="uid://dna3nnomqbaq1" path="res://assets/sprites/game/boons/riders_boon.png" id="2_4khgn"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_tl87h"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_tl87h"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_6mifs"]
 
 [sub_resource type="Resource" id="Resource_k343n"]
 script = ExtResource("6_6mifs")
-description = "When [4] allies die; Your next unit placed gains +1 SPD"
+description = "When [4] allies die: Your next unit placed gains +1 SPD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_6dwh4"]
 script = ExtResource("5_tl87h")
 description_datastore = SubResource("Resource_k343n")
 
-[sub_resource type="Resource" id="Resource_klhfg"]
+[sub_resource type="Resource" id="Resource_tl87h"]
 script = ExtResource("6_6mifs")
-description = "When [4] allies die; Your next unit placed gains +2 SPD"
+description = "When [3] allies die: Your next unit placed gains +1 SPD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_600of"]
 script = ExtResource("5_tl87h")
-description_datastore = SubResource("Resource_klhfg")
+description_datastore = SubResource("Resource_tl87h")
 
 [sub_resource type="Resource" id="Resource_88ntv"]
+script = ExtResource("6_6mifs")
+description = "When [3] allies die; Your next unit placed gains +2 SPD"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_ppxk3"]
 script = ExtResource("5_tl87h")
-description_datastore = SubResource("Resource_klhfg")
+description_datastore = SubResource("Resource_88ntv")
+
+[sub_resource type="Resource" id="Resource_6mifs"]
+script = ExtResource("6_6mifs")
+description = "When [2] allies die; Your next unit placed gains +2 SPD"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_klhfg"]
+script = ExtResource("5_tl87h")
+description_datastore = SubResource("Resource_6mifs")
 
 [resource]
 script = ExtResource("1_it07u")
-tiers = Array[ExtResource("5_tl87h")]([SubResource("Resource_6dwh4"), SubResource("Resource_600of"), SubResource("Resource_88ntv")])
+tiers = Array[ExtResource("5_tl87h")]([SubResource("Resource_6dwh4"), SubResource("Resource_600of"), SubResource("Resource_ppxk3"), SubResource("Resource_klhfg")])
 icon = ExtResource("2_4khgn")
 rarity = 6
 curse = false

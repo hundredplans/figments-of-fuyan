@@ -66,7 +66,7 @@ func getBossIntents(phase: int = 1) -> Array[BossIntent]:
 func getSpeedOrderOverride(phase: int = 1) -> SpeedOrderOverride:
 	return phases[phase - 1].getSpeedOrderOverride()
 
-func getColoredBaseMaterial(_team: int, _ascended: bool) -> ShaderMaterial:
+func getColoredBaseMaterial(_team: int) -> ShaderMaterial:
 	return load(BASE_MATERIAL_RED_TRANSPARENT_PATH)
 	
 func getChangeDelay(phase: int = 1) -> float:

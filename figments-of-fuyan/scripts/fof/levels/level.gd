@@ -155,7 +155,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		
 		level_area_datastore = onCreateLevelAreaDatastore()
 		
-		if curse_id > 0: onPushAction(AddBoonAction.new(curse_id))
+		if curse_id > 0: onPushAction(AddBoonAction.new(curse_id, Game.getArea().getWorldDifficulty()))
 		
 		var deck_cards: Array = Game.get_tree().get_nodes_in_group("DeckCardsGD")
 		deck_cards.shuffle()

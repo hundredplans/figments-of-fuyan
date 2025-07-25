@@ -21,7 +21,7 @@ func onLoadDataLevelFofInit() -> void:
 	var Tile: TileGD = getTile()
 	
 	if variation != 3: # Not Boss
-		var Card: CardGD = Game.getNewFieldCard(spawn_id, Tile, variation, tile_rotation, false)
+		var Card: CardGD = Game.getNewFieldCard(spawn_id, Tile, variation, tile_rotation, Game.getArea().getWorldDifficulty())
 		onPushAction(AwakenAction.new(Card, Tile))
 	else: onAwakenBoss(Tile)
 

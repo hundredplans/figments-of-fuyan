@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ut7ga"]
-[ext_resource type="Texture2D" uid="uid://bgowqp1otl6hm" path="res://assets/sprites/game/cards/art_mini/pots_mcriley.png" id="2_awvtw"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_ie4xi"]
-[ext_resource type="Image" uid="uid://pkh3sp04kogg" path="res://assets/sprites/game/cards/art_pop/pots_mcriley.png" id="2_wrer4"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_38a8r"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_kupp1"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_mcvyi"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ianyg"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_axvd1"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_gbsvn"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_3uchh"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_s8ubw"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_66io0"]
-
-[sub_resource type="Resource" id="Resource_3uchh"]
-script = ExtResource("10_gbsvn")
-attack = 4
-health = 4
-speed = 2
-energy = 4
-description = "Has ARMOR [2] against RANGED attacks; REVENGE: Debuff -1 SPD for [1] Turn"
-active_abilities = Array[ExtResource("11_3uchh")]([])
-traits = Array[ExtResource("3_38a8r")]([])
-
-[sub_resource type="Resource" id="Resource_1iex3"]
-script = ExtResource("10_gbsvn")
-attack = 4
-health = 4
-speed = 2
-energy = 4
-description = ""
-active_abilities = Array[ExtResource("11_3uchh")]([])
-traits = Array[ExtResource("3_38a8r")]([])
-
-[sub_resource type="Resource" id="Resource_s8ubw"]
-script = ExtResource("10_gbsvn")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_3uchh")]([])
-traits = Array[ExtResource("3_38a8r")]([])
-
-[sub_resource type="Resource" id="Resource_66io0"]
-script = ExtResource("10_gbsvn")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_3uchh")]([])
-traits = Array[ExtResource("3_38a8r")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ut7ga"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/pots_mcriley.png" id="2_awvtw"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_ie4xi"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/pots_mcriley.png" id="2_wrer4"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_38a8r"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_kupp1"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_mcvyi"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ianyg"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_axvd1"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_3uchh"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_s8ubw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_66io0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_l2c2y"]
 script = ExtResource("13_66io0")
 description = "Has ARMOR [2] against RANGED attacks; REVENGE: Debuff -1 SPD for [1] Turn"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_1go7c"]
 script = ExtResource("12_s8ubw")
@@ -81,15 +40,14 @@ attack = 4
 health = 4
 speed = 2
 energy = 4
-description_datastore = SubResource("Resource_l2c2y")
-description = ""
-active_abilities = Array[ExtResource("11_3uchh")]([])
 traits = Array[ExtResource("3_38a8r")]([])
+active_abilities = Array[ExtResource("11_3uchh")]([])
+description_datastore = SubResource("Resource_l2c2y")
 
 [sub_resource type="Resource" id="Resource_02wjb"]
 script = ExtResource("13_66io0")
-description = ""
-default_values = 0
+description = "Has ARMOR [2] against RANGED attacks; REVENGE: Debuff -1 SPD for [1] Turn"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_wt1pv"]
 script = ExtResource("12_s8ubw")
@@ -97,57 +55,46 @@ attack = 4
 health = 4
 speed = 2
 energy = 4
+traits = Array[ExtResource("3_38a8r")]([])
+active_abilities = Array[ExtResource("11_3uchh")]([])
 description_datastore = SubResource("Resource_02wjb")
-description = ""
-active_abilities = Array[ExtResource("11_3uchh")]([])
-traits = Array[ExtResource("3_38a8r")]([])
 
-[sub_resource type="Resource" id="Resource_f54gq"]
+[sub_resource type="Resource" id="Resource_1iex3"]
 script = ExtResource("13_66io0")
-description = ""
-default_values = 0
+description = "Has ARMOR [2] against RANGED attacks; REVENGE: Debuff -1 SPD for [1] Turn"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_oseds"]
+[sub_resource type="Resource" id="Resource_s8ubw"]
 script = ExtResource("12_s8ubw")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_f54gq")
-description = ""
-active_abilities = Array[ExtResource("11_3uchh")]([])
-traits = Array[ExtResource("3_38a8r")]([])
-
-[sub_resource type="Resource" id="Resource_rqjek"]
-script = ExtResource("13_66io0")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_twgwv"]
-script = ExtResource("12_s8ubw")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_rqjek")
-description = ""
-active_abilities = Array[ExtResource("11_3uchh")]([])
-traits = Array[ExtResource("3_38a8r")]([])
-
-[resource]
-script = ExtResource("7_axvd1")
-tiers = Array[ExtResource("12_s8ubw")]([SubResource("Resource_1go7c"), SubResource("Resource_wt1pv"), SubResource("Resource_oseds"), SubResource("Resource_twgwv")])
-_tiers = Array[ExtResource("10_gbsvn")]([SubResource("Resource_3uchh"), SubResource("Resource_1iex3"), SubResource("Resource_s8ubw"), SubResource("Resource_66io0")])
 attack = 4
 health = 4
 speed = 2
 energy = 4
-rarity = 4
-initial_traits = Array[ExtResource("3_38a8r")]([])
-active_abilities = Array[ExtResource("1_ut7ga")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_38a8r")]([])
+active_abilities = Array[ExtResource("11_3uchh")]([])
+description_datastore = SubResource("Resource_1iex3")
+
+[sub_resource type="Resource" id="Resource_66io0"]
+script = ExtResource("13_66io0")
 description = "Has ARMOR [2] against RANGED attacks; REVENGE: Debuff -1 SPD for [1] Turn"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_f54gq"]
+script = ExtResource("12_s8ubw")
+attack = 4
+health = 4
+speed = 2
+energy = 4
+traits = Array[ExtResource("3_38a8r")]([])
+active_abilities = Array[ExtResource("11_3uchh")]([])
+description_datastore = SubResource("Resource_66io0")
+
+[resource]
+script = ExtResource("7_axvd1")
+tiers = Array[ExtResource("12_s8ubw")]([SubResource("Resource_1go7c"), SubResource("Resource_wt1pv"), SubResource("Resource_s8ubw"), SubResource("Resource_f54gq")])
+archetype = ExtResource("2_ie4xi")
+rarity = 4
+flavor_text = ""
 art_mini_coordinate = Vector2i(94, 38)
 art_mini = ExtResource("2_awvtw")
 art_pop = ExtResource("2_wrer4")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_38a8r")]([])
-archetype = ExtResource("2_ie4xi")
+attack = 4
+health = 4
+speed = 2
+energy = 4
+description = "Has ARMOR [2] against RANGED attacks; REVENGE: Debuff -1 SPD for [1] Turn"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_38a8r")]([])
+active_abilities = Array[ExtResource("1_ut7ga")]([])
 id = 41
 name = "\"Pots\" McRiley"
 gdscript = ExtResource("4_kupp1")

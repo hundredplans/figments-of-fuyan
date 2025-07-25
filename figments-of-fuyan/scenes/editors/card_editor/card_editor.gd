@@ -72,7 +72,7 @@ func onCardUIPressed(CardUI: Control) -> void:
 	var card_info: CardInfo = CardUI.Card.info
 	if card_info.tiers.size() < 4:
 		for i: int in range(4 - card_info.tiers.size()):
-			card_info.tiers.append(TierDatastore.new())
+			card_info.tiers.append(CardTierDatastore.new())
 				
 	ResourceSaver.save(card_info)
 	for EditableCardUI: Control in TieredCardGrid.get_children():

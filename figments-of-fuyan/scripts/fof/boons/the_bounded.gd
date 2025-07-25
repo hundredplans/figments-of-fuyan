@@ -5,9 +5,6 @@ func onProcessAction(action: Action):
 	if !action.post:
 		if action is StatAction:
 			onForceAction(BoonActivatedAction.new(self, action))
-	
-func onAscend(state: bool):
-	super(state)
 
 func onBoon(action: StatAction):
 	for stat_info in action.stat_infos.filter(func(x: StatInfo): return x.Card.isAlly(0)):

@@ -8,8 +8,7 @@ var DeckScreen: Control
 func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
 	super(_item, _price_datastore, _save_file)
 	var text: String
-	if item.hasType(AscendCardAction): text = "Ascend Card"
-	elif item.hasType(TransformCardAction):
+	if item.hasType(TransformCardAction):
 		var transform_action: TransformCardAction = item.getType(TransformCardAction)[0]
 		if transform_action.transform_type == TransformCardAction.TransformType.Energy: text = "Transform by Energy"
 		if transform_action.transform_type == TransformCardAction.TransformType.Rarity: text = "Transform by Rarity"
@@ -28,16 +27,13 @@ func onCreateDeckScreen() -> void:
 	DeckScreen.selected.connect(onCardSelected)
 	
 	var action: Action = item.getActions()[0]
-	if action is AscendCardAction: # Ascend
-		DeckScreen.onDisableCards(func(x: Control): return x.Card.info.rarity not in [Game.Rarities.COMMON, Game.Rarities.RARE] or x.Card.ascended)
-	elif action is TransformCardAction and action.transform_type == TransformCardAction.TransformType.Rarity: # By rarity
+	if action is TransformCardAction and action.transform_type == TransformCardAction.TransformType.Rarity: # By rarity
 		DeckScreen.onDisableCards(func(x: Control): return Game.isChampion(x.Card.info.rarity))
 	elif action is TransformCardAction and action.transform_type == TransformCardAction.TransformType.Energy: # By cost
 		DeckScreen.onDisableCards(func(x: Control): return Game.isChampion(x.Card.info.rarity))
 	
 func onCardSelected(Card: CardGD) -> void:
 	item.setForType(TransformCardAction, Card, "Card") # Works if it's either
-	item.setForType(AscendCardAction, Card, "Card")
 	item.onUse()
 	
 	var CardUI: Control = DeckScreen.SelectedCardUI

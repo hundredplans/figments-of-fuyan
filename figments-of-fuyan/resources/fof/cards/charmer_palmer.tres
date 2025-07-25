@@ -1,83 +1,20 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=31 format=3 uid="uid://bwf7weto67n68"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ctxd3"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_lks3h"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ope8q"]
-[ext_resource type="Texture2D" uid="uid://dlqbflcdgpe0i" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
-[ext_resource type="Image" uid="uid://c417dfnj38t1i" path="res://assets/sprites/game/cards/art_pop/charmer_palmer.png" id="2_r3dp6"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_e0im4"]
-[ext_resource type="PackedScene" uid="uid://bvg1t02arcb52" path="res://assets/models/fof/cards/charmer_palmer.glb" id="5_50c3x"]
-[ext_resource type="Script" uid="uid://ddtf0kjsmsxej" path="res://scripts/fof/cards/charmer_palmer.gd" id="5_n02pe"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_p8xdk"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_6qddl"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_jpq06"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_kibq8"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_c0p3f"]
-
-[sub_resource type="Resource" id="Resource_jpq06"]
-script = ExtResource("11_jpq06")
-name = "Charming Stance"
-description = "Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
-max_charges = 1
-delay = 3.0
-camera_type = 0
-charges = 0
-used = false
-
-[sub_resource type="Resource" id="Resource_ff6cw"]
-script = ExtResource("10_6qddl")
-attack = 1
-health = 3
-speed = 2
-energy = 3
-description = "ABILITY [[X]]: Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
-active_abilities = Array[ExtResource("11_jpq06")]([SubResource("Resource_jpq06")])
-traits = Array[ExtResource("2_ope8q")]([])
-
-[sub_resource type="Resource" id="Resource_hd7mi"]
-script = ExtResource("11_jpq06")
-name = "Charming Stance"
-description = "Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
-max_charges = 1
-delay = 3.0
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
-
-[sub_resource type="Resource" id="Resource_tuspk"]
-script = ExtResource("10_6qddl")
-attack = 1
-health = 3
-speed = 2
-energy = 3
-description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
-active_abilities = Array[ExtResource("11_jpq06")]([SubResource("Resource_hd7mi")])
-traits = Array[ExtResource("2_ope8q")]([])
-
-[sub_resource type="Resource" id="Resource_kibq8"]
-script = ExtResource("10_6qddl")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_jpq06")]([])
-traits = Array[ExtResource("2_ope8q")]([])
-
-[sub_resource type="Resource" id="Resource_c0p3f"]
-script = ExtResource("10_6qddl")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_jpq06")]([])
-traits = Array[ExtResource("2_ope8q")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ctxd3"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_lks3h"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ope8q"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/charmer_palmer.png" id="2_p77gw"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/charmer_palmer.png" id="2_r3dp6"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_e0im4"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/charmer_palmer.glb" id="5_50c3x"]
+[ext_resource type="Script" path="res://scripts/fof/cards/charmer_palmer.gd" id="5_n02pe"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_p8xdk"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_jpq06"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_kibq8"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_c0p3f"]
 
 [sub_resource type="Resource" id="Resource_c53jk"]
 script = ExtResource("1_ctxd3")
-exists = 0
 ascended_description = "Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
 ascended_max_charges = 1
 name = "Charming Stance"
@@ -104,10 +41,20 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_jpq06"]
+script = ExtResource("11_jpq06")
+name = "Charming Stance"
+description = "Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
+max_charges = 1
+delay = 3.0
+camera_type = 0
+charges = 0
+used = false
+
 [sub_resource type="Resource" id="Resource_irq21"]
 script = ExtResource("13_c0p3f")
 description = "ABILITY [[X]]: Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_7c457"]
 script = ExtResource("12_kibq8")
@@ -115,15 +62,25 @@ attack = 1
 health = 3
 speed = 2
 energy = 3
-description_datastore = SubResource("Resource_irq21")
-description = ""
-active_abilities = Array[ExtResource("11_jpq06")]([SubResource("Resource_jpq06")])
 traits = Array[ExtResource("2_ope8q")]([])
+active_abilities = Array[ExtResource("11_jpq06")]([SubResource("Resource_jpq06")])
+description_datastore = SubResource("Resource_irq21")
+
+[sub_resource type="Resource" id="Resource_hd7mi"]
+script = ExtResource("11_jpq06")
+name = "Charming Stance"
+description = "Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
+max_charges = 1
+delay = 3.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_po6a1"]
 script = ExtResource("13_c0p3f")
 description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_xhkm1"]
 script = ExtResource("12_kibq8")
@@ -131,57 +88,46 @@ attack = 1
 health = 3
 speed = 2
 energy = 3
-description_datastore = SubResource("Resource_po6a1")
-description = ""
+traits = Array[ExtResource("2_ope8q")]([])
 active_abilities = Array[ExtResource("11_jpq06")]([SubResource("Resource_hd7mi")])
-traits = Array[ExtResource("2_ope8q")]([])
+description_datastore = SubResource("Resource_po6a1")
 
-[sub_resource type="Resource" id="Resource_416fo"]
+[sub_resource type="Resource" id="Resource_ff6cw"]
 script = ExtResource("13_c0p3f")
-description = ""
-default_values = 0
+description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_pcvlh"]
+[sub_resource type="Resource" id="Resource_kibq8"]
 script = ExtResource("12_kibq8")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_416fo")
-description = ""
-active_abilities = Array[ExtResource("11_jpq06")]([])
-traits = Array[ExtResource("2_ope8q")]([])
-
-[sub_resource type="Resource" id="Resource_2viwr"]
-script = ExtResource("13_c0p3f")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_cxwb6"]
-script = ExtResource("12_kibq8")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_2viwr")
-description = ""
-active_abilities = Array[ExtResource("11_jpq06")]([])
-traits = Array[ExtResource("2_ope8q")]([])
-
-[resource]
-script = ExtResource("3_e0im4")
-tiers = Array[ExtResource("12_kibq8")]([SubResource("Resource_7c457"), SubResource("Resource_xhkm1"), SubResource("Resource_pcvlh"), SubResource("Resource_cxwb6")])
-_tiers = Array[ExtResource("10_6qddl")]([SubResource("Resource_ff6cw"), SubResource("Resource_tuspk"), SubResource("Resource_kibq8"), SubResource("Resource_c0p3f")])
 attack = 1
 health = 3
 speed = 2
 energy = 3
+traits = Array[ExtResource("2_ope8q")]([])
+active_abilities = Array[ExtResource("11_jpq06")]([SubResource("Resource_hd7mi")])
+description_datastore = SubResource("Resource_ff6cw")
+
+[sub_resource type="Resource" id="Resource_c0p3f"]
+script = ExtResource("13_c0p3f")
+description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_tuspk"]
+script = ExtResource("12_kibq8")
+attack = 1
+health = 3
+speed = 2
+energy = 3
+traits = Array[ExtResource("2_ope8q")]([])
+active_abilities = Array[ExtResource("11_jpq06")]([SubResource("Resource_hd7mi")])
+description_datastore = SubResource("Resource_c0p3f")
+
+[resource]
+script = ExtResource("3_e0im4")
+tiers = Array[ExtResource("12_kibq8")]([SubResource("Resource_7c457"), SubResource("Resource_xhkm1"), SubResource("Resource_kibq8"), SubResource("Resource_tuspk")])
+archetype = ExtResource("2_lks3h")
 rarity = 4
-initial_traits = Array[ExtResource("2_ope8q")]([])
-active_abilities = Array[ExtResource("1_ctxd3")]([SubResource("Resource_c53jk")])
 flavor_text = ""
-description = "ABILITY [[X]]: Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
-ascended_description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
 art_mini_coordinate = Vector2i(98, 65)
 art_mini = ExtResource("2_p77gw")
 art_pop = ExtResource("2_r3dp6")
@@ -196,7 +142,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_ope8q")]([])
-archetype = ExtResource("2_lks3h")
+attack = 1
+health = 3
+speed = 2
+energy = 3
+description = "ABILITY [[X]]: Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
+ascended_description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
+initial_traits = Array[ExtResource("2_ope8q")]([])
+active_abilities = Array[ExtResource("1_ctxd3")]([SubResource("Resource_c53jk")])
 id = 16
 name = "Charmer Palmer"
 gdscript = ExtResource("5_n02pe")

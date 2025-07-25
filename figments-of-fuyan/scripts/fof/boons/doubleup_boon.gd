@@ -1,7 +1,7 @@
 extends BoonGD
 
 func getDefaultCharges() -> int:
-	return 1 if !ascended else 2
+	return 1 if tier == 1 else 2
 
 func onBoonAdded() -> void:
 	super()
@@ -15,11 +15,11 @@ func onProcessAction(action: Action) -> void:
 		and charges > 0:
 			onForceAction(BoonActivatedAction.new(self, action))
 	
-func onAscend(state: bool) -> void:
-	super(state)
-	
-	if ascended: onPushAction(ChangeBoonChargesAction.new(self, 1))
-	else: onPushAction(ChangeBoonChargesAction.new(self, -1))
+#func onAscend(state: bool) -> void:
+	#super(state)
+	#
+	#if ascended: onPushAction(ChangeBoonChargesAction.new(self, 1))
+	#else: onPushAction(ChangeBoonChargesAction.new(self, -1))
 
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:

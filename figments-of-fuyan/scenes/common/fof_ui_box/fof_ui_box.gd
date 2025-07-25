@@ -20,7 +20,7 @@ func setData(_data: SavedData) -> void:
 	if data != null:
 		var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
 		MainTexture.texture = info.getIcon()
-		MainPanel.theme_type_variation = Game.getRarityThemeVariation(info.rarity, data.ascended)
+		MainPanel.theme_type_variation = Game.getRarityThemeVariation(info.rarity)
 		
 		if data is SavedDataCard:
 			ToolIconRect.visible = data.tool_data != null

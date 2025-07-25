@@ -1,83 +1,20 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=31 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ngb84"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_3rsmk"]
-[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_drvy6"]
-[ext_resource type="Image" uid="uid://2aqn2fsdlcvs" path="res://assets/sprites/game/cards/art_pop/varoman_flagbearer.png" id="2_l5kqq"]
-[ext_resource type="Texture2D" uid="uid://c6laq4xve3jrg" path="res://assets/sprites/game/cards/art_mini/varoman_flagbearer.png" id="2_vor3s"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_l1a2a"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_4kbl8"]
-[ext_resource type="Script" uid="uid://d3v0bddqgef2x" path="res://scripts/fof/cards/varoman_flagbearer.gd" id="6_drvy6"]
-[ext_resource type="PackedScene" uid="uid://cxmof13hj7dce" path="res://assets/models/fof/cards/varoman_flagbearer.glb" id="7_drvy6"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_c3fq3"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ela83"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_efujh"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_qahs6"]
-
-[sub_resource type="Resource" id="Resource_ela83"]
-script = ExtResource("11_ela83")
-name = "For Varoma!"
-description = "Give an ally in vision +1 ATT for [1] Turn"
-max_charges = 1
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-
-[sub_resource type="Resource" id="Resource_fmhn4"]
-script = ExtResource("10_c3fq3")
-attack = 1
-health = 2
-speed = 2
-energy = 1
-description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_ela83")])
-traits = Array[ExtResource("2_3rsmk")]([])
-
-[sub_resource type="Resource" id="Resource_hwdwp"]
-script = ExtResource("11_ela83")
-name = "For Varoma!"
-description = "Give an ally in vision +1 ATT for [1] Turn"
-max_charges = 2
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
-
-[sub_resource type="Resource" id="Resource_5kkcc"]
-script = ExtResource("10_c3fq3")
-attack = 1
-health = 2
-speed = 2
-energy = 1
-description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_hwdwp")])
-traits = Array[ExtResource("2_3rsmk")]([])
-
-[sub_resource type="Resource" id="Resource_efujh"]
-script = ExtResource("10_c3fq3")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_ela83")]([])
-traits = Array[ExtResource("2_3rsmk")]([])
-
-[sub_resource type="Resource" id="Resource_qahs6"]
-script = ExtResource("10_c3fq3")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_ela83")]([])
-traits = Array[ExtResource("2_3rsmk")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ngb84"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_3rsmk"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/support.tres" id="2_drvy6"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/varoman_flagbearer.png" id="2_l5kqq"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/varoman_flagbearer.png" id="2_vor3s"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_l1a2a"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_4kbl8"]
+[ext_resource type="Script" path="res://scripts/fof/cards/varoman_flagbearer.gd" id="6_drvy6"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/varoman_flagbearer.glb" id="7_drvy6"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ela83"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_efujh"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_qahs6"]
 
 [sub_resource type="Resource" id="Resource_drvy6"]
 script = ExtResource("1_ngb84")
-exists = 0
 ascended_description = ""
 ascended_max_charges = 2
 name = "For Varoma!"
@@ -105,10 +42,20 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_ela83"]
+script = ExtResource("11_ela83")
+name = "For Varoma!"
+description = "Give an ally in vision +1 ATT for [1] Turn"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
 [sub_resource type="Resource" id="Resource_cdh72"]
 script = ExtResource("13_qahs6")
 description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_s4fbh"]
 script = ExtResource("12_efujh")
@@ -116,15 +63,25 @@ attack = 1
 health = 2
 speed = 2
 energy = 1
-description_datastore = SubResource("Resource_cdh72")
-description = ""
-active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_ela83")])
 traits = Array[ExtResource("2_3rsmk")]([])
+active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_ela83")])
+description_datastore = SubResource("Resource_cdh72")
+
+[sub_resource type="Resource" id="Resource_hwdwp"]
+script = ExtResource("11_ela83")
+name = "For Varoma!"
+description = "Give an ally in vision +1 ATT for [1] Turn"
+max_charges = 2
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_omumq"]
 script = ExtResource("13_qahs6")
 description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_qf5r7"]
 script = ExtResource("12_efujh")
@@ -132,57 +89,46 @@ attack = 1
 health = 2
 speed = 2
 energy = 1
-description_datastore = SubResource("Resource_omumq")
-description = ""
+traits = Array[ExtResource("2_3rsmk")]([])
 active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_hwdwp")])
-traits = Array[ExtResource("2_3rsmk")]([])
+description_datastore = SubResource("Resource_omumq")
 
-[sub_resource type="Resource" id="Resource_godfp"]
+[sub_resource type="Resource" id="Resource_fmhn4"]
 script = ExtResource("13_qahs6")
-description = ""
-default_values = 0
+description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_a4qam"]
+[sub_resource type="Resource" id="Resource_efujh"]
 script = ExtResource("12_efujh")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_godfp")
-description = ""
-active_abilities = Array[ExtResource("11_ela83")]([])
-traits = Array[ExtResource("2_3rsmk")]([])
-
-[sub_resource type="Resource" id="Resource_dymo1"]
-script = ExtResource("13_qahs6")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_cnv71"]
-script = ExtResource("12_efujh")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_dymo1")
-description = ""
-active_abilities = Array[ExtResource("11_ela83")]([])
-traits = Array[ExtResource("2_3rsmk")]([])
-
-[resource]
-script = ExtResource("3_l1a2a")
-tiers = Array[ExtResource("12_efujh")]([SubResource("Resource_s4fbh"), SubResource("Resource_qf5r7"), SubResource("Resource_a4qam"), SubResource("Resource_cnv71")])
-_tiers = Array[ExtResource("10_c3fq3")]([SubResource("Resource_fmhn4"), SubResource("Resource_5kkcc"), SubResource("Resource_efujh"), SubResource("Resource_qahs6")])
 attack = 1
 health = 2
 speed = 2
 energy = 1
-rarity = 4
-initial_traits = Array[ExtResource("2_3rsmk")]([])
-active_abilities = Array[ExtResource("1_ngb84")]([SubResource("Resource_drvy6")])
-flavor_text = ""
+traits = Array[ExtResource("2_3rsmk")]([])
+active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_hwdwp")])
+description_datastore = SubResource("Resource_fmhn4")
+
+[sub_resource type="Resource" id="Resource_qahs6"]
+script = ExtResource("13_qahs6")
 description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-ascended_description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_5kkcc"]
+script = ExtResource("12_efujh")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+traits = Array[ExtResource("2_3rsmk")]([])
+active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_hwdwp")])
+description_datastore = SubResource("Resource_qahs6")
+
+[resource]
+script = ExtResource("3_l1a2a")
+tiers = Array[ExtResource("12_efujh")]([SubResource("Resource_s4fbh"), SubResource("Resource_qf5r7"), SubResource("Resource_efujh"), SubResource("Resource_5kkcc")])
+archetype = ExtResource("2_drvy6")
+rarity = 4
+flavor_text = ""
 art_mini_coordinate = Vector2i(83, 23)
 art_mini = ExtResource("2_vor3s")
 art_pop = ExtResource("2_l5kqq")
@@ -197,7 +143,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_3rsmk")]([])
-archetype = ExtResource("2_drvy6")
+attack = 1
+health = 2
+speed = 2
+energy = 1
+description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
+ascended_description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
+initial_traits = Array[ExtResource("2_3rsmk")]([])
+active_abilities = Array[ExtResource("1_ngb84")]([SubResource("Resource_drvy6")])
 id = 64
 name = "Varoman Flagbearer"
 gdscript = ExtResource("6_drvy6")

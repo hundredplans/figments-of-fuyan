@@ -10,9 +10,9 @@ func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	if heal > 0:
 		var allies: Array = getVisibleFieldCards().filter(func(x: CardGD): return x != self and x.isAlly(team) and x.isHealable())
 		var picked_allies: Array = []
-		if !ascended and !allies.is_empty():
-			picked_allies.append(allies.pick_random())
-		elif ascended:
+		if tier == 1 and !allies.is_empty():
+			picked_allies.append(allies.pick_random	())
+		elif tier > 1:
 			picked_allies = allies
 			
 		onPushAction(HealAction.new(picked_allies.map(func(x: CardGD): return HealDatastore.new(x, heal))))

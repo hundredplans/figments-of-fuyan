@@ -5,9 +5,6 @@ func onProcessAction(action: Action):
 	if !action.post:
 		if action is ToolActivatedAction and action.Tool.Card != null and action.Tool.Card.isAlly(0):
 			onForceAction(BoonActivatedAction.new(self, action))
-	
-func onAscend(state: bool):
-	super(state)
 
 func onBoon(action: ToolActivatedAction):
 	action.onFailAction()

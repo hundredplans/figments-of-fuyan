@@ -1,8 +1,5 @@
 class_name BoonGD extends FofGD
 
-signal update_ascend
-
-var ascended: bool
 var ability_save: Dictionary
 var charges: int
 var tier: int
@@ -13,7 +10,6 @@ func onFofInit() -> void:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	add_to_group("BoonsGD")
-	ascended = data.ascended
 	ability_save = data.ability_save
 	charges = data.charges
 	tier = data.tier
@@ -21,11 +17,8 @@ func onLoadData(data: SavedData) -> void:
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
 	
-func getAscended() -> bool:
-	return ascended
-	
 func onSave() -> SavedDataBoon:
-	return SavedDataBoon.new(info.id, false, public_id, ascended, charges, ability_save, tier)
+	return SavedDataBoon.new(info.id, false, public_id, charges, ability_save, tier)
 
 func getIcon() -> Texture2D:
 	return info.icon
@@ -55,10 +48,6 @@ func onResetCharges() -> void:
 		
 func getDefaultCharges() -> int:
 	return 0
-
-func onAscend(state: bool) -> void:
-	ascended = state
-	update_ascend.emit(state)
 	
 func isAddRequirementMet() -> bool: # Whether you can add this to your boons
 	return true

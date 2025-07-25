@@ -47,7 +47,7 @@ func _ready() -> void:
 		LevelLabel.text = "LEVEL: " + (area_info.overworld_decoration.name\
 		if save_file_data.area_data.level_data == null else \
 		Helper.getFofInfoID(LevelInfo, save_file_data.area_data.level_data.id).name)
-		LocationLabel.text = "LOCATION: " + str(area_info.world.world) + "-" + str(clamp(save_file_data.area_data.getEnteredMapLocationProgress(), 0, 10))
+		LocationLabel.text = "LOCATION: " + str(save_file_data.world_difficulty) + "-" + str(clamp(save_file_data.area_data.getEnteredMapLocationProgress(), 0, 10))
 		
 		for card_data in save_file_data.deck:
 			var FofUIBox: Control = FofUIBoxPacked.instantiate()

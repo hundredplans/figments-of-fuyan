@@ -5,9 +5,6 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if charges > 0 and action is AwakenAction and action.owner is PlayCardAction and action.owner.Card.info.rarity == Game.Rarities.CHAMPION:
 			onPushAction(BoonActivatedAction.new(self, action))
-	
-func onAscend(state: bool) -> void:
-	super(state)
 
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:

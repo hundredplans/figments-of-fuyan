@@ -7,5 +7,5 @@ func onProcessAction(action: Action) -> void:
 
 func onLastWill(death_action: DeathAction) -> void:
 	var SpawnTile: TileGD = death_action.Tile
-	var NewCard: CardGD = Game.getNewFieldCard(4, SpawnTile, team, tile_rotation, ascended, true)
+	var NewCard: CardGD = Game.getNewFieldCard(4, SpawnTile, team, tile_rotation, tier, true)
 	onPushAction(AwakenAction.new(NewCard, SpawnTile))

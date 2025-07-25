@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qrljm"]
 [ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
@@ -29,42 +29,12 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_6l5bk"]
+[sub_resource type="Resource" id="Resource_0hcfp"]
 script = ExtResource("13_0hcfp")
 description = ""
 default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_wff6e"]
-script = ExtResource("12_73env")
-attack = 2
-health = 3
-speed = 2
-energy = 2
-traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("11_jq0oi")]([])
-description_datastore = SubResource("Resource_6l5bk")
-
-[sub_resource type="Resource" id="Resource_8lai7"]
-script = ExtResource("13_0hcfp")
-description = ""
-default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_va4v6"]
-script = ExtResource("12_73env")
-attack = 2
-health = 5
-speed = 2
-energy = 2
-traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("11_jq0oi")]([])
-description_datastore = SubResource("Resource_8lai7")
 
 [sub_resource type="Resource" id="Resource_y3ry3"]
-script = ExtResource("13_0hcfp")
-description = ""
-default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_lgm7y"]
 script = ExtResource("12_73env")
 attack = 2
 health = 5
@@ -72,26 +42,11 @@ speed = 2
 energy = 2
 traits = Array[ExtResource("3_qc4i1")]([])
 active_abilities = Array[ExtResource("11_jq0oi")]([])
-description_datastore = SubResource("Resource_y3ry3")
-
-[sub_resource type="Resource" id="Resource_ghndg"]
-script = ExtResource("13_0hcfp")
-description = ""
-default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_wox36"]
-script = ExtResource("12_73env")
-attack = 2
-health = 5
-speed = 2
-energy = 2
-traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("11_jq0oi")]([])
-description_datastore = SubResource("Resource_ghndg")
+description_datastore = SubResource("Resource_0hcfp")
 
 [resource]
 script = ExtResource("2_amlc3")
-tiers = Array[ExtResource("12_73env")]([SubResource("Resource_wff6e"), SubResource("Resource_va4v6"), SubResource("Resource_lgm7y"), SubResource("Resource_wox36")])
+tiers = Array[ExtResource("12_73env")]([SubResource("Resource_y3ry3"), SubResource("Resource_y3ry3"), SubResource("Resource_y3ry3"), SubResource("Resource_y3ry3")])
 archetype = ExtResource("2_jki1r")
 rarity = 3
 flavor_text = ""

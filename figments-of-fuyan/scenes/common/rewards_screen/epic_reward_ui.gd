@@ -93,7 +93,7 @@ func onCardUIPressed(CardUI: Control) -> void:
 	
 func onBoonPressed(Boon: BoonGD, BoonUI: Control) -> void:
 	if reward.isTaken(): return
-	Game.getSaveFile().onPushAction(AddBoonAction.new(Boon.info.id, false))
+	Game.getSaveFile().onPushAction(AddBoonAction.new(Boon.info.id, Game.getArea().getWorldDifficulty()))
 	onRewardTaken(BoonUI, Boon)
 	
 func onRewardTaken(_IconUI: Control, item: FofGD) -> void:

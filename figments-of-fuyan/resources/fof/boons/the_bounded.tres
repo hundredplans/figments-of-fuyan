@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://c4gpogyhdh61l"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_7dcmv"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/the_bounded.png" id="1_h10pe"]
-[ext_resource type="Script" path="res://scripts/fof/boons/the_bounded.gd" id="1_so7dl"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_4r4by"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_ytclf"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_uhfgx"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_7dcmv"]
+[ext_resource type="Texture2D" uid="uid://bqbsn1umfg64g" path="res://assets/sprites/game/boons/the_bounded.png" id="1_h10pe"]
+[ext_resource type="Script" uid="uid://cvrq8okxf5xng" path="res://scripts/fof/boons/the_bounded.gd" id="1_so7dl"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_4r4by"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_ytclf"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_uhfgx"]
 
 [sub_resource type="Resource" id="Resource_2cca5"]
 script = ExtResource("6_uhfgx")
@@ -25,13 +25,27 @@ default_values = Array[int]([])
 script = ExtResource("5_ytclf")
 description_datastore = SubResource("Resource_qcirk")
 
-[sub_resource type="Resource" id="Resource_posio"]
+[sub_resource type="Resource" id="Resource_ytclf"]
+script = ExtResource("6_uhfgx")
+description = "Your units stats cannot be buffed"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_uhfgx"]
 script = ExtResource("5_ytclf")
-description_datastore = SubResource("Resource_qcirk")
+description_datastore = SubResource("Resource_ytclf")
+
+[sub_resource type="Resource" id="Resource_posio"]
+script = ExtResource("6_uhfgx")
+description = "Your units stats cannot be buffed"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_33frf"]
+script = ExtResource("5_ytclf")
+description_datastore = SubResource("Resource_posio")
 
 [resource]
 script = ExtResource("1_7dcmv")
-tiers = Array[ExtResource("5_ytclf")]([SubResource("Resource_mmi8g"), SubResource("Resource_025wq"), SubResource("Resource_posio")])
+tiers = Array[ExtResource("5_ytclf")]([SubResource("Resource_mmi8g"), SubResource("Resource_025wq"), SubResource("Resource_uhfgx"), SubResource("Resource_33frf")])
 icon = ExtResource("1_h10pe")
 rarity = 0
 curse = true

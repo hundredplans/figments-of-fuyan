@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://j4ugh4x8n2kj"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://dx0evxvsam2e4"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_6myuv"]
 [ext_resource type="Script" uid="uid://c05ehc13khj8b" path="res://scripts/fof/tools/palmic_amulet.gd" id="2_qf148"]
@@ -11,8 +11,8 @@
 
 [sub_resource type="Resource" id="Resource_53v1r"]
 script = ExtResource("8_qckqb")
-description = "Healing on this is doubled"
-default_values = []
+description = "Heals on this are +1 more effective"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_stxth"]
 script = ExtResource("6_o8ulk")
@@ -21,30 +21,45 @@ description_datastore = SubResource("Resource_53v1r")
 
 [sub_resource type="Resource" id="Resource_ge2t1"]
 script = ExtResource("8_qckqb")
-description = "Healing on this is doubled"
-default_values = []
+description = "Heals on this are +2 more effective"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_yi5lu"]
 script = ExtResource("6_o8ulk")
 active_abilities = Array[ExtResource("7_ujyf5")]([])
 description_datastore = SubResource("Resource_ge2t1")
 
-[sub_resource type="Resource" id="Resource_n8y20"]
+[sub_resource type="Resource" id="Resource_ujyf5"]
+script = ExtResource("8_qckqb")
+description = "Heals on this are +3 more effective"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_qckqb"]
 script = ExtResource("6_o8ulk")
 active_abilities = Array[ExtResource("7_ujyf5")]([])
-description_datastore = SubResource("Resource_ge2t1")
+description_datastore = SubResource("Resource_ujyf5")
+
+[sub_resource type="Resource" id="Resource_n8y20"]
+script = ExtResource("8_qckqb")
+description = "Heals on this heal you fully"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_20btd"]
+script = ExtResource("6_o8ulk")
+active_abilities = Array[ExtResource("7_ujyf5")]([])
+description_datastore = SubResource("Resource_n8y20")
 
 [resource]
 script = ExtResource("4_nye0n")
-tiers = Array[ExtResource("6_o8ulk")]([SubResource("Resource_stxth"), SubResource("Resource_yi5lu"), SubResource("Resource_n8y20")])
+tiers = Array[ExtResource("6_o8ulk")]([SubResource("Resource_stxth"), SubResource("Resource_yi5lu"), SubResource("Resource_qckqb"), SubResource("Resource_20btd")])
 icon = ExtResource("3_qf148")
-description = "Healing on this is doubled"
-ascended_description = ""
 rarity = 0
-active_abilities = Array[ExtResource("1_6myuv")]([])
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+active_abilities = Array[ExtResource("1_6myuv")]([])
+description = "Healing on this is doubled"
+ascended_description = ""
 id = 16
 name = "Palmic Amulet"
 gdscript = ExtResource("2_qf148")

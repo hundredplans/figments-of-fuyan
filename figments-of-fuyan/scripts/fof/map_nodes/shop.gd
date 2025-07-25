@@ -65,7 +65,7 @@ func onAddRemoveCard() -> void:
 	onAddToItems(PriceDatastore.new(world_datastore.remove_card_price, remove_card_wrapper.onSave()))
 
 func onAddTransformation() -> void:
-	var transformation_ids: Array = [4, 5, 6]
+	var transformation_ids: Array = [5, 6]
 	var id: int = transformation_ids.pick_random()
 	
 	var action_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), self)
@@ -74,9 +74,6 @@ func onAddTransformation() -> void:
 	var base_price: int = 0
 	
 	match id:
-		4:
-			action = AscendCardAction.new(null, true)
-			base_price = world_datastore.ascend_card_price
 		5:
 			action = TransformCardAction.new(null, TransformCardAction.TransformType.Rarity)
 			base_price = world_datastore.transform_by_rarity_price
@@ -129,21 +126,12 @@ func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> 
 	var picked_data: SavedData = picked_info.saved_data.new(picked_info.id, true)
 	if picked_data is SavedDataCard:
 		Game.setCardDataFromInfo(picked_data, picked_info)
-	
-	var ascend: bool = Random.rollFloat(world_datastore.shop_ascension_chance / 100.0)
-	if script_type == BoonInfo and Game.isBoonAvailableUnascended(picked_data.id):
-		ascend = false
-	
-	picked_data.ascended = ascend
+
 	var fof_name: String = picked_info.get_script().getFofName().to_lower() # "Boon", "Card"
 	var base_price: int = world_datastore.get(fof_name + "_rarity_prices").getByRarity(picked_info.rarity)
 	
 	if script_type == CardInfo and foreign: # Extra base_price for foreign cards
 		base_price += world_datastore.foreign_card_base_price_increase
-	
-	if ascend:
-		base_price = int(base_price * ((100 + world_datastore.ascended_items_price_percentage_increase) / 100.0))
-		base_price += world_datastore.ascended_items_flat_after_percentage_increase
 		
 	var final_price: int = onAddPriceVariance(base_price)
 	var get_shop_price_action := GetShopPriceAction.new(final_price, self)

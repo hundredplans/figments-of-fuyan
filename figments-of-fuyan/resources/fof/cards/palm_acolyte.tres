@@ -1,21 +1,20 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3 uid="uid://qq0wf42rrwq1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_vhuk6"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_racig"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_sigte"]
-[ext_resource type="Image" uid="uid://b75kho28031ha" path="res://assets/sprites/game/cards/art_pop/palm_acolyte.png" id="3_8qtb0"]
-[ext_resource type="Texture2D" uid="uid://c8muitrvelbnt" path="res://assets/sprites/game/cards/art_mini/palm_acolyte.png" id="3_r3qlw"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_s3wjm"]
-[ext_resource type="Script" uid="uid://dediuf1xvriyq" path="res://scripts/fof/cards/palm_acolyte.gd" id="4_6mvja"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_8qtb0"]
-[ext_resource type="PackedScene" uid="uid://dowgcs0ja2fo4" path="res://assets/models/fof/cards/palm_acolyte.glb" id="7_r3qlw"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_glhbm"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uul8t"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rtjl2"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_vhuk6"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_racig"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_sigte"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palm_acolyte.png" id="3_8qtb0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palm_acolyte.png" id="3_r3qlw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_s3wjm"]
+[ext_resource type="Script" path="res://scripts/fof/cards/palm_acolyte.gd" id="4_6mvja"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_8qtb0"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palm_acolyte.glb" id="7_r3qlw"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_glhbm"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uul8t"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rtjl2"]
 
 [sub_resource type="Resource" id="Resource_r3qlw"]
 script = ExtResource("1_vhuk6")
-exists = 0
 ascended_description = ""
 ascended_max_charges = -1
 name = "Divine Light"
@@ -56,7 +55,7 @@ used = false
 [sub_resource type="Resource" id="Resource_ma80g"]
 script = ExtResource("13_rtjl2")
 description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_lbu58"]
 script = ExtResource("12_uul8t")
@@ -70,8 +69,8 @@ description_datastore = SubResource("Resource_ma80g")
 
 [sub_resource type="Resource" id="Resource_2ionm"]
 script = ExtResource("13_rtjl2")
-description = ""
-default_values = 0
+description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_8b0q2"]
 script = ExtResource("12_uul8t")
@@ -83,12 +82,12 @@ traits = Array[ExtResource("2_sigte")]([])
 active_abilities = Array[ExtResource("11_glhbm")]([])
 description_datastore = SubResource("Resource_2ionm")
 
-[sub_resource type="Resource" id="Resource_3vtsi"]
+[sub_resource type="Resource" id="Resource_vfoye"]
 script = ExtResource("13_rtjl2")
 description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-default_values = 0
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_47a26"]
+[sub_resource type="Resource" id="Resource_uul8t"]
 script = ExtResource("12_uul8t")
 attack = 1
 health = 4
@@ -96,14 +95,14 @@ speed = 2
 energy = 3
 traits = Array[ExtResource("2_sigte")]([])
 active_abilities = Array[ExtResource("11_glhbm")]([])
-description_datastore = SubResource("Resource_3vtsi")
+description_datastore = SubResource("Resource_vfoye")
 
-[sub_resource type="Resource" id="Resource_0p135"]
+[sub_resource type="Resource" id="Resource_rtjl2"]
 script = ExtResource("13_rtjl2")
 description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-default_values = 0
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_nqsf0"]
+[sub_resource type="Resource" id="Resource_rk3py"]
 script = ExtResource("12_uul8t")
 attack = 1
 health = 4
@@ -111,21 +110,14 @@ speed = 2
 energy = 3
 traits = Array[ExtResource("2_sigte")]([])
 active_abilities = Array[ExtResource("11_glhbm")]([])
-description_datastore = SubResource("Resource_0p135")
+description_datastore = SubResource("Resource_rtjl2")
 
 [resource]
 script = ExtResource("3_s3wjm")
-tiers = Array[ExtResource("12_uul8t")]([SubResource("Resource_lbu58"), SubResource("Resource_8b0q2"), SubResource("Resource_47a26"), SubResource("Resource_nqsf0")])
-attack = 1
-health = 4
-speed = 2
-energy = 3
+tiers = Array[ExtResource("12_uul8t")]([SubResource("Resource_lbu58"), SubResource("Resource_8b0q2"), SubResource("Resource_uul8t"), SubResource("Resource_rk3py")])
+archetype = ExtResource("2_racig")
 rarity = 0
-initial_traits = Array[ExtResource("2_sigte")]([])
-active_abilities = Array[ExtResource("1_vhuk6")]([SubResource("Resource_r3qlw")])
 flavor_text = ""
-description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-ascended_description = ""
 art_mini_coordinate = Vector2i(88, 45)
 art_mini = ExtResource("3_r3qlw")
 art_pop = ExtResource("3_8qtb0")
@@ -140,7 +132,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_sigte")]([])
-archetype = ExtResource("2_racig")
+attack = 1
+health = 4
+speed = 2
+energy = 3
+description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
+ascended_description = ""
+initial_traits = Array[ExtResource("2_sigte")]([])
+active_abilities = Array[ExtResource("1_vhuk6")]([SubResource("Resource_r3qlw")])
 id = 79
 name = "Palm Acolyte"
 gdscript = ExtResource("4_6mvja")

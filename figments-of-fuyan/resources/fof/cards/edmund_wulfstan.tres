@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_dvx2g"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_5fo1h"]
-[ext_resource type="Image" uid="uid://cye124to2fjml" path="res://assets/sprites/game/cards/art_pop/edmund_wulfstan.png" id="2_babe0"]
-[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_qu7ke"]
-[ext_resource type="Texture2D" uid="uid://dd81oqek7jbt6" path="res://assets/sprites/game/cards/art_mini/edmund_wulfstan.png" id="2_wn40t"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_aecmo"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_gjfi1"]
-[ext_resource type="Script" uid="uid://ddy77qnh6ieje" path="res://scripts/fof/cards/edmund_wulfstan.gd" id="6_qu7ke"]
-[ext_resource type="PackedScene" uid="uid://c1r1iiadoi20r" path="res://assets/models/fof/cards/edmund_wulfstan.glb" id="7_qu7ke"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_hol82"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_qhvvk"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_ambev"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_3407n"]
-
-[sub_resource type="Resource" id="Resource_qhvvk"]
-script = ExtResource("10_hol82")
-attack = 1
-health = 4
-speed = 2
-energy = 2
-description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
-active_abilities = Array[ExtResource("11_qhvvk")]([])
-traits = Array[ExtResource("2_5fo1h")]([])
-
-[sub_resource type="Resource" id="Resource_vbfyd"]
-script = ExtResource("10_hol82")
-attack = 1
-health = 6
-speed = 2
-energy = 2
-description = ""
-active_abilities = Array[ExtResource("11_qhvvk")]([])
-traits = Array[ExtResource("2_5fo1h")]([])
-
-[sub_resource type="Resource" id="Resource_ambev"]
-script = ExtResource("10_hol82")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_qhvvk")]([])
-traits = Array[ExtResource("2_5fo1h")]([])
-
-[sub_resource type="Resource" id="Resource_3407n"]
-script = ExtResource("10_hol82")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_qhvvk")]([])
-traits = Array[ExtResource("2_5fo1h")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_dvx2g"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_5fo1h"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/edmund_wulfstan.png" id="2_babe0"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_qu7ke"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/edmund_wulfstan.png" id="2_wn40t"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_aecmo"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_gjfi1"]
+[ext_resource type="Script" path="res://scripts/fof/cards/edmund_wulfstan.gd" id="6_qu7ke"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/edmund_wulfstan.glb" id="7_qu7ke"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_qhvvk"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_ambev"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_3407n"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_wjtqc"]
 script = ExtResource("13_3407n")
 description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_cwo0x"]
 script = ExtResource("12_ambev")
@@ -81,15 +40,14 @@ attack = 1
 health = 4
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_wjtqc")
-description = ""
-active_abilities = Array[ExtResource("11_qhvvk")]([])
 traits = Array[ExtResource("2_5fo1h")]([])
+active_abilities = Array[ExtResource("11_qhvvk")]([])
+description_datastore = SubResource("Resource_wjtqc")
 
 [sub_resource type="Resource" id="Resource_raage"]
 script = ExtResource("13_3407n")
-description = ""
-default_values = 0
+description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_i4ghh"]
 script = ExtResource("12_ambev")
@@ -97,57 +55,46 @@ attack = 1
 health = 6
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_raage")
-description = ""
-active_abilities = Array[ExtResource("11_qhvvk")]([])
 traits = Array[ExtResource("2_5fo1h")]([])
+active_abilities = Array[ExtResource("11_qhvvk")]([])
+description_datastore = SubResource("Resource_raage")
+
+[sub_resource type="Resource" id="Resource_vbfyd"]
+script = ExtResource("13_3407n")
+description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_ambev"]
+script = ExtResource("12_ambev")
+attack = 1
+health = 6
+speed = 2
+energy = 2
+traits = Array[ExtResource("2_5fo1h")]([])
+active_abilities = Array[ExtResource("11_qhvvk")]([])
+description_datastore = SubResource("Resource_vbfyd")
+
+[sub_resource type="Resource" id="Resource_3407n"]
+script = ExtResource("13_3407n")
+description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_hi56o"]
-script = ExtResource("13_3407n")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_m2w32"]
 script = ExtResource("12_ambev")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_hi56o")
-description = ""
-active_abilities = Array[ExtResource("11_qhvvk")]([])
+attack = 1
+health = 6
+speed = 2
+energy = 2
 traits = Array[ExtResource("2_5fo1h")]([])
-
-[sub_resource type="Resource" id="Resource_2go25"]
-script = ExtResource("13_3407n")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_elm6q"]
-script = ExtResource("12_ambev")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_2go25")
-description = ""
 active_abilities = Array[ExtResource("11_qhvvk")]([])
-traits = Array[ExtResource("2_5fo1h")]([])
+description_datastore = SubResource("Resource_3407n")
 
 [resource]
 script = ExtResource("3_aecmo")
-tiers = Array[ExtResource("12_ambev")]([SubResource("Resource_cwo0x"), SubResource("Resource_i4ghh"), SubResource("Resource_m2w32"), SubResource("Resource_elm6q")])
-_tiers = Array[ExtResource("10_hol82")]([SubResource("Resource_qhvvk"), SubResource("Resource_vbfyd"), SubResource("Resource_ambev"), SubResource("Resource_3407n")])
-attack = 1
-health = 4
-speed = 2
-energy = 2
+tiers = Array[ExtResource("12_ambev")]([SubResource("Resource_cwo0x"), SubResource("Resource_i4ghh"), SubResource("Resource_ambev"), SubResource("Resource_hi56o")])
+archetype = ExtResource("2_qu7ke")
 rarity = 3
-initial_traits = Array[ExtResource("2_5fo1h")]([])
-active_abilities = Array[ExtResource("1_dvx2g")]([])
 flavor_text = ""
-description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
-ascended_description = ""
 art_mini_coordinate = Vector2i(94, 43)
 art_mini = ExtResource("2_wn40t")
 art_pop = ExtResource("2_babe0")
@@ -162,7 +109,14 @@ plus_health = 2
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_5fo1h")]([])
-archetype = ExtResource("2_qu7ke")
+attack = 1
+health = 4
+speed = 2
+energy = 2
+description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
+ascended_description = ""
+initial_traits = Array[ExtResource("2_5fo1h")]([])
+active_abilities = Array[ExtResource("1_dvx2g")]([])
 id = 59
 name = "Edmund Wulfstan"
 gdscript = ExtResource("6_qu7ke")

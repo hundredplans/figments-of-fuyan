@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://ot7je20wf1td"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_0pqb6"]
+
+[resource]
+script = ExtResource("1_0pqb6")
+name = "JumpAttack"
+description = "Deal [1] DMG outside, 2 DMG inside, Instakill middle. Moves with 3 SPD to reposition first (tile intents dont move). Autoattacks if someone gets in his way"
+type = 0
+duration = 1
+default_cooldown = 2
+off_vision_use_cooldown = false
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

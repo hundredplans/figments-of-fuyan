@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://bn7v7iisd1fbn"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_suqwt"]
+
+[resource]
+script = ExtResource("1_suqwt")
+name = "SpinAttack"
+description = "Deal DMG to [3] Tiles around him. [1] DMG on outer. 2 DMG on both inners. For Phase 2 deals [3] DMG to all tiles. Uses after Reposition and never elsewhere"
+type = 0
+duration = 1
+default_cooldown = 1
+off_vision_use_cooldown = false
+combat_type = 0
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

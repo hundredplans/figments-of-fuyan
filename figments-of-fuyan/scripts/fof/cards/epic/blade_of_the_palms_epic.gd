@@ -917,7 +917,7 @@ func onCreateClone(CloneTile: TileGD, actions: Array, clone_rotation: int = rand
 	return CloneCard
 	
 func onCreateCloneBase(CloneTile: TileGD, clone_rotation: int = randi_range(0, 5)) -> CardGD:
-	return Game.getNewFieldCard(CLONE_ID, CloneTile, team, clone_rotation, false, true)
+	return Game.getNewFieldCard(CLONE_ID, CloneTile, team, clone_rotation, tier, true)
 	
 func isValidTeleportTile(TeleportTile: TileGD) -> bool:
 	return !TeleportTile.isSolid() and !TeleportTile.isOccupied() and !isPedestalTileOrAdjacent(TeleportTile)

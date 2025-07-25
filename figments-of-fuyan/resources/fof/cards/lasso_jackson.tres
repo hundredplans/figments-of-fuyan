@@ -1,34 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3 uid="uid://dytjlokr40dm3"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wjlyu"]
-[ext_resource type="Image" uid="uid://dik5dgqvlyhqa" path="res://assets/sprites/game/cards/art_pop/lasso_jackson.png" id="2_8fvre"]
-[ext_resource type="Texture2D" uid="uid://bl8kasi6yhofx" path="res://assets/sprites/game/cards/art_mini/lasso_jackson.png" id="2_oa2dt"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_rf13s"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_ktk3v"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_at1l7"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_v7umy"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_f67q4"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_iglur"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_tcrka"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_slop6"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_qasfi"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_cb5lr"]
-
-[sub_resource type="Resource" id="Resource_slop6"]
-script = ExtResource("10_tcrka")
-active_abilities = Array[ExtResource("11_slop6")]([])
-
-[sub_resource type="Resource" id="Resource_mulp7"]
-script = ExtResource("10_tcrka")
-active_abilities = Array[ExtResource("11_slop6")]([])
-
-[sub_resource type="Resource" id="Resource_qasfi"]
-script = ExtResource("10_tcrka")
-active_abilities = Array[ExtResource("11_slop6")]([])
-
-[sub_resource type="Resource" id="Resource_cb5lr"]
-script = ExtResource("10_tcrka")
-active_abilities = Array[ExtResource("11_slop6")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_wjlyu"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/lasso_jackson.png" id="2_8fvre"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/lasso_jackson.png" id="2_oa2dt"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_rf13s"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_ktk3v"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_at1l7"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_v7umy"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_f67q4"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_iglur"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_slop6"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_qasfi"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_cb5lr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -49,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_2c0h3"]
 script = ExtResource("13_cb5lr")
 description = "RANGED [1-2]; ABILITY: Pull a unit [1] tile closer"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_11omv"]
 script = ExtResource("12_qasfi")
@@ -63,8 +46,8 @@ description_datastore = SubResource("Resource_2c0h3")
 
 [sub_resource type="Resource" id="Resource_m8wgd"]
 script = ExtResource("13_cb5lr")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; ABILITY: Pull a unit [1] tile closer"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_76qs6"]
 script = ExtResource("12_qasfi")
@@ -76,50 +59,42 @@ traits = Array[ExtResource("3_ktk3v")]([])
 active_abilities = Array[ExtResource("11_slop6")]([])
 description_datastore = SubResource("Resource_m8wgd")
 
-[sub_resource type="Resource" id="Resource_w1kfr"]
+[sub_resource type="Resource" id="Resource_mulp7"]
 script = ExtResource("13_cb5lr")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; ABILITY: Pull a unit [1] tile closer"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_2fwvr"]
+[sub_resource type="Resource" id="Resource_qasfi"]
 script = ExtResource("12_qasfi")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-traits = Array[ExtResource("3_ktk3v")]([])
-active_abilities = Array[ExtResource("11_slop6")]([])
-description_datastore = SubResource("Resource_w1kfr")
-
-[sub_resource type="Resource" id="Resource_fc8t5"]
-script = ExtResource("13_cb5lr")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_o7wdg"]
-script = ExtResource("12_qasfi")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-traits = Array[ExtResource("3_ktk3v")]([])
-active_abilities = Array[ExtResource("11_slop6")]([])
-description_datastore = SubResource("Resource_fc8t5")
-
-[resource]
-script = ExtResource("7_iglur")
-tiers = Array[ExtResource("12_qasfi")]([SubResource("Resource_11omv"), SubResource("Resource_76qs6"), SubResource("Resource_2fwvr"), SubResource("Resource_o7wdg")])
-_tiers = Array[ExtResource("10_tcrka")]([SubResource("Resource_slop6"), SubResource("Resource_mulp7"), SubResource("Resource_qasfi"), SubResource("Resource_cb5lr")])
 attack = 2
 health = 2
 speed = 2
 energy = 2
-rarity = 4
-initial_traits = Array[ExtResource("3_ktk3v")]([])
-active_abilities = Array[ExtResource("1_wjlyu")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_ktk3v")]([])
+active_abilities = Array[ExtResource("11_slop6")]([])
+description_datastore = SubResource("Resource_mulp7")
+
+[sub_resource type="Resource" id="Resource_cb5lr"]
+script = ExtResource("13_cb5lr")
 description = "RANGED [1-2]; ABILITY: Pull a unit [1] tile closer"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_w1kfr"]
+script = ExtResource("12_qasfi")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+traits = Array[ExtResource("3_ktk3v")]([])
+active_abilities = Array[ExtResource("11_slop6")]([])
+description_datastore = SubResource("Resource_cb5lr")
+
+[resource]
+script = ExtResource("7_iglur")
+tiers = Array[ExtResource("12_qasfi")]([SubResource("Resource_11omv"), SubResource("Resource_76qs6"), SubResource("Resource_qasfi"), SubResource("Resource_w1kfr")])
+archetype = ExtResource("2_rf13s")
+rarity = 4
+flavor_text = ""
 art_mini_coordinate = Vector2i(97, 16)
 art_mini = ExtResource("2_oa2dt")
 art_pop = ExtResource("2_8fvre")
@@ -134,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_ktk3v")]([])
-archetype = ExtResource("2_rf13s")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description = "RANGED [1-2]; ABILITY: Pull a unit [1] tile closer"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_ktk3v")]([])
+active_abilities = Array[ExtResource("1_wjlyu")]([])
 id = 37
 name = "\"Lasso\" Jackson"
 gdscript = ExtResource("4_at1l7")

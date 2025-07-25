@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://clhvu30p2p5ij"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://bebqjoy1frbqk"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_b656t"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_icstd"]
@@ -12,7 +12,7 @@
 [sub_resource type="Resource" id="Resource_wy6tp"]
 script = ExtResource("8_6kbw3")
 description = "This deals [1] extra DMG to injured enemies"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_pd808"]
 script = ExtResource("6_b0hyy")
@@ -21,30 +21,45 @@ description_datastore = SubResource("Resource_wy6tp")
 
 [sub_resource type="Resource" id="Resource_uliio"]
 script = ExtResource("8_6kbw3")
-description = "This and allies in vision deal [1] extra DMG to injured enemies"
-default_values = []
+description = "This and adjacent allies deal [1] extra DMG to injured enemies"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_fkuxw"]
 script = ExtResource("6_b0hyy")
 active_abilities = Array[ExtResource("7_borlc")]([])
 description_datastore = SubResource("Resource_uliio")
 
-[sub_resource type="Resource" id="Resource_m24v2"]
+[sub_resource type="Resource" id="Resource_borlc"]
+script = ExtResource("8_6kbw3")
+description = "This and allies in a [2] Tile range deal [1] extra DMG to injured enemies"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_6kbw3"]
 script = ExtResource("6_b0hyy")
 active_abilities = Array[ExtResource("7_borlc")]([])
-description_datastore = SubResource("Resource_uliio")
+description_datastore = SubResource("Resource_borlc")
+
+[sub_resource type="Resource" id="Resource_m24v2"]
+script = ExtResource("8_6kbw3")
+description = "This and allies in vision deal [1] extra DMG to injured enemies"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_ax7w8"]
+script = ExtResource("6_b0hyy")
+active_abilities = Array[ExtResource("7_borlc")]([])
+description_datastore = SubResource("Resource_m24v2")
 
 [resource]
 script = ExtResource("1_icstd")
-tiers = Array[ExtResource("6_b0hyy")]([SubResource("Resource_pd808"), SubResource("Resource_fkuxw"), SubResource("Resource_m24v2")])
+tiers = Array[ExtResource("6_b0hyy")]([SubResource("Resource_pd808"), SubResource("Resource_fkuxw"), SubResource("Resource_6kbw3"), SubResource("Resource_ax7w8")])
 icon = ExtResource("2_n8gx7")
-description = "This deals [1] extra DMG to injured enemies"
-ascended_description = "This and allies in vision deal [1] extra DMG to injured enemies"
 rarity = 3
-active_abilities = Array[ExtResource("1_b656t")]([])
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+active_abilities = Array[ExtResource("1_b656t")]([])
+description = "This deals [1] extra DMG to injured enemies"
+ascended_description = "This and allies in vision deal [1] extra DMG to injured enemies"
 id = 3
 name = "Sugori Knife"
 gdscript = ExtResource("2_e3482")

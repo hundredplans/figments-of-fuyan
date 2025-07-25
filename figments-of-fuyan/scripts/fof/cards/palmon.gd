@@ -11,7 +11,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Treeleaf Remedy":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var attack_gain: int = 1 if !ascended else 2
+		var attack_gain: int = 1 if tier == 1 else 2
 		var actions: Array = [
 			StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, attack_gain, 1)),
 			DelayedHealAction.new(HealDatastore.new(Card, 1, 1)),

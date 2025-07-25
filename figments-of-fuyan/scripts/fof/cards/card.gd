@@ -13,7 +13,6 @@ var energy: int
 
 var is_spectated: bool
 var team: int
-var ascended: bool
 
 var card_place: Game.CardPlaces
 var turn_state: Game.TurnStates
@@ -59,7 +58,6 @@ signal inspect_screen_created
 signal tool_updated
 signal mouse_entered
 signal mouse_exited
-signal update_ascended
 signal is_temporary_updated
 @warning_ignore("unused_signal")
 signal update_active_effect_description
@@ -135,9 +133,6 @@ func getDescriptionUpgradeLevel(_upgrade_level: int):
 		var new_description: String = getChampionUpgrade(_upgrade_level).description
 		if !new_description.is_empty(): description = new_description
 	return description
-	
-func getAscended() -> bool:
-	return ascended
 	
 func getArea() -> AreaInfo:
 	for area_info in Helper.getFofInfoArray(AreaInfo):
@@ -226,12 +221,9 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspec
 #endregion
 
 #region Save/Load/Clear
-func _ready() -> void:
-	update_ascended.connect(onAscendedUpdated)
-
 func onSave() -> SavedDataCard:
 	onPreSave()
-	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, ascended, \
+	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
@@ -250,7 +242,6 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	coords = data.coords
 	team = data.team
-	ascended = data.ascended
 	turn_state = data.turn_state
 	attacks = data.attacks
 	status_effects_datas = data.status_effects
@@ -316,21 +307,14 @@ func onLoadDataLevelFofInit() -> void:
 func onFofInit() -> void:
 	super()
 	base_stats = StatsDatastore.new(attack, max_health, max_speed, energy)
-	
-	if ascended:
-		ascended = false # So it can go through
-		onAscend(true)
-	
 	onRegularReset()
 	
 	if self is not EpicCardGD:
-		var initial_traits: Array = []
-		
-		if !ascended: initial_traits = info.initial_traits.duplicate()
-		else: initial_traits = info.ascended_traits.duplicate()
-		
-		for trait_data in initial_traits:
-			var added_by := OverworldTrait.AddedBy.ASCENDED if ascended else OverworldTrait.AddedBy.REGULAR
+		var tier_datastore: CardTierDatastore = info.getTierDatastore(tier)
+		var initial_traits: Array[SavedDataTrait] = tier_datastore.getTraits()
+
+		for trait_data: SavedDataTrait in initial_traits:
+			var added_by := OverworldTrait.AddedBy.REGULAR
 			onAddOverworldTrait(OverworldTrait.new(trait_data, added_by))
 	
 var status_effects_datas: Array
@@ -497,7 +481,7 @@ func onProcessAction(action: Action) -> void:
 				onBountyKill(action) # Needs to be here instead of in death action
 			elif action is AddToolAction and action.Tool == Tool:
 				tool_updated.emit(action.Tool)
-			elif action is AscendToolAction and action.Tool == Tool:
+			elif action is ToolTierUpAction and action.Tool == Tool:
 				tool_updated.emit(action.Tool)
 			elif action is RemoveToolAction and action.Card == self:
 				tool_updated.emit(null)
@@ -934,23 +918,6 @@ func onCreateInitialTraits() -> void:
 	var actions: Array = overworld_traits.map(func(x: OverworldTrait): return AddTraitAction.new(self, x))
 	onPushAction(actions)
 	
-func onAscendedUpdateOverworldTraits() -> void:
-	var new_traits: Array = info.ascended_traits if ascended else info.initial_traits
-	var old_traits: Array = info.ascended_traits if !ascended else info.initial_traits
-	
-	var new_traits_ids: Array = new_traits.map(func(x: SavedDataTrait): return x.id)
-	var old_traits_ids: Array = old_traits.map(func(x: SavedDataTrait): return x.id)
-	
-	new_traits = new_traits.filter(func(x: SavedDataTrait): return x.id not in old_traits_ids)
-	old_traits = old_traits.filter(func(x: SavedDataTrait): return x.id not in new_traits_ids)
-	
-	var old_added_by := OverworldTrait.AddedBy.REGULAR if ascended else OverworldTrait.AddedBy.ASCENDED
-	var added_by := OverworldTrait.AddedBy.ASCENDED if ascended else OverworldTrait.AddedBy.REGULAR
-	var actions: Array = old_traits.map(func(x: SavedDataTrait): return RemoveOverworldTraitAction.new(self, x.id, old_added_by))
-	actions += new_traits.map(func(x: SavedDataTrait): return AddOverworldTraitAction.new(self, OverworldTrait.new(x, added_by), true))
-	
-	onPushAction(actions)
-	
 func onAddOverworldTrait(overworld_trait: OverworldTrait) -> void:
 	overworld_traits.append(overworld_trait)
 	
@@ -1254,7 +1221,11 @@ func onRevenge(_action: DamageAction) -> void:
 #endregion
 
 #region Tiered Up
-func onRetiered(_tier: int) -> void:
+func onTierUp() -> void:
+	onRetiered(min(tier + 1, 4))
+
+func onRetiered(_tier: int) -> void: # This doesn't account for tiering down as of yet
+	# Stat Region
 	tier = _tier
 	var stat_datastore: StatsDatastore = getStatsFromInfo()
 	var plus_attack: int = stat_datastore.attack - attack
@@ -1264,45 +1235,28 @@ func onRetiered(_tier: int) -> void:
 	
 	var types: Array = [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
 	var values: Array = [plus_attack, plus_health, plus_health, plus_speed, plus_energy]
-	var base_stat_action := BaseStatAction.new(self, types, values)
-	onPushAction(base_stat_action)
+	var actions: Array = [BaseStatAction.new(self, types, values)]
 	
-	tier_updated.emit(tier)
-
-#region Ascended
-func onAscend(state: bool) -> void:
-	if ascended == state or info.rarity in\
-		[Game.Rarities.NEUTRAL, Game.Rarities.CHAMPION, Game.Rarities.MINI]: return
-		
-	ascended = state
-	tier = 1 if !ascended else 2
-	var stat_datastore: StatsDatastore = getStatsFromInfo()
-	var plus_attack: int = stat_datastore.attack - attack
-	var plus_health: int = stat_datastore.health - health
-	var plus_speed: int = stat_datastore.speed - speed
-	var plus_energy: int = stat_datastore.energy - energy
-	
-	var types: Array = [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
-	var values: Array = [plus_attack, plus_health, plus_speed, plus_energy]
-	var base_stat_action := BaseStatAction.new(self, types, values)
-	
-	onPushAction(base_stat_action)
-	
-	update_ascended.emit(state)
-	onAscendedUpdateOverworldTraits()
-	setBaseMaterials()
-	
-func onAscendedUpdated(state: bool) -> void:
-	var actions: Array = []
-	for active_ability in active_effects.filter(func(x: ActiveEffectDatastore): return x.owner == self and x is ActiveAbilityDatastore\
-		and ((x.description != x.ascended_description and !x.ascended_description.is_empty()) or x.max_charges != x.ascended_max_charges)):
-		var max_charges: int = active_ability.ascended_max_charges if state else active_ability.max_charges
-		
-		actions.append(ChangeActiveEffectUsedAction.new(active_ability, false))
-		actions.append(ChangeActiveEffectChargesAction.new(active_ability, max_charges - active_ability.charges, max_charges == -1))
+	# Trait Region
+	var tier_datastore: CardTierDatastore = info.getTierDatastore(tier)
+	var new_traits: Array = tier_datastore.getTraits()
+	actions += new_traits.map(func(x: SavedDataTrait):\
+		return AddOverworldTraitAction.new(self, OverworldTrait.new(x, OverworldTrait.AddedBy.REGULAR), true))
 	onPushAction(actions)
-	
-#endregion
+		
+	# Active Effect Region
+	var old_active_effect_names: Array = active_effects.map(func(x: ActiveEffectDatastore): return x.name)
+	var new_active_effects: Array = tier_datastore.getActiveAbilities()\
+		.filter(func(x: ActiveEffectDatastore): return x.name not in old_active_effect_names)
+	for active_effect: ActiveEffectDatastore in new_active_effects:
+		actions.append(AddActiveEffectAction.new(self, active_effect))
+		
+	for active_effect: ActiveEffectDatastore in active_effects:
+		actions.append(ChangeActiveEffectUsedAction.new(active_effect, false))
+		if active_effect.getMaxCharges() == -1: continue
+		actions.append(ChangeActiveEffectChargesAction.new(active_effect, active_effect.getMaxCharges() - active_effect.getCharges()))
+		
+	tier_updated.emit(tier)
 
 #region Temp Card
 	
@@ -1450,8 +1404,7 @@ func setBaseMaterials() -> void:
 		
 	var mat: Material = load(info.BASE_MATERIAL_SPECULAR_PATH)
 	if level_visible_not_in_vision:
-		mat = info.getColoredBaseMaterial(team, ascended)
-	elif ascended: mat = load(info.BASE_MATERIAL_ASCENDED_PATH)
+		mat = info.getColoredBaseMaterial(team)
 	setMeshesMaterial(mat, Model)
 
 var AlphagreyTween: Tween

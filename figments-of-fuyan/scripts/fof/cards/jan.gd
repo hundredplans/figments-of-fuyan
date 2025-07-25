@@ -2,7 +2,7 @@ extends CardGD
 
 var rampage_charges: int = 1
 const DEFAULT_ATTACK: int = 1
-const ASCENDED_ATTACK: int = 2
+const TIER_TWO_ATTACK: int = 2
 const RAMPAGE_DELAY: float = 2.0
 
 func onProcessAction(action: Action) -> void:
@@ -11,7 +11,7 @@ func onProcessAction(action: Action) -> void:
 		onPushAction(RampageAction.new(self, action))
 	
 func onRampage(_death_action: DeathAction) -> void:
-	var attack_value: int = DEFAULT_ATTACK if !getAscended() else ASCENDED_ATTACK
+	var attack_value: int = DEFAULT_ATTACK if tier == 1 else TIER_TWO_ATTACK
 	var animation_action := AnimationAction.new(self, "Ability")
 	animation_action.setActionDelay(RAMPAGE_DELAY)
 	

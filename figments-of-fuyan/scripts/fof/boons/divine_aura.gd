@@ -11,9 +11,6 @@ func onProcessAction(action: Action) -> void:
 		if charges >= MAX_LIMITED_ABILITY_PLACED:
 			if action is FinishAwakenAction:
 				onPushAction(BoonActivatedAction.new(self, action))
-	
-func onAscend(state: bool) -> void:
-	super(state)
 
 func onBoon(action: Action = null) -> void:
 	if action is AwakenAction: onPushAction(ChangeBoonChargesAction.new(self, 1))
@@ -29,8 +26,5 @@ func getDisabled() -> bool:
 
 func isCardLimitedAbility(Card: CardGD) -> bool:
 	var abilities: Array = Card.info.active_abilities
-	return !abilities.is_empty() and abilities.any(\
-		func(x: ActiveAbilityDatastore): return (x.exists == Game.AscendedExists.BOTH and x.max_charges != -1)\
-		or (!Card.ascended and x.exists == Game.AscendedExists.ONLY_DEFAULT and x.max_charges != -1)\
-		or (Card.ascended and x.exists == Game.AscendedExists.ONLY_ASCENDED and x.ascended_max_charges != -1))
+	return !abilities.is_empty()
 		

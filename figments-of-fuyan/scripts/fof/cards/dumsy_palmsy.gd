@@ -11,7 +11,7 @@ func onArrivePre(_action: AwakenAction) -> void:
 	pass
 
 func onArrive(_action: AwakenAction) -> void:
-	var damage_action := DamageAction.new(self, self, 2 if !ascended else 3)
+	var damage_action := DamageAction.new(self, self, 2 if tier == 1 else 3)
 	damage_action.setActionDelay(0.0)
 	damage_action.setLockActionDelay(true)
 	

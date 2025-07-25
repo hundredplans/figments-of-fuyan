@@ -4,7 +4,7 @@ class_name WorldDatastore extends Resource
 
 @export_group("Base")
 @export var base_rarity_odds: RarityOddsDatastore
-@export_range(0, 100, 0.1) var base_ascended_rate: float
+@export_range(0, 100, 0.1) var base_tier_up_rate: float
 @export_group("")
 
 @export_group("Level")
@@ -14,14 +14,14 @@ class_name WorldDatastore extends Resource
 @export_range(0, 100, 0.1) var elite_fight_rewards_second_item_odds: float
 @export var budget_for_fights: Array[int]
 @export var elite_fights_budget_offset: int
-@export_range(0, 100, 0.1) var enemy_ascended_rate: float
-@export_range(0, 100, 0.1) var elite_enemy_ascended_rate: float
+@export_range(0, 100, 0.1) var enemy_tier_up_rate: float
+@export_range(0, 100, 0.1) var elite_enemy_tier_up_rate: float
 @export_group("")
 
 @export_group("Tools")
 @export var tool_enemy_spawn_rarity_odds: RarityOddsDatastore
 @export_range(0, 100, 0.1) var tool_enemy_spawn_rate: float
-@export_range(0, 100, 0.1) var tool_enemy_spawn_rate_ascended: float
+@export_range(0, 100, 0.1) var tool_enemy_spawn_rate_tier_up: float
 @export_group("")
 
 @export_group("Shop")
@@ -32,14 +32,10 @@ class_name WorldDatastore extends Resource
 @export_range(0, 100, 1) var foreign_card_base_price_increase: int
 @export_range(0, 100, 1) var transform_by_rarity_price: int
 @export_range(0, 100, 1) var transform_by_cost_price: int
-@export_range(0, 100, 1) var ascend_card_price: int
 @export_range(0, 100, 1) var remove_card_price: int
 @export_subgroup("")
 
 @export var shop_rarity_odds: RarityOddsDatastore
-@export_range(0, 100, 1) var ascended_items_flat_after_percentage_increase: int
-@export_range(0, 100, 1) var ascended_items_price_percentage_increase: int
-@export_range(0, 100, 0.1) var shop_ascension_chance: float
 @export_range(0, 10, 1) var default_shop_variance: int
 @export_group("")
 

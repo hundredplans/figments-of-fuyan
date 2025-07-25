@@ -31,7 +31,7 @@ func onLoadData(data: SavedData) -> void:
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
 	if active_effect.name == info.name:
-		var in_range_tiles: Array = Game.getAdjacentTiles(Card.Tile) if !ascended else Card.getVisibleTiles()
+		var in_range_tiles: Array = Game.getAdjacentTiles(Card.Tile) if tier == 1 else Card.getVisibleTiles()
 		return ActiveEffectTiles.new(in_range_tiles, in_range_tiles.filter(isPickable))
 	return null
 	

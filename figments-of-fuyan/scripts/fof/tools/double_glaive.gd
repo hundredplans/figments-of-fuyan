@@ -1,7 +1,7 @@
 extends ToolGD
 
-const UNASCENDED_SPEED_DIFF: int = 1
-const ASCENDED_SPEED_DIFF: int = 2
+const TIER_ONE_SPEED_DIFF: int = 1
+const TIER_TWO_SPEED_DIFF: int = 2
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -12,23 +12,23 @@ func onProcessAction(action: Action) -> void:
 	
 func onToolUnequipped() -> void:
 	super()
-	var speed_diff: int = -UNASCENDED_SPEED_DIFF if !ascended else -ASCENDED_SPEED_DIFF
+	var speed_diff: int = -TIER_ONE_SPEED_DIFF if tier == 1 else -TIER_TWO_SPEED_DIFF
 	var stat_action := StatAction.new(StatInfo.new(Card, [Game.Stats.MAX_SPEED, Game.Stats.ATTACK], [speed_diff, Card.max_speed - Card.speed + speed_diff]))
 	stat_action.owner = self
 	onPushAction(stat_action)
 
 func onToolHolderAwakened() -> void: # Unit awakens
 	super()
-	var speed_diff: int = 1 if !ascended else 2
+	var speed_diff: int = 1 if tier == 1 else 2
 	var stat_action := StatAction.new(StatInfo.new(Card, [Game.Stats.MAX_SPEED, Game.Stats.ATTACK], [speed_diff, Card.speed - Card.attack]))
 	stat_action.owner = self
 	onPushAction(ToolActivatedAction.new(self, stat_action))
+
+func onRetiered(tier: int) -> void:
+	super(tier)
 	
-func onToolAscended(state: bool) -> void:
-	super(state)
-	
-	if is_queued_for_deletion(): return # Necessary when you ascend using console
-	var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, 1 if state else -1, 0, false, true))
+	if is_queued_for_deletion(): return # Necessary when you retier using console
+	var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, 1 if tier == 1 else -1, 0, false, true))
 	onPushAction(ToolActivatedAction.new(self, stat_action))
 	
 func onToolAction(stat_action: StatAction) -> void:

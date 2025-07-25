@@ -10,7 +10,7 @@ func onProcessAction(action: Action) -> void:
 func onTrauma(_death_action: DeathAction) -> void:
 	trauma_charges -= 1
 	
-	var turns: int = 2 if !ascended else 0
+	var turns: int = 2 if tier == 1 else 0
 	onForceAction(CameraChangeAction.new(self))
 	var stat_action := StatAction.new(StatInfo.new(self, Game.Stats.MAX_SPEED, 1, turns))
 	

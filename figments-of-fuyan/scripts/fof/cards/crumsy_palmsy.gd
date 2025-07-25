@@ -19,14 +19,14 @@ func onRegularReset() -> void:
 	super()
 	onResetCharges()
 	
-func onAscendedUpdated(state: bool) -> void:
-	super(state)
+func onRetiered(tier: int) -> void:
+	super(tier)
 	onResetCharges()
 
 func onResetCharges() -> void:
-	rampage_charges = 1 if !ascended else 2
-	trauma_charges = 1 if !ascended else 2
-	bloodthirst_charges = 1 if !ascended else 2
+	rampage_charges = 1 if tier == 1 else 2
+	trauma_charges = 1 if tier == 1 else 2
+	bloodthirst_charges = 1 if tier == 1 else 2
 
 func onProcessAction(action: Action) -> void:
 	super(action)

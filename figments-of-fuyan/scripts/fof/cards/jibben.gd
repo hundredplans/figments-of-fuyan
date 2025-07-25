@@ -8,7 +8,7 @@ var blacksmiths_aura_public_id: int
 
 const ARMOR_ID: int = 1
 const DEFAULT_ABILITY_TURNS: int = 3
-const ASCENDED_ABILITY_TURNS: int = 5
+const TIER_TWO_ABILITY_TURNS: int = 5
 const ABILITY_DELAY: float = 2.0
 const BLACKSMITHS_WILL_ID: int = 17
 const BLACKSMITHS_AURA_ID: int = 19
@@ -101,7 +101,7 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	return null
 
 func getDefaultCharges() -> int:
-	return ASCENDED_ABILITY_TURNS if getAscended() else DEFAULT_ABILITY_TURNS
+	return TIER_TWO_ABILITY_TURNS if tier > 1 else DEFAULT_ABILITY_TURNS
 
 func onRegularReset() -> void:
 	super()

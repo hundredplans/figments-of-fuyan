@@ -13,15 +13,6 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	active_effect.owner = FofObject
-	if active_effect is ActiveAbilityDatastore and (FofObject is CardGD or FofObject is ToolGD):
-		if FofObject.ascended and active_effect.exists != Game.AscendedExists.ONLY_DEFAULT:
-			active_effect.charges = active_effect.ascended_max_charges
-		else: active_effect.charges = active_effect.max_charges
-	elif active_effect is ActiveEffectDatastore:
-		active_effect.charges = active_effect.max_charges	
+	if active_effect is ActiveEffectDatastore:
+		active_effect.charges = active_effect.max_charges
 	FofObject.onAddActiveEffect(active_effect)
-	
-func onCheckFail() -> void:
-	if active_effect is ActiveAbilityDatastore and (FofObject is CardGD or FofObject is ToolGD):
-		if FofObject.ascended and active_effect.exists == Game.AscendedExists.ONLY_DEFAULT: onFailAction()
-		elif !FofObject.ascended and active_effect.exists == Game.AscendedExists.ONLY_ASCENDED: onFailAction()

@@ -18,7 +18,6 @@ enum SpectateTypes {ALLY, ENEMY, SPAWN}
 enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD, STASH}
 enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED, ENERGY}
-enum AscendedExists {BOTH, ONLY_DEFAULT, ONLY_ASCENDED}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER, MERCENARY}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
 enum FightTypes {NULL, REGULAR, ELITE, MINIBOSS, BOSS}
@@ -74,8 +73,6 @@ const STAT_UPDATE_TIME: float = 0.15
 const ATTACK_DELAY: float = 1.25
 
 const CARD_REWARD_DEFAULT_AMOUNT: int = 3
-const ASCENDED_COLOR := Color(0.937, 0.835, 0.318)
-const ASCENDED_OUTLINE_COLOR := Color(0.512, 0.447, 0.099)
 
 const FADE_TIME: float = 0.25
 
@@ -88,7 +85,7 @@ func _ready() -> void:
 		#var z: float = HEX_SIZE * (sqrt(3) * (cube_direction.y + cube_direction.x / 2.0))
 		#tile_face_directions.append(Vector3(x, 0, z))
 
-func getRarityThemeVariation(rarity: Rarities, ascended: bool = false) -> String:
+func getRarityThemeVariation(rarity: Rarities) -> String:
 	var theme_variation: String
 	match rarity:
 		Game.Rarities.SCRAP, Game.Rarities.MINI: theme_variation = "GreyPanelContainer"
@@ -100,7 +97,6 @@ func getRarityThemeVariation(rarity: Rarities, ascended: bool = false) -> String
 		Game.Rarities.BOSS: theme_variation = "RedPanelContainer"
 		Game.Rarities.CHAMPION: theme_variation = "BluePanelContainer"
 		_: theme_variation = "YellowPanelContainer"
-	if ascended: theme_variation += "Ascended"
 	return theme_variation
 
 func getStatString(stat: Stats) -> String:
@@ -277,9 +273,9 @@ func getAllyUnits(team: int = 0) -> Array:
 func getEnemyUnits(team: int = 0) -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.team != team)
 
-func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false, awakened_in_combat: bool = false) -> CardGD:
+func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, tier: int = 1, awakened_in_combat: bool = false) -> CardGD:
 	var level: LevelGD = Game.getLevel()
-	var Card: CardGD = SavedData.onLoadModel(getBaseCard(id, Tile, team, tile_rotation, ascended), level)
+	var Card: CardGD = SavedData.onLoadModel(getBaseCard(id, Tile, team, tile_rotation, tier), level)
 	if awakened_in_combat: Card.setAwakenedInCombat(awakened_in_combat)
 	return Card
 
@@ -409,9 +405,10 @@ func getDeckCards() -> Array:
 func getDeckCardsNoChampion() -> Array:
 	return getDeckCards().filter(func(x: CardGD): return x.info.rarity != Rarities.CHAMPION)
 	
-func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, ascended: bool = false) -> SavedDataCard:
+func getBaseCard(id: int, Tile: TileGD, team: int, tile_rotation: int, tier: int = 1) -> SavedDataCard:
 	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, id)
-	var card_data: SavedDataCard = card_info.saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastoreCard.new(), team, ascended)
+	var card_data: SavedDataCard = card_info.saved_data.new(id, true, 0, Tile.getCoords(), tile_rotation, VisionDatastoreCard.new(), team)
+	card_data.tier = tier
 	setCardDataFromInfo(card_data, card_info)
 	return card_data
 	
@@ -446,36 +443,28 @@ func onRemoveCardWithAnimation(Card: CardGD, parent: Control, action_user: FofGD
 	
 	action_user.onPushAction(RemoveFromDeckAction.new(Card, true))
 	
-func onCreateBaseCard(id: int, ascended: bool = false, tool_data: SavedDataTool = null) -> SavedDataCard:
+func onCreateBaseCard(id: int, tier: int = 1, tool_data: SavedDataTool = null) -> SavedDataCard:
 	var card_data := SavedDataCard.new(id, true)
+	card_data.tier = tier
 	setCardDataFromInfo(card_data, Helper.getFofInfoID(CardInfo, id))
 	card_data.tool_data = tool_data
-	card_data.ascended = ascended
 	return card_data
 #endregion
 
 #region Boons
-func isBoonAvailable(id: int, extra_ids: Array = []) -> bool:
-	var boons: Array = save_file.boons 
-	return id not in extra_ids and (boons.is_empty() or !boons.any(func(x: BoonGD): return x.info.id == id and x.ascended))
-	
-func isBoonAvailableUnascended(id: int) -> bool: # Does an unascended version of the Boon exist in the player's deck
-	var boons: Array = save_file.boons 
-	return boons.any(func(x: BoonGD): return x.info.id == id and !x.ascended)
-	
 func isBoonInGame(id: int) -> bool:
 	return save_file.boons.any(func(x: BoonGD): return x.info.id == id)
 	
 func getAvailableBoons() -> Array:
 	var all_boons: Array = Helper.getFofInfoArray(BoonInfo)
 	var used_boon_ids: Array = Game.getSaveFile().getBoons()\
-		.filter(func(x: BoonGD): return x.ascended)\
+		.filter(func(x: BoonGD): return x.tier == 4)\
 		.map(func(x: BoonGD): return x.info.id)
 	return all_boons.filter(func(x: BoonInfo): return x.id not in used_boon_ids)
 #endregion
 
 #region Tools
-func playerHasTool(id: int) -> bool: # Player has a regular or ascended tool, in tool belt or in deck
+func playerHasTool(id: int) -> bool:
 	return get_tree().get_nodes_in_group("DeckCardsGD").any(func(x: CardGD): return x.Tool != null and x.Tool.info.id == id) \
 		or save_file.tool_belt.any(func(x: ToolGD): return x.info.id == id)
 #endregion
