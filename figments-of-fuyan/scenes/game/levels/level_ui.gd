@@ -517,8 +517,6 @@ func onProcessAction(action: Action) -> void:
 			BoonBox.onUpdate()
 		elif action is ChangeBoonChargesAction:
 			BoonBox.onUpdateBoonChargesAndDisabled(action.Boon)
-		elif action is ChangeBoonAscenscionAction:
-			BoonBox.onUpdateBoonAscension(action.Boon)
 		elif action is ChangeShillingsAction:
 			onUpdateShillings()
 		elif action is PlayCardAction:

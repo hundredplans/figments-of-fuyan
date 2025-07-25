@@ -5,12 +5,9 @@ var PalmyCard: CardGD # For UI purposes in childish endeavour
 var palmy_public_id: int
 func onProcessAction(action: Action) -> void:
 	super(action)
-	
-func onAscend(state: bool) -> void:
-	super(state)
 
 func onBoon(_action: Action = null) -> void:
-	var card_data: SavedDataCard = Game.onCreateBaseCard(PALMY_ID, true)
+	var card_data: SavedDataCard = Game.onCreateBaseCard(PALMY_ID, 2)
 	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
 	Card.setIsTemporary(true)
 	

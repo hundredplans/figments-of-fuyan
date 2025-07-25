@@ -2,9 +2,6 @@ extends BoonGD
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	
-func onAscend(state: bool) -> void:
-	super(state)
 
 func getDescription(use_default_values: bool = false) -> String:
 	return super(use_default_values)

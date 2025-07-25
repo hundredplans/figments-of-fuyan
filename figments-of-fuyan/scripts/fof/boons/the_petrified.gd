@@ -13,9 +13,6 @@ func onCheckReveal(Revealer: CardGD, Revealed: CardGD) -> void:
 	if Revealer.isAlly(1) and Revealed.isAlly(0) and Revealed not in stunned_cards:
 		Revealed.onStun(1)
 		stunned_cards.append(Revealed)
-				
-func onAscend(state: bool):
-	super(state)
 
 func onBoon(_action: Action = null):
 	pass

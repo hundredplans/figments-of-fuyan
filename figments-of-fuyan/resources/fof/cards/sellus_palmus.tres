@@ -1,113 +1,20 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=36 format=3 uid="uid://cp4xty2m0gqau"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=29 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
-[ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_iqmb7"]
-[ext_resource type="PackedScene" uid="uid://xgamssjyk4yp" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
-[ext_resource type="Script" uid="uid://cv1xfpsox6p1d" path="res://scripts/fof/cards/sellus_palmus.gd" id="3_av7uo"]
-[ext_resource type="Texture2D" uid="uid://csv1wpnctbpvq" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="3_jq4xn"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_ox6gs"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_aawy5"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_54g0y"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_xhb1x"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_burdn"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_nrtu7"]
-
-[sub_resource type="Resource" id="Resource_xhb1x"]
-script = ExtResource("11_xhb1x")
-name = "Palmsale"
-description = "Heal [1] HP to adjacent allies"
-max_charges = 2
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-
-[sub_resource type="Resource" id="Resource_tb5ko"]
-script = ExtResource("5_ox6gs")
-display_number = -1
-id = 3
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
-
-[sub_resource type="Resource" id="Resource_nrtu7"]
-script = ExtResource("10_54g0y")
-attack = 2
-health = 2
-speed = 2
-energy = 2
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_xhb1x")])
-traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_tb5ko")])
-
-[sub_resource type="Resource" id="Resource_t27it"]
-script = ExtResource("11_xhb1x")
-name = "Palmsale"
-description = "Heal [1] HP to adjacent allies"
-max_charges = 2
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
-
-[sub_resource type="Resource" id="Resource_qdr0r"]
-script = ExtResource("10_54g0y")
-attack = 2
-health = 3
-speed = 3
-energy = 2
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_t27it")])
-traits = Array[ExtResource("5_ox6gs")]([])
-
-[sub_resource type="Resource" id="Resource_5ttp8"]
-script = ExtResource("11_xhb1x")
-name = "Palmsale"
-description = "Heal [1] HP to adjacent allies"
-max_charges = 2
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
-
-[sub_resource type="Resource" id="Resource_bibs7"]
-script = ExtResource("10_54g0y")
-attack = 2
-health = 3
-speed = 3
-energy = 2
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_5ttp8")])
-traits = Array[ExtResource("5_ox6gs")]([])
-
-[sub_resource type="Resource" id="Resource_u2r5h"]
-script = ExtResource("11_xhb1x")
-name = "Palmsale"
-description = "Heal [1] HP to adjacent allies"
-max_charges = 2
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
-
-[sub_resource type="Resource" id="Resource_burdn"]
-script = ExtResource("10_54g0y")
-attack = 2
-health = 3
-speed = 3
-energy = 2
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_u2r5h")])
-traits = Array[ExtResource("5_ox6gs")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_iqmb7"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
+[ext_resource type="Script" path="res://scripts/fof/cards/sellus_palmus.gd" id="3_av7uo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="3_jq4xn"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_ox6gs"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_aawy5"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_xhb1x"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_burdn"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_nrtu7"]
 
 [sub_resource type="Resource" id="Resource_atwem"]
 script = ExtResource("1_jmwbd")
-exists = 0
 ascended_description = "Heal [1] HP to adjacent allies"
 ascended_max_charges = 2
 name = "Palmsale"
@@ -148,10 +55,28 @@ id = 3
 first_init = true
 public_id = 0
 
+[sub_resource type="Resource" id="Resource_xhb1x"]
+script = ExtResource("11_xhb1x")
+name = "Palmsale"
+description = "Heal [1] HP to adjacent allies"
+max_charges = 2
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
 [sub_resource type="Resource" id="Resource_smg26"]
 script = ExtResource("13_nrtu7")
 description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = 0
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_tb5ko"]
+script = ExtResource("5_ox6gs")
+display_number = -1
+id = 3
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_u67wb"]
 script = ExtResource("12_burdn")
@@ -159,15 +84,25 @@ attack = 2
 health = 2
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_smg26")
-description = ""
-active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_xhb1x")])
 traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_tb5ko")])
+active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_xhb1x")])
+description_datastore = SubResource("Resource_smg26")
+
+[sub_resource type="Resource" id="Resource_t27it"]
+script = ExtResource("11_xhb1x")
+name = "Palmsale"
+description = "Heal [1] HP to adjacent allies"
+max_charges = 2
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_i6nb6"]
 script = ExtResource("13_nrtu7")
 description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_keks8"]
 script = ExtResource("12_burdn")
@@ -175,57 +110,46 @@ attack = 2
 health = 3
 speed = 3
 energy = 2
-description_datastore = SubResource("Resource_i6nb6")
-description = ""
+traits = Array[ExtResource("5_ox6gs")]([])
 active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_t27it")])
-traits = Array[ExtResource("5_ox6gs")]([])
+description_datastore = SubResource("Resource_i6nb6")
 
-[sub_resource type="Resource" id="Resource_1pe3r"]
+[sub_resource type="Resource" id="Resource_bibs7"]
 script = ExtResource("13_nrtu7")
 description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = 0
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_5h65c"]
+[sub_resource type="Resource" id="Resource_burdn"]
 script = ExtResource("12_burdn")
 attack = 2
 health = 3
 speed = 3
 energy = 2
-description_datastore = SubResource("Resource_1pe3r")
-description = ""
-active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_5ttp8")])
 traits = Array[ExtResource("5_ox6gs")]([])
+active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_t27it")])
+description_datastore = SubResource("Resource_bibs7")
 
-[sub_resource type="Resource" id="Resource_pu0oy"]
+[sub_resource type="Resource" id="Resource_nrtu7"]
 script = ExtResource("13_nrtu7")
 description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = 0
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_5lf7b"]
+[sub_resource type="Resource" id="Resource_qdr0r"]
 script = ExtResource("12_burdn")
 attack = 2
 health = 3
 speed = 3
 energy = 2
-description_datastore = SubResource("Resource_pu0oy")
-description = ""
-active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_u2r5h")])
 traits = Array[ExtResource("5_ox6gs")]([])
+active_abilities = Array[ExtResource("11_xhb1x")]([SubResource("Resource_t27it")])
+description_datastore = SubResource("Resource_nrtu7")
 
 [resource]
 script = ExtResource("2_8byqm")
-tiers = Array[ExtResource("12_burdn")]([SubResource("Resource_u67wb"), SubResource("Resource_keks8"), SubResource("Resource_5h65c"), SubResource("Resource_5lf7b")])
-_tiers = Array[ExtResource("10_54g0y")]([SubResource("Resource_nrtu7"), SubResource("Resource_qdr0r"), SubResource("Resource_bibs7"), SubResource("Resource_burdn")])
-attack = 2
-health = 2
-speed = 2
-energy = 2
+tiers = Array[ExtResource("12_burdn")]([SubResource("Resource_u67wb"), SubResource("Resource_keks8"), SubResource("Resource_burdn"), SubResource("Resource_qdr0r")])
+archetype = ExtResource("2_iqmb7")
 rarity = 3
-initial_traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_cjtft")])
-active_abilities = Array[ExtResource("1_jmwbd")]([SubResource("Resource_atwem")])
 flavor_text = ""
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-ascended_description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
 art_mini_coordinate = Vector2i(88, 45)
 art_mini = ExtResource("3_jq4xn")
 art_pop = ExtResource("2_3b8rb")
@@ -240,7 +164,14 @@ plus_health = 1
 plus_speed = 1
 plus_energy = 0
 ascended_traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_ghubt")])
-archetype = ExtResource("2_iqmb7")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
+ascended_description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
+initial_traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_cjtft")])
+active_abilities = Array[ExtResource("1_jmwbd")]([SubResource("Resource_atwem")])
 id = 7
 name = "Sellus Palmus"
 gdscript = ExtResource("3_av7uo")

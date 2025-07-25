@@ -1,6 +1,6 @@
 class_name OverworldTrait extends Resource
 
-enum AddedBy {NULL, REGULAR, ASCENDED, CRAB, BUCKLER, ELDER_PALMER, LONE_RIDER, HAVEL_ROCKFOOT, JIBBEN, VAROMA_RACK}
+enum AddedBy {NULL, REGULAR, CRAB, BUCKLER, ELDER_PALMER, LONE_RIDER, HAVEL_ROCKFOOT, JIBBEN, VAROMA_RACK}
 
 @export var data: SavedDataTrait
 @export var added_by: AddedBy
@@ -19,7 +19,7 @@ func _init(_data: SavedDataTrait = null, _added_by: AddedBy = AddedBy.NULL, _onl
 	turns = _turns
 
 func isUnregularAdded() -> bool:
-	return !(added_by == AddedBy.REGULAR or added_by == AddedBy.ASCENDED)
+	return !(added_by == AddedBy.REGULAR)
 
 func onSave() -> void:
 	if Trait != null:
@@ -40,7 +40,6 @@ func getAddedByString() -> String:
 	match added_by:
 		AddedBy.NULL: return "Null"
 		AddedBy.REGULAR: return "Regular"
-		AddedBy.ASCENDED: return "Ascended"
 	return ""
 	
 func isActive() -> bool:

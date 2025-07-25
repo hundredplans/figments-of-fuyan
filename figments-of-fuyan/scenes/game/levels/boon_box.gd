@@ -25,11 +25,6 @@ func onFindBoonIcon(id: int) -> TextureRect:
 	for BoonIcon in get_children():
 		if BoonIcon.Boon.info.id == id: return BoonIcon
 	return null
-	
-func onUpdateBoonAscension(Boon: BoonGD) -> void:
-	var BoonIcon: TextureRect = onFindBoonIcon(Boon.info.id)
-	if BoonIcon != null:
-		BoonIcon.onUpdateAscension(Boon.ascended)
 		
 var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:

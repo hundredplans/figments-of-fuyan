@@ -89,7 +89,7 @@ func getChief(chief_infos: Array, chief_spawn_coords: Vector4i) -> SavedDataCard
 	chief_infos.erase(exalt_info)
 	
 	var card_data: SavedDataCard = exalt_info.saved_data.new(exalt_info.id, true)
-	card_data.ascended = true
+	card_data.tier = Game.getArea().getWorldDifficulty() + 1
 	card_data.team = 1
 	card_data.coords = chief_spawn_coords
 	
@@ -101,4 +101,5 @@ func getChief(chief_infos: Array, chief_spawn_coords: Vector4i) -> SavedDataCard
 #endregion
 
 func getChiefFromCards() -> SavedDataCard:
-	return enemy_cards.filter(func(y: SavedDataCard): return y.ascended and Helper.getFofInfoID(CardInfo, y.id).rarity == Game.Rarities.EXALT)[0]
+	var chief_tier: int = Game.getArea().getWorldDifficulty() + 1
+	return enemy_cards.filter(func(y: SavedDataCard): return y.tier == chief_tier and Helper.getFofInfoID(CardInfo, y.id).rarity == Game.Rarities.EXALT)[0]

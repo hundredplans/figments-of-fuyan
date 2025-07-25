@@ -3,7 +3,7 @@ extends CardGD
 var lil_betty_turns_public_id: int = 0
 var turns_remaining: int = 0
 const TURNS_MAX_DEFAULT: int = 4
-const TURNS_MAX_ASCENDED: int = 3
+const TURNS_MAX_TIER_TWO: int = 3
 const END_TURN_ACTION_DELAY: float = 2.0
 const ENEMY_HIT_ACTION_DELAY: float = 1.0
 const LIL_BETTY_TURNS_ID: int = 14
@@ -64,4 +64,4 @@ func onEndTurnEffect(_action: ChangeTurnStateAction) -> void:
 	onPushAction(actions)
 	
 func getMaxTurns() -> int:
-	return TURNS_MAX_DEFAULT if !getAscended() else TURNS_MAX_ASCENDED
+	return TURNS_MAX_DEFAULT if tier == 1 else TURNS_MAX_TIER_TWO

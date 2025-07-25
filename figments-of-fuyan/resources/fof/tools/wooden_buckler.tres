@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://mt3478ufevgq"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://cxomgt4wjuql7"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_lsp2t"]
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_w2to6"]
@@ -21,8 +21,8 @@ description_datastore = SubResource("Resource_ji7kl")
 
 [sub_resource type="Resource" id="Resource_xx23k"]
 script = ExtResource("8_a4jb4")
-description = "REVENGE [[X]]: Gain [1] ARMOR for [2] Turns"
-default_values = Array[int]([2])
+description = "REVENGE [[X]]: Gain [1] ARMOR for [3] Turns"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_ls4cy"]
 script = ExtResource("6_rgxxd")
@@ -31,17 +31,27 @@ description_datastore = SubResource("Resource_xx23k")
 
 [sub_resource type="Resource" id="Resource_esd0i"]
 script = ExtResource("8_a4jb4")
-description = "REVENGE [[X]]: Gain [1] ARMOR for [2] Turns"
-default_values = Array[int]([2])
+description = "REVENGE [[X]]: Gain [2] ARMOR for [2] Turns"
+default_values = Array[int]([1])
 
-[sub_resource type="Resource" id="Resource_ojg0f"]
+[sub_resource type="Resource" id="Resource_a4jb4"]
 script = ExtResource("6_rgxxd")
 active_abilities = Array[ExtResource("7_esd0i")]([])
 description_datastore = SubResource("Resource_esd0i")
 
+[sub_resource type="Resource" id="Resource_ojg0f"]
+script = ExtResource("8_a4jb4")
+description = "REVENGE [[X]]: Gain [2] ARMOR for [3] Turns"
+default_values = Array[int]([1])
+
+[sub_resource type="Resource" id="Resource_xse81"]
+script = ExtResource("6_rgxxd")
+active_abilities = Array[ExtResource("7_esd0i")]([])
+description_datastore = SubResource("Resource_ojg0f")
+
 [resource]
 script = ExtResource("1_lsp2t")
-tiers = Array[ExtResource("6_rgxxd")]([SubResource("Resource_4aiuu"), SubResource("Resource_ls4cy"), SubResource("Resource_ojg0f")])
+tiers = Array[ExtResource("6_rgxxd")]([SubResource("Resource_4aiuu"), SubResource("Resource_ls4cy"), SubResource("Resource_a4jb4"), SubResource("Resource_xse81")])
 icon = ExtResource("2_mbssm")
 rarity = 4
 use_charges = true

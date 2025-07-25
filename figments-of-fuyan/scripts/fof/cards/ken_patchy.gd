@@ -9,12 +9,12 @@ func onProcessAction(action: Action) -> void:
 		onPushAction(OnHitAction.new(self, action))
 
 func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
-	if getAscended(): on_hit_charges = max(on_hit_charges - 1, 0)
+	if tier > 1: on_hit_charges = max(on_hit_charges - 1, 0)
 	onStun(2)
 	
-func onAscendedUpdated(state: bool) -> void:
-	super(state)
-	on_hit_charges = getDefaultCharges()
+#func onAscendedUpdated(state: bool) -> void:
+	#super(state)
+	#on_hit_charges = getDefaultCharges()
 	
 func getDescription(use_default_values: bool = false) -> String:
 	if getTier() >= 2:

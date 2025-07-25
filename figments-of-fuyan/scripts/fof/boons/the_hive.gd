@@ -8,9 +8,6 @@ func onProcessAction(action: Action):
 		if action is DeathAction and action.Defender is CardGD and action.Defender.isAlly(1):
 			onPushAction(BoonActivatedAction.new(self, action))
 	
-func onAscend(state: bool):
-	super(state)
-	
 func onBoon(_action: DeathAction):
 	var cards: Array = Game.getAllyUnits(1)
 	cards.shuffle()

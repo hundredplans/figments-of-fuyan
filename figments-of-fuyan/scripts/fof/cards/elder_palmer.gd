@@ -25,7 +25,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		var heal_amount: int = 1
-		var armor_amount: int = 1 if !ascended else 2
+		var armor_amount: int = 1 if tier == 1 else 2
 		
 		var camera_change_action := CameraChangeAction.new(Card)
 		var camera_change_back_action := CameraChangeAction.new(Game.getLevel().getSpectateObject())

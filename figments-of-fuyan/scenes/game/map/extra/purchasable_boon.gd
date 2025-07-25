@@ -10,7 +10,7 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	BoonIcon.pressed.connect(func(_x: BoonGD): onPressed())
 	DisplayedUI = BoonIcon
 	
-	var text: String = "[" + ("a" if item.ascended else "") + "boon=" + str(item.info.id) + "]"
+	var text: String = "[" + str(item.tier) + "boon=" + str(item.info.id) + "]"
 	NameLabel.setText(text)
 
 func setDisabled(state: bool = true) -> void:

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=18 format=3 uid="uid://rpbb7w6qp7df"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=22 format=3 uid="uid://c57cgoqurkl1r"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_fb4oe"]
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_vn1cb"]
@@ -11,7 +11,6 @@
 
 [sub_resource type="Resource" id="Resource_lix8k"]
 script = ExtResource("1_vn1cb")
-exists = 1
 ascended_description = ""
 ascended_max_charges = -1
 name = "Sandy Spy"
@@ -35,17 +34,17 @@ used = false
 [sub_resource type="Resource" id="Resource_i2w01"]
 script = ExtResource("9_33d7e")
 description = "ABILITY [1]: REVEAL a random enemy for [1] Turn"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_7nd5a"]
 script = ExtResource("7_2snsu")
 active_abilities = Array[ExtResource("8_mso1s")]([SubResource("Resource_34kw1")])
 description_datastore = SubResource("Resource_i2w01")
 
-[sub_resource type="Resource" id="Resource_mso1s"]
+[sub_resource type="Resource" id="Resource_74a41"]
 script = ExtResource("8_mso1s")
 name = "Sandy Spy"
-description = "REVEAL a random enemy for [1] Turn"
+description = "REVEAL [2] random enemies for [1] Turn"
 max_charges = 1
 delay = 0.0
 camera_type = 0
@@ -54,18 +53,38 @@ used = false
 
 [sub_resource type="Resource" id="Resource_5ybf6"]
 script = ExtResource("9_33d7e")
-description = "ABILITY [1]: REVEAL a random enemy for [1] Turn"
-default_values = []
+description = "ABILITY [1]: REVEAL [2] random enemies for [1] Turn"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ofs41"]
 script = ExtResource("7_2snsu")
-active_abilities = Array[ExtResource("8_mso1s")]([SubResource("Resource_mso1s")])
+active_abilities = Array[ExtResource("8_mso1s")]([SubResource("Resource_74a41")])
 description_datastore = SubResource("Resource_5ybf6")
 
-[sub_resource type="Resource" id="Resource_33d7e"]
+[sub_resource type="Resource" id="Resource_k5lir"]
 script = ExtResource("8_mso1s")
 name = "Sandy Spy"
-description = "REVEAL a random enemy for [1] Turn"
+description = "REVEAL [2] random enemies for [2] Turns"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
+[sub_resource type="Resource" id="Resource_33d7e"]
+script = ExtResource("9_33d7e")
+description = "ABILITY [1]: REVEAL [2] random enemies for [2] Turns"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_0d120"]
+script = ExtResource("7_2snsu")
+active_abilities = Array[ExtResource("8_mso1s")]([SubResource("Resource_k5lir")])
+description_datastore = SubResource("Resource_33d7e")
+
+[sub_resource type="Resource" id="Resource_mso1s"]
+script = ExtResource("8_mso1s")
+name = "Sandy Spy"
+description = "REVEAL [3] random enemies for [2] Turns"
 max_charges = 1
 delay = 0.0
 camera_type = 0
@@ -73,21 +92,26 @@ charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_4cm1c"]
+script = ExtResource("9_33d7e")
+description = "ABILITY [1]: REVEAL [3] random enemies for [2] Turns"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_sixy0"]
 script = ExtResource("7_2snsu")
-active_abilities = Array[ExtResource("8_mso1s")]([SubResource("Resource_33d7e")])
-description_datastore = SubResource("Resource_5ybf6")
+active_abilities = Array[ExtResource("8_mso1s")]([SubResource("Resource_mso1s")])
+description_datastore = SubResource("Resource_4cm1c")
 
 [resource]
 script = ExtResource("1_fb4oe")
-tiers = Array[ExtResource("7_2snsu")]([SubResource("Resource_7nd5a"), SubResource("Resource_ofs41"), SubResource("Resource_4cm1c")])
+tiers = Array[ExtResource("7_2snsu")]([SubResource("Resource_7nd5a"), SubResource("Resource_ofs41"), SubResource("Resource_0d120"), SubResource("Resource_sixy0")])
 icon = ExtResource("3_xjulc")
-description = "ABILITY [1]: REVEAL a random enemy for [1] Turn"
-ascended_description = ""
 rarity = 2
-active_abilities = Array[ExtResource("1_vn1cb")]([SubResource("Resource_lix8k")])
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+active_abilities = Array[ExtResource("1_vn1cb")]([SubResource("Resource_lix8k")])
+description = "ABILITY [1]: REVEAL a random enemy for [1] Turn"
+ascended_description = ""
 id = 11
 name = "Sand Larva"
 gdscript = ExtResource("2_xv5m2")

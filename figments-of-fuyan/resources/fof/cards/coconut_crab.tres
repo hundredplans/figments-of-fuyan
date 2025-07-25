@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qt1qu"]
 [ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/coconut_crab.png" id="2_876bb"]
@@ -29,51 +29,6 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_pl46p"]
-script = ExtResource("13_53b7p")
-description = "ERRATIC; LAST WILL: Drop a Coconut"
-default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_1tovy"]
-script = ExtResource("12_1tovy")
-attack = 1
-health = 3
-speed = 2
-energy = 2
-traits = Array[ExtResource("2_ytoss")]([])
-active_abilities = Array[ExtResource("11_qx852")]([])
-description_datastore = SubResource("Resource_pl46p")
-
-[sub_resource type="Resource" id="Resource_53b7p"]
-script = ExtResource("13_53b7p")
-description = "ERRATIC; LAST WILL: Drop a Coconut"
-default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_dwb0j"]
-script = ExtResource("12_1tovy")
-attack = 2
-health = 4
-speed = 2
-energy = 2
-traits = Array[ExtResource("2_ytoss")]([])
-active_abilities = Array[ExtResource("11_qx852")]([])
-description_datastore = SubResource("Resource_53b7p")
-
-[sub_resource type="Resource" id="Resource_1wk70"]
-script = ExtResource("13_53b7p")
-description = "ERRATIC; LAST WILL: Drop a Coconut"
-default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_wig7k"]
-script = ExtResource("12_1tovy")
-attack = 2
-health = 4
-speed = 2
-energy = 2
-traits = Array[ExtResource("2_ytoss")]([])
-active_abilities = Array[ExtResource("11_qx852")]([])
-description_datastore = SubResource("Resource_1wk70")
-
 [sub_resource type="Resource" id="Resource_do48y"]
 script = ExtResource("13_53b7p")
 description = "ERRATIC; LAST WILL: Drop a Coconut"
@@ -91,7 +46,7 @@ description_datastore = SubResource("Resource_do48y")
 
 [resource]
 script = ExtResource("3_m42yu")
-tiers = Array[ExtResource("12_1tovy")]([SubResource("Resource_1tovy"), SubResource("Resource_dwb0j"), SubResource("Resource_wig7k"), SubResource("Resource_84eln")])
+tiers = Array[ExtResource("12_1tovy")]([SubResource("Resource_84eln"), SubResource("Resource_84eln"), SubResource("Resource_84eln"), SubResource("Resource_84eln")])
 archetype = ExtResource("2_rpyhs")
 rarity = 1
 flavor_text = ""

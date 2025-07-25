@@ -1,87 +1,23 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=40 format=3 uid="uid://b628516dpwvsq"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=35 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_gkstj"]
-[ext_resource type="Texture2D" uid="uid://bxkodabddetvr" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
-[ext_resource type="Resource" uid="uid://di2pr0npo4h1p" path="res://resources/fof/archetypes/adventurer.tres" id="2_31ae6"]
-[ext_resource type="Script" uid="uid://bwd15dpd61xnh" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_s60fl"]
-[ext_resource type="Resource" uid="uid://c427cbie2arvi" path="res://resources/fof/boons/duelist_aura.tres" id="2_udvb6"]
-[ext_resource type="Script" uid="uid://coc78selljvqm" path="res://scripts/fof/cards/quickdraw_quentin.gd" id="2_vol13"]
-[ext_resource type="Image" uid="uid://ksilelk1kju8" path="res://assets/sprites/game/cards/art_pop/quickdraw_quentin.png" id="3_73we7"]
-[ext_resource type="Script" uid="uid://c4pplm1lm032l" path="res://scripts/common/data_structures/pos_rot.gd" id="3_wy00w"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_bf1vc"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="6_liqvw"]
-[ext_resource type="Script" uid="uid://bl7k0gywtt1r5" path="res://scripts/fof_info/cards/extra/champion_upgrade.gd" id="9_fr6ec"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="9_lveky"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="13_va7o5"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_kr2gj"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_8o6vj"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_gr1kb"]
-
-[sub_resource type="Resource" id="Resource_kr2gj"]
-script = ExtResource("14_kr2gj")
-name = "Reload"
-description = "You have [X]/2 bullets left.
-Gain [1] Bullet and STUN self if in enemy vision"
-max_charges = -1
-delay = 2.0
-camera_type = 0
-charges = 0
-used = false
-
-[sub_resource type="Resource" id="Resource_ibouj"]
-script = ExtResource("6_liqvw")
-display_number = 2
-id = 2
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
-
-[sub_resource type="Resource" id="Resource_bg3sa"]
-script = ExtResource("13_va7o5")
-attack = 2
-health = 1
-speed = 2
-energy = 2
-description = "RANGED [1-2]
-Has [X]/[Y] bullets
-ABILITY: If an enemy is in vision STUN self to gain a bullet
-"
-active_abilities = Array[ExtResource("14_kr2gj")]([SubResource("Resource_kr2gj")])
-traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_ibouj")])
-
-[sub_resource type="Resource" id="Resource_wdnc3"]
-script = ExtResource("13_va7o5")
-attack = 2
-health = 1
-speed = 2
-energy = 2
-description = ""
-active_abilities = Array[ExtResource("14_kr2gj")]([])
-traits = Array[ExtResource("6_liqvw")]([])
-
-[sub_resource type="Resource" id="Resource_8o6vj"]
-script = ExtResource("13_va7o5")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("14_kr2gj")]([])
-traits = Array[ExtResource("6_liqvw")]([])
-
-[sub_resource type="Resource" id="Resource_gr1kb"]
-script = ExtResource("13_va7o5")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("14_kr2gj")]([])
-traits = Array[ExtResource("6_liqvw")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_gkstj"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/adventurer.tres" id="2_31ae6"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_s60fl"]
+[ext_resource type="Resource" path="res://resources/fof/boons/duelist_aura.tres" id="2_udvb6"]
+[ext_resource type="Script" path="res://scripts/fof/cards/quickdraw_quentin.gd" id="2_vol13"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/quickdraw_quentin.png" id="3_73we7"]
+[ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="3_wy00w"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_bf1vc"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="6_liqvw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/champion_upgrade.gd" id="9_fr6ec"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="9_lveky"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_kr2gj"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_8o6vj"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_gr1kb"]
 
 [sub_resource type="Resource" id="Resource_qs1ev"]
 script = ExtResource("1_gkstj")
-exists = 0
 ascended_description = ""
 ascended_max_charges = -1
 name = "Reload"
@@ -133,7 +69,6 @@ active_abilities = Array[ExtResource("1_gkstj")]([])
 
 [sub_resource type="Resource" id="Resource_27wio"]
 script = ExtResource("1_gkstj")
-exists = 0
 ascended_description = ""
 ascended_max_charges = -1
 name = "Reload"
@@ -162,13 +97,32 @@ first_init = true
 public_id = 0
 metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
+[sub_resource type="Resource" id="Resource_kr2gj"]
+script = ExtResource("14_kr2gj")
+name = "Reload"
+description = "You have [X]/2 bullets left.
+Gain [1] Bullet and STUN self if in enemy vision"
+max_charges = -1
+delay = 2.0
+camera_type = 0
+charges = 0
+used = false
+
 [sub_resource type="Resource" id="Resource_cblsn"]
 script = ExtResource("16_gr1kb")
 description = "RANGED [1-2]
 Has [X]/[Y] bullets
 ABILITY: If an enemy is in vision STUN self to gain a bullet
 "
-default_values = 0
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_ibouj"]
+script = ExtResource("6_liqvw")
+display_number = 2
+id = 2
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_47wkj"]
 script = ExtResource("15_8o6vj")
@@ -176,15 +130,17 @@ attack = 2
 health = 1
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_cblsn")
-description = ""
-active_abilities = Array[ExtResource("14_kr2gj")]([SubResource("Resource_kr2gj")])
 traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_ibouj")])
+active_abilities = Array[ExtResource("14_kr2gj")]([SubResource("Resource_kr2gj")])
+description_datastore = SubResource("Resource_cblsn")
 
 [sub_resource type="Resource" id="Resource_xxalb"]
 script = ExtResource("16_gr1kb")
-description = ""
-default_values = 0
+description = "RANGED [1-2]
+Has [X]/[Y] bullets
+ABILITY: If an enemy is in vision STUN self to gain a bullet
+"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_cloo1"]
 script = ExtResource("15_8o6vj")
@@ -192,42 +148,45 @@ attack = 2
 health = 1
 speed = 2
 energy = 2
+traits = Array[ExtResource("6_liqvw")]([])
+active_abilities = Array[ExtResource("14_kr2gj")]([])
 description_datastore = SubResource("Resource_xxalb")
-description = ""
-active_abilities = Array[ExtResource("14_kr2gj")]([])
-traits = Array[ExtResource("6_liqvw")]([])
 
-[sub_resource type="Resource" id="Resource_rhc30"]
+[sub_resource type="Resource" id="Resource_bg3sa"]
 script = ExtResource("16_gr1kb")
-description = ""
-default_values = 0
+description = "RANGED [1-2]
+Has [X]/[Y] bullets
+ABILITY: If an enemy is in vision STUN self to gain a bullet
+"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_c28gr"]
+[sub_resource type="Resource" id="Resource_8o6vj"]
 script = ExtResource("15_8o6vj")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_rhc30")
-description = ""
-active_abilities = Array[ExtResource("14_kr2gj")]([])
+attack = 2
+health = 1
+speed = 2
+energy = 2
 traits = Array[ExtResource("6_liqvw")]([])
+active_abilities = Array[ExtResource("14_kr2gj")]([])
+description_datastore = SubResource("Resource_bg3sa")
 
-[sub_resource type="Resource" id="Resource_slya2"]
+[sub_resource type="Resource" id="Resource_gr1kb"]
 script = ExtResource("16_gr1kb")
-description = ""
-default_values = 0
+description = "RANGED [1-2]
+Has [X]/[Y] bullets
+ABILITY: If an enemy is in vision STUN self to gain a bullet
+"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_tjmsq"]
+[sub_resource type="Resource" id="Resource_wdnc3"]
 script = ExtResource("15_8o6vj")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_slya2")
-description = ""
-active_abilities = Array[ExtResource("14_kr2gj")]([])
+attack = 2
+health = 1
+speed = 2
+energy = 2
 traits = Array[ExtResource("6_liqvw")]([])
+active_abilities = Array[ExtResource("14_kr2gj")]([])
+description_datastore = SubResource("Resource_gr1kb")
 
 [resource]
 script = ExtResource("2_s60fl")
@@ -241,21 +200,10 @@ ultimate_description = "[0/7]: REVEAL [3] random enemies and enemies with no all
 boon_info = ExtResource("2_udvb6")
 first_miniboss = SubResource("Resource_pg13s")
 first_boss = SubResource("Resource_7isbl")
-tiers = Array[ExtResource("15_8o6vj")]([SubResource("Resource_47wkj"), SubResource("Resource_cloo1"), SubResource("Resource_c28gr"), SubResource("Resource_tjmsq")])
-_tiers = Array[ExtResource("13_va7o5")]([SubResource("Resource_bg3sa"), SubResource("Resource_wdnc3"), SubResource("Resource_8o6vj"), SubResource("Resource_gr1kb")])
-attack = 2
-health = 1
-speed = 2
-energy = 2
+tiers = Array[ExtResource("15_8o6vj")]([SubResource("Resource_47wkj"), SubResource("Resource_cloo1"), SubResource("Resource_8o6vj"), SubResource("Resource_wdnc3")])
+archetype = ExtResource("2_31ae6")
 rarity = 8
-initial_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_va7o5")])
-active_abilities = Array[ExtResource("1_gkstj")]([SubResource("Resource_qs1ev")])
 flavor_text = "BOOM. Headshot"
-description = "RANGED [1-2]
-Has [X]/[Y] bullets
-ABILITY: If an enemy is in vision STUN self to gain a bullet
-"
-ascended_description = ""
 art_mini_coordinate = Vector2i(77, 44)
 art_mini = ExtResource("2_8x7e6")
 art_pop = ExtResource("3_73we7")
@@ -270,7 +218,17 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_ulhe5")])
-archetype = ExtResource("2_31ae6")
+attack = 2
+health = 1
+speed = 2
+energy = 2
+description = "RANGED [1-2]
+Has [X]/[Y] bullets
+ABILITY: If an enemy is in vision STUN self to gain a bullet
+"
+ascended_description = ""
+initial_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_va7o5")])
+active_abilities = Array[ExtResource("1_gkstj")]([SubResource("Resource_qs1ev")])
 id = 3
 name = "Quickdraw Quentin"
 gdscript = ExtResource("2_vol13")

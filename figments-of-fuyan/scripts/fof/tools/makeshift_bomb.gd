@@ -10,7 +10,7 @@ func onToolAction(action: DeathAction) -> void:
 	var units: Array = []
 	var tiles: Array = []
 	
-	if !ascended:
+	if tier == 1:
 		tiles = Game.getAdjacentTiles(Tile)
 		units = get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.Tile in tiles)
 	else:

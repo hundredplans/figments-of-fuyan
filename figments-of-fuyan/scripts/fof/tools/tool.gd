@@ -2,7 +2,6 @@ class_name ToolGD extends FofGD
 
 var Card: CardGD
 var charges: int
-var ascended: bool
 var active_effects: Array[ActiveEffectDatastore]
 var ability_save: Dictionary
 var tier: int
@@ -14,7 +13,6 @@ func onFofInit() -> void:
 	onRegularReset()
 
 func onLoadData(data: SavedData) -> void:
-	ascended = data.ascended
 	active_effects = data.active_effects
 	tier = data.tier
 	
@@ -25,10 +23,7 @@ func onLoadData(data: SavedData) -> void:
 		set(custom_variable, ability_save[custom_variable])
 	
 func onSave() -> SavedDataTool:
-	return SavedDataTool.new(info.id, false, public_id, ascended, active_effects, charges, ability_save, tier)
-	
-func getAscended() -> bool:
-	return ascended
+	return SavedDataTool.new(info.id, false, public_id, active_effects, charges, ability_save, tier)
 	
 func onCreateActiveEffects() -> void:
 	active_effects = []
@@ -71,11 +66,6 @@ func onProcessAction(action: Action) -> void:
 			onToolHolderDeath()
 		elif action is EndGameAction:
 			onReset()
-		elif action is AscendToolAction:
-			onToolAscended(action.state)
-
-func onToolAscended(_state: bool) -> void:
-	pass
 
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	return null
@@ -128,9 +118,6 @@ func onToolUnequipped() -> void:
 	
 func isLevelVisible() -> bool:
 	return Card.isLevelVisible()
-	
-func setAscended(state: bool) -> void:
-	ascended = state
 
 func onLevelEnded(_win: bool) -> void:
 	pass
@@ -148,3 +135,6 @@ func onResetCharges() -> void:
 func onChangeCharges(delta: int) -> void:
 	charges = max(charges + delta, 0) 
 #endregion
+
+func onRetiered(_tier: int) -> void:
+	tier = _tier

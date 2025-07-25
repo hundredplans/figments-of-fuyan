@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="MapNodeInfo" load_steps=7 format=3 uid="uid://dlwsy5weweapm"]
 
-[ext_resource type="Script" uid="uid://jjs6ow042x70" path="res://scripts/fof/map_nodes/encounter_node.gd" id="1_c17um"]
+[ext_resource type="Script" uid="uid://ckx1ajnixc5mo" path="res://scripts/fof/map_nodes/map_node.gd" id="1_oywjc"]
 [ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_y36ia"]
 [ext_resource type="Texture2D" uid="uid://cvgp1be2j2ir" path="res://assets/sprites/game/map/encounter.png" id="2_lc3lc"]
 [ext_resource type="PackedScene" uid="uid://dqlurjtxoifoe" path="res://assets/models/fof/map_nodes/encounter.glb" id="3_osytu"]
-[ext_resource type="Script" uid="uid://jquowbtkjvg5" path="res://scripts/saved_data/map_nodes/saved_data_encounter_node.gd" id="4_1dqyy"]
+[ext_resource type="Script" uid="uid://1nhagdcu8nfi" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_oywjc"]
 [ext_resource type="PackedScene" uid="uid://cn755n0hb1fr1" path="res://scenes/game/encounters/encounter_screen.tscn" id="5_s33o0"]
 
 [resource]
@@ -17,5 +17,5 @@ float_y = 0.0
 legend_order = 3
 id = 5
 name = "Encounter"
-gdscript = ExtResource("1_c17um")
-saved_data = ExtResource("4_1dqyy")
+gdscript = ExtResource("1_oywjc")
+saved_data = ExtResource("4_oywjc")

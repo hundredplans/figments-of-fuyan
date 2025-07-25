@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_pr1ge"]
-[ext_resource type="Image" uid="uid://dngy47x47yq0h" path="res://assets/sprites/game/cards/art_pop/cacteye_jake.png" id="2_60i47"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_kl5sj"]
-[ext_resource type="Texture2D" uid="uid://5wren2gj2c38" path="res://assets/sprites/game/cards/art_mini/cacteye_jake.png" id="2_yflw3"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_q4fv3"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_u15is"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_wtkqj"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_50bqa"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_82ts8"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_b35cl"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_puyci"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_m5fx2"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_i6mye"]
-
-[sub_resource type="Resource" id="Resource_puyci"]
-script = ExtResource("10_b35cl")
-attack = 1
-health = 3
-speed = 2
-energy = 3
-description = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: BLIND [2] all Marked enemies"
-active_abilities = Array[ExtResource("11_puyci")]([])
-traits = Array[ExtResource("3_q4fv3")]([])
-
-[sub_resource type="Resource" id="Resource_uotc4"]
-script = ExtResource("10_b35cl")
-attack = 1
-health = 3
-speed = 2
-energy = 3
-description = ""
-active_abilities = Array[ExtResource("11_puyci")]([])
-traits = Array[ExtResource("3_q4fv3")]([])
-
-[sub_resource type="Resource" id="Resource_m5fx2"]
-script = ExtResource("10_b35cl")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_puyci")]([])
-traits = Array[ExtResource("3_q4fv3")]([])
-
-[sub_resource type="Resource" id="Resource_i6mye"]
-script = ExtResource("10_b35cl")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_puyci")]([])
-traits = Array[ExtResource("3_q4fv3")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_pr1ge"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/cacteye_jake.png" id="2_60i47"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_kl5sj"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/cacteye_jake.png" id="2_yflw3"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_q4fv3"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_u15is"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_wtkqj"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_50bqa"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_82ts8"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_puyci"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_m5fx2"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_i6mye"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_snoui"]
 script = ExtResource("13_i6mye")
 description = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: BLIND [2] all Marked enemies"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_oy3ha"]
 script = ExtResource("12_m5fx2")
@@ -81,15 +40,14 @@ attack = 1
 health = 3
 speed = 2
 energy = 3
-description_datastore = SubResource("Resource_snoui")
-description = ""
-active_abilities = Array[ExtResource("11_puyci")]([])
 traits = Array[ExtResource("3_q4fv3")]([])
+active_abilities = Array[ExtResource("11_puyci")]([])
+description_datastore = SubResource("Resource_snoui")
 
 [sub_resource type="Resource" id="Resource_iommn"]
 script = ExtResource("13_i6mye")
-description = ""
-default_values = 0
+description = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: BLIND [2] all Marked enemies"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_51a10"]
 script = ExtResource("12_m5fx2")
@@ -97,57 +55,46 @@ attack = 1
 health = 3
 speed = 2
 energy = 3
+traits = Array[ExtResource("3_q4fv3")]([])
+active_abilities = Array[ExtResource("11_puyci")]([])
 description_datastore = SubResource("Resource_iommn")
-description = ""
-active_abilities = Array[ExtResource("11_puyci")]([])
-traits = Array[ExtResource("3_q4fv3")]([])
 
-[sub_resource type="Resource" id="Resource_bng2q"]
+[sub_resource type="Resource" id="Resource_uotc4"]
 script = ExtResource("13_i6mye")
-description = ""
-default_values = 0
+description = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: BLIND [2] all Marked enemies"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_61ya0"]
+[sub_resource type="Resource" id="Resource_m5fx2"]
 script = ExtResource("12_m5fx2")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_bng2q")
-description = ""
-active_abilities = Array[ExtResource("11_puyci")]([])
-traits = Array[ExtResource("3_q4fv3")]([])
-
-[sub_resource type="Resource" id="Resource_b7tch"]
-script = ExtResource("13_i6mye")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_nahsu"]
-script = ExtResource("12_m5fx2")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_b7tch")
-description = ""
-active_abilities = Array[ExtResource("11_puyci")]([])
-traits = Array[ExtResource("3_q4fv3")]([])
-
-[resource]
-script = ExtResource("7_82ts8")
-tiers = Array[ExtResource("12_m5fx2")]([SubResource("Resource_oy3ha"), SubResource("Resource_51a10"), SubResource("Resource_61ya0"), SubResource("Resource_nahsu")])
-_tiers = Array[ExtResource("10_b35cl")]([SubResource("Resource_puyci"), SubResource("Resource_uotc4"), SubResource("Resource_m5fx2"), SubResource("Resource_i6mye")])
 attack = 1
 health = 3
 speed = 2
 energy = 3
-rarity = 4
-initial_traits = Array[ExtResource("3_q4fv3")]([])
-active_abilities = Array[ExtResource("1_pr1ge")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_q4fv3")]([])
+active_abilities = Array[ExtResource("11_puyci")]([])
+description_datastore = SubResource("Resource_uotc4")
+
+[sub_resource type="Resource" id="Resource_i6mye"]
+script = ExtResource("13_i6mye")
 description = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: BLIND [2] all Marked enemies"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_bng2q"]
+script = ExtResource("12_m5fx2")
+attack = 1
+health = 3
+speed = 2
+energy = 3
+traits = Array[ExtResource("3_q4fv3")]([])
+active_abilities = Array[ExtResource("11_puyci")]([])
+description_datastore = SubResource("Resource_i6mye")
+
+[resource]
+script = ExtResource("7_82ts8")
+tiers = Array[ExtResource("12_m5fx2")]([SubResource("Resource_oy3ha"), SubResource("Resource_51a10"), SubResource("Resource_m5fx2"), SubResource("Resource_bng2q")])
+archetype = ExtResource("2_kl5sj")
+rarity = 4
+flavor_text = ""
 art_mini_coordinate = Vector2i(79, 25)
 art_mini = ExtResource("2_yflw3")
 art_pop = ExtResource("2_60i47")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_q4fv3")]([])
-archetype = ExtResource("2_kl5sj")
+attack = 1
+health = 3
+speed = 2
+energy = 3
+description = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: BLIND [2] all Marked enemies"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_q4fv3")]([])
+active_abilities = Array[ExtResource("1_pr1ge")]([])
 id = 40
 name = "\"Cacteye\" Jake"
 gdscript = ExtResource("4_u15is")

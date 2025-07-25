@@ -33,11 +33,6 @@ func setTurns(_turns: int) -> void:
 		setDisplayNumber(turns)
 
 func getDescription() -> String:
-	match info.ascended_type:
-		FieldEffectInfo.AscendedTypes.CARD:
-			if Card.ascended: return info.ascended_description
-		FieldEffectInfo.AscendedTypes.OWNER:
-			if FofObject.ascended: return info.ascended_description
 	return info.description
 	
 func getIcon() -> Texture2D:

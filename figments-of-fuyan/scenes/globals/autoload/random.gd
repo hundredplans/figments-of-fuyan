@@ -38,19 +38,13 @@ static func getRandomFofInRarity(type: GDScript, rarity: Game.Rarities) -> Saved
 	arr = arr.filter(func(x: FofInfo): return x.rarity == rarity)
 	
 	if type == BoonInfo:
-		var boon_ids: Array = Game.save_file.boons.filter(func(x: BoonGD): return x.ascended).map(func(y: BoonGD): return y.info.id)
+		var boon_ids: Array = Game.save_file.boons.filter(func(x: BoonGD): return x.tier == 4).map(func(y: BoonGD): return y.info.id)
 		arr = arr.filter(func(x: BoonInfo): return x.id not in boon_ids)
 	
 	if arr.is_empty(): return null
 	var info: FofInfo = arr.pick_random()
 	
 	var data: SavedData = Game.setCardDataFromInfo(SavedDataCard.new(info.id, true), info) if info is CardInfo else info.saved_data.new(info.id, true)
-	var ascenscion_roll_odds: float = Game.area.getWorld().base_ascended_rate / 100.0
-	
-	if type == BoonInfo:
-		ascenscion_roll_odds = Game.onAddDivinusBoonAscenscionOdds(ascenscion_roll_odds)
-	
-	data.ascended = Random.rollFloat(ascenscion_roll_odds)
 	return data
 	
 static func getRandomFofByOdds(type: GDScript, odds: Dictionary = Game.area.getWorld().base_rarity_odds.getDictionary()) -> SavedData:
@@ -59,7 +53,7 @@ static func getRandomFofByOdds(type: GDScript, odds: Dictionary = Game.area.getW
 	return Random.getRandomFofInRarity(type, rarity)
 	
 # Area id = 0 if we want all cards
-static func getRandomCardData(ids: Array, odds: Dictionary, tool_chance: float, tool_ascended_chance: float, tool_odds: Dictionary, ascend_odds: float) -> SavedDataCard:
+static func getRandomCardData(ids: Array, odds: Dictionary, tool_chance: float, tool_tier_up_rate: float, tool_odds: Dictionary, tier_up_rate: float, base_tier: int) -> SavedDataCard:
 	var attempts: float = 0
 	var total_attempts: float = 16
 	while(attempts < total_attempts):
@@ -72,13 +66,17 @@ static func getRandomCardData(ids: Array, odds: Dictionary, tool_chance: float, 
 		if card_infos.is_empty(): attempts += 1; break
 		var chosen_info: CardInfo = card_infos.pick_random()
 		
-		var ascend_card: bool = rarity != Game.Rarities.EXALT and Random.rollFloat(ascend_odds)
+		var tier_up_card: bool = rarity != Game.Rarities.EXALT and Random.rollFloat(tier_up_rate)
 		var tool_data: SavedDataTool = null
 		if Random.rollFloat(tool_chance):
 			tool_data = getRandomFofByOdds(ToolInfo, tool_odds)
-			var roll_tool_ascenscion: bool = rollFloat(tool_ascended_chance)
-			tool_data.ascended = roll_tool_ascenscion
-
-		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, ascend_card, tool_data)
+			var roll_tool_tier_up: bool = rollFloat(tool_tier_up_rate)
+			tool_data.tier = base_tier
+			if roll_tool_tier_up: tool_data.onTierUp()
+		
+		var tier: int = base_tier
+		if tier_up_card: tier = min(tier + 1, 4)
+		
+		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, tier, tool_data)
 		return card_data
 	return null

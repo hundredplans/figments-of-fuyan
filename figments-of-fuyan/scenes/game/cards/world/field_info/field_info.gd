@@ -16,7 +16,6 @@ extends Node3D
 @onready var IconsManager: Node3D = %IconsManager
 
 @onready var ToolIcon: Sprite3D = %ToolIcon
-@onready var ToolShine: Sprite3D = %ToolShine
 
 @onready var NumbersParticleManager: Node3D = %NumbersParticleManager
 #endregion
@@ -67,7 +66,6 @@ extends Node3D
 
 @export_group("Shine Icons")
 @export var default_shine: Texture2D
-@export var ascended_shine: Texture2D
 @export_group("")
 
 @export_group("Default Models")
@@ -103,7 +101,6 @@ func setDepthTest(state: bool) -> void:
 	var mat: Material = null if !state else top_base_material
 	InfoSprite.no_depth_test = state
 	ToolIcon.no_depth_test = state
-	ToolShine.no_depth_test = state
 	var meshes: Array = Helper.getNodeTypeRecursive(FloatingStats, MeshInstance3D)
 	for mesh: MeshInstance3D in meshes:
 		mesh.set_surface_override_material(0, mat)
@@ -321,10 +318,6 @@ func onResetNullIcons() -> void:
 func onToolUpdated(Tool: ToolGD) -> void:
 	if Tool == null:
 		ToolIcon.texture = null
-		ToolShine.visible = false
-		ToolShine.texture = null
 	else:
 		ToolIcon.texture = Tool.getIcon()
-		ToolShine.visible = Tool.getAscended()
-		ToolShine.texture = null if !Tool.getAscended() else ascended_shine
 #endregion

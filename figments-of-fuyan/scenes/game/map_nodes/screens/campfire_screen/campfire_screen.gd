@@ -36,7 +36,7 @@ func onDeckScreenSelected(Card: CardGD, trait_data: SavedDataTrait) -> void:
 func onCampfireRewardPressed(reward_node: Control, reward_info: FofInfo, index: int) -> void:
 	map_node.campfire_reward_taken[index] = true
 	if reward_info is CardInfo:
-		var card_data: SavedDataCard = Game.onCreateBaseCard(reward_info.id, false)
+		var card_data: SavedDataCard = Game.onCreateBaseCard(reward_info.id)
 		var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
 		map_node.onPushAction(AddToDeckAction.new(Card))
 		reward_node.onRewardClaimed()

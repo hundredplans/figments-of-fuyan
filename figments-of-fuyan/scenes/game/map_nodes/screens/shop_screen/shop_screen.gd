@@ -41,13 +41,11 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 				if item.hasType(RemoveFromDeckAction):
 					purchasable_packed = PurchasableRemovePacked
 					parent = RemoveCardPosition
-				elif item.hasType(TransformCardAction) or item.hasType(AscendCardAction):
+				elif item.hasType(TransformCardAction):
 					purchasable_packed = PurchasableTransformPacked
 					parent = TransformPosition
 			"Boon":
 				boon_ids.append(item.id)
-				if !Game.isBoonAvailable(item.id, boon_ids):
-					item = shop.onRerollBoon().data
 					
 				if item != null:
 					purchasable_packed = PurchasableBoonPacked
@@ -83,16 +81,13 @@ func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Co
 		DisplayedUI.queue_free()
 		
 	elif item is BoonGD:
-		shop.onForceAction(AddBoonAction.new(item.info.id, item.ascended))
+		shop.onForceAction(AddBoonAction.new(item.info.id, item.tier))
 		Game.onFlyToUI(DisplayedUI, UI.BoonBox.onFindBoonIcon(item.info.id))
 		
 	World.ActiveWorld.onBuy()
 	if item is ActionWrapper and !item.hasType(RemoveFromDeckAction): # Not remove card
 		var NewCard: CardGD
-		if item.hasType(AscendCardAction): # Ascend card
-			DisplayedUI.onCardAscended(false)
-			NewCard = item.getType(AscendCardAction)[0].Card
-		else: NewCard = item.getType(TransformCardAction)[0].NewCard
+		NewCard = item.getType(TransformCardAction)[0].NewCard
 		DisplayedUI = await onFlipCardAnimation(DisplayedUI, NewCard)
 		await get_tree().create_timer(TRANSFORM_WAIT_PRESSED_TIME).timeout
 		Game.onFlyToUI(DisplayedUI, UI.DeckPanel)

@@ -1,20 +1,87 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=5 format=3 uid="uid://d3duncxplw5xv"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=22 format=3 uid="uid://d3duncxplw5xv"]
 
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_buo5k"]
-[ext_resource type="Script" uid="uid://c18vvqrvd4cej" path="res://scripts/fof/cards/epic/epic_card.gd" id="1_j47hq"]
+[ext_resource type="Script" uid="uid://qiu76aj546ie" path="res://scripts/fof/cards/epic/silas_iii_epic.gd" id="1_ixhyo"]
 [ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_whp50"]
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="3_6wcet"]
+[ext_resource type="Resource" uid="uid://r4emkni6o3hx" path="res://resources/fof/archetypes/mercenary.tres" id="3_ixhyo"]
 [ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_epic_card.gd" id="3_y0bhv"]
+[ext_resource type="Resource" uid="uid://bkjytrcfiqqml" path="res://resources/datastore/boss_intents/silas_iii/autoattack.tres" id="5_jrady"]
+[ext_resource type="Resource" uid="uid://cfqbo8g6ycrrf" path="res://resources/datastore/boss_intents/silas_iii/defensive_stance.tres" id="6_8i8jn"]
+[ext_resource type="Resource" uid="uid://b6kim6ya1nhih" path="res://resources/datastore/boss_intents/silas_iii/grand_slash.tres" id="7_cctem"]
+[ext_resource type="Resource" uid="uid://ot7je20wf1td" path="res://resources/datastore/boss_intents/silas_iii/jump_attack.tres" id="8_abah4"]
+[ext_resource type="Resource" uid="uid://8vf00kifqu3h" path="res://resources/datastore/boss_intents/silas_iii/long_slash.tres" id="9_15u8k"]
+[ext_resource type="Resource" uid="uid://cicqk48n2dwyr" path="res://resources/datastore/boss_intents/silas_iii/reposition.tres" id="10_nni4h"]
+[ext_resource type="Resource" uid="uid://ccv4d700oi1gx" path="res://resources/datastore/boss_intents/silas_iii/silas_stare.tres" id="11_asn4c"]
+[ext_resource type="Resource" uid="uid://dscqbs38f2etx" path="res://resources/datastore/boss_intents/silas_iii/spinning_sword.tres" id="12_pmv8q"]
+[ext_resource type="Resource" uid="uid://bn7v7iisd1fbn" path="res://resources/datastore/boss_intents/silas_iii/spin_attack.tres" id="13_7slm4"]
+[ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="14_5chws"]
+[ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="15_qafci"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
+size = Vector3(0.633057, 2.42429, 0.301514)
+
+[sub_resource type="PackedScene" id="PackedScene_lok3x"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("CollisionShape3D", "transform", "shape"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 0, 0, -1, 2, 1, 0, 2, 1, 0),
+"variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00524902, 1.20674, -0.0177002), SubResource("BoxShape3D_x8gyx")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_41odn"]
+script = ExtResource("1_buo5k")
+name = "Silas III"
+archetype = ExtResource("3_ixhyo")
+attack = 2
+health = 28
+speed = 3
+model = ExtResource("15_qafci")
+collision = SubResource("PackedScene_lok3x")
+points = Array[Vector3]([Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.183516, 0.239223, 0.133057), Vector3(-0.162775, 0.622093, 0.133057), Vector3(0.169328, 0.64294, 0.133057), Vector3(-0.126926, 0.978036, 0.133057), Vector3(0.136707, 0.986501, 0.133057), Vector3(-0.163384, 1.28892, 0.133057), Vector3(0.136259, 1.31003, 0.133057), Vector3(-0.126951, 1.62307, 0.133057), Vector3(0.140094, 1.62865, 0.133057), Vector3(-0.128728, 1.98679, 0.133057), Vector3(0.149506, 1.98663, 0.133057), Vector3(-0.321778, 0.23041, -0.0647256), Vector3(-0.321778, 0.631307, -0.0628094), Vector3(-0.321778, 1.0514, -0.0378641), Vector3(-0.321778, 1.44625, -0.00441441), Vector3(-0.321778, 1.77035, -0.0161406), Vector3(-0.321778, 2.00958, -0.0192475), Vector3(0.31128, 2.01409, -0.0258838), Vector3(0.31128, 1.69686, -0.00741321), Vector3(0.31128, 1.31173, -0.00891331), Vector3(0.31128, 0.981112, -0.0239298), Vector3(0.31128, 0.694034, -0.0186331), Vector3(0.31128, 0.286051, -0.00584558), Vector3(0.195001, 0.297404, -0.168457), Vector3(-0.188432, 0.312008, -0.168457), Vector3(0.21975, 0.711575, -0.168457), Vector3(-0.185521, 0.779665, -0.168457), Vector3(0.155137, 1.14496, -0.168457), Vector3(-0.189965, 1.19895, -0.168457), Vector3(0.173938, 1.45719, -0.168457), Vector3(-0.127429, 1.47731, -0.168457), Vector3(0.163019, 1.8535, -0.168457), Vector3(-0.131346, 1.87783, -0.168457), Vector3(0.112807, 2.06261, -0.168457), Vector3(-0.124686, 2.05478, -0.168457), Vector3(0.110078, 2.41888, -0.0121994), Vector3(-0.0599903, 2.41888, 0.0125429), Vector3(-0.190922, -0.00540495, -0.0476798), Vector3(0.234382, -0.00540495, 0.029992)])
+stat = 2.649
+top = 2.444
+eye = 1.897
+speed_order_override = 0
+env = ExtResource("14_5chws")
+change_delay = 0.0
+boss_intents = Array[ExtResource("3_6wcet")]([ExtResource("5_jrady"), ExtResource("6_8i8jn"), ExtResource("7_cctem"), ExtResource("8_abah4"), ExtResource("9_15u8k"), ExtResource("10_nni4h"), ExtResource("11_asn4c"), ExtResource("12_pmv8q"), ExtResource("13_7slm4")])
+metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
+
+[sub_resource type="Resource" id="Resource_i13if"]
+script = ExtResource("1_buo5k")
+name = "Silas III"
+archetype = ExtResource("3_ixhyo")
+attack = 3
+health = 0
+speed = 3
+model = ExtResource("15_qafci")
+collision = SubResource("PackedScene_lok3x")
+points = Array[Vector3]([Vector3(-0.169155, 0.239571, 0.133057), Vector3(0.183516, 0.239223, 0.133057), Vector3(-0.162775, 0.622093, 0.133057), Vector3(0.169328, 0.64294, 0.133057), Vector3(-0.126926, 0.978036, 0.133057), Vector3(0.136707, 0.986501, 0.133057), Vector3(-0.163384, 1.28892, 0.133057), Vector3(0.136259, 1.31003, 0.133057), Vector3(-0.126951, 1.62307, 0.133057), Vector3(0.140094, 1.62865, 0.133057), Vector3(-0.128728, 1.98679, 0.133057), Vector3(0.149506, 1.98663, 0.133057), Vector3(-0.321778, 0.23041, -0.0647256), Vector3(-0.321778, 0.631307, -0.0628094), Vector3(-0.321778, 1.0514, -0.0378641), Vector3(-0.321778, 1.44625, -0.00441441), Vector3(-0.321778, 1.77035, -0.0161406), Vector3(-0.321778, 2.00958, -0.0192475), Vector3(0.31128, 2.01409, -0.0258838), Vector3(0.31128, 1.69686, -0.00741321), Vector3(0.31128, 1.31173, -0.00891331), Vector3(0.31128, 0.981112, -0.0239298), Vector3(0.31128, 0.694034, -0.0186331), Vector3(0.31128, 0.286051, -0.00584558), Vector3(0.195001, 0.297404, -0.168457), Vector3(-0.188432, 0.312008, -0.168457), Vector3(0.21975, 0.711575, -0.168457), Vector3(-0.185521, 0.779665, -0.168457), Vector3(0.155137, 1.14496, -0.168457), Vector3(-0.189965, 1.19895, -0.168457), Vector3(0.173938, 1.45719, -0.168457), Vector3(-0.127429, 1.47731, -0.168457), Vector3(0.163019, 1.8535, -0.168457), Vector3(-0.131346, 1.87783, -0.168457), Vector3(0.112807, 2.06261, -0.168457), Vector3(-0.124686, 2.05478, -0.168457), Vector3(0.110078, 2.41888, -0.0121994), Vector3(-0.0599903, 2.41888, 0.0125429), Vector3(-0.190922, -0.00540495, -0.0476798), Vector3(0.234382, -0.00540495, 0.029992)])
+stat = 2.649
+top = 2.444
+eye = 1.897
+speed_order_override = 0
+env = ExtResource("14_5chws")
+change_delay = 3.0
+boss_intents = Array[ExtResource("3_6wcet")]([ExtResource("5_jrady"), ExtResource("6_8i8jn"), ExtResource("7_cctem"), ExtResource("8_abah4"), ExtResource("9_15u8k"), ExtResource("10_nni4h"), ExtResource("13_7slm4")])
+metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
 [resource]
 script = ExtResource("2_whp50")
 rarity = 7
-phases = Array[ExtResource("1_buo5k")]([])
+phases = Array[ExtResource("1_buo5k")]([SubResource("Resource_41odn"), SubResource("Resource_i13if")])
 card_id = 77
-tool_id = 0
-boon_id = 0
-awaken_boss_intent_name = ""
+tool_id = 14
+boon_id = 18
+awaken_boss_intent_name = "Autoattack"
 id = 6
 name = "Silas III"
-gdscript = ExtResource("1_j47hq")
+gdscript = ExtResource("1_ixhyo")
 saved_data = ExtResource("3_y0bhv")
 metadata/_custom_type_script = "uid://bd0ljqheerbtm"

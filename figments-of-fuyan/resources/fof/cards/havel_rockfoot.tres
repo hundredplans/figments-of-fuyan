@@ -1,73 +1,20 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=30 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_uhsdm"]
-[ext_resource type="Texture2D" uid="uid://cj1ihg5ofwain" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="2_1nj2i"]
-[ext_resource type="Image" uid="uid://b8vjfjivxqkpd" path="res://assets/sprites/game/cards/art_pop/havel_rockfoot.png" id="2_f4kx2"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gdxwm"]
-[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_lcerg"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_vati7"]
-[ext_resource type="Script" uid="uid://dxtmq28l3h8sg" path="res://scripts/fof/cards/havel_rockfoot.gd" id="6_lcerg"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_njsxc"]
-[ext_resource type="PackedScene" uid="uid://du1yjxi3etwhv" path="res://assets/models/fof/cards/havel_rockfoot.glb" id="7_jhexs"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_cdtjy"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_jhexs"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_vwyj8"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_5crwq"]
-
-[sub_resource type="Resource" id="Resource_jhexs"]
-script = ExtResource("11_jhexs")
-name = "Blackclad Armor"
-description = "Gain ARMOR [1] and +1 ATT +1 HP per REVENGE triggered"
-max_charges = 1
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
-
-[sub_resource type="Resource" id="Resource_wkkql"]
-script = ExtResource("10_cdtjy")
-attack = 2
-health = 4
-speed = 2
-energy = 4
-description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
-ABILITY [1]: Gain ARMOR [1]"
-active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_jhexs")])
-traits = Array[ExtResource("2_gdxwm")]([])
-
-[sub_resource type="Resource" id="Resource_jobq8"]
-script = ExtResource("10_cdtjy")
-attack = 2
-health = 6
-speed = 2
-energy = 4
-description = ""
-active_abilities = Array[ExtResource("11_jhexs")]([])
-traits = Array[ExtResource("2_gdxwm")]([])
-
-[sub_resource type="Resource" id="Resource_vwyj8"]
-script = ExtResource("10_cdtjy")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_jhexs")]([])
-traits = Array[ExtResource("2_gdxwm")]([])
-
-[sub_resource type="Resource" id="Resource_5crwq"]
-script = ExtResource("10_cdtjy")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_jhexs")]([])
-traits = Array[ExtResource("2_gdxwm")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_uhsdm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="2_1nj2i"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/havel_rockfoot.png" id="2_f4kx2"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_gdxwm"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_lcerg"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_vati7"]
+[ext_resource type="Script" path="res://scripts/fof/cards/havel_rockfoot.gd" id="6_lcerg"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_njsxc"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/havel_rockfoot.glb" id="7_jhexs"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_jhexs"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_vwyj8"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_5crwq"]
 
 [sub_resource type="Resource" id="Resource_lcerg"]
 script = ExtResource("1_uhsdm")
-exists = 0
 ascended_description = ""
 ascended_max_charges = 1
 name = "Blackclad Armor"
@@ -95,11 +42,21 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_jhexs"]
+script = ExtResource("11_jhexs")
+name = "Blackclad Armor"
+description = "Gain ARMOR [1] and +1 ATT +1 HP per REVENGE triggered"
+max_charges = 1
+delay = 0.0
+camera_type = 0
+charges = 0
+used = false
+
 [sub_resource type="Resource" id="Resource_xw6wc"]
 script = ExtResource("13_5crwq")
 description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
 ABILITY [1]: Gain ARMOR [1]"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_h6t1n"]
 script = ExtResource("12_vwyj8")
@@ -107,15 +64,15 @@ attack = 2
 health = 4
 speed = 2
 energy = 4
-description_datastore = SubResource("Resource_xw6wc")
-description = ""
-active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_jhexs")])
 traits = Array[ExtResource("2_gdxwm")]([])
+active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_jhexs")])
+description_datastore = SubResource("Resource_xw6wc")
 
 [sub_resource type="Resource" id="Resource_myut2"]
 script = ExtResource("13_5crwq")
-description = ""
-default_values = 0
+description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+ABILITY [1]: Gain ARMOR [1]"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_hy8df"]
 script = ExtResource("12_vwyj8")
@@ -123,58 +80,48 @@ attack = 2
 health = 6
 speed = 2
 energy = 4
+traits = Array[ExtResource("2_gdxwm")]([])
+active_abilities = Array[ExtResource("11_jhexs")]([])
 description_datastore = SubResource("Resource_myut2")
-description = ""
-active_abilities = Array[ExtResource("11_jhexs")]([])
-traits = Array[ExtResource("2_gdxwm")]([])
 
-[sub_resource type="Resource" id="Resource_w1cug"]
+[sub_resource type="Resource" id="Resource_wkkql"]
 script = ExtResource("13_5crwq")
-description = ""
-default_values = 0
+description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+ABILITY [1]: Gain ARMOR [1]"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_kws7v"]
+[sub_resource type="Resource" id="Resource_vwyj8"]
 script = ExtResource("12_vwyj8")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_w1cug")
-description = ""
-active_abilities = Array[ExtResource("11_jhexs")]([])
+attack = 2
+health = 6
+speed = 2
+energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
+active_abilities = Array[ExtResource("11_jhexs")]([])
+description_datastore = SubResource("Resource_wkkql")
 
-[sub_resource type="Resource" id="Resource_q1sfi"]
+[sub_resource type="Resource" id="Resource_5crwq"]
 script = ExtResource("13_5crwq")
-description = ""
-default_values = 0
+description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+ABILITY [1]: Gain ARMOR [1]"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_smde4"]
+[sub_resource type="Resource" id="Resource_jobq8"]
 script = ExtResource("12_vwyj8")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_q1sfi")
-description = ""
-active_abilities = Array[ExtResource("11_jhexs")]([])
+attack = 2
+health = 6
+speed = 2
+energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
+active_abilities = Array[ExtResource("11_jhexs")]([])
+description_datastore = SubResource("Resource_5crwq")
 
 [resource]
 script = ExtResource("3_vati7")
-tiers = Array[ExtResource("12_vwyj8")]([SubResource("Resource_h6t1n"), SubResource("Resource_hy8df"), SubResource("Resource_kws7v"), SubResource("Resource_smde4")])
-_tiers = Array[ExtResource("10_cdtjy")]([SubResource("Resource_wkkql"), SubResource("Resource_jobq8"), SubResource("Resource_vwyj8"), SubResource("Resource_5crwq")])
-attack = 2
-health = 4
-speed = 2
-energy = 4
+tiers = Array[ExtResource("12_vwyj8")]([SubResource("Resource_h6t1n"), SubResource("Resource_hy8df"), SubResource("Resource_vwyj8"), SubResource("Resource_jobq8")])
+archetype = ExtResource("2_lcerg")
 rarity = 5
-initial_traits = Array[ExtResource("2_gdxwm")]([])
-active_abilities = Array[ExtResource("1_uhsdm")]([SubResource("Resource_lcerg")])
 flavor_text = ""
-description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
-ABILITY [1]: Gain ARMOR [1]"
-ascended_description = ""
 art_mini_coordinate = Vector2i(109, 0)
 art_mini = ExtResource("2_1nj2i")
 art_pop = ExtResource("2_f4kx2")
@@ -189,7 +136,15 @@ plus_health = 2
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_gdxwm")]([])
-archetype = ExtResource("2_lcerg")
+attack = 2
+health = 4
+speed = 2
+energy = 4
+description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+ABILITY [1]: Gain ARMOR [1]"
+ascended_description = ""
+initial_traits = Array[ExtResource("2_gdxwm")]([])
+active_abilities = Array[ExtResource("1_uhsdm")]([SubResource("Resource_lcerg")])
 id = 73
 name = "Havel Rockfoot"
 gdscript = ExtResource("6_lcerg")

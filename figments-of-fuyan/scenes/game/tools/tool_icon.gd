@@ -9,26 +9,21 @@ const SPIN_SPEED: float = 10
 
 var Tool: ToolGD
 var hoverable: bool
-var ascended: bool
 
 @export var disable_tooltip: bool
 
 func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
 	Tool = _Tool
-	setInfoDirect(Tool.getIcon() if Tool != null else null, Tool.ascended if Tool != null else false, _hoverable)
+	setInfoDirect(Tool.getIcon() if Tool != null else null, _hoverable)
 	
-func setInfoDirect(icon: Texture2D, _ascended: bool, _hoverable: bool = false) -> void:
+func setInfoDirect(icon: Texture2D, _hoverable: bool = false) -> void:
 	visible = icon != null
 	ToolIcon.texture = icon
 	hoverable = _hoverable
-	onUpdateAscension(_ascended)
 
 func setHighlightOnHover(_hoverable: bool) -> void:
 	hoverable = _hoverable
 	onUpdateModulate()
-
-func onUpdateAscension(_ascended: bool) -> void:
-	ascended = _ascended
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
@@ -46,7 +41,6 @@ func onMouseInUI(state: bool) -> void:
 func setDisabled(state: bool) -> void:
 	disabled = state
 	onUpdateModulate()
-	onUpdateAscension(ascended)
 	
 func onUpdateModulate() -> void:
 	modulate = Color(0.2, 0.2, 0.2) if disabled else\

@@ -8,7 +8,7 @@ func onProcessAction(action: Action) -> void:
 
 func onWhenHealed(_action: StatAction) -> void:
 	when_healed_charges -= 1
-	var max_hp_gain: int = 1 if !ascended else 2
+	var max_hp_gain: int = 1 if tier == 1 else 2
 	onPushAction(StatAction.new(StatInfo.new(self, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [max_hp_gain, max_hp_gain])))
 
 func getDescription(use_default_values: bool = false) -> String:

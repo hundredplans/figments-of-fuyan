@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3 uid="uid://cd7odojgs4plg"]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://bvmcdssjygho7"]
 
 [ext_resource type="Script" uid="uid://de7asck6jpctf" path="res://scripts/fof/boons/gazer_boon.gd" id="1_1qu4s"]
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_w5rmx"]
@@ -9,7 +9,8 @@
 
 [sub_resource type="Resource" id="Resource_cw7x3"]
 script = ExtResource("6_31xom")
-description = "Your champion is blind for the next [X] fights"
+description = "Your champion is blind for the next [X] fights
+THIS IS UNUSED"
 default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_5k4ih"]
@@ -25,13 +26,27 @@ default_values = Array[int]([])
 script = ExtResource("5_nytox")
 description_datastore = SubResource("Resource_mhsqc")
 
+[sub_resource type="Resource" id="Resource_31xom"]
+script = ExtResource("6_31xom")
+description = "Your champion is blind for the next [X] fights"
+default_values = Array[int]([])
+
 [sub_resource type="Resource" id="Resource_ky2vj"]
 script = ExtResource("5_nytox")
-description_datastore = SubResource("Resource_mhsqc")
+description_datastore = SubResource("Resource_31xom")
+
+[sub_resource type="Resource" id="Resource_vhagp"]
+script = ExtResource("6_31xom")
+description = "Your champion is blind for the next [X] fights"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_jxahv"]
+script = ExtResource("5_nytox")
+description_datastore = SubResource("Resource_vhagp")
 
 [resource]
 script = ExtResource("1_w5rmx")
-tiers = Array[ExtResource("5_nytox")]([SubResource("Resource_5k4ih"), SubResource("Resource_y66sv"), SubResource("Resource_ky2vj")])
+tiers = Array[ExtResource("5_nytox")]([SubResource("Resource_5k4ih"), SubResource("Resource_y66sv"), SubResource("Resource_ky2vj"), SubResource("Resource_jxahv")])
 icon = ExtResource("2_tn423")
 rarity = 0
 curse = true

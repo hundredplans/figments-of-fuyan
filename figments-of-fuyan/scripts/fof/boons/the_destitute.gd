@@ -5,10 +5,6 @@ func onProcessAction(action: Action):
 	if !action.post:
 		if action is EnergyAction and action.owner is DeathAction and action.delta > 1:
 			onForceAction(BoonActivatedAction.new(self, action))
-			
-	
-func onAscend(state: bool):
-	super(state)
 
 func onBoon(action: EnergyAction):
 	action.energy -= 1

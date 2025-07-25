@@ -2,19 +2,20 @@ class_name AddBoonAction extends Action
 
 var Boon: BoonGD
 var id: int
-var ascended: bool
+var tier: int
 
-func _init(_id: int = 0, _ascended: bool = false) -> void:
+func _init(_id: int = 0, _tier: int = 1) -> void:
 	super()
 	id = _id
-	ascended = _ascended
+	tier = _tier
 	
 func onPreAction() -> void:
 	onCheckFail()
 	
 func onPostAction() -> void:
 	var boon_info: BoonInfo = Helper.getFofInfoID(BoonInfo, id)
-	var saved_data_boon: SavedDataBoon = boon_info.saved_data.new(id, true, 0, ascended)
+	var saved_data_boon: SavedDataBoon = boon_info.saved_data.new(id, true, 0)
+	saved_data_boon.tier = tier
 	
 	Boon = SavedData.onLoadModel(saved_data_boon, Game.getSaveFile())
 	Game.getSaveFile().getBoons().append(Boon)
@@ -29,7 +30,7 @@ func onCheckFail() -> void:
 	var existing_boons: Array = Game.getSaveFile().getBoons().filter(func(x: BoonGD): return x.info.id == id)
 	if existing_boons.is_empty(): return
 	
-	var ExistingBoon: BoonGD = existing_boons[0]
-	if !ExistingBoon.ascended:
-		onPushAction(ChangeBoonAscenscionAction.new(ExistingBoon, true))
+	#var ExistingBoon: BoonGD = existing_boons[0]
+	#if !ExistingBoon.ascended:
+		#onPushAction(ChangeBoonAscenscionAction.new(ExistingBoon, true))
 	onFailAction()

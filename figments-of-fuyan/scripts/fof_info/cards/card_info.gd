@@ -5,19 +5,12 @@ const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_scr
 const CARD_UI_SCENE_PATH: String = "res://scenes/game/cards/ui/card_ui.tscn"
 const VISION_RAY_SCENE_PATH: String = "res://scenes/game/cards/world/vision_ray.tscn"
 const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_visible_particle.tscn"
-const BASE_MATERIAL_ASCENDED_PATH: String = "res://resources/materials/game/base_material_ascended_specular.tres"
 
 const BASE_MATERIAL_BROWN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent.tres"
 const BASE_MATERIAL_GREEN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent.tres"
 const BASE_MATERIAL_RED_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent.tres"
 
-const BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent_ascended.tres"
-const BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent_ascended.tres"
-const BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent_ascended.tres"
-
 const BASE_MATERIAL_SPECULAR_PATH: String = "res://resources/materials/game/base_material_specular.tres"
-const BASE_MATERIAL_ASCENDED_SPECULAR_PATH: String = "res://resources/shaders/base_material_ascended_specular.gdshader"
-
 const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/base_material_alphagrey_hashing.tres"
 
 @export var tiers: Array[CardTierDatastore]
@@ -44,10 +37,6 @@ const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/bas
 @export var stat: float
 @export var top: float
 @export var eye: float
-@export_group("")
-
-@export_group("Ascended")
-
 @export_group("")
 
 @export_group("Remove")
@@ -85,39 +74,19 @@ func getTierDatastore(tier: int) -> CardTierDatastore:
 	tier -= 1
 	return tiers[tier] if tiers.size() > tier else CardTierDatastore.new()
 	
-func getUpdatedTierDatastore(tier: int) -> CardTierDatastore:
-	var tier_datastore := CardTierDatastore.new()
-	for i: int in range(tier - 1, -1, -1):
-		var _tier_datastore: CardTierDatastore = tiers[i] if tiers.size() > i else CardTierDatastore.new()
-		for property: String in ["attack", "health", "speed", "energy"]:
-			if tier_datastore[property] == -1:
-				tier_datastore[property] = _tier_datastore[property]
-		
-		if tier_datastore.description_datastore == null or\
-		tier_datastore.description_datastore.description.is_empty():
-			tier_datastore.description_datastore = _tier_datastore.description_datastore
-			
-		if tier_datastore.active_abilities.is_empty() and !_tier_datastore.active_abilities.is_empty():
-			tier_datastore.active_abilities = _tier_datastore.active_abilities
-			
-		if tier_datastore.traits.is_empty() and !_tier_datastore.traits.is_empty():
-			tier_datastore.traits = _tier_datastore.traits
-			
-	return tier_datastore
-	
 func getStats(tier: int) -> StatsDatastore:
-	var tier_datastore: CardTierDatastore = getUpdatedTierDatastore(tier)
-	var attack: int = tier_datastore.getAttack()
-	var health: int = tier_datastore.getHealth()
-	var speed: int = tier_datastore.getSpeed()
-	var energy: int = tier_datastore.getEnergy()
-	var stats_datastore := StatsDatastore.new(attack, health, speed, energy)
+	var tier_datastore: CardTierDatastore = getTierDatastore(tier)
+	var _attack: int = tier_datastore.getAttack()
+	var _health: int = tier_datastore.getHealth()
+	var _speed: int = tier_datastore.getSpeed()
+	var _energy: int = tier_datastore.getEnergy()
+	var stats_datastore := StatsDatastore.new(_attack, _health, _speed, _energy)
 	return stats_datastore
 
-func getColoredBaseMaterial(team: int, ascended: bool) -> ShaderMaterial:
+func getColoredBaseMaterial(team: int) -> ShaderMaterial:
 	match team:
-		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_GREEN_TRANSPARENT_ASCENDED_PATH)
-		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_RED_TRANSPARENT_ASCENDED_PATH)
-		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH if !ascended else BASE_MATERIAL_BROWN_TRANSPARENT_ASCENDED_PATH)
+		0: return load(BASE_MATERIAL_GREEN_TRANSPARENT_PATH)
+		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH)
+		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH)
 	return null
 	

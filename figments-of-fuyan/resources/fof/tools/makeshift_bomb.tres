@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://darxcaa3cbjwr"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://o7p1avbm4tn4"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_etyn7"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_xtgw1"]
@@ -12,7 +12,7 @@
 [sub_resource type="Resource" id="Resource_txxkg"]
 script = ExtResource("8_pjaoy")
 description = "LAST WILL: Deal [1] DMG to adjacent units"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_s2yyi"]
 script = ExtResource("6_6x3t7")
@@ -22,29 +22,44 @@ description_datastore = SubResource("Resource_txxkg")
 [sub_resource type="Resource" id="Resource_k27h5"]
 script = ExtResource("8_pjaoy")
 description = "LAST WILL: Deal [1] DMG to enemies in a [2] Tile range"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_b1ce7"]
 script = ExtResource("6_6x3t7")
 active_abilities = Array[ExtResource("7_86yqu")]([])
 description_datastore = SubResource("Resource_k27h5")
 
-[sub_resource type="Resource" id="Resource_ingff"]
+[sub_resource type="Resource" id="Resource_86yqu"]
+script = ExtResource("8_pjaoy")
+description = "LAST WILL: Deal [1] DMG to enemies in vision"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_pjaoy"]
 script = ExtResource("6_6x3t7")
 active_abilities = Array[ExtResource("7_86yqu")]([])
-description_datastore = SubResource("Resource_k27h5")
+description_datastore = SubResource("Resource_86yqu")
+
+[sub_resource type="Resource" id="Resource_ingff"]
+script = ExtResource("8_pjaoy")
+description = "LAST WILL: Deal [2] DMG to enemies in vision"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_pquoe"]
+script = ExtResource("6_6x3t7")
+active_abilities = Array[ExtResource("7_86yqu")]([])
+description_datastore = SubResource("Resource_ingff")
 
 [resource]
 script = ExtResource("1_xtgw1")
-tiers = Array[ExtResource("6_6x3t7")]([SubResource("Resource_s2yyi"), SubResource("Resource_b1ce7"), SubResource("Resource_ingff")])
+tiers = Array[ExtResource("6_6x3t7")]([SubResource("Resource_s2yyi"), SubResource("Resource_b1ce7"), SubResource("Resource_pjaoy"), SubResource("Resource_pquoe")])
 icon = ExtResource("2_ojpge")
-description = "LAST WILL: Deal [1] DMG to adjacent units"
-ascended_description = "LAST WILL: Deal [1] DMG to enemies in a [2] Tile range"
 rarity = 3
-active_abilities = Array[ExtResource("1_etyn7")]([])
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+active_abilities = Array[ExtResource("1_etyn7")]([])
+description = "LAST WILL: Deal [1] DMG to adjacent units"
+ascended_description = "LAST WILL: Deal [1] DMG to enemies in a [2] Tile range"
 id = 2
 name = "Makeshift Bomb"
 gdscript = ExtResource("2_3vuad")

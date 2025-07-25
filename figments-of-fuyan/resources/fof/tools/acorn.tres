@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=14 format=3 uid="uid://ccyykd4510rq5"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=17 format=3 uid="uid://bjyevd4tb5s2q"]
 
 [ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_x4src"]
 [ext_resource type="Script" uid="uid://ulneoteep0qo" path="res://scripts/fof/tools/tool.gd" id="2_nioya"]
@@ -12,7 +12,7 @@
 [sub_resource type="Resource" id="Resource_dvfuf"]
 script = ExtResource("8_qhx4a")
 description = "It's just an acorn"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_pr0um"]
 script = ExtResource("6_q5ehq")
@@ -22,29 +22,44 @@ description_datastore = SubResource("Resource_dvfuf")
 [sub_resource type="Resource" id="Resource_2nruu"]
 script = ExtResource("8_qhx4a")
 description = "It's just an acorn"
-default_values = []
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_2408s"]
 script = ExtResource("6_q5ehq")
 active_abilities = Array[ExtResource("7_g1gd8")]([])
 description_datastore = SubResource("Resource_2nruu")
 
-[sub_resource type="Resource" id="Resource_owj8b"]
+[sub_resource type="Resource" id="Resource_g1gd8"]
+script = ExtResource("8_qhx4a")
+description = "It's just an acorn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_qhx4a"]
 script = ExtResource("6_q5ehq")
 active_abilities = Array[ExtResource("7_g1gd8")]([])
-description_datastore = SubResource("Resource_2nruu")
+description_datastore = SubResource("Resource_g1gd8")
+
+[sub_resource type="Resource" id="Resource_owj8b"]
+script = ExtResource("8_qhx4a")
+description = "It's just an acorn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_nd5sd"]
+script = ExtResource("6_q5ehq")
+active_abilities = Array[ExtResource("7_g1gd8")]([])
+description_datastore = SubResource("Resource_owj8b")
 
 [resource]
 script = ExtResource("2_vxlqk")
-tiers = Array[ExtResource("6_q5ehq")]([SubResource("Resource_pr0um"), SubResource("Resource_2408s"), SubResource("Resource_owj8b")])
+tiers = Array[ExtResource("6_q5ehq")]([SubResource("Resource_pr0um"), SubResource("Resource_2408s"), SubResource("Resource_qhx4a"), SubResource("Resource_nd5sd")])
 icon = ExtResource("2_swis2")
-description = "It's just an acorn"
-ascended_description = "It's just an acorn"
 rarity = 0
-active_abilities = Array[ExtResource("1_x4src")]([])
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false
+active_abilities = Array[ExtResource("1_x4src")]([])
+description = "It's just an acorn"
+ascended_description = "It's just an acorn"
 id = 13
 name = "Acorn"
 gdscript = ExtResource("2_nioya")

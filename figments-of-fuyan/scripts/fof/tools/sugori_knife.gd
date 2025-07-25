@@ -10,7 +10,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is GetDamageAction and action.damage_type == Game.DamageTypes.ATTACK and isValidSugoriKnife(action.Damager):
 			action.onAdd(1)
 	elif action.post:
-		if ascended:
+		if tier > 1:
 			if action is VisionNewUnitAction and action.Discoverer == Card and action.Discovered.isAlly(Card.team):
 				if action.enter_vision: onAddFieldEffect(action.Discovered)
 				else: onRemoveFieldEffect(action.Discovered)
@@ -18,7 +18,7 @@ func onProcessAction(action: Action) -> void:
 				onRemoveFieldEffects(action.game_objects_in_vision.filter(func(x: GameObjectGD): return x is CardGD and x.isAlly(Card.team)))
 
 func isValidSugoriKnife(DamageCard: CardGD) -> bool:
-	return DamageCard == Card or (ascended and DamageCard in Card.getVisibleFieldCardsAllies())
+	return DamageCard == Card or (tier > 1 and DamageCard in Card.getVisibleFieldCardsAllies())
 
 func onToolAction(action: DamageAction) -> void:
 	for Defender in action.owner.Defenders.filter(func(x: GameObjectGD): return x is CardGD and x.isInjured() and x.isEnemy(Card.team)):
@@ -29,18 +29,18 @@ func onToolEquipped() -> void:
 			
 func onToolHolderAwakened() -> void:
 	super()
-	if ascended:
+	if tier > 1:
 		for FieldCard in Card.getVisibleFieldCardsAllies():
 			onAddFieldEffect(FieldCard)
 	
 func onToolHolderDeath() -> void:
 	super()
-	if ascended:
+	if tier > 1:
 		onRemoveFieldEffects(Card.getVisibleFieldCardsAllies())
 	
 func onReset(override: bool = false) -> void:
 	super(override)
-	if Card == null or !ascended: return
+	if Card == null or tier == 1: return
 	
 	onRemoveFieldEffects(Card.getVisibleFieldCardsAllies())
 	
@@ -48,7 +48,7 @@ func onToolUnequipped() -> void:
 	super()
 	
 func onRemoveFieldEffects(visible_field_cards: Array) -> void:
-	if ascended:
+	if tier > 1:
 		for FieldCard in visible_field_cards:
 			onRemoveFieldEffect(FieldCard)
 	

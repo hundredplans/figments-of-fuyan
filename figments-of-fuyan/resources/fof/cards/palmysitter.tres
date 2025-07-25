@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3 uid="uid://mtesuakdp7hj"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rlf34"]
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_kr22h"]
-[ext_resource type="Image" uid="uid://cepsbqhr1w002" path="res://assets/sprites/game/cards/art_pop/palmysitter.png" id="2_lt3xo"]
-[ext_resource type="Texture2D" uid="uid://bp62vg527y17o" path="res://assets/sprites/game/cards/art_mini/palmysitter.png" id="2_pk6lp"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w3gab"]
-[ext_resource type="Script" uid="uid://dkn3n0p2f555b" path="res://scripts/fof/cards/palmysitter.gd" id="3_j5563"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_y72ej"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_i2u37"]
-[ext_resource type="PackedScene" uid="uid://btx7hrh5b8hey" path="res://assets/models/fof/cards/palmysitter.glb" id="5_sahhw"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_x7dkw"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_m04a6"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_otdfc"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_241r8"]
-
-[sub_resource type="Resource" id="Resource_m04a6"]
-script = ExtResource("10_x7dkw")
-attack = 2
-health = 2
-speed = 2
-energy = 2
-description = "LAST WILL: AWAKEN a [1card=4]"
-active_abilities = Array[ExtResource("11_m04a6")]([])
-traits = Array[ExtResource("2_w3gab")]([])
-
-[sub_resource type="Resource" id="Resource_241r8"]
-script = ExtResource("10_x7dkw")
-attack = 2
-health = 2
-speed = 3
-energy = 2
-description = "LAST WILL: AWAKEN a [2card=4]"
-active_abilities = Array[ExtResource("11_m04a6")]([])
-traits = Array[ExtResource("2_w3gab")]([])
-
-[sub_resource type="Resource" id="Resource_cwoh6"]
-script = ExtResource("10_x7dkw")
-attack = 2
-health = 2
-speed = 3
-energy = 2
-description = "LAST WILL: AWAKEN a [3card=4]"
-active_abilities = Array[ExtResource("11_m04a6")]([])
-traits = Array[ExtResource("2_w3gab")]([])
-
-[sub_resource type="Resource" id="Resource_otdfc"]
-script = ExtResource("10_x7dkw")
-attack = 2
-health = 2
-speed = 3
-energy = 2
-description = "LAST WILL: AWAKEN a [4card=4]"
-active_abilities = Array[ExtResource("11_m04a6")]([])
-traits = Array[ExtResource("2_w3gab")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_rlf34"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_kr22h"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmysitter.png" id="2_lt3xo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palmysitter.png" id="2_pk6lp"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w3gab"]
+[ext_resource type="Script" path="res://scripts/fof/cards/palmysitter.gd" id="3_j5563"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_y72ej"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_i2u37"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmysitter.glb" id="5_sahhw"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_m04a6"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_otdfc"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_241r8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j0mjl"]
 size = Vector3(0.700928, 1.44427, 0.268982)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_oq8e0"]
 script = ExtResource("13_241r8")
 description = "LAST WILL: AWAKEN a [1card=4]"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_rgduy"]
 script = ExtResource("12_otdfc")
@@ -81,15 +40,14 @@ attack = 2
 health = 2
 speed = 2
 energy = 2
-description_datastore = SubResource("Resource_oq8e0")
-description = ""
-active_abilities = Array[ExtResource("11_m04a6")]([])
 traits = Array[ExtResource("2_w3gab")]([])
+active_abilities = Array[ExtResource("11_m04a6")]([])
+description_datastore = SubResource("Resource_oq8e0")
 
 [sub_resource type="Resource" id="Resource_u8jb5"]
 script = ExtResource("13_241r8")
 description = "LAST WILL: AWAKEN a [2card=4]"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_j7vh3"]
 script = ExtResource("12_otdfc")
@@ -97,57 +55,46 @@ attack = 2
 health = 2
 speed = 3
 energy = 2
-description_datastore = SubResource("Resource_u8jb5")
-description = ""
-active_abilities = Array[ExtResource("11_m04a6")]([])
 traits = Array[ExtResource("2_w3gab")]([])
+active_abilities = Array[ExtResource("11_m04a6")]([])
+description_datastore = SubResource("Resource_u8jb5")
+
+[sub_resource type="Resource" id="Resource_cwoh6"]
+script = ExtResource("13_241r8")
+description = "LAST WILL: AWAKEN a [2card=4]"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_otdfc"]
+script = ExtResource("12_otdfc")
+attack = 2
+health = 2
+speed = 3
+energy = 2
+traits = Array[ExtResource("2_w3gab")]([])
+active_abilities = Array[ExtResource("11_m04a6")]([])
+description_datastore = SubResource("Resource_cwoh6")
+
+[sub_resource type="Resource" id="Resource_241r8"]
+script = ExtResource("13_241r8")
+description = "LAST WILL: AWAKEN a [2card=4]"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_lqtwj"]
-script = ExtResource("13_241r8")
-description = "LAST WILL: AWAKEN a [3card=4]"
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_1cij7"]
 script = ExtResource("12_otdfc")
 attack = 2
 health = 2
 speed = 3
 energy = 2
-description_datastore = SubResource("Resource_lqtwj")
-description = ""
-active_abilities = Array[ExtResource("11_m04a6")]([])
 traits = Array[ExtResource("2_w3gab")]([])
-
-[sub_resource type="Resource" id="Resource_350u3"]
-script = ExtResource("13_241r8")
-description = "LAST WILL: AWAKEN a [4card=4]"
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_d5spn"]
-script = ExtResource("12_otdfc")
-attack = 2
-health = 2
-speed = 3
-energy = 2
-description_datastore = SubResource("Resource_350u3")
-description = ""
 active_abilities = Array[ExtResource("11_m04a6")]([])
-traits = Array[ExtResource("2_w3gab")]([])
+description_datastore = SubResource("Resource_241r8")
 
 [resource]
 script = ExtResource("3_y72ej")
-tiers = Array[ExtResource("12_otdfc")]([SubResource("Resource_rgduy"), SubResource("Resource_j7vh3"), SubResource("Resource_1cij7"), SubResource("Resource_d5spn")])
-_tiers = Array[ExtResource("10_x7dkw")]([SubResource("Resource_m04a6"), SubResource("Resource_241r8"), SubResource("Resource_cwoh6"), SubResource("Resource_otdfc")])
-attack = 2
-health = 2
-speed = 2
-energy = 2
+tiers = Array[ExtResource("12_otdfc")]([SubResource("Resource_rgduy"), SubResource("Resource_j7vh3"), SubResource("Resource_otdfc"), SubResource("Resource_lqtwj")])
+archetype = ExtResource("2_kr22h")
 rarity = 4
-initial_traits = Array[ExtResource("2_w3gab")]([])
-active_abilities = Array[ExtResource("1_rlf34")]([])
 flavor_text = ""
-description = "LAST WILL: AWAKEN a [1card=4]"
-ascended_description = "LAST WILL: AWAKEN a [2card=4]"
 art_mini_coordinate = Vector2i(92, 89)
 art_mini = ExtResource("2_pk6lp")
 art_pop = ExtResource("2_lt3xo")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 1
 plus_energy = 0
 ascended_traits = Array[ExtResource("2_w3gab")]([])
-archetype = ExtResource("2_kr22h")
+attack = 2
+health = 2
+speed = 2
+energy = 2
+description = "LAST WILL: AWAKEN a [1card=4]"
+ascended_description = "LAST WILL: AWAKEN a [2card=4]"
+initial_traits = Array[ExtResource("2_w3gab")]([])
+active_abilities = Array[ExtResource("1_rlf34")]([])
 id = 12
 name = "Palmysitter"
 gdscript = ExtResource("3_j5563")

@@ -24,7 +24,7 @@ func onRampage(death_action: DeathAction) -> void:
 			rampage_charges -= 1
 
 func onResetCharges() -> void:
-	rampage_charges = 3 if !ascended else -1
+	rampage_charges = 3 if tier == 1 else -1
 
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:
@@ -47,6 +47,7 @@ func onRegularReset() -> void:
 	super()
 	onResetCharges()
 	
-func onAscendedUpdated(state: bool) -> void:
-	super(state)
+func onRetiered(tier: int) -> void:
+	super(tier)
 	onResetCharges()
+	

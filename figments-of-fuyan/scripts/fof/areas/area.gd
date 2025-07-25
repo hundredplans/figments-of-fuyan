@@ -5,6 +5,10 @@ signal init_load
 signal load_level
 signal process_action
 
+const WORLD_ONE_DATASTORE_PATH: String = "res://resources/datastore/world/world_one.tres"
+const WORLD_TWO_DATASTORE_PATH: String = "res://resources/datastore/world/world_two.tres"
+const WORLD_THREE_DATASTORE_PATH: String = "res://resources/datastore/world/world_three.tres"
+
 var map_location_to_node: Dictionary
 var basic_card_ids: Array = []
 var active_level: LevelGD
@@ -22,10 +26,10 @@ var encountered_encounter_ids: Array = []
 
 #region Helper
 func getWorldDifficulty() -> int:
-	return info.world.world
+	return world.world
 	
 func getWorld() -> WorldDatastore:
-	return info.world
+	return world
 
 func onFindEmptyMapSpot(progress: int, lane: int) -> EmptyMapNode:
 	for empty_map_spot in empty_spots:
@@ -59,7 +63,13 @@ func onLoadData(data: SavedData) -> void:
 	encountered_encounter_ids = data.encountered_encounter_ids
 	
 var is_init: bool = false
+var world: WorldDatastore
 func onFofInit() -> void:
+	match Game.getSaveFile().getWorldDifficulty():
+		1: world = load(WORLD_ONE_DATASTORE_PATH)
+		2: world = load(WORLD_TWO_DATASTORE_PATH)
+		3: world = load(WORLD_THREE_DATASTORE_PATH)
+	
 	is_init = true
 	empty_spots = onGenerateEmptyMapSpots()
 	onGenerateMapLinks()
@@ -200,11 +210,11 @@ func setEmptySpotsIDS(unique_node_ids: Array) -> void:
 		shops = [SegmentNode.new(6, true, is_segment_one_shop_holy),\
 			SegmentNode.new(6, false, abs(is_segment_one_shop_holy - 1))]
 		
-	var segment_one_encounter_limit: int = getWorld().getEncounterAmount()
-	var segment_two_encounter_limit: int = getWorld().getEncounterAmount()
+	#var segment_one_encounter_limit: int = getWorld().getEncounterAmount()
+	#var segment_two_encounter_limit: int = getWorld().getEncounterAmount()
 	var non_fights_assigned: Array = []
-	if getWorldDifficulty() == 1:
-		segment_one_encounter_limit = min(segment_one_encounter_limit, 1)
+	#if getWorldDifficulty() == 1:
+		#segment_one_encounter_limit = min(segment_one_encounter_limit, 1)
 	
 	for empty_spot: EmptyMapNode in empty_spots:
 		var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
@@ -243,15 +253,15 @@ func setEmptySpotsIDS(unique_node_ids: Array) -> void:
 						non_fights_assigned.append(empty_spot)
 						continue
 		
-		if (empty_spot.isSegmentOne() and segment_one_encounter_limit > 0) or (empty_spot.isSegmentTwo() and segment_two_encounter_limit): # Roll an encounter
-			if non_fights_assigned.is_empty() or non_fights_assigned.all(func(x: EmptyMapNode): return !x.isLink(empty_spot)):
-				non_fights_assigned.append(empty_spot)
-				empty_spot.id = 5
-				
-				if empty_spot.isSegmentOne(): segment_one_encounter_limit -= 1
-				else: segment_two_encounter_limit -= 1
-				
-				continue
+		#if (empty_spot.isSegmentOne() and segment_one_encounter_limit > 0) or (empty_spot.isSegmentTwo() and segment_two_encounter_limit): # Roll an encounter
+			#if non_fights_assigned.is_empty() or non_fights_assigned.all(func(x: EmptyMapNode): return !x.isLink(empty_spot)):
+				#non_fights_assigned.append(empty_spot)
+				#empty_spot.id = 5
+				#
+				#if empty_spot.isSegmentOne(): segment_one_encounter_limit -= 1
+				#else: segment_two_encounter_limit -= 1
+				#
+				#continue
 		empty_spot.id = 3
 		
 func onSelectUniqueNodeGeneration(unique_nodes: Array, empty_spot: EmptyMapNode) -> bool:
@@ -478,15 +488,16 @@ func onAddShillingReward(fight_rewards_datastore: FightRewardsDatastore) -> Acti
 	return change_shillings_wrapper
 	
 func onRollRegularCardRewards() -> Array:
+	var base_tier: int = getWorldDifficulty()
 	var enemy_cards: Array = []
 	var enemy_ids: Array = basic_card_ids.duplicate()
 	for i in range(Game.CARD_REWARD_DEFAULT_AMOUNT):
 		var odds: Dictionary = getWorld().base_rarity_odds.getDictionary()
 		var tool_chance: float = getWorld().tool_enemy_spawn_rate / 100.0
-		var tool_ascended_chance: float = getWorld().base_ascended_rate / 100.0
+		var tool_tier_up_odds: float = getWorld().base_tier_up_rate / 100.0
 		var tool_odds: Dictionary = getWorld().base_rarity_odds.getDictionary()
-		var ascend_odds: float = getWorld().base_ascended_rate / 100.0
-		var card_data: SavedDataCard = Random.getRandomCardData(enemy_ids, odds, tool_chance, tool_ascended_chance, tool_odds, ascend_odds)
+		var tier_up_odds: float = getWorld().base_tier_up_rate / 100.0
+		var card_data: SavedDataCard = Random.getRandomCardData(enemy_ids, odds, tool_chance, tool_tier_up_odds, tool_odds, tier_up_odds, base_tier)
 		
 		card_data.team = 1
 		enemy_ids.erase(card_data.id)
@@ -494,15 +505,16 @@ func onRollRegularCardRewards() -> Array:
 	return enemy_cards
 	
 func onRollEpicCardRewards() -> Array:
+	var base_tier: int = getWorldDifficulty()
 	var enemy_cards: Array = []
 	var enemy_ids: Array = basic_card_ids.duplicate()
 	for i in range(EPIC_CARD_REWARDS_CARD_AMOUNT):
 		var odds: Dictionary = getWorld().enemy_spawn_rarity_odds.getDictionary()
 		var tool_chance: float = getWorld().tool_enemy_spawn_rate / 100.0
-		var tool_ascended_chance: float = getWorld().tool_enemy_spawn_rate_ascended / 100.0
+		var tool_tier_up_odds: float = getWorld().tool_enemy_spawn_rate_tier_up / 100.0
 		var tool_odds: Dictionary = getWorld().tool_enemy_spawn_rarity_odds.getDictionary()
-		var ascend_odds: float = getWorld().elite_enemy_ascended_rate / 100.0
-		var card_data: SavedDataCard = Random.getRandomCardData(enemy_ids, odds, tool_chance, tool_ascended_chance, tool_odds, ascend_odds)
+		var tier_up_odds: float = getWorld().elite_enemy_tier_up_rate / 100.0
+		var card_data: SavedDataCard = Random.getRandomCardData(enemy_ids, odds, tool_chance, tool_tier_up_odds, tool_odds, tier_up_odds, base_tier)
 		
 		card_data.team = 1
 		enemy_ids.erase(card_data.id)
@@ -542,11 +554,11 @@ func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, pro
 		return card_data
 		
 	if card_info.rarity != Game.Rarities.EXALT:
-		var ascended_rate: float = getWorld().enemy_ascended_rate if !is_elite else getWorld().elite_enemy_ascended_rate
-		var ascend_card: bool = Random.rollFloat(ascended_rate / 100.0)
-		if ascend_card: card_data.ascended = true
+		var tier_up_rate: float = getWorld().enemy_tier_up_rate if !is_elite else getWorld().elite_enemy_tier_up_rate
+		var tier_up_card: bool = Random.rollFloat(tier_up_rate / 100.0)
+		if tier_up_card: card_data.onTierUp()
 	
-	var tool_spawn_rate: float = getWorld().tool_enemy_spawn_rate if !is_elite else getWorld().tool_enemy_spawn_rate_ascended
+	var tool_spawn_rate: float = getWorld().tool_enemy_spawn_rate
 	var add_tool: bool = Random.rollFloat(tool_spawn_rate / 100.0)
 	if !add_tool:
 		Game.setCardDataFromInfo(card_data, card_info)
@@ -607,8 +619,7 @@ func getLevelPreview(enemy_cards: Array) -> LevelPreview:
 		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, card_data.id)
 		var rarity_value: int = PREVIEW_RARITY_VALUE[card_info.rarity]
 		var tool_value: float = 0.5 if (card_data.tool_data != null) else 0.0
-		var ascended_value: int = int(card_data.ascended)
-		var total_value: float = rarity_value + card_data.energy + tool_value + ascended_value
+		var total_value: float = rarity_value + card_data.energy + tool_value + card_data.tier
 		enemy_card_to_preview_value[card_data] = total_value
 		
 	enemy_cards.sort_custom(func(x: SavedDataCard, y: SavedDataCard):\

@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="ChampionBoonInfo" load_steps=15 format=3 uid="uid://cv3g6h58ibxao"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_3bsiu"]
-[ext_resource type="Script" path="res://scripts/fof/boons/bold_aura.gd" id="1_ff4sl"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/bold_aura.png" id="2_jlfhb"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_g1q30"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_48706"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_p6t1l"]
+[ext_resource type="Script" uid="uid://s1yxhx6fo0dy" path="res://scripts/fof_info/boons/champion_boon_info.gd" id="1_3bsiu"]
+[ext_resource type="Script" uid="uid://c2bsu6c3y4bec" path="res://scripts/fof/boons/bold_aura.gd" id="1_ff4sl"]
+[ext_resource type="Texture2D" uid="uid://chnjosgppxow4" path="res://assets/sprites/game/boons/bold_aura.png" id="2_jlfhb"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_g1q30"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_48706"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_p6t1l"]
 
 [sub_resource type="Resource" id="Resource_a186s"]
 script = ExtResource("6_p6t1l")
 description = "Your next [X] kills by non-Frederic allies gain +1 HP"
-default_values = Array[int]([])
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_vp8v0"]
 script = ExtResource("5_48706")
@@ -19,20 +19,34 @@ description_datastore = SubResource("Resource_a186s")
 [sub_resource type="Resource" id="Resource_jc0rw"]
 script = ExtResource("6_p6t1l")
 description = "Your next [X] kills by non-Frederic allies gain +1 HP"
-default_values = Array[int]([])
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_83pbf"]
 script = ExtResource("5_48706")
 description_datastore = SubResource("Resource_jc0rw")
 
-[sub_resource type="Resource" id="Resource_cqnpy"]
+[sub_resource type="Resource" id="Resource_48706"]
+script = ExtResource("6_p6t1l")
+description = "Your next [X] kills by non-Frederic allies gain +1 HP"
+default_values = Array[int]([1])
+
+[sub_resource type="Resource" id="Resource_p6t1l"]
 script = ExtResource("5_48706")
-description_datastore = SubResource("Resource_jc0rw")
+description_datastore = SubResource("Resource_48706")
+
+[sub_resource type="Resource" id="Resource_cqnpy"]
+script = ExtResource("6_p6t1l")
+description = "Your next [X] kills by non-Frederic allies gain +1 HP"
+default_values = Array[int]([1])
+
+[sub_resource type="Resource" id="Resource_id26v"]
+script = ExtResource("5_48706")
+description_datastore = SubResource("Resource_cqnpy")
 
 [resource]
 script = ExtResource("1_3bsiu")
 champion_id = 1
-tiers = Array[ExtResource("5_48706")]([SubResource("Resource_vp8v0"), SubResource("Resource_83pbf"), SubResource("Resource_cqnpy")])
+tiers = Array[ExtResource("5_48706")]([SubResource("Resource_vp8v0"), SubResource("Resource_83pbf"), SubResource("Resource_p6t1l"), SubResource("Resource_id26v")])
 icon = ExtResource("2_jlfhb")
 rarity = 8
 curse = false

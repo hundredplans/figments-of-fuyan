@@ -35,7 +35,7 @@ func setSaveFileData() -> void:
 	ShillingLabel.setText("SH: " + str(save_file_data.shillings))
 	
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, save_file_data.area_data.id)
-	var area_location: int = area_info.world.world
+	var area_location: int = save_file_data.world_difficulty
 	var level_location: int = clamp(save_file_data.area_data.getEnteredMapLocationProgress(), 0, 10)
 	
 	LocationLabel.text = area_info.name + " | " + str(area_location) + "-" + str(level_location)

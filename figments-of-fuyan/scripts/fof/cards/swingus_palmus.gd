@@ -37,7 +37,7 @@ func getAttackDamage() -> int:
 	return default_damage
 	
 func getExtraDamage() -> int:
-	return 2 if !ascended else 4
+	return 2 if tier == 1 else 4
 
 func onSave() -> SavedDataCard:
 	ability_save['swingus_field_effect_public_id'] = swingus_field_effect_public_id

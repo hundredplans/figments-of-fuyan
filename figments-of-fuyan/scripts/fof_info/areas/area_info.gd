@@ -1,6 +1,5 @@
 class_name AreaInfo extends FofInfo
 
-@export var world: WorldDatastore
 @export var card_background: Image
 @export var champion_entrance_packed: PackedScene
 @export var card_ids: Array[int]

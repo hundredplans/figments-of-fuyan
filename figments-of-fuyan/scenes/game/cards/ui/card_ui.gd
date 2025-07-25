@@ -46,10 +46,8 @@ signal tool_drag_end
 @export var white_outline_canvas: ShaderMaterial
 @export_group("Admin")
 @export var rarities: Array[Image]
-@export var ascended_rarities: Array[Image]
 @export var masks: Array[Texture2D]
 @export var REGULAR_TOOL_ICON_BACKGROUND: Texture2D
-@export var ASCENDED_TOOL_ICON_BACKGROUND: Texture2D
 #endregion
 #region Globals
 const CARD_TO_CENTER_HELD_TIMER: float = 0.2
@@ -83,9 +81,8 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	DraggableParent = _DraggableParent
 	
 	Card = _Card
-	Card.update_ascended.connect(onCardAscended)
 	
-	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])
+	Background.setTexture(rarities[Card.info.rarity])
 	OutlineMask.texture = masks[Card.info.rarity]
 	ArtPop.setTexture(Card.info.art_pop)
 	TextLabel.setText(Card.getDescription())
@@ -115,18 +112,9 @@ func onUpdateStats() -> void:
 	SpeedLabel.text = str(Card.base_stats.speed)
 	EnergyLabel.text = str(Card.energy)
 	
-func onCardAscended(_state: bool) -> void:
-	Background.setTexture(rarities[Card.info.rarity] if !Card.ascended else ascended_rarities[Card.info.rarity])
-	onUpdateStats()
-	TextLabel.setText(Card.getDescription())
-	
 func onToolUpdated(Tool: ToolGD) -> void:
 	ToolControl.visible = Tool != null
 	ToolIcon.setInfo(Tool, false)
-	onToolAscended(Tool.ascended if Tool != null else false)
-	
-func onToolAscended(state: bool) -> void:
-	ToolIconBackground.texture = REGULAR_TOOL_ICON_BACKGROUND if !state else ASCENDED_TOOL_ICON_BACKGROUND
 	
 func onPressed() -> void:
 	if disabled: return

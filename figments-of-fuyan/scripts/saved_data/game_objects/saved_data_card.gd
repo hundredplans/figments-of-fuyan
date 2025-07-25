@@ -7,7 +7,6 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var max_speed: int
 @export var max_health: int
 @export var energy: int
-@export var ascended: bool
 @export var draw_order: int
 @export var card_place: Game.CardPlaces
 @export var turn_state: Game.TurnStates
@@ -33,7 +32,7 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var tier: int
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords := Vector4i.ZERO,\
- _tile_rotation: int = 0, _vision_datastore := VisionDatastoreCard.new(), _team: int = 0, _ascended: bool = false, _attack: int = 0, _health: int = 0,\
+ _tile_rotation: int = 0, _vision_datastore := VisionDatastoreCard.new(), _team: int = 0, _attack: int = 0, _health: int = 0,\
 	_speed: int = 0, _max_speed: int = 0, _max_health: int = 0, _energy: int = 0,\
 	_draw_order: int = 0, _card_place := Game.CardPlaces.NULL, _turn_state := Game.TurnStates.NULL,\
 	_status_effects: Array = [], _attacks: int = 0, _attack_range: int = 1, _delayed_stats: Array = [],\
@@ -52,7 +51,6 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	max_health = _max_health
 	max_speed = _max_speed
 	energy = _energy
-	ascended = _ascended
 	card_place = _card_place
 	draw_order = _draw_order
 	turn_state = _turn_state
@@ -85,3 +83,6 @@ func setBaseStats(stat_datastore: StatsDatastore) -> void:
 	max_speed = stat_datastore.speed
 	max_health = stat_datastore.health
 	energy = stat_datastore.energy
+
+func onTierUp() -> void:
+	tier = min(tier + 1, 4)

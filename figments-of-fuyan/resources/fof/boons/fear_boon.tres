@@ -1,37 +1,60 @@
-[gd_resource type="Resource" script_class="BoonInfo" load_steps=12 format=3]
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=17 format=3 uid="uid://iltyjy0x3xv8"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_info.gd" id="1_52ewj"]
-[ext_resource type="Script" path="res://scripts/fof/boons/fear_boon.gd" id="1_ocbll"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/boons/fear.png" id="2_oyqu1"]
-[ext_resource type="Script" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="2_p3cb1"]
-[ext_resource type="Script" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_ii08n"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_p05qy"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_52ewj"]
+[ext_resource type="Script" uid="uid://cyn044alvvx27" path="res://scripts/fof/boons/fear_boon.gd" id="1_ocbll"]
+[ext_resource type="Texture2D" uid="uid://j55c2msepx11" path="res://assets/sprites/game/boons/fear.png" id="2_oyqu1"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="2_p3cb1"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="5_ii08n"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_p05qy"]
 
 [sub_resource type="Resource" id="Resource_117bl"]
 script = ExtResource("6_p05qy")
-description = "Enemies are stunned for the first [2] Turn"
+description = "Enemies are DAZED for the first [2] Turns"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ka1u6"]
 script = ExtResource("5_ii08n")
 description_datastore = SubResource("Resource_117bl")
 
-[sub_resource type="Resource" id="Resource_lw0r1"]
+[sub_resource type="Resource" id="Resource_ii08n"]
 script = ExtResource("6_p05qy")
-description = "Enemies are stunned for the first [3] Turn"
+description = "Enemies are STUNNED for the first [2] Turns"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_gh145"]
 script = ExtResource("5_ii08n")
-description_datastore = SubResource("Resource_lw0r1")
+description_datastore = SubResource("Resource_ii08n")
+
+[sub_resource type="Resource" id="Resource_lw0r1"]
+script = ExtResource("6_p05qy")
+description = "Enemies are STUNNED for the first [3] Turns"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_7gb4p"]
 script = ExtResource("5_ii08n")
 description_datastore = SubResource("Resource_lw0r1")
 
+[sub_resource type="Resource" id="Resource_bmsjf"]
+script = ExtResource("6_p05qy")
+description = "Enemies are STUNNED for the first [4] Turns"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_p05qy"]
+script = ExtResource("5_ii08n")
+description_datastore = SubResource("Resource_bmsjf")
+
+[sub_resource type="Resource" id="Resource_wwncm"]
+script = ExtResource("6_p05qy")
+description = "Enemies are stunned for the first [3] Turn"
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_hcibf"]
+script = ExtResource("5_ii08n")
+description_datastore = SubResource("Resource_wwncm")
+
 [resource]
 script = ExtResource("1_52ewj")
-tiers = Array[ExtResource("5_ii08n")]([SubResource("Resource_ka1u6"), SubResource("Resource_gh145"), SubResource("Resource_7gb4p")])
+tiers = Array[ExtResource("5_ii08n")]([SubResource("Resource_ka1u6"), SubResource("Resource_gh145"), SubResource("Resource_7gb4p"), SubResource("Resource_p05qy"), SubResource("Resource_hcibf")])
 icon = ExtResource("2_oyqu1")
 rarity = 3
 curse = false

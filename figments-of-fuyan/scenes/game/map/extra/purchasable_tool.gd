@@ -9,7 +9,7 @@ func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFil
 	ToolIcon.pressed.connect(onToolSelected)
 	DisplayedUI = ToolIcon
 	
-	var text: String = "[" + ("a" if item.ascended else "") + "tool=" + str(item.info.id) + "]"
+	var text: String = "[" + str(item.tier) + "tool=" + str(item.info.id) + "]"
 	NameLabel.setText(text)
 	
 func onToolSelected(_Tool: ToolGD) -> void:

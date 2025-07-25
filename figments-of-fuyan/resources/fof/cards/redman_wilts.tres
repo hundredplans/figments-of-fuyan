@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_fhwiw"]
-[ext_resource type="Image" uid="uid://tng4kkyjsisr" path="res://assets/sprites/game/cards/art_pop/redman_wilts.png" id="2_j5sl3"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_u6i83"]
-[ext_resource type="Texture2D" uid="uid://bfej4jfa31cbk" path="res://assets/sprites/game/cards/art_mini/redman_wilts.png" id="2_xf4cx"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_xhvae"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_nqfe4"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_skmeu"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qokvw"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_hq263"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_oijth"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_54y7x"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_rsx1a"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_c1ldd"]
-
-[sub_resource type="Resource" id="Resource_54y7x"]
-script = ExtResource("10_oijth")
-attack = 3
-health = 2
-speed = 2
-energy = 3
-description = "RANGED [1-2]; RAMPAGE: If DUELLING gain [+1] RANGED"
-active_abilities = Array[ExtResource("11_54y7x")]([])
-traits = Array[ExtResource("3_xhvae")]([])
-
-[sub_resource type="Resource" id="Resource_pbeu6"]
-script = ExtResource("10_oijth")
-attack = 3
-health = 2
-speed = 2
-energy = 3
-description = ""
-active_abilities = Array[ExtResource("11_54y7x")]([])
-traits = Array[ExtResource("3_xhvae")]([])
-
-[sub_resource type="Resource" id="Resource_rsx1a"]
-script = ExtResource("10_oijth")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_54y7x")]([])
-traits = Array[ExtResource("3_xhvae")]([])
-
-[sub_resource type="Resource" id="Resource_c1ldd"]
-script = ExtResource("10_oijth")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_54y7x")]([])
-traits = Array[ExtResource("3_xhvae")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_fhwiw"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/redman_wilts.png" id="2_j5sl3"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_u6i83"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/redman_wilts.png" id="2_xf4cx"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_xhvae"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_nqfe4"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_skmeu"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qokvw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_hq263"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_54y7x"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_rsx1a"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_c1ldd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_hmppw"]
 script = ExtResource("13_c1ldd")
 description = "RANGED [1-2]; RAMPAGE: If DUELLING gain [+1] RANGED"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_g8rup"]
 script = ExtResource("12_rsx1a")
@@ -81,15 +40,14 @@ attack = 3
 health = 2
 speed = 2
 energy = 3
-description_datastore = SubResource("Resource_hmppw")
-description = ""
-active_abilities = Array[ExtResource("11_54y7x")]([])
 traits = Array[ExtResource("3_xhvae")]([])
+active_abilities = Array[ExtResource("11_54y7x")]([])
+description_datastore = SubResource("Resource_hmppw")
 
 [sub_resource type="Resource" id="Resource_k4ru1"]
 script = ExtResource("13_c1ldd")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; RAMPAGE: If DUELLING gain [+1] RANGED"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_xslcr"]
 script = ExtResource("12_rsx1a")
@@ -97,57 +55,46 @@ attack = 3
 health = 2
 speed = 2
 energy = 3
+traits = Array[ExtResource("3_xhvae")]([])
+active_abilities = Array[ExtResource("11_54y7x")]([])
 description_datastore = SubResource("Resource_k4ru1")
-description = ""
-active_abilities = Array[ExtResource("11_54y7x")]([])
-traits = Array[ExtResource("3_xhvae")]([])
 
-[sub_resource type="Resource" id="Resource_bn7li"]
+[sub_resource type="Resource" id="Resource_pbeu6"]
 script = ExtResource("13_c1ldd")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; RAMPAGE: If DUELLING gain [+1] RANGED"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_exssl"]
+[sub_resource type="Resource" id="Resource_rsx1a"]
 script = ExtResource("12_rsx1a")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_bn7li")
-description = ""
-active_abilities = Array[ExtResource("11_54y7x")]([])
-traits = Array[ExtResource("3_xhvae")]([])
-
-[sub_resource type="Resource" id="Resource_iwy5p"]
-script = ExtResource("13_c1ldd")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_akqgl"]
-script = ExtResource("12_rsx1a")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_iwy5p")
-description = ""
-active_abilities = Array[ExtResource("11_54y7x")]([])
-traits = Array[ExtResource("3_xhvae")]([])
-
-[resource]
-script = ExtResource("7_hq263")
-tiers = Array[ExtResource("12_rsx1a")]([SubResource("Resource_g8rup"), SubResource("Resource_xslcr"), SubResource("Resource_exssl"), SubResource("Resource_akqgl")])
-_tiers = Array[ExtResource("10_oijth")]([SubResource("Resource_54y7x"), SubResource("Resource_pbeu6"), SubResource("Resource_rsx1a"), SubResource("Resource_c1ldd")])
 attack = 3
 health = 2
 speed = 2
 energy = 3
-rarity = 4
-initial_traits = Array[ExtResource("3_xhvae")]([])
-active_abilities = Array[ExtResource("1_fhwiw")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_xhvae")]([])
+active_abilities = Array[ExtResource("11_54y7x")]([])
+description_datastore = SubResource("Resource_pbeu6")
+
+[sub_resource type="Resource" id="Resource_c1ldd"]
+script = ExtResource("13_c1ldd")
 description = "RANGED [1-2]; RAMPAGE: If DUELLING gain [+1] RANGED"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_bn7li"]
+script = ExtResource("12_rsx1a")
+attack = 3
+health = 2
+speed = 2
+energy = 3
+traits = Array[ExtResource("3_xhvae")]([])
+active_abilities = Array[ExtResource("11_54y7x")]([])
+description_datastore = SubResource("Resource_c1ldd")
+
+[resource]
+script = ExtResource("7_hq263")
+tiers = Array[ExtResource("12_rsx1a")]([SubResource("Resource_g8rup"), SubResource("Resource_xslcr"), SubResource("Resource_rsx1a"), SubResource("Resource_bn7li")])
+archetype = ExtResource("2_u6i83")
+rarity = 4
+flavor_text = ""
 art_mini_coordinate = Vector2i(102, 34)
 art_mini = ExtResource("2_xf4cx")
 art_pop = ExtResource("2_j5sl3")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_xhvae")]([])
-archetype = ExtResource("2_u6i83")
+attack = 3
+health = 2
+speed = 2
+energy = 3
+description = "RANGED [1-2]; RAMPAGE: If DUELLING gain [+1] RANGED"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_xhvae")]([])
+active_abilities = Array[ExtResource("1_fhwiw")]([])
 id = 38
 name = "Redman Wilts"
 gdscript = ExtResource("4_nqfe4")

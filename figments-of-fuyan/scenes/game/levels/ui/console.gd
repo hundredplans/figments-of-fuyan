@@ -50,10 +50,6 @@ func see() -> void:
 	for GameObject in game_objects:
 		GameObject.onUpdateLevelVisible()
 
-func ascend() -> void:
-	if SpectateObject is CardGD:
-		Game.getArea().onPushAction(AscendCardAction.new(SpectateObject, !SpectateObject.ascended))
-
 func tier(value: int) -> void:
 	if SpectateObject is CardGD:
 		SpectateObject.onRetiered(value)
@@ -64,11 +60,11 @@ func status_effect(name_id: Variant, turns: int = 1) -> void:
 		if info != null:
 			SpectateObject.onCreateBaseStatusEffect(info.id, turns)
 
-func deckcard(name_id: Variant, ascended: bool = false) -> void:
+func deckcard(name_id: Variant, _tier: int = 1) -> void:
 	var card_info: CardInfo = getNameIDFofInfo(name_id, CardInfo)
 	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	card_data.tier = _tier
 	Game.setCardDataFromInfo(card_data, card_info)
-	card_data.ascended = ascended
 	
 	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
 	Game.getArea().onPushAction(AddToDeckAction.new(Card))
@@ -77,7 +73,7 @@ func damage(damage_dealt: int) -> void:
 	if SpectateObject is CardGD:
 		SpectateObject.onPushAction(DamageAction.new(SpectateObject, SpectateObject, damage_dealt))
 
-func tool(name_id: Variant, ascended: bool = false) -> void:
+func tool(name_id: Variant, _tier: int = 1) -> void:
 	if SpectateObject is CardGD:
 		if name_id is int and name_id == 0: # Remove tool if id is 0
 			Game.getArea().onPushAction(RemoveToolAction.new(SpectateObject))
@@ -85,8 +81,9 @@ func tool(name_id: Variant, ascended: bool = false) -> void:
 			
 		var info: ToolInfo = getNameIDFofInfo(name_id, ToolInfo)
 		if info != null:
-			Game.getArea().onPushAction(\
-			AddToolAction.new(SpectateObject, SavedData.onLoadModel(info.saved_data.new(info.id, true, 0, ascended), SpectateObject)))
+			var Tool: ToolGD = SavedData.onLoadModel(info.saved_data.new(info.id, true, 0), SpectateObject)
+			Tool.tier = _tier
+			Game.getArea().onPushAction(AddToolAction.new(SpectateObject, Tool))
 
 func stat(type: Game.Stats, value: int) -> void:
 	if SpectateObject is CardGD:
@@ -102,15 +99,15 @@ func endgame(win_state: bool) -> void:
 func shillings(delta: int) -> void:
 	Game.getArea().onPushAction(ChangeShillingsAction.new(delta))
 
-func addboon(name_id: Variant, ascended: bool = false) -> void:
+func addboon(name_id: Variant, _tier: int = 1) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
-	Game.getArea().onPushAction(AddBoonAction.new(info.id, ascended))
+	Game.getArea().onPushAction(AddBoonAction.new(info.id, _tier))
 
-func insert(name_id: Variant, ascended: bool = false) -> void:
+func insert(name_id: Variant, _tier: int = 1) -> void:
 	var card_info: CardInfo = getNameIDFofInfo(name_id, CardInfo)
 	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	card_data.tier = _tier
 	Game.setCardDataFromInfo(card_data, card_info)
-	card_data.ascended = ascended
 	var Card: CardGD = SavedData.onLoadModel(card_data, level)
 	Game.getArea().onPushAction(InsertAction.new(Card))
 	

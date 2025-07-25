@@ -34,7 +34,7 @@ func onIObject(action: Action) -> void:
 			var Tile: TileGD = getRandomAdjacentTile()
 			if Tile != null:
 				var card_tile_rotation: int = Game.getRelativeTileRotation(Tile, action.Tile)
-				var Card: CardGD = Game.getNewFieldCard(27, Tile, 2, card_tile_rotation, false)
+				var Card: CardGD = Game.getNewFieldCard(27, Tile, 2, card_tile_rotation, Game.getArea().getWorldDifficulty())
 				stepped_on_card_public_id = action.Card.public_id
 				actions.append(AwakenAction.new(Card, Tile))
 				onRemoveMoveAndAttackActions(action.Card)

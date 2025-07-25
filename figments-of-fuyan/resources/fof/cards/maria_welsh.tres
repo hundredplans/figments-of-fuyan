@@ -1,58 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jtfwr"]
-[ext_resource type="Texture2D" uid="uid://c0a8p8nkow4vn" path="res://assets/sprites/game/cards/art_mini/maria_welsh.png" id="2_8q5n5"]
-[ext_resource type="Image" uid="uid://dfk81n741eb2k" path="res://assets/sprites/game/cards/art_pop/maria_welsh.png" id="2_jmwwe"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_m78bd"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_1xmu0"]
-[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_p228n"]
-[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_weg0y"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qhuv1"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_661xi"]
-[ext_resource type="Script" uid="uid://ykyl8f36lqw3" path="res://scripts/tier_datastore.gd" id="10_nnl53"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ji44w"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_s8mpg"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_ggyhl"]
-
-[sub_resource type="Resource" id="Resource_ji44w"]
-script = ExtResource("10_nnl53")
-attack = 2
-health = 4
-speed = 2
-energy = 3
-description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
-active_abilities = Array[ExtResource("11_ji44w")]([])
-traits = Array[ExtResource("3_1xmu0")]([])
-
-[sub_resource type="Resource" id="Resource_q7hur"]
-script = ExtResource("10_nnl53")
-attack = 2
-health = 4
-speed = 2
-energy = 3
-description = ""
-active_abilities = Array[ExtResource("11_ji44w")]([])
-traits = Array[ExtResource("3_1xmu0")]([])
-
-[sub_resource type="Resource" id="Resource_s8mpg"]
-script = ExtResource("10_nnl53")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_ji44w")]([])
-traits = Array[ExtResource("3_1xmu0")]([])
-
-[sub_resource type="Resource" id="Resource_ggyhl"]
-script = ExtResource("10_nnl53")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description = ""
-active_abilities = Array[ExtResource("11_ji44w")]([])
-traits = Array[ExtResource("3_1xmu0")]([])
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jtfwr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/maria_welsh.png" id="2_8q5n5"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/maria_welsh.png" id="2_jmwwe"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_m78bd"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_1xmu0"]
+[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_p228n"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_weg0y"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qhuv1"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_661xi"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ji44w"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_s8mpg"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_ggyhl"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -73,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_jok7s"]
 script = ExtResource("13_ggyhl")
 description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
-default_values = 0
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_3uged"]
 script = ExtResource("12_s8mpg")
@@ -81,15 +40,14 @@ attack = 2
 health = 4
 speed = 2
 energy = 3
-description_datastore = SubResource("Resource_jok7s")
-description = ""
-active_abilities = Array[ExtResource("11_ji44w")]([])
 traits = Array[ExtResource("3_1xmu0")]([])
+active_abilities = Array[ExtResource("11_ji44w")]([])
+description_datastore = SubResource("Resource_jok7s")
 
 [sub_resource type="Resource" id="Resource_7yola"]
 script = ExtResource("13_ggyhl")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
+default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_7inqs"]
 script = ExtResource("12_s8mpg")
@@ -97,57 +55,46 @@ attack = 2
 health = 4
 speed = 2
 energy = 3
+traits = Array[ExtResource("3_1xmu0")]([])
+active_abilities = Array[ExtResource("11_ji44w")]([])
 description_datastore = SubResource("Resource_7yola")
-description = ""
-active_abilities = Array[ExtResource("11_ji44w")]([])
-traits = Array[ExtResource("3_1xmu0")]([])
 
-[sub_resource type="Resource" id="Resource_huyvp"]
+[sub_resource type="Resource" id="Resource_q7hur"]
 script = ExtResource("13_ggyhl")
-description = ""
-default_values = 0
+description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
+default_values = Array[int]([])
 
-[sub_resource type="Resource" id="Resource_3je71"]
+[sub_resource type="Resource" id="Resource_s8mpg"]
 script = ExtResource("12_s8mpg")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_huyvp")
-description = ""
-active_abilities = Array[ExtResource("11_ji44w")]([])
-traits = Array[ExtResource("3_1xmu0")]([])
-
-[sub_resource type="Resource" id="Resource_ropgb"]
-script = ExtResource("13_ggyhl")
-description = ""
-default_values = 0
-
-[sub_resource type="Resource" id="Resource_uodab"]
-script = ExtResource("12_s8mpg")
-attack = -1
-health = -1
-speed = -1
-energy = -1
-description_datastore = SubResource("Resource_ropgb")
-description = ""
-active_abilities = Array[ExtResource("11_ji44w")]([])
-traits = Array[ExtResource("3_1xmu0")]([])
-
-[resource]
-script = ExtResource("7_661xi")
-tiers = Array[ExtResource("12_s8mpg")]([SubResource("Resource_3uged"), SubResource("Resource_7inqs"), SubResource("Resource_3je71"), SubResource("Resource_uodab")])
-_tiers = Array[ExtResource("10_nnl53")]([SubResource("Resource_ji44w"), SubResource("Resource_q7hur"), SubResource("Resource_s8mpg"), SubResource("Resource_ggyhl")])
 attack = 2
 health = 4
 speed = 2
 energy = 3
-rarity = 4
-initial_traits = Array[ExtResource("3_1xmu0")]([])
-active_abilities = Array[ExtResource("1_jtfwr")]([])
-flavor_text = ""
+traits = Array[ExtResource("3_1xmu0")]([])
+active_abilities = Array[ExtResource("11_ji44w")]([])
+description_datastore = SubResource("Resource_q7hur")
+
+[sub_resource type="Resource" id="Resource_ggyhl"]
+script = ExtResource("13_ggyhl")
 description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
-ascended_description = ""
+default_values = Array[int]([])
+
+[sub_resource type="Resource" id="Resource_huyvp"]
+script = ExtResource("12_s8mpg")
+attack = 2
+health = 4
+speed = 2
+energy = 3
+traits = Array[ExtResource("3_1xmu0")]([])
+active_abilities = Array[ExtResource("11_ji44w")]([])
+description_datastore = SubResource("Resource_ggyhl")
+
+[resource]
+script = ExtResource("7_661xi")
+tiers = Array[ExtResource("12_s8mpg")]([SubResource("Resource_3uged"), SubResource("Resource_7inqs"), SubResource("Resource_s8mpg"), SubResource("Resource_huyvp")])
+archetype = ExtResource("2_m78bd")
+rarity = 4
+flavor_text = ""
 art_mini_coordinate = Vector2i(104, 7)
 art_mini = ExtResource("2_8q5n5")
 art_pop = ExtResource("2_jmwwe")
@@ -162,7 +109,14 @@ plus_health = 0
 plus_speed = 0
 plus_energy = 0
 ascended_traits = Array[ExtResource("3_1xmu0")]([])
-archetype = ExtResource("2_m78bd")
+attack = 2
+health = 4
+speed = 2
+energy = 3
+description = "RANGED [1-2]; REVENGE: Attacks the DUELLING enemy if in RANGED range"
+ascended_description = ""
+initial_traits = Array[ExtResource("3_1xmu0")]([])
+active_abilities = Array[ExtResource("1_jtfwr")]([])
 id = 39
 name = "Maria Welsh"
 gdscript = ExtResource("4_p228n")

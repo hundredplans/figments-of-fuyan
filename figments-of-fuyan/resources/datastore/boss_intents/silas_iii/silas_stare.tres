@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossIntent" load_steps=2 format=3 uid="uid://ccv4d700oi1gx"]
+
+[ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="1_ub1qn"]
+
+[resource]
+script = ExtResource("1_ub1qn")
+name = "SilasStare"
+description = "Lower SPD of enemies in vision by [1] SPD for [1] Turn. Becomes a passive in Phase 2"
+type = 3
+duration = 1
+default_cooldown = 3
+off_vision_use_cooldown = false
+combat_type = 1
+metadata/_custom_type_script = "uid://c85vjl4hwbga5"

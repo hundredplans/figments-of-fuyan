@@ -26,8 +26,8 @@ func onToolUnequipped() -> void:
 func onToolHolderAwakened() -> void:
 	super()
 	
-func onToolAscended(state: bool) -> void:
-	super(state)
+func onRetiered(tier: int) -> void:
+	super(tier)
 	onResetCharges()
 	
 func getDescription(use_default_values: bool = false) -> String:
@@ -36,4 +36,4 @@ func getDescription(use_default_values: bool = false) -> String:
 	return Helper.getDescription(super(), [charges])
 	
 func getDefaultCharges() -> int:
-	return 1 if !ascended else 2
+	return 1 if tier == 1 else 2

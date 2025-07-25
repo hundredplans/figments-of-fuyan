@@ -30,7 +30,7 @@ func onPostAction() -> void:
 	if item is CardGD:
 		onPushAction(AddToDeckAction.new(item))
 	elif item is BoonGD:
-		onPushAction(AddBoonAction.new(item.info.id, item.getAscended()))
+		onPushAction(AddBoonAction.new(item.info.id, item.getTier()))
 
 func onItemChosen(item: FofGD) -> void:
 	chosen_index = items.find(item)

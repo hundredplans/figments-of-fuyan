@@ -1,14 +1,12 @@
 extends CardGD
 
-const UNASCENDED_HEIGHT_DIFF: int = 3
-const ASCENDED_HEIGHT_DIFF: int = 5
 func onProcessAction(action: Action) -> void:
 	super(action)
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Highjump":
-		var hdiff: int = 3 if !ascended else 5
+		var hdiff: int = 3 if tier == 1 else 5
 		var adjacent_tiles: Array = Game.getAdjacentTiles(Tile).filter(func(x: TileGD): return (x.getHeight() > Tile.getHeight() + 1) and x.getHeight() - Tile.getHeight() <= hdiff)
 		var high_tiles: Array = adjacent_tiles.filter(func(x: TileGD): return !x.isOccupied() and !x.isSolid())
 		return ActiveEffectTiles.new(adjacent_tiles, high_tiles)

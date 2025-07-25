@@ -19,7 +19,7 @@ func onProcessAction(action: Action) -> void:
 			for Card in affected_cards.duplicate(): onRemoveFromAura(Card)
 
 func getAttackBuff() -> int:
-	return 1 if !ascended else 2
+	return 1 if tier == 1 else 2
 	
 func onAddToAura(Card: CardGD) -> void:
 	if Card != self:
@@ -50,11 +50,11 @@ func isValidEliteLevelSpawns(enemy_cards: Array) -> bool:
 	var one_attack_amount: int = enemy_cards.filter(func(x: SavedDataCard): return x.attack == 1).size()
 	return one_attack_amount >= 2
 	
-func onAscendedUpdated(state: bool) -> void:
-	super(state)
-	var mult: int = 1 if state else -1
-	for Card in affected_cards:
-		onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, 1 * mult,  0, false, true, true)))
+#func onAscendedUpdated(state: bool) -> void:
+	#super(state)
+	#var mult: int = 1 if state else -1
+	#for Card in affected_cards:
+		#onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, 1 * mult,  0, false, true, true)))
 
 func onRegularReset() -> void:
 	super()
