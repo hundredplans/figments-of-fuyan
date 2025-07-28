@@ -633,7 +633,7 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 	
 	if tiles.is_empty(): return []
 	if use_type == UseType.END: return []
-	if enemies.is_empty(): return tiles.pick_random()
+	if enemies.is_empty(): return [MovementAction.new(self, tiles.pick_random().getMovementPathTiles())]
 	
 	var DFL := DefaultFightLogic.new(self, tiles, enemies, allies)
 	var path: Array = DFL.getKillPath()

@@ -1,10 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://d184bk44cwqxg"]
+[gd_scene load_steps=4 format=3 uid="uid://d184bk44cwqxg"]
 
 [ext_resource type="Script" uid="uid://dnto4suhfydeh" path="res://scenes/editors/card_editor/card_editor.gd" id="1_dfyc6"]
+[ext_resource type="PackedScene" uid="uid://bloplwh136nrx" path="res://scenes/globals/autoload/action_manager.tscn" id="2_4lyxr"]
 [ext_resource type="PackedScene" uid="uid://b4xysgmu7vm0o" path="res://scenes/editors/card_editor/editable_card_ui.tscn" id="2_sk8fp"]
 
 [node name="CardEditor" type="Node"]
 script = ExtResource("1_dfyc6")
+ActionManagerPacked = ExtResource("2_4lyxr")
 EDITABLE_CARD_UI_PACKED = ExtResource("2_sk8fp")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

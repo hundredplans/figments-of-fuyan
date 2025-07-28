@@ -1,5 +1,6 @@
 extends MarginContainer
 
+@onready var BossShieldUI: Control = %BossShieldUI
 @onready var BossNameLabel: Label = %BossNameLabel
 @onready var HealthBar: Control = %HealthBar
 
@@ -22,3 +23,6 @@ func setHealthBar(BossCard: CardGD) -> void:
 	
 func onUpdateBossNameLabel(BossCard: CardGD) -> void:
 	BossNameLabel.text = BossCard.getNameFromInfo()
+
+func setBossShieldUI(vis: bool) -> void:
+	BossShieldUI.visible = vis

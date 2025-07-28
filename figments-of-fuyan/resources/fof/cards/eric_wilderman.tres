@@ -31,7 +31,8 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_l43r7"]
 script = ExtResource("13_nk2tg")
-description = "ARRIVE: Gain SHIELD; Gain +1 ATT when this loses SHIELD"
+description = "ARRIVE: Gain SHIELD
+Gain +1 ATT when this loses SHIELD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_kisrv"]
@@ -46,7 +47,8 @@ description_datastore = SubResource("Resource_l43r7")
 
 [sub_resource type="Resource" id="Resource_clvq0"]
 script = ExtResource("13_nk2tg")
-description = "ARRIVE: Gain SHIELD; Gain +2 ATT when this loses SHIELD"
+description = "ARRIVE: Gain SHIELD
+Gain +2 ATT when this loses SHIELD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_lx7fg"]
@@ -61,13 +63,14 @@ description_datastore = SubResource("Resource_clvq0")
 
 [sub_resource type="Resource" id="Resource_ddnk0"]
 script = ExtResource("13_nk2tg")
-description = "ARRIVE: Gain SHIELD; Gain +2 ATT when this loses SHIELD"
+description = "ARRIVE: Gain SHIELD
+Gain +2 ATT when this loses SHIELD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_umwcf"]
 script = ExtResource("12_umwcf")
 attack = 1
-health = 2
+health = 4
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_j1t5v")]([])
@@ -76,13 +79,14 @@ description_datastore = SubResource("Resource_ddnk0")
 
 [sub_resource type="Resource" id="Resource_nk2tg"]
 script = ExtResource("13_nk2tg")
-description = "ARRIVE: Gain SHIELD; Gain +2 ATT when this loses SHIELD"
+description = "ARRIVE: Gain SHIELD
+Gain +3 ATT when this loses SHIELD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_v7v5e"]
 script = ExtResource("12_umwcf")
 attack = 1
-health = 2
+health = 4
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_j1t5v")]([])

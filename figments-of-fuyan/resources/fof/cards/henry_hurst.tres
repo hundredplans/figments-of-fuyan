@@ -39,7 +39,8 @@ metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_s8aw2"]
 script = ExtResource("13_chffd")
-description = "ARMOR [1]; REVENGE: Deal [1] DMG to the enemy if they are adjacent"
+description = "ARMOR [1]
+REVENGE: Deal [1] DMG to the enemy if they are adjacent"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_1gsbs"]
@@ -62,7 +63,8 @@ description_datastore = SubResource("Resource_s8aw2")
 
 [sub_resource type="Resource" id="Resource_p48tj"]
 script = ExtResource("13_chffd")
-description = "ARMOR [1]; REVENGE: Deal [1] DMG to the enemy if they are adjacent"
+description = "ARMOR [1]
+REVENGE: Deal [1] DMG to the enemy if they are adjacent"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_cnj7q"]
@@ -77,13 +79,14 @@ description_datastore = SubResource("Resource_p48tj")
 
 [sub_resource type="Resource" id="Resource_2mjfi"]
 script = ExtResource("13_chffd")
-description = "ARMOR [1]; REVENGE: Deal [1] DMG to the enemy if they are adjacent"
+description = "ARMOR [1]
+REVENGE: Deal [1] DMG to the enemy if they are adjacent"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_nfaeg"]
 script = ExtResource("12_nfaeg")
 attack = 1
-health = 4
+health = 6
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_3o6f8")]([])
@@ -92,13 +95,14 @@ description_datastore = SubResource("Resource_2mjfi")
 
 [sub_resource type="Resource" id="Resource_chffd"]
 script = ExtResource("13_chffd")
-description = "ARMOR [1]; REVENGE: Deal [1] DMG to the enemy if they are adjacent"
+description = "ARMOR [2]
+REVENGE: Deal [1] DMG to the enemy if they are adjacent"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_4p520"]
 script = ExtResource("12_nfaeg")
 attack = 1
-health = 4
+health = 5
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_3o6f8")]([])

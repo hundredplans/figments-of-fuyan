@@ -1,17 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://qkgbggvltb85"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_i12jc"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/jackie_palm.png" id="2_5ylc1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/jackie_palm.png" id="2_80y21"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_vuqhq"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w7mss"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_k50xd"]
-[ext_resource type="Script" path="res://scripts/fof/cards/jackie_palm.gd" id="4_x18c2"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_67qi5"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/jackie_palm.glb" id="5_o02gv"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ggyia"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_mpbya"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_ke1et"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_i12jc"]
+[ext_resource type="Image" uid="uid://bruaie558itsg" path="res://assets/sprites/game/cards/art_pop/jackie_palm.png" id="2_5ylc1"]
+[ext_resource type="Texture2D" uid="uid://cbsie10wiidpk" path="res://assets/sprites/game/cards/art_mini/jackie_palm.png" id="2_80y21"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_vuqhq"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_w7mss"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_k50xd"]
+[ext_resource type="Script" uid="uid://b2bngcsoobxjb" path="res://scripts/fof/cards/jackie_palm.gd" id="4_x18c2"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_67qi5"]
+[ext_resource type="PackedScene" uid="uid://df4s4fcc02l1r" path="res://assets/models/fof/cards/jackie_palm.glb" id="5_o02gv"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ggyia"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_mpbya"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_ke1et"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rv3f5"]
 size = Vector3(0.880859, 2.02158, 0.3125)
@@ -32,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_gnfv6"]
 script = ExtResource("13_ke1et")
 description = "REVENGE [[X]]: Heal [1] HP if there's an ally Palm in vision"
-default_values = Array[int]([])
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_qo70u"]
 script = ExtResource("12_mpbya")
@@ -47,7 +47,7 @@ description_datastore = SubResource("Resource_gnfv6")
 [sub_resource type="Resource" id="Resource_o40oc"]
 script = ExtResource("13_ke1et")
 description = "REVENGE [[X]]: Heal [1] HP if there's an ally Palm in vision"
-default_values = Array[int]([])
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_h0hb1"]
 script = ExtResource("12_mpbya")
@@ -61,12 +61,12 @@ description_datastore = SubResource("Resource_o40oc")
 
 [sub_resource type="Resource" id="Resource_3cjst"]
 script = ExtResource("13_ke1et")
-description = "REVENGE [[X]]: Heal [1] HP if there's an ally Palm in vision"
-default_values = Array[int]([])
+description = "REVENGE [[X]]: Heal [2] HP if there's an ally Palm in vision"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_mpbya"]
 script = ExtResource("12_mpbya")
-attack = 2
+attack = 3
 health = 5
 speed = 3
 energy = 3
@@ -76,13 +76,13 @@ description_datastore = SubResource("Resource_3cjst")
 
 [sub_resource type="Resource" id="Resource_ke1et"]
 script = ExtResource("13_ke1et")
-description = "REVENGE [[X]]: Heal [1] HP if there's an ally Palm in vision"
-default_values = Array[int]([])
+description = "REVENGE [[X]]: Heal [2] HP if there's an ally Palm in vision"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_megd3"]
 script = ExtResource("12_mpbya")
-attack = 2
-health = 5
+attack = 4
+health = 6
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_w7mss")]([])

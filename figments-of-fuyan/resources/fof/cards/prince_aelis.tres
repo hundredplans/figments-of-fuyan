@@ -37,7 +37,7 @@ default_values = Array[int]([])
 [sub_resource type="Resource" id="Resource_x1dm2"]
 script = ExtResource("12_m6jx3")
 attack = 1
-health = 2
+health = 1
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_6jscv")]([])
@@ -46,13 +46,13 @@ description_datastore = SubResource("Resource_ppd67")
 
 [sub_resource type="Resource" id="Resource_hrnix"]
 script = ExtResource("13_coh2o")
-description = "Varoman cards in hand cost [2] less"
+description = "Varoman cards in hand cost [1] less"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_qlei8"]
 script = ExtResource("12_m6jx3")
-attack = 1
-health = 2
+attack = 2
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_6jscv")]([])
@@ -66,8 +66,8 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_m6jx3"]
 script = ExtResource("12_m6jx3")
-attack = 1
-health = 2
+attack = 2
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_6jscv")]([])
@@ -76,13 +76,13 @@ description_datastore = SubResource("Resource_tcjcg")
 
 [sub_resource type="Resource" id="Resource_coh2o"]
 script = ExtResource("13_coh2o")
-description = "Varoman cards in hand cost [2] less"
+description = "Varoman cards in hand cost [3] less"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ewg7v"]
 script = ExtResource("12_m6jx3")
-attack = 1
-health = 2
+attack = 2
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_6jscv")]([])

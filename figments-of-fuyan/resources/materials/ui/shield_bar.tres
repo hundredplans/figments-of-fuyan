@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cet0tnoe3x7ob"]
+
+[ext_resource type="Shader" uid="uid://d0k75b73kjti5" path="res://resources/shaders/shield_bar_ui.gdshader" id="1_xstdw"]
+
+[resource]
+shader = ExtResource("1_xstdw")
+shader_parameter/lowest_color = Color(0.89, 0.926667, 1, 1)
+shader_parameter/highest_color = Color(0.65, 0.755, 1, 1)
+shader_parameter/line_width = 24.0
+shader_parameter/spacing = 64.0
+shader_parameter/color_speed = 2.5
+shader_parameter/speed = 20.0
+shader_parameter/rect_size = Vector2(1070, 30)

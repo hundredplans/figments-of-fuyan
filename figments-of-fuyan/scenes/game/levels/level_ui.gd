@@ -58,6 +58,7 @@ signal dragged_begin
 signal dragged_end
 
 const BOTTOM_SCREEN_OFFSET: int = 5
+const SHIELD_ID: int = 3
 
 var save_file: SaveFileGD
 var level: LevelGD
@@ -530,18 +531,18 @@ func onProcessAction(action: Action) -> void:
 			var BossCard: CardGD = level.getBoss() 
 			if action is AwakenBossAction:
 				setEpicFightControlInfo()
-				
 			elif action is StatAction and action.hasCard(BossCard):
 				EpicFightControl.setHealthBar(BossCard)
-					
 			elif action is ChangeBossPhaseAction:
 				EpicFightControl.onUpdateBossNameLabel(BossCard)
-				
 			elif action is AddTraitAction and action.Card == BossCard:
 				EpicFightControl.setHealthBar(BossCard)
-				
 			elif action is RemoveTraitAction and action.Card == BossCard:
 				EpicFightControl.setHealthBar(BossCard)
+			elif action is AddFieldEffectAction and action.getCard() == BossCard and action.getFieldEffectId() == SHIELD_ID:
+				EpicFightControl.setBossShieldUI(true)
+			elif action is RemoveFieldEffectAction and action.getCard() == BossCard and action.getFieldEffectId() == SHIELD_ID:
+				EpicFightControl.setBossShieldUI(false)
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:

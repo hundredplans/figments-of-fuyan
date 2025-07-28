@@ -22,7 +22,7 @@ description = "Heal the most injured ally on field [2] HP and TELEPORT them to a
 max_charges = 1
 delay = 2.2
 camera_type = 1
-charges = 0
+charges = 1
 used = false
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lr0d0"]
@@ -54,7 +54,7 @@ used = false
 [sub_resource type="Resource" id="Resource_v8r6o"]
 script = ExtResource("13_wliwi")
 description = "ABILITY [[X]]: Heal the most injured ally on field [2] HP and TELEPORT them to a spawn tile"
-default_values = Array[int]([])
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_aw6w0"]
 script = ExtResource("12_irtnv")
@@ -69,7 +69,7 @@ description_datastore = SubResource("Resource_v8r6o")
 [sub_resource type="Resource" id="Resource_14kvw"]
 script = ExtResource("11_vsbbn")
 name = "Cocus Pocus"
-description = "Heal an injured ally on field [2] HP and TELEPORT them to a spawn tile"
+description = "Heal the [3] most injured ally on field to full HP and TELEPORT them to a spawn tile"
 max_charges = 1
 delay = 2.2
 camera_type = 1
@@ -79,12 +79,12 @@ metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_61dq0"]
 script = ExtResource("13_wliwi")
-description = "ABILITY [2]: Heal an injured ally on field [2] HP and TELEPORT them to a spawn tile"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal the [2] most injured ally on field [2] HP and TELEPORT them to a spawn tile"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_08ugp"]
 script = ExtResource("12_irtnv")
-attack = 1
+attack = 2
 health = 2
 speed = 2
 energy = 2
@@ -94,12 +94,12 @@ description_datastore = SubResource("Resource_61dq0")
 
 [sub_resource type="Resource" id="Resource_yypan"]
 script = ExtResource("13_wliwi")
-description = "ABILITY [2]: Heal an injured ally on field [2] HP and TELEPORT them to a spawn tile"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal the [3] most injured ally on field [3] HP and TELEPORT them to a spawn tile"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_irtnv"]
 script = ExtResource("12_irtnv")
-attack = 1
+attack = 2
 health = 2
 speed = 2
 energy = 2
@@ -109,12 +109,12 @@ description_datastore = SubResource("Resource_yypan")
 
 [sub_resource type="Resource" id="Resource_wliwi"]
 script = ExtResource("13_wliwi")
-description = "ABILITY [2]: Heal an injured ally on field [2] HP and TELEPORT them to a spawn tile"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal the [3] most injured ally on field to full HP and TELEPORT them to a spawn tile"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_u46xl"]
 script = ExtResource("12_irtnv")
-attack = 1
+attack = 2
 health = 2
 speed = 2
 energy = 2

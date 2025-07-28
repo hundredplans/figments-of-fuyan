@@ -22,7 +22,7 @@ description = "Gain ARMOR [1] and +1 ATT +1 HP per REVENGE triggered"
 max_charges = 1
 delay = 0.0
 camera_type = 0
-charges = 0
+charges = 1
 used = false
 metadata/_custom_type_script = "uid://cdbphjba7jkam"
 
@@ -54,7 +54,9 @@ used = false
 
 [sub_resource type="Resource" id="Resource_xw6wc"]
 script = ExtResource("13_5crwq")
-description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+description = "REVENGE: Gain
++1 ATT +1 HP
+when you trigger your ability
 ABILITY [1]: Gain ARMOR [1]"
 default_values = Array[int]([])
 
@@ -70,7 +72,9 @@ description_datastore = SubResource("Resource_xw6wc")
 
 [sub_resource type="Resource" id="Resource_myut2"]
 script = ExtResource("13_5crwq")
-description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+description = "REVENGE: Gain
++1 ATT +1 HP
+when you trigger your ability
 ABILITY [1]: Gain ARMOR [1]"
 default_values = Array[int]([])
 
@@ -86,14 +90,16 @@ description_datastore = SubResource("Resource_myut2")
 
 [sub_resource type="Resource" id="Resource_wkkql"]
 script = ExtResource("13_5crwq")
-description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+description = "REVENGE: Gain
++1 ATT +1 HP
+when you trigger your ability
 ABILITY [1]: Gain ARMOR [1]"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_vwyj8"]
 script = ExtResource("12_vwyj8")
-attack = 2
-health = 6
+attack = 3
+health = 7
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
@@ -102,14 +108,16 @@ description_datastore = SubResource("Resource_wkkql")
 
 [sub_resource type="Resource" id="Resource_5crwq"]
 script = ExtResource("13_5crwq")
-description = "REVENGE: Gain +1 ATT +1 HP  when you trigger your ability
+description = "REVENGE: Gain
++1 ATT +1 HP
+when you trigger your ability
 ABILITY [1]: Gain ARMOR [1]"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_jobq8"]
 script = ExtResource("12_vwyj8")
-attack = 2
-health = 6
+attack = 3
+health = 9
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])

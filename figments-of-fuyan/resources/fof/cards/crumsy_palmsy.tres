@@ -49,9 +49,9 @@ description_datastore = SubResource("Resource_lx20r")
 
 [sub_resource type="Resource" id="Resource_54js0"]
 script = ExtResource("13_rd7w5")
-description = "RAMPAGE [2]
-TRAUMA [2]
-BLOODTHIRST [2]:
+description = "RAMPAGE [[X]]
+TRAUMA [[Y]]
+BLOODTHIRST [[Z]]:
 Gain [1] HP"
 default_values = Array[int]([2, 2, 2])
 
@@ -67,9 +67,9 @@ description_datastore = SubResource("Resource_54js0")
 
 [sub_resource type="Resource" id="Resource_8ivrq"]
 script = ExtResource("13_rd7w5")
-description = "RAMPAGE [2]
-TRAUMA [2]
-BLOODTHIRST [2]:
+description = "RAMPAGE
+TRAUMA
+BLOODTHIRST:
 Gain [1] HP"
 default_values = Array[int]([2, 2, 2])
 
@@ -85,15 +85,15 @@ description_datastore = SubResource("Resource_8ivrq")
 
 [sub_resource type="Resource" id="Resource_rd7w5"]
 script = ExtResource("13_rd7w5")
-description = "RAMPAGE [2]
-TRAUMA [2]
-BLOODTHIRST [2]:
+description = "RAMPAGE
+TRAUMA
+BLOODTHIRST:
 Gain [1] HP"
 default_values = Array[int]([2, 2, 2])
 
 [sub_resource type="Resource" id="Resource_5v62l"]
 script = ExtResource("12_givbp")
-attack = 3
+attack = 5
 health = 2
 speed = 2
 energy = 3

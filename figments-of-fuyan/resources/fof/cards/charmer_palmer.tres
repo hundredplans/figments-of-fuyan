@@ -22,7 +22,7 @@ description = "Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally
 max_charges = 1
 delay = 3.0
 camera_type = 0
-charges = 0
+charges = 1
 used = false
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mx2ak"]
@@ -44,7 +44,8 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_jpq06"]
 script = ExtResource("11_jpq06")
 name = "Charming Stance"
-description = "Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
+description = "Heal [1] HP to allies in vision
+Gain +1 ATT for each healed ally"
 max_charges = 1
 delay = 3.0
 camera_type = 0
@@ -53,8 +54,9 @@ used = false
 
 [sub_resource type="Resource" id="Resource_irq21"]
 script = ExtResource("13_c0p3f")
-description = "ABILITY [[X]]: Heal [1] HP to allies in vision; Gain +1 ATT for each healed ally"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal [1] HP to allies in vision
+Gain +1 ATT for each healed ally"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_7c457"]
 script = ExtResource("12_kibq8")
@@ -69,7 +71,8 @@ description_datastore = SubResource("Resource_irq21")
 [sub_resource type="Resource" id="Resource_hd7mi"]
 script = ExtResource("11_jpq06")
 name = "Charming Stance"
-description = "Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
+description = "Heal [2] HP to allies in vision
+Gain +2 ATT for each healed ally"
 max_charges = 1
 delay = 3.0
 camera_type = 0
@@ -79,13 +82,14 @@ metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_po6a1"]
 script = ExtResource("13_c0p3f")
-description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal [2] HP to allies in vision
+Gain +1 ATT for each healed ally"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_xhkm1"]
 script = ExtResource("12_kibq8")
 attack = 1
-health = 3
+health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_ope8q")]([])
@@ -94,13 +98,14 @@ description_datastore = SubResource("Resource_po6a1")
 
 [sub_resource type="Resource" id="Resource_ff6cw"]
 script = ExtResource("13_c0p3f")
-description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal [2] HP to allies in vision
+Gain +2 ATT for each healed ally"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_kibq8"]
 script = ExtResource("12_kibq8")
 attack = 1
-health = 3
+health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_ope8q")]([])
@@ -109,13 +114,14 @@ description_datastore = SubResource("Resource_ff6cw")
 
 [sub_resource type="Resource" id="Resource_c0p3f"]
 script = ExtResource("13_c0p3f")
-description = "ABILITY [[X]]: Heal [3] HP to allies in vision; Gain +1 ATT for each healed ally"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal [2] HP to allies in vision
+Gain +2 ATT for each healed ally"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_tuspk"]
 script = ExtResource("12_kibq8")
 attack = 1
-health = 3
+health = 7
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_ope8q")]([])

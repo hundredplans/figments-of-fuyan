@@ -14,3 +14,11 @@ func onPostAction() -> void:
 
 func getLogInfo() -> Array:
 	return ["FieldEffect: " + FieldEffect.info.name if FieldEffect != null else ""]
+
+func getCard() -> CardGD:
+	if FieldEffect == null: return null
+	return FieldEffect.Card
+	
+func getFieldEffectId() -> int:
+	if FieldEffect == null: return -1
+	return FieldEffect.info.id

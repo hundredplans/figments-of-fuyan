@@ -4,6 +4,7 @@ const START_X: int = -12
 const OFFSET: int = 3
 const CARD_UI_OFFSET := Vector2(-120, -400)
 
+@export var ActionManagerPacked: PackedScene
 @export var EDITABLE_CARD_UI_PACKED: PackedScene
 
 @onready var TieredCardGrid: GridContainer = %TieredCardGrid
@@ -12,6 +13,10 @@ const CARD_UI_OFFSET := Vector2(-120, -400)
 @onready var CardParent: Node3D = %CardParent
 
 func _ready() -> void:
+	#var ActionManager: Node = ActionManagerPacked.instantiate()
+	#add_child(ActionManager)
+	#Game.ActionManagerReference = ActionManager
+	
 	var card_id_to_area_id: Dictionary[int, int] = {}
 	for area_info: AreaInfo in Helper.getFofInfoArray(AreaInfo):
 		for id: int in area_info.card_ids:

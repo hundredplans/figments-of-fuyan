@@ -66,8 +66,8 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_p6nf4"]
 script = ExtResource("12_p6nf4")
-attack = 3
-health = 2
+attack = 4
+health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_xobv8")]([])
@@ -76,13 +76,13 @@ description_datastore = SubResource("Resource_lpc65")
 
 [sub_resource type="Resource" id="Resource_n7tox"]
 script = ExtResource("13_n7tox")
-description = "On Hit: Deal [2X] DMG extra for each Palm ally the target has RAMPAGED or BLOODTHIRST"
+description = "On Hit: Deal [3X] DMG extra for each Palm ally the target has RAMPAGED or BLOODTHIRST"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_lfvrw"]
 script = ExtResource("12_p6nf4")
-attack = 3
-health = 2
+attack = 4
+health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_xobv8")]([])

@@ -61,7 +61,7 @@ description_datastore = SubResource("Resource_raage")
 
 [sub_resource type="Resource" id="Resource_vbfyd"]
 script = ExtResource("13_3407n")
-description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
+description = "REVENGE: Closest ally in vision gains +1 ATT for [2] Turns"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ambev"]
@@ -76,13 +76,13 @@ description_datastore = SubResource("Resource_vbfyd")
 
 [sub_resource type="Resource" id="Resource_3407n"]
 script = ExtResource("13_3407n")
-description = "REVENGE: Closest ally in vision gains +1 ATT for [1] Turn"
+description = "REVENGE: Closest ally in vision gains +1 ATT for [2] Turns"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_hi56o"]
 script = ExtResource("12_ambev")
 attack = 1
-health = 6
+health = 8
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_5fo1h")]([])

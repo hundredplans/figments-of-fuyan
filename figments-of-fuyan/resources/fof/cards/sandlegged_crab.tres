@@ -99,8 +99,8 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_gb15k"]
 script = ExtResource("12_gb15k")
-attack = 2
-health = 5
+attack = 3
+health = 6
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_dg7vn")]([])
@@ -109,13 +109,13 @@ description_datastore = SubResource("Resource_3i32s")
 
 [sub_resource type="Resource" id="Resource_wg4xy"]
 script = ExtResource("13_wg4xy")
-description = "HOSTILE; ABILITY: Gain ARMOR [1] for [1] Turn"
+description = "HOSTILE; ABILITY: Gain ARMOR [2] for [1] Turn"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_vt3nu"]
 script = ExtResource("12_gb15k")
-attack = 2
-health = 5
+attack = 3
+health = 7
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_dg7vn")]([])

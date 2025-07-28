@@ -31,7 +31,8 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_ch0gc"]
 script = ExtResource("13_sfcfk")
-description = "ARRIVE: Deal [2] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
+description = "ARRIVE: Deal [2] DMG to self
+RAMPAGE: Heal this and allies in vision [1] HP"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_lkk6w"]
@@ -46,7 +47,8 @@ description_datastore = SubResource("Resource_ch0gc")
 
 [sub_resource type="Resource" id="Resource_bm5xf"]
 script = ExtResource("13_sfcfk")
-description = "ARRIVE: Deal [3] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
+description = "ARRIVE: Deal [3] DMG to self
+RAMPAGE: Heal this and allies in vision [1] HP"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_76fo2"]
@@ -61,13 +63,14 @@ description_datastore = SubResource("Resource_bm5xf")
 
 [sub_resource type="Resource" id="Resource_86152"]
 script = ExtResource("13_sfcfk")
-description = "ARRIVE: Deal [3] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
+description = "ARRIVE: Deal [3] DMG to self
+RAMPAGE: Heal this and allies in vision [2] HP"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_micap"]
 script = ExtResource("12_micap")
 attack = 3
-health = 5
+health = 6
 speed = 3
 energy = 3
 traits = Array[ExtResource("3_6ae6u")]([])
@@ -76,13 +79,14 @@ description_datastore = SubResource("Resource_86152")
 
 [sub_resource type="Resource" id="Resource_sfcfk"]
 script = ExtResource("13_sfcfk")
-description = "ARRIVE: Deal [3] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
+description = "ARRIVE: Deal [4] DMG to self
+RAMPAGE: Heal this and allies in vision [2] HP"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_xlwkp"]
 script = ExtResource("12_micap")
-attack = 3
-health = 5
+attack = 4
+health = 7
 speed = 3
 energy = 3
 traits = Array[ExtResource("3_6ae6u")]([])

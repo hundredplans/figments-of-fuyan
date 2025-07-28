@@ -17,7 +17,7 @@ func onHit(_damage_action: DamageAction, _attack_action: AttackAction) -> void:
 	#on_hit_charges = getDefaultCharges()
 	
 func getDescription(use_default_values: bool = false) -> String:
-	if getTier() >= 2:
+	if getTier() >= 2 and !use_default_values:
 		return Helper.getDescription(super(), [on_hit_charges])
 	return super(use_default_values)
 

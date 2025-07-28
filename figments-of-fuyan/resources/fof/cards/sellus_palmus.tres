@@ -1,17 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=29 format=3 uid="uid://pudlbmekhwjv"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_iqmb7"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
-[ext_resource type="Script" path="res://scripts/fof/cards/sellus_palmus.gd" id="3_av7uo"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="3_jq4xn"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_ox6gs"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_aawy5"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_xhb1x"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_burdn"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_nrtu7"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
+[ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_iqmb7"]
+[ext_resource type="PackedScene" uid="uid://xgamssjyk4yp" path="res://assets/models/fof/cards/sellus_palmus.glb" id="3_aih6y"]
+[ext_resource type="Script" uid="uid://cv1xfpsox6p1d" path="res://scripts/fof/cards/sellus_palmus.gd" id="3_av7uo"]
+[ext_resource type="Texture2D" uid="uid://csv1wpnctbpvq" path="res://assets/sprites/game/cards/art_mini/sellus_palmus.png" id="3_jq4xn"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="5_ox6gs"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_aawy5"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_xhb1x"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_burdn"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_nrtu7"]
 
 [sub_resource type="Resource" id="Resource_atwem"]
 script = ExtResource("1_jmwbd")
@@ -67,8 +67,9 @@ used = false
 
 [sub_resource type="Resource" id="Resource_smg26"]
 script = ExtResource("13_nrtu7")
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = Array[int]([])
+description = "MOBILE
+ABILITY [[X]]: Heal [1] HP to adjacent allies"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_tb5ko"]
 script = ExtResource("5_ox6gs")
@@ -91,7 +92,7 @@ description_datastore = SubResource("Resource_smg26")
 [sub_resource type="Resource" id="Resource_t27it"]
 script = ExtResource("11_xhb1x")
 name = "Palmsale"
-description = "Heal [1] HP to adjacent allies"
+description = "Heal [1] HP to allies in a [2] Tile range"
 max_charges = 2
 delay = 0.0
 camera_type = 0
@@ -101,8 +102,9 @@ metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_i6nb6"]
 script = ExtResource("13_nrtu7")
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = Array[int]([])
+description = "MOBILE
+ABILITY [[X]]: Heal [1] HP to adjacent allies"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_keks8"]
 script = ExtResource("12_burdn")
@@ -116,8 +118,9 @@ description_datastore = SubResource("Resource_i6nb6")
 
 [sub_resource type="Resource" id="Resource_bibs7"]
 script = ExtResource("13_nrtu7")
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = Array[int]([])
+description = "MOBILE
+ABILITY [[X]]: Heal [1] HP to allies in a [2] Tile range"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_burdn"]
 script = ExtResource("12_burdn")
@@ -131,8 +134,9 @@ description_datastore = SubResource("Resource_bibs7")
 
 [sub_resource type="Resource" id="Resource_nrtu7"]
 script = ExtResource("13_nrtu7")
-description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
-default_values = Array[int]([])
+description = "MOBILE
+ABILITY [[X]]: Heal [2] HP to allies in a [2] Tile range"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_qdr0r"]
 script = ExtResource("12_burdn")

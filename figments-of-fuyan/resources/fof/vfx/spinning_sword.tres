@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="VFXInfo" load_steps=5 format=3 uid="uid://re7gku2psykr"]
+
+[ext_resource type="Script" uid="uid://dqibl8fis4oey" path="res://scripts/fof/vfx/spinning_sword.gd" id="1_uk1ug"]
+[ext_resource type="Script" uid="uid://bf1pqoxm05pxm" path="res://scripts/saved_data/vfx/saved_data_vfx.gd" id="2_ggyla"]
+[ext_resource type="PackedScene" uid="uid://bdy7msgfe8sm1" path="res://scenes/game/vfx/spinning_sword.tscn" id="3_ggyla"]
+[ext_resource type="Script" uid="uid://xme4wt13nchx" path="res://scripts/fof_info/vfx/vfx_info.gd" id="3_ii38v"]
+
+[resource]
+script = ExtResource("3_ii38v")
+delay = 0.0
+scene = ExtResource("3_ggyla")
+id = 2
+name = "Spinning Sword"
+gdscript = ExtResource("1_uk1ug")
+saved_data = ExtResource("2_ggyla")
+metadata/_custom_type_script = "uid://xme4wt13nchx"

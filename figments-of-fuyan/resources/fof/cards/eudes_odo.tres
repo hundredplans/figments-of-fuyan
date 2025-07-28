@@ -46,8 +46,8 @@ description_datastore = SubResource("Resource_px2wy")
 
 [sub_resource type="Resource" id="Resource_gklbo"]
 script = ExtResource("13_hwanq")
-description = "RAMPAGE [1]: Gain +1 ATT and SHIELD"
-default_values = Array[int]([])
+description = "RAMPAGE [[X]]: Gain +1 ATT and SHIELD"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_swk5j"]
 script = ExtResource("12_o1yo0")
@@ -61,8 +61,8 @@ description_datastore = SubResource("Resource_gklbo")
 
 [sub_resource type="Resource" id="Resource_0e6lf"]
 script = ExtResource("13_hwanq")
-description = "RAMPAGE [1]: Gain +1 ATT and SHIELD"
-default_values = Array[int]([])
+description = "RAMPAGE [[X]]: Gain +2 ATT and SHIELD"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_o1yo0"]
 script = ExtResource("12_o1yo0")
@@ -76,13 +76,13 @@ description_datastore = SubResource("Resource_0e6lf")
 
 [sub_resource type="Resource" id="Resource_hwanq"]
 script = ExtResource("13_hwanq")
-description = "RAMPAGE [1]: Gain +1 ATT and SHIELD"
-default_values = Array[int]([])
+description = "RAMPAGE [[X]]: Gain +2 ATT and SHIELD"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_euc4y"]
 script = ExtResource("12_o1yo0")
 attack = 4
-health = 2
+health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_5dqkf")]([])

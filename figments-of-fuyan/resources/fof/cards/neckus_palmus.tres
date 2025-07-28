@@ -1,17 +1,17 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://c3k8afscj0cvv"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_u23tf"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/neckus_palmus.png" id="2_8b6eu"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/neckus_palmus.png" id="2_8i4fr"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_jja8n"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_yjov8"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_d4ttk"]
-[ext_resource type="Script" path="res://scripts/fof/cards/neckus_palmus.gd" id="4_sqndq"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_gi8hp"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/neckus_palmus.glb" id="5_y482v"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_xhmdy"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_5yiio"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_iu4kl"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_u23tf"]
+[ext_resource type="Texture2D" uid="uid://tj55flr5jslh" path="res://assets/sprites/game/cards/art_mini/neckus_palmus.png" id="2_8b6eu"]
+[ext_resource type="Image" uid="uid://b05u7eu8caa8i" path="res://assets/sprites/game/cards/art_pop/neckus_palmus.png" id="2_8i4fr"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_jja8n"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_yjov8"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_d4ttk"]
+[ext_resource type="Script" uid="uid://cu7lr3um3cf5n" path="res://scripts/fof/cards/neckus_palmus.gd" id="4_sqndq"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_gi8hp"]
+[ext_resource type="PackedScene" uid="uid://cn6kges8llma0" path="res://assets/models/fof/cards/neckus_palmus.glb" id="5_y482v"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_xhmdy"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_5yiio"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_iu4kl"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rpmhn"]
 size = Vector3(0.810059, 2.711, 0.424866)
@@ -31,8 +31,8 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_xkwai"]
 script = ExtResource("13_iu4kl")
-description = "When Healed to Full HP [[X]]: Gain +1 HP"
-default_values = Array[int]([])
+description = "When Healed [[X]]: Gain +1 HP"
+default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_7jips"]
 script = ExtResource("12_5yiio")
@@ -46,8 +46,8 @@ description_datastore = SubResource("Resource_xkwai")
 
 [sub_resource type="Resource" id="Resource_cxr3u"]
 script = ExtResource("13_iu4kl")
-description = "When Healed to Full HP [[X]]: Gain +2 HP"
-default_values = Array[int]([])
+description = "When Healed [[X]]: Gain +2 HP"
+default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_3jfae"]
 script = ExtResource("12_5yiio")
@@ -61,13 +61,13 @@ description_datastore = SubResource("Resource_cxr3u")
 
 [sub_resource type="Resource" id="Resource_518gu"]
 script = ExtResource("13_iu4kl")
-description = "When Healed to Full HP [[X]]: Gain +2 HP"
-default_values = Array[int]([])
+description = "When Healed [[X]]: Gain +2 HP"
+default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_5yiio"]
 script = ExtResource("12_5yiio")
-attack = 2
-health = 5
+attack = 3
+health = 6
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_jja8n")]([])
@@ -76,13 +76,13 @@ description_datastore = SubResource("Resource_518gu")
 
 [sub_resource type="Resource" id="Resource_iu4kl"]
 script = ExtResource("13_iu4kl")
-description = "When Healed to Full HP [[X]]: Gain +2 HP"
-default_values = Array[int]([])
+description = "When Healed [[X]]: Gain +3 HP"
+default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_dfhpq"]
 script = ExtResource("12_5yiio")
-attack = 2
-health = 5
+attack = 3
+health = 6
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_jja8n")]([])

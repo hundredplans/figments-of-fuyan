@@ -61,14 +61,14 @@ description_datastore = SubResource("Resource_kh856")
 
 [sub_resource type="Resource" id="Resource_4xnl0"]
 script = ExtResource("13_rlmgp")
-description = "Allies in vision on [1] ATT gain +2 ATT"
+description = "Allies in vision on [2] ATT or less gain +2 ATT"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_gvyod"]
 script = ExtResource("12_gvyod")
 attack = 1
 health = 2
-speed = 2
+speed = 3
 energy = 2
 traits = Array[ExtResource("2_8abg6")]([])
 active_abilities = Array[ExtResource("11_lwk41")]([])
@@ -76,14 +76,14 @@ description_datastore = SubResource("Resource_4xnl0")
 
 [sub_resource type="Resource" id="Resource_rlmgp"]
 script = ExtResource("13_rlmgp")
-description = "Allies in vision on [1] ATT gain +2 ATT"
+description = "Allies in vision on [2] ATT or less gain +3 ATT"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_6eidm"]
 script = ExtResource("12_gvyod")
 attack = 1
 health = 2
-speed = 2
+speed = 3
 energy = 2
 traits = Array[ExtResource("2_8abg6")]([])
 active_abilities = Array[ExtResource("11_lwk41")]([])

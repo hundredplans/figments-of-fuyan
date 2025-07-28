@@ -12,9 +12,10 @@ const LONG_SLASH_PHASE_TWO_RANGE: int = 5
 const LONG_SLASH_SPEED_LIMIT: int = 1
 const LONG_SLASH_ACTION_DELAY: float = 2.0
 const GRAND_SLASH_ACTION_DELAY: float = 2.0
-
+const SPINNING_SWORD_VFX_ID: int = 2
 const ARMOR_TRAIT_ID: int = 1
 
+var spinning_sword_public_id: int
 var spinning_sword_turns: int
 var active_speed: int
 
@@ -22,7 +23,7 @@ var active_speed: int
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if isValidEndOfTurn(action):
-		spinning_sword_turns = min(spinning_sword_turns - 1, 0)
+		onSpinningSwordLowerTurns()
 		
 	if action.post:
 		if action is MoveToTileAction and action.Card == self:
@@ -31,6 +32,7 @@ func onProcessAction(action: Action) -> void:
 func onSave() -> SavedDataEpicCard:
 	ability_save['spinning_sword_turns'] = spinning_sword_turns
 	ability_save['active_speed'] = active_speed
+	ability_save['spinning_sword_public_id'] = spinning_sword_public_id
 	return super()
 
 func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> void:
@@ -91,11 +93,26 @@ func onSpinningSwordSetIntents() -> BossTileIntents:
 	return BossTileIntents.new(tile_intents, {})
 	
 func onSpinningSword(use_type: UseType) -> Array:
-	if use_type == UseType.START: spinning_sword_turns = SPINNING_SWORD_START_TURNS
+	if use_type == UseType.START:
+		spinning_sword_turns = SPINNING_SWORD_START_TURNS
+		var SpinningSword: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(SPINNING_SWORD_VFX_ID, true), self)
+		spinning_sword_public_id = SpinningSword.public_id
+		return [CreateVFXAction.new(SpinningSword, false)]
 	return []
 	
 func isSpinningSword() -> bool:
 	return spinning_sword_turns > 0 or getPhase() == 2
+	
+func onSpinningSwordLowerTurns() -> void:
+	spinning_sword_turns = max(spinning_sword_turns - 1, 0)
+	if spinning_sword_turns == 0:
+		onDestroySpinningSwordVFX()
+		
+func onDestroySpinningSwordVFX() -> void:
+	spinning_sword_turns = -1
+	var SpinningSword: VFXGD = Game.onFindPublicIDObject(spinning_sword_public_id)
+	if SpinningSword == null: return
+	onPushAction(DestroyVFXAction.new(SpinningSword))
 #endregion
 
 #region Reposition
@@ -135,7 +152,7 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 		
 		if tiles.is_empty(): return []
 		if use_type == UseType.END: return []
-		if enemies.is_empty(): return tiles.pick_random()
+		if enemies.is_empty(): return [MovementAction.new(self, tiles.pick_random().getMovementPathTiles())]
 		
 		var DFL := DefaultFightLogic.new(self, tiles, enemies, allies)
 		var path: Array = DFL.getKillPath()
@@ -153,6 +170,9 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 			
 		if !path.is_empty():
 			actions.append(MovementAction.new(self, path))
+	elif isSpinningSword():
+		var adjacent_enemies: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), getTile()))
+		actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
 	return actions
 #endregion Autoattack
 
@@ -218,7 +238,7 @@ func onDefensiveStance(use_type: UseType) -> Array:
 	return actions
 	
 func onDefensiveStanceCondition() -> BossIntentConditionResult:
-	return BossIntentConditionResult.new(getFirstFieldEffect(SHIELD_ID) != null)
+	return BossIntentConditionResult.new(getFirstFieldEffect(SHIELD_ID) == null)
 #endregion
 
 #region GrandSlash
@@ -319,7 +339,7 @@ func onGrandSlashCondition() -> BossIntentConditionResultGrandSlash:
 		return BossIntentConditionResultGrandSlash.new(false)
 	
 	var boss_intent_condition_result := BossIntentConditionResultGrandSlash.new(true)
-	boss_intent_condition_result.setTileRotation(tile_rotation)
+	boss_intent_condition_result.setTileRotation(best_tile_rotation)
 	return boss_intent_condition_result
 #endregion
 
@@ -356,7 +376,7 @@ func onLongSlashSetIntents() -> BossTileIntents:
 	
 func onLongSlash(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	if use_type == UseType.START:
-		active_speed = AUTOATTACK_PHASE_ONE_SPEED_LIMIT
+		active_speed = LONG_SLASH_SPEED_LIMIT
 	
 	tiles = getsetMovementRange(active_speed)
 	if use_type == UseType.END: tiles.append(getTile())
@@ -415,6 +435,11 @@ func onLongSlash(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		var animation_action := AnimationAction.new(self, "LongSlash")
 		animation_action.setActionDelay(LONG_SLASH_ACTION_DELAY)
 		actions.append(animation_action)
+		
+		if isSpinningSword():
+			var adjacent_enemies: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), getTile()))
+			adjacent_enemies = adjacent_enemies.filter(func(x: CardGD): return x not in damagables)
+			damagables += adjacent_enemies
 		actions.append(DamageAction.new(self, damagables, attack, Game.DamageTypes.OTHER))
 	return actions
 	

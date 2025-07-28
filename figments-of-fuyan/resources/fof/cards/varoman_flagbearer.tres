@@ -22,7 +22,7 @@ description = "Give an ally in vision +1 ATT for [1] Turn"
 max_charges = 1
 delay = 0.0
 camera_type = 0
-charges = 0
+charges = 1
 used = false
 metadata/_custom_type_script = "uid://cdbphjba7jkam"
 
@@ -55,7 +55,7 @@ used = false
 [sub_resource type="Resource" id="Resource_cdh72"]
 script = ExtResource("13_qahs6")
 description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-default_values = Array[int]([])
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_s4fbh"]
 script = ExtResource("12_efujh")
@@ -81,7 +81,7 @@ metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 [sub_resource type="Resource" id="Resource_omumq"]
 script = ExtResource("13_qahs6")
 description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-default_values = Array[int]([])
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_qf5r7"]
 script = ExtResource("12_efujh")
@@ -96,13 +96,13 @@ description_datastore = SubResource("Resource_omumq")
 [sub_resource type="Resource" id="Resource_fmhn4"]
 script = ExtResource("13_qahs6")
 description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-default_values = Array[int]([])
+default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_efujh"]
 script = ExtResource("12_efujh")
 attack = 1
 health = 2
-speed = 2
+speed = 3
 energy = 1
 traits = Array[ExtResource("2_3rsmk")]([])
 active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_hwdwp")])
@@ -110,14 +110,14 @@ description_datastore = SubResource("Resource_fmhn4")
 
 [sub_resource type="Resource" id="Resource_qahs6"]
 script = ExtResource("13_qahs6")
-description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Give an ally in vision +2 ATT for [1] Turn"
+default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_5kkcc"]
 script = ExtResource("12_efujh")
 attack = 1
 health = 2
-speed = 2
+speed = 3
 energy = 1
 traits = Array[ExtResource("2_3rsmk")]([])
 active_abilities = Array[ExtResource("11_ela83")]([SubResource("Resource_hwdwp")])

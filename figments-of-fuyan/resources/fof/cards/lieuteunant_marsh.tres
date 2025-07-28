@@ -61,7 +61,8 @@ description_datastore = SubResource("Resource_neh0h")
 
 [sub_resource type="Resource" id="Resource_puyp1"]
 script = ExtResource("13_go1cr")
-description = "On Hit: Deal [1]  DMG per ally in vision"
+description = "ARMOR [1]
+On Hit: Deal [1]  DMG per ally in vision"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_41wtu"]
@@ -76,13 +77,14 @@ description_datastore = SubResource("Resource_puyp1")
 
 [sub_resource type="Resource" id="Resource_go1cr"]
 script = ExtResource("13_go1cr")
-description = "On Hit: Deal [1]  DMG per ally in vision"
+description = "ARMOR [1]
+On Hit: Deal [1]  DMG per ally in vision"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_rcuhl"]
 script = ExtResource("12_41wtu")
 attack = 2
-health = 5
+health = 7
 speed = 3
 energy = 4
 traits = Array[ExtResource("5_8w667")]([])

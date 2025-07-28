@@ -32,7 +32,7 @@ _bundled = {
 [sub_resource type="Resource" id="Resource_fck7u"]
 script = ExtResource("13_qlv8j")
 description = "END OF TURN {[X]/4}: Deal [2] DMG to a random enemy in vision"
-default_values = Array[int]([])
+default_values = Array[int]([0])
 
 [sub_resource type="Resource" id="Resource_s2mx1"]
 script = ExtResource("12_7r1ym")
@@ -47,12 +47,12 @@ description_datastore = SubResource("Resource_fck7u")
 [sub_resource type="Resource" id="Resource_veryq"]
 script = ExtResource("13_qlv8j")
 description = "END OF TURN {[X]/3}: Deal [2] DMG to a random enemy in vision"
-default_values = Array[int]([])
+default_values = Array[int]([0])
 
 [sub_resource type="Resource" id="Resource_87sn8"]
 script = ExtResource("12_7r1ym")
 attack = 0
-health = 4
+health = 3
 speed = 1
 energy = 2
 traits = Array[ExtResource("2_f2ey4")]([])
@@ -62,12 +62,12 @@ description_datastore = SubResource("Resource_veryq")
 [sub_resource type="Resource" id="Resource_xxsna"]
 script = ExtResource("13_qlv8j")
 description = "END OF TURN {[X]/3}: Deal [2] DMG to a random enemy in vision"
-default_values = Array[int]([])
+default_values = Array[int]([0])
 
 [sub_resource type="Resource" id="Resource_7r1ym"]
 script = ExtResource("12_7r1ym")
 attack = 0
-health = 4
+health = 6
 speed = 1
 energy = 2
 traits = Array[ExtResource("2_f2ey4")]([])
@@ -76,13 +76,13 @@ description_datastore = SubResource("Resource_xxsna")
 
 [sub_resource type="Resource" id="Resource_qlv8j"]
 script = ExtResource("13_qlv8j")
-description = "END OF TURN {[X]/3}: Deal [2] DMG to a random enemy in vision"
-default_values = Array[int]([])
+description = "END OF TURN {[X]/3}: Deal [3] DMG to a random enemy in vision"
+default_values = Array[int]([0])
 
 [sub_resource type="Resource" id="Resource_ow8uo"]
 script = ExtResource("12_7r1ym")
 attack = 0
-health = 4
+health = 7
 speed = 1
 energy = 2
 traits = Array[ExtResource("2_f2ey4")]([])
