@@ -94,7 +94,6 @@ func setInfo(_area: AreaGD) -> void:
 	
 func setArea(_area: AreaGD) -> void:
 	area = _area
-	area.onLoadWorldDatastore(world_difficulty)
 	
 func setStashSortType(_stash_sort_type: int) -> void:
 	stash_sort_type = _stash_sort_type

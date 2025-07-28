@@ -61,9 +61,10 @@ func onLoadData(data: SavedData) -> void:
 	map_nodes_data = data.map_nodes_data
 	active_level_data = data.level_data
 	encountered_encounter_ids = data.encountered_encounter_ids
+	onLoadWorldDatastore()
 	
-func onLoadWorldDatastore(difficulty: int) -> void:
-	match difficulty:
+func onLoadWorldDatastore() -> void:
+	match Game.getSaveFile().getWorldDifficulty():
 		1: world = load(WORLD_ONE_DATASTORE_PATH)
 		2: world = load(WORLD_TWO_DATASTORE_PATH)
 		3: world = load(WORLD_THREE_DATASTORE_PATH)

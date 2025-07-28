@@ -13,6 +13,7 @@ const LONG_SLASH_SPEED_LIMIT: int = 1
 const LONG_SLASH_ACTION_DELAY: float = 2.0
 const GRAND_SLASH_ACTION_DELAY: float = 2.0
 const SPINNING_SWORD_VFX_ID: int = 2
+const JUMP_ATTACK_DISTANCE: int = 4
 const ARMOR_TRAIT_ID: int = 1
 
 var spinning_sword_public_id: int
@@ -57,8 +58,8 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 	
 func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) -> BossIntent:
-	if boss_intents.any(func(x: BossIntent): return x.name == "GrandSlash"): # Remove later
-		return getBossIntentByName("GrandSlash")
+	if boss_intents.any(func(x: BossIntent): return x.name == "JumpAttack"): # Remove later
+		return getBossIntentByName("JumpAttack")
 	
 	if boss_intent.name == "Reposition":
 		return getBossIntentByName("SpinAttack")
@@ -360,7 +361,49 @@ func onGrandSlashCondition() -> BossIntentConditionResultGrandSlash:
 #region JumpAttack
 func onJumpAttackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
-	#tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(), coords))
+	var condition: BossIntentConditionResultSilasJumpAttack = boss_datastore.getConditionResult("JumpAttack")
+	var JumpToTile: TileGD = Game.getTile(condition.getJumpToCoords())
+	var StartJumpTile: TileGD = Game.getTile(condition.getStartJumpCoords())
+	if JumpToTile != null and StartJumpTile != null:
+		var low_damage_tiles: Array = []
+		var high_damage_tiles: Array = []
+		var relative_tr: int = Game.getRelativeTileRotation(StartJumpTile, JumpToTile)
+		var direction: Vector4i = Game.getCubeDirectionExtra(relative_tr)
+		var left_direction: Vector4i = Game.getCubeDirectionExtra((relative_tr - 1) % 6)
+		var right_direction: Vector4i = Game.getCubeDirectionExtra((relative_tr + 1) % 6)
+		for i: int in range(1, 3):
+			var forward_coords := direction * i
+			var ForwardTile: TileGD = Game.getTile(forward_coords + StartJumpTile.getCoords())
+			if ForwardTile != null:
+				high_damage_tiles.append(ForwardTile)
+			
+			var left_mult_direction := StartJumpTile.getCoords() + (left_direction) + (direction * (i - 1))
+			var LeftSideTile: TileGD = Game.getTile(left_mult_direction)
+			if LeftSideTile != null:
+				low_damage_tiles.append(LeftSideTile)
+				
+			var right_mult_direction := StartJumpTile.getCoords() + (right_direction) + (direction * (i - 1))
+			var RightSideTile: TileGD = Game.getTile(right_mult_direction)
+			if RightSideTile != null:
+				low_damage_tiles.append(RightSideTile)
+			
+		high_damage_tiles += Game.getAdjacentTiles(JumpToTile)
+		low_damage_tiles += Game.getAdjacentTiles(JumpToTile, 2)
+		low_damage_tiles = low_damage_tiles.filter(func(x: TileGD): return x not in high_damage_tiles)
+		
+		if getPhase() == 2:
+			high_damage_tiles += low_damage_tiles
+			low_damage_tiles = []
+			
+		for LowDamageTile: TileGD in low_damage_tiles:
+			tile_intents.append(TileIntentDatastore.new(Game.TileIntents.LIGHT_RED, null, LowDamageTile.getCoords()))
+			
+		var tile_color := Game.TileIntents.RED if getPhase() == 1 else Game.TileIntents.DARK_RED
+		for HighDamageTile: TileGD in high_damage_tiles:
+			tile_intents.append(TileIntentDatastore.new(tile_color, null, HighDamageTile.getCoords()))
+
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.BLACK, null, StartJumpTile.getCoords()))
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.BLACK, null, JumpToTile.getCoords()))
 	return BossTileIntents.new(tile_intents, {})
 	
 func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
@@ -368,7 +411,24 @@ func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	return actions
 	
 func onJumpAttackCondition() -> BossIntentConditionResult:
-	return BossIntentConditionResult.new(true)
+	var tiles: Array = getsetMovementRange(max_speed)
+	tiles.append(getTile())
+	tiles.shuffle()
+	var enemy_tiles: Array = Game.getEnemyUnits(team).map(func(x: CardGD): return x.getTile())
+	if !tiles.is_empty():
+		for StartJumpTile: TileGD in tiles:
+			for diag: Vector4i in Game.getCubeDirectionsExtra():
+				diag *= JUMP_ATTACK_DISTANCE
+				var jump_to_coords: Vector4i = diag + StartJumpTile.getCoords()
+				var JumpToTile: TileGD = Game.getTile(jump_to_coords)
+				if JumpToTile == null: continue
+				if JumpToTile in enemy_tiles:
+					var condition := BossIntentConditionResultSilasJumpAttack.new(true)
+					condition.setStartJumpCoords(StartJumpTile.getCoords())
+					condition.setJumpToCoords(jump_to_coords)
+					return condition
+	
+	return BossIntentConditionResultSilasJumpAttack.new(false)
 #endregion
 
 #region LongSlash
