@@ -16,6 +16,7 @@ const GREYSCALE_OUTLINE_MATERIAL: String = "res://resources/materials/colors/uns
 const LIGHTER_RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/lighter_red_tile_intent"
 const RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/red_tile_intent"
 const GREEN_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/green_tile_intent"
+const BLACK_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/black_tile_intent"
 const DARK_RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/dark_red_tile_intent"
 const PURPLE_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/purple_tile_intent"
 const LIGHT_RED_TILE_INTENT_MODEL_PATH: String = "res://assets/models/general/tile_intents/light_red_tile_intent"
@@ -96,6 +97,7 @@ func getTileIntentModelPath(tile_intent: Game.TileIntents, _variation: int = 0) 
 		Game.TileIntents.LIGHT_RED: path = LIGHT_RED_TILE_INTENT_MODEL_PATH
 		Game.TileIntents.LIGHTER_RED: path = LIGHTER_RED_TILE_INTENT_MODEL_PATH
 		Game.TileIntents.YELLOW: path = YELLOW_TILE_INTENT_MODEL_PATH
+		Game.TileIntents.BLACK: path = BLACK_TILE_INTENT_MODEL_PATH
 	
 	path += ".glb"
 	return path

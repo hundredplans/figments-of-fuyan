@@ -1,7 +1,7 @@
 extends EpicCardGD
 
 const SILAS_STARE_ENEMY_AMOUNT_CONDITION: int = 2
-const SPINNING_SWORD_START_TURNS: int = 5
+const SPINNING_SWORD_START_TURNS: int = 6
 const AUTOATTACK_PHASE_ONE_SPEED_LIMIT: int = 2
 const SPIN_ATTACK_ACTION_DELAY: float = 2.0
 const DEFENSIVE_STANCE_ACTION_DELAY: float = 2.0
@@ -22,7 +22,7 @@ var active_speed: int
 #region Default
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if isValidEndOfTurn(action):
+	if isValidEndOfTurn(action) and spinning_sword_turns > 0:
 		onSpinningSwordLowerTurns()
 		
 	if action.post:
@@ -34,6 +34,13 @@ func onSave() -> SavedDataEpicCard:
 	ability_save['active_speed'] = active_speed
 	ability_save['spinning_sword_public_id'] = spinning_sword_public_id
 	return super()
+	
+func onLoadData(data: SavedData) -> void:
+	super(data)
+	if spinning_sword_public_id > 0:
+		var SpinningSword: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(SPINNING_SWORD_VFX_ID, true), self)
+		spinning_sword_public_id = SpinningSword.public_id
+		onPushAction(CreateVFXAction.new(SpinningSword, false))
 
 func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> void:
 	var actions: Array = []
@@ -50,6 +57,9 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 	
 func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) -> BossIntent:
+	if boss_intents.any(func(x: BossIntent): return x.name == "GrandSlash"): # Remove later
+		return getBossIntentByName("GrandSlash")
+	
 	if boss_intent.name == "Reposition":
 		return getBossIntentByName("SpinAttack")
 		
@@ -101,7 +111,7 @@ func onSpinningSword(use_type: UseType) -> Array:
 	return []
 	
 func isSpinningSword() -> bool:
-	return spinning_sword_turns > 0 or getPhase() == 2
+	return spinning_sword_turns > 1 or getPhase() == 2
 	
 func onSpinningSwordLowerTurns() -> void:
 	spinning_sword_turns = max(spinning_sword_turns - 1, 0)
@@ -132,14 +142,15 @@ func onReposition(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 #region Autoattack
 func onAutoattackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
+	var tile_color := Game.TileIntents.RED if getPhase() == 1 else Game.TileIntents.DARK_RED
 	
 	if !isSpinningSword():
 		var direction := Game.getCubeDirectionExtra(0)
-		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED,\
+		tile_intents.append(TileIntentDatastore.new(tile_color,\
 			OffsetDatastore.new(direction, true, tile_rotation), coords))
 	else:
 		for x: Vector4i in Game.getCubeDirectionsExtra():
-			tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, OffsetDatastore.new(x, true), coords))
+			tile_intents.append(TileIntentDatastore.new(tile_color, OffsetDatastore.new(x, true), coords))
 	return BossTileIntents.new(tile_intents, {})
 
 func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> Array:
@@ -172,6 +183,8 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 			actions.append(MovementAction.new(self, path))
 	elif isSpinningSword():
 		var adjacent_enemies: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), getTile()))
+		adjacent_enemies = adjacent_enemies\
+			.filter(func(x: CardGD): return Game.getTile(coords + Game.getCubeDirectionExtra(tile_rotation)) == x.getTile())
 		actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
 	return actions
 #endregion Autoattack
@@ -244,10 +257,10 @@ func onDefensiveStanceCondition() -> BossIntentConditionResult:
 #region GrandSlash
 func onGrandSlashSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
-	var left_direction := Game.getCubeDirectionExtra((tile_rotation - 2) % 6)
-	var right_direction := Game.getCubeDirectionExtra((tile_rotation + 2) % 6)
 	var slash_tile_rotation: int = boss_datastore.getConditionResult("GrandSlash").getTileRotation()
 	var direction := Game.getCubeDirectionExtra(slash_tile_rotation)
+	var left_direction := Game.getCubeDirectionExtra((slash_tile_rotation - 2) % 6)
+	var right_direction := Game.getCubeDirectionExtra((slash_tile_rotation + 2) % 6)
 	var tile_results: Dictionary[TileGD, String] = {}
 	
 	for i: int in range(1, 6):
@@ -256,7 +269,7 @@ func onGrandSlashSetIntents() -> BossTileIntents:
 		for j: int in range(1, side_amount + 1):
 			var left_side_coords: Vector4i = forward_coords + (left_direction * j)
 			var right_side_coords: Vector4i = forward_coords + (right_direction * j)
-			var side_color := Game.TileIntents.LIGHT_RED if getPhase() == 1 and (j == side_amount or (i == 1 or i == 5)) else Game.TileIntents.RED
+			var side_color := (Game.TileIntents.LIGHT_RED if (j == side_amount or (i == 1 or i == 5)) else Game.TileIntents.RED) if getPhase() == 1 else Game.TileIntents.DARK_RED
 			
 			tile_intents.append(TileIntentDatastore.new(side_color,\
 				OffsetDatastore.new(left_side_coords, true), coords))
@@ -264,7 +277,7 @@ func onGrandSlashSetIntents() -> BossTileIntents:
 			tile_intents.append(TileIntentDatastore.new(side_color,\
 				OffsetDatastore.new(right_side_coords, true), coords))
 		
-		var forward_color := (Game.TileIntents.LIGHT_RED if getPhase() == 1 and (i == 5 or i == 1) else Game.TileIntents.RED)
+		var forward_color := (Game.TileIntents.LIGHT_RED if (i == 5 or i == 1) else Game.TileIntents.RED) if getPhase() == 1 else Game.TileIntents.DARK_RED
 		tile_intents.append(TileIntentDatastore.new(forward_color,\
 			OffsetDatastore.new(forward_coords, true), coords))
 	
@@ -332,7 +345,8 @@ func onGrandSlashCondition() -> BossIntentConditionResultGrandSlash:
 	
 	var tile_rotations: Array = tile_rotation_to_enemy_amount.keys()
 	if tile_rotations.is_empty(): return BossIntentConditionResultGrandSlash.new(false)
-	tile_rotations.sort_custom(func(x: int, y: int): return x > y)
+	tile_rotations.sort_custom(func(x: int, y: int):\
+		return tile_rotation_to_enemy_amount[x] > tile_rotation_to_enemy_amount[y])
 	
 	var best_tile_rotation: int = tile_rotations[0]
 	if tile_rotation_to_enemy_amount[best_tile_rotation] == 0:
@@ -362,15 +376,16 @@ func onLongSlashSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
 	var new_coords: Array = []
 	var direction: Vector4i = Game.getCubeDirectionExtra(0)
+	var tile_color := Game.TileIntents.RED if getPhase() == 1 else Game.TileIntents.DARK_RED
 	
 	var max_range: int = LONG_SLASH_PHASE_ONE_RANGE if getPhase() == 1 else LONG_SLASH_PHASE_TWO_RANGE
 	for i: int in range(1, max_range + 1):
-		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED,\
+		tile_intents.append(TileIntentDatastore.new(tile_color,\
 			OffsetDatastore.new(direction * i, true, tile_rotation), coords))
 			
 	if isSpinningSword():
 		for x: Vector4i in Game.getCubeDirectionsExtra():
-			tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, OffsetDatastore.new(x, true), coords))
+			tile_intents.append(TileIntentDatastore.new(tile_color, OffsetDatastore.new(x, true), coords))
 			
 	return BossTileIntents.new(tile_intents, {})
 	

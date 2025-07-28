@@ -1,4 +1,4 @@
-class_name CardInfo extends FofInfo
+class_name CardInfo extends GameObjectInfo
 
 const FIELD_INFO_SCENE_PATH: String = "res://scenes/game/cards/world/field_info/field_info.tscn"
 const INSPECT_CARD_SCREEN: String = "res://scenes/game/cards/ui/inspect_card_screen.tscn"

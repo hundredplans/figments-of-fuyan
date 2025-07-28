@@ -63,15 +63,17 @@ func onLoadData(data: SavedData) -> void:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
 		Card.add_to_group("AllyCardsGD")
 	
+	world_difficulty = data.world_difficulty
 	boons = data.boons.map(func(x: SavedDataBoon): return SavedData.onLoadModel(x, self))
 	
 	if data.area_data != null:
-		area = SavedData.onLoadModel(data.area_data, get_parent())
-		area.load_level.connect(onLoadLevel)
+		var _area: AreaGD = SavedData.onLoadModel(data.area_data, get_parent())
+		_area.load_level.connect(onLoadLevel)
+		setArea(_area)
 	
 	shillings = data.shillings
 	time = data.time
-	world_difficulty = data.world_difficulty
+	
 	upgrade_level = data.upgrade_level
 	
 	timer = Timer.new()
@@ -88,7 +90,11 @@ func onFofInit() -> void:
 	onChooseArea()
 	
 func setInfo(_area: AreaGD) -> void:
+	setArea(_area)
+	
+func setArea(_area: AreaGD) -> void:
 	area = _area
+	area.onLoadWorldDatastore(world_difficulty)
 	
 func setStashSortType(_stash_sort_type: int) -> void:
 	stash_sort_type = _stash_sort_type
@@ -150,8 +156,9 @@ func onChooseArea() -> void:
 			
 	var area_id: int = valid_areas.pick_random()
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
-	area = SavedData.onLoadModel(area_data, get_parent())
-	area.load_level.connect(onLoadLevel)
+	var _area: AreaGD = SavedData.onLoadModel(area_data, get_parent())
+	_area.load_level.connect(onLoadLevel)
+	setArea(_area)
 #endregion
 
 #region Timer
