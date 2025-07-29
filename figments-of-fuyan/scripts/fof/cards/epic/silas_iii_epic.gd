@@ -361,6 +361,7 @@ func onGrandSlashCondition() -> BossIntentConditionResultGrandSlash:
 #region JumpAttack
 func onJumpAttackSetIntents() -> BossTileIntents:
 	var tile_intents: Array[TileIntentDatastore] = []
+	var tile_results: Dictionary[TileGD, String] = {}
 	var condition: BossIntentConditionResultSilasJumpAttack = boss_datastore.getConditionResult("JumpAttack")
 	var JumpToTile: TileGD = Game.getTile(condition.getJumpToCoords())
 	var StartJumpTile: TileGD = Game.getTile(condition.getStartJumpCoords())
@@ -397,17 +398,51 @@ func onJumpAttackSetIntents() -> BossTileIntents:
 			
 		for LowDamageTile: TileGD in low_damage_tiles:
 			tile_intents.append(TileIntentDatastore.new(Game.TileIntents.LIGHT_RED, null, LowDamageTile.getCoords()))
+			tile_results[LowDamageTile] = "LowDamageTile"
 			
 		var tile_color := Game.TileIntents.RED if getPhase() == 1 else Game.TileIntents.DARK_RED
 		for HighDamageTile: TileGD in high_damage_tiles:
 			tile_intents.append(TileIntentDatastore.new(tile_color, null, HighDamageTile.getCoords()))
+			tile_results[HighDamageTile] = "HighDamageTile"
 
-		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.BLACK, null, StartJumpTile.getCoords()))
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.BLACK, null, JumpToTile.getCoords()))
-	return BossTileIntents.new(tile_intents, {})
+		tile_results[StartJumpTile] = "StartJumpTile"
+		tile_results[JumpToTile] = "JumpToTile"
+	return BossTileIntents.new(tile_intents, tile_results)
 	
 func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	var actions: Array = []
+	if use_type == UseType.START:
+		var tile_results := boss_datastore.getTileResults()
+		var tile_results_tiles: Array = tile_results.values()
+		
+		var StartJumpTile: TileGD
+		for TileResultTile: TileGD in tile_results.values():
+			if TileResultTile == null: continue
+			match tile_results[TileResultTile]:
+				"StartJumpTile": StartJumpTile = TileResultTile
+			
+			if StartJumpTile in tiles:
+				actions.append(MovementAction.new(self, StartJumpTile.getMovementPathTilesSafe(), false))
+				
+	elif use_type == UseType.END:
+		var tile_results := boss_datastore.getTileResults()
+		var tile_results_tiles: Array = tile_results.values()
+		
+		var StartJumpTile: TileGD
+		var JumpToTile: TileGD
+		var low_damage_tiles: Array = []
+		var high_damage_tiles: Array = []
+		
+		for TileResultTile: TileGD in tile_results.values():
+			if TileResultTile == null: continue
+			match tile_results[TileResultTile]:
+				"JumpToTile": JumpToTile = TileResultTile
+				"StartJumpTile": StartJumpTile = TileResultTile
+				"LowDamageTile": low_damage_tiles.append(TileResultTile)
+				"HighDamageTile": high_damage_tiles.append(TileResultTile)
+		
+		if getTile() != StartJumpTile: return []
 	return actions
 	
 func onJumpAttackCondition() -> BossIntentConditionResult:
