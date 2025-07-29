@@ -2,6 +2,7 @@ extends IObjectGD
 
 # Make recharge at the end
 
+const ABILITY_DELAY: float = 3.0
 var was_extinguished: bool
 var was_fuel_added: bool
 
@@ -23,7 +24,9 @@ func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) 
 func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var Tile: TileGD = getTile()
 	if active_effect.name in ["Extinguish", "Add Fuel"]:
-		var actions: Array = []
+		var change_tr_action := ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), getTile()))
+		change_tr_action.setActionDelay(ABILITY_DELAY)
+		var actions: Array = [change_tr_action]
 		if active_effect.name == "Extinguish":
 			var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 3)
 			var units: Array = Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.Tile in tiles)
@@ -54,7 +57,6 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, _PickedTile: TileGD
 		onAddFuelVFX()
 		
 	onForceAction(CameraChangeAction.new(self))
-	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), getTile())))
 	
 func onSave() -> SavedDataIObject:
 	ability_save['was_fuel_added'] = was_fuel_added

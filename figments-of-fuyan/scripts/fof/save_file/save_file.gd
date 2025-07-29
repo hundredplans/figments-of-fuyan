@@ -11,7 +11,6 @@ var id: int
 var my_seed: int
 var area: AreaGD
 var boons: Array
-var upgrade_level: int
 
 var shillings: int
 var time: int
@@ -45,7 +44,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
 	ally_cards, saved_boons, highest_public_id, world_difficulty,\
-	upgrade_level, max_energy, energy_limit, deck_slots, stash_sort_type)
+	max_energy, energy_limit, deck_slots, stash_sort_type)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -73,8 +72,6 @@ func onLoadData(data: SavedData) -> void:
 	
 	shillings = data.shillings
 	time = data.time
-	
-	upgrade_level = data.upgrade_level
 	
 	timer = Timer.new()
 	timer.wait_time = 99999999
@@ -179,16 +176,6 @@ func getBoon(boon_id: int) -> BoonGD:
 func onGameLost() -> void:
 	DirAccess.remove_absolute(SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres")
 	exit_save.emit()
-#endregion
-
-#region Champion
-func onUpgradeChampion() -> void:
-	var ChampionCard: CardGD = getChampionCard()
-	upgrade_level += 1
-	ChampionCard.onUpgrade(upgrade_level)
-	
-func getChampionLevel() -> int:
-	return upgrade_level
 #endregion
 
 func onProcessAction(action: Action) -> void:

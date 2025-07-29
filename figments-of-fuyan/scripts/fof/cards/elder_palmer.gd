@@ -6,7 +6,8 @@ const SINGLE_UNIT_CHANCE: float = 0.1
 const ARMOR_TRAIT_ID: int = 1
 const DAZE_STATUS_EFFECT_ID: int = 4
 
-var CHANGE_BACK_DELAY: float = 2.0
+const ABILITY_DELAY: float = 2.0
+const CHANGE_BACK_DELAY: float = 2.0
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
@@ -27,6 +28,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var heal_amount: int = 1
 		var armor_amount: int = 1 if tier == 1 else 2
 		
+		var animation_action := AnimationAction.new(self, "Ability")
+		animation_action.setActionDelay(ABILITY_DELAY)
+		
 		var camera_change_action := CameraChangeAction.new(Card)
 		var camera_change_back_action := CameraChangeAction.new(Game.getLevel().getSpectateObject())
 		
@@ -36,6 +40,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var daze_action: AddStatusEffectAction = Card.onCreateBaseStatusEffectAction(DAZE_STATUS_EFFECT_ID, 1)
 		daze_action.setActionDelay(CHANGE_BACK_DELAY)
 		var actions: Array = [
+			animation_action,
 			camera_change_action,
 			HealAction.new(HealDatastore.new(Card, heal_amount)),
 			AddOverworldTraitAction.new(Card, armor_overworld, true),
@@ -43,7 +48,6 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 			camera_change_back_action]
 		
 		onPushAction(actions)
-		onAbility()
 
 func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
 	return false

@@ -1,20 +1,19 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=26 format=3 uid="uid://ydjxvwsjb6df"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_n886d"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_xordu"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_xdpta"]
-[ext_resource type="Resource" path="res://resources/fof/boons/bold_aura.tres" id="4_f5cwk"]
-[ext_resource type="Script" path="res://scripts/common/data_structures/pos_rot.gd" id="5_j2m8k"]
-[ext_resource type="Script" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_j10ap"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/champion_upgrade.gd" id="8_qjhdg"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_c5w00"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_blypd"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_0ikkh"]
+[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_4a3l2"]
+[ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
+[ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_n886d"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_xordu"]
+[ext_resource type="Script" uid="uid://bwd15dpd61xnh" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_y17s3"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_xdpta"]
+[ext_resource type="Resource" uid="uid://cv3g6h58ibxao" path="res://resources/fof/boons/bold_aura.tres" id="4_f5cwk"]
+[ext_resource type="Script" uid="uid://c4pplm1lm032l" path="res://scripts/common/data_structures/pos_rot.gd" id="5_j2m8k"]
+[ext_resource type="Script" uid="uid://da4sy8lgds3j5" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
+[ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_j10ap"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_c5w00"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_blypd"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_0ikkh"]
 
 [sub_resource type="Resource" id="Resource_fjhx1"]
 script = ExtResource("5_j2m8k")
@@ -36,24 +35,6 @@ _bundled = {
 "variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 1.05294, 0.00587471), SubResource("BoxShape3D_ex838")],
 "version": 3
 }
-
-[sub_resource type="Resource" id="Resource_hgy6f"]
-script = ExtResource("8_qjhdg")
-description = "RAMPAGE: Gain +1 HP and Heal [1] HP"
-plus_attack = 0
-plus_health = 0
-plus_energy = 0
-plus_speed = 0
-active_abilities = Array[ExtResource("1_4a3l2")]([])
-
-[sub_resource type="Resource" id="Resource_0mgtp"]
-script = ExtResource("8_qjhdg")
-description = ""
-plus_attack = 0
-plus_health = 1
-plus_energy = 0
-plus_speed = 0
-active_abilities = Array[ExtResource("1_4a3l2")]([])
 
 [sub_resource type="Resource" id="Resource_sky5f"]
 script = ExtResource("16_0ikkh")
@@ -78,7 +59,7 @@ default_values = Array[int]([])
 [sub_resource type="Resource" id="Resource_wf5dt"]
 script = ExtResource("15_blypd")
 attack = 2
-health = 2
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_xdpta")]([])
@@ -87,13 +68,13 @@ description_datastore = SubResource("Resource_udxuq")
 
 [sub_resource type="Resource" id="Resource_4gwjb"]
 script = ExtResource("16_0ikkh")
-description = "RAMPAGE: Gain +1 HP"
+description = "RAMPAGE: Gain +1 HP and Heal [1] HP"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_blypd"]
 script = ExtResource("15_blypd")
 attack = 2
-health = 2
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_xdpta")]([])
@@ -102,13 +83,13 @@ description_datastore = SubResource("Resource_4gwjb")
 
 [sub_resource type="Resource" id="Resource_0ikkh"]
 script = ExtResource("16_0ikkh")
-description = "RAMPAGE: Gain +1 HP"
+description = "RAMPAGE: Gain +1 HP and Heal [1] HP"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_dpssp"]
 script = ExtResource("15_blypd")
 attack = 2
-health = 2
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_xdpta")]([])
@@ -117,16 +98,13 @@ description_datastore = SubResource("Resource_0ikkh")
 
 [resource]
 script = ExtResource("2_y17s3")
+champion_upgrade_description = Array[String](["", "Gains Heal [1] HP on RAMPAGE", "", "", "", ""])
 champion_description = Array[String](["Elite fights are more common", "Your [color=#2c70a0]Aura[/color] gets stronger as you triumph over big battles"])
 associated_color = Color(1, 0, 0, 1)
 epithet = "The Dolt"
 champion_select_posrot = SubResource("Resource_fjhx1")
 unique_nodes_id = Array[int]([])
-ultimate_name = "Ogre Mode"
-ultimate_description = "[0/4]: Heal to full HP and cleanse any negative effects. RAMPAGE to gain [1] point"
 boon_info = ExtResource("4_f5cwk")
-first_miniboss = SubResource("Resource_0mgtp")
-first_boss = SubResource("Resource_hgy6f")
 tiers = Array[ExtResource("15_blypd")]([SubResource("Resource_yurpy"), SubResource("Resource_wf5dt"), SubResource("Resource_blypd"), SubResource("Resource_dpssp")])
 archetype = ExtResource("2_xordu")
 rarity = 8

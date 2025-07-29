@@ -16,4 +16,5 @@ func onPreAction() -> void:
 	pass
 	
 func onPostAction() -> void:
-	Game.getSaveFile().onUpgradeChampion()
+	var ChampionCard: CardGD = Game.getSaveFile().getChampionCard()
+	ChampionCard.onTierUp()

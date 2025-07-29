@@ -24,6 +24,10 @@ func onLoadData(data: SavedData) -> void:
 	
 	add_to_group("IObjectsGD")
 	
+func onPlayAnimation(animation_name: String, play_backwards: bool = false) -> void:
+	if !play_backwards: AniPlayer.play(animation_name)
+	else: AniPlayer.play_backwards(animation_name) 
+	
 func onLoadDataLevelFofInit() -> void:
 	super()
 	ability_save = {}

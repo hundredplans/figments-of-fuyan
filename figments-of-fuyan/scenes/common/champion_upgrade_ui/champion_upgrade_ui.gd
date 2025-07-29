@@ -43,8 +43,9 @@ var stat_to_label: Dictionary[Game.Stats, String] = {
 }
 
 func setInfo(old_deck_limit: int, old_energy_limit: int, old_max_energy: int) -> void:
-	var upgrade_level: int = Game.getSaveFile().getChampionLevel()
-	ChampionLevelUpgradeLabel.text = str(upgrade_level - 1) + "  ->  " + str(upgrade_level)
+	var ChampionCard: CardGD = Game.getSaveFile().getChampionCard()
+	var tier: int = ChampionCard.getTier()
+	ChampionLevelUpgradeLabel.text = str(tier - 1) + "  ->  " + str(tier)
 	
 	var energy_limit: int = Game.getSaveFile().getEnergyLimit()
 	var deck_limit: int = Game.getSaveFile().getDeckLimit()
@@ -54,23 +55,24 @@ func setInfo(old_deck_limit: int, old_energy_limit: int, old_max_energy: int) ->
 	DeckLimitUpgradeLabel.text = str(old_deck_limit) + "  ->  " + str(deck_limit)
 	MaxEnergyUpgradeLabel.text = str(old_max_energy) + "  ->  " + str(max_energy)
 	
-	var ChampionCard: CardGD = Game.getSaveFile().getChampionCard()
-	var champion_upgrade: ChampionUpgrade = ChampionCard.getChampionUpgrade(upgrade_level)
-	
+	var previous_tier: CardTierDatastore = ChampionCard.getCardTierDatastore(tier - 1)
+	var current_tier: CardTierDatastore = ChampionCard.getCardTierDatastore(tier)
 	for stat: Game.Stats in [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.SPEED, Game.Stats.ENERGY]:
-		var value: int = champion_upgrade["plus_" + Game.getStatString(stat).to_lower()]
-		var container: Container = get(stat_to_container[stat])
-		container.visible = value != 0
+		var previous_value: int = previous_tier.call("get" + Game.getStatString(stat).to_lower().capitalize())
+		var current_value: int = current_tier.call("get" + Game.getStatString(stat).to_lower().capitalize())
 		
-		if value == 0: continue
+		
+		var display: bool = previous_value != current_value
+		var container: Container = get(stat_to_container[stat])
+		container.visible = display
+		
+		if !display: continue
 		
 		var label: Label = get(stat_to_label[stat])
-		var current_value: int = ChampionCard.getStatValue(stat)
-		label.text = str(current_value) + "  ->  " + str(current_value + value)
+		label.text = str(previous_value) + "  ->  " + str(current_value)
 
 	ChampionAbilityUpgradeArtMini.texture = ChampionCard.info.getArtMini()
-	var ability_upgrade_text: String = ChampionCard.getDescriptionUpgradeLevel(upgrade_level - 1)
-	AbilityUpgradeLabel.setText(ability_upgrade_text + " -> " + ChampionCard.getDescription())
+	AbilityUpgradeLabel.setText(ChampionCard.info.getChampionUpgradeDescription(tier))
 	AniPlayer.play("SlideUIElements")
 
 func onEditDeckButtonPressed() -> void:

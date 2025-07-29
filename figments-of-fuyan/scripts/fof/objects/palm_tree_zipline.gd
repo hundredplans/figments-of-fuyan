@@ -1,5 +1,7 @@
 extends IObjectGD
 
+const ABILITY_DELAY: float = 3.6
+
 var active_start_tile_public_id: int
 var last_active_start_tile_public_id: int
 var start_tile_public_ids: Array
@@ -108,7 +110,13 @@ func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD,
 var HolderCard: CardGD
 var HolderNode: MeshInstance3D
 func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
-	onPushAction(OccupyAction.new(Card, end_tiles[start_tiles.find(ActiveStartTile)]))
+	var animation_action := AnimationAction.new(self, getAbilityAnimationName())
+	animation_action.setActionDelay(ABILITY_DELAY)
+	var occupy_action := OccupyAction.new(Card, end_tiles[start_tiles.find(ActiveStartTile)])
+	
+	var actions: Array = [animation_action, occupy_action]
+	onPushAction(actions)
+	
 	used_this_turn_cards.append(Card)
 	
 	if Card.isEnemy(0): ai_cooldown_cards[Card] = TURN_COOLDOWN_FOR_ABILITY_AND_TRANSFORM 
@@ -118,7 +126,6 @@ func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, 
 	
 	if !isLevelVisible(): return
 	Card.onPauseAnimation()
-	onAbility()
 	
 func onZiplineFinished() -> void:
 	HolderNode = null
@@ -166,12 +173,9 @@ func onProcessAction(action: Action) -> void:
 #endregion
 
 #region Animation
-func onAbility() -> void:
-	if isLevelVisible():
-		if start_tiles.size() == 1:
-			AniPlayer.play("Ability")
-		else:
-			AniPlayer.play("AbilityLeft" if start_tiles.find(ActiveStartTile) == 0 else "AbilityRight")
+func getAbilityAnimationName() -> String:
+	if start_tiles.size() == 1: return "Ability"
+	return "AbilityLeft" if start_tiles.find(ActiveStartTile) == 0 else "AbilityRight"
 #endregion
 
 const POSITIVE_TRANSFORM_VALUE: float = 0.2

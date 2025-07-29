@@ -1,5 +1,6 @@
 extends CardGD
 
+const ABILITY_DELAY: float = 2.5
 const AI_ABILITY_COOLDOWN: int = 2
 var ai_ability_cooldown_turns_left: int
 var remove_armor_next_turn: bool = false
@@ -25,9 +26,12 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		armor_id = 1
 		ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN
 		
-		onPushAction(AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.CRAB, true), true))
+		var actions: Array = []
+		var animation_action := AnimationAction.new(self, "Ability")
+		animation_action.setActionDelay(ABILITY_DELAY)
+		var overworld_trait_action := AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.CRAB, true), true)
 		
-		onAbility()
+		onPushAction([animation_action, overworld_trait_action])
 
 # Use ability if enemies are within DISTANCE tiles below
 const HARDENED_SHELL_ENEMY_DISTANCE_TO_USE: int = 4

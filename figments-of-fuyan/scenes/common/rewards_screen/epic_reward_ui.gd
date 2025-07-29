@@ -88,7 +88,8 @@ func onMouseInIconUI(state: bool, IconUI: Control) -> void:
 
 func onCardUIPressed(CardUI: Control) -> void:
 	if reward.isTaken(): return
-	Game.getSaveFile().onPushAction(AddToDeckAction.new(CardUI.Card))
+	var DupeCard: CardGD = SavedData.onLoadModel(CardUI.Card.getDuplicateData(), Game.getSaveFile())
+	Game.getSaveFile().onPushAction(AddToDeckAction.new(DupeCard))
 	onRewardTaken(CardUI, CardUI.Card)
 	
 func onBoonPressed(Boon: BoonGD, BoonUI: Control) -> void:

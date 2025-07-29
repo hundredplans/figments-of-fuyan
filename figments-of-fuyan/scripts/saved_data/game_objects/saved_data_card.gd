@@ -28,7 +28,6 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var bounty_kills: BountyKills
 @export var boss_datastore: BossDatastore
 @export var card_offset: CardOffset
-@export var champion_datastore: ChampionDatastore
 @export var tier: int
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords := Vector4i.ZERO,\
@@ -40,7 +39,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _is_temporary: bool = false,\
 	_is_awakened_in_combat: bool = false, _ai_datastore := AIDatastore.new(),\
 	_base_stats: StatsDatastore = null, _overworld_traits: Array[OverworldTrait] = [], _bounty_kills := BountyKills.new(),\
-	_boss_datastore: BossDatastore = null, _card_offset := CardOffset.new(), _champion_datastore := ChampionDatastore.new(), _tier: int = 1) -> void:
+	_boss_datastore: BossDatastore = null, _card_offset := CardOffset.new(), _tier: int = 1) -> void:
 		
 	super(_id, _first_init, _public_id, _coords, _tile_rotation, _vision_datastore)
 	
@@ -71,7 +70,6 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	bounty_kills = _bounty_kills
 	boss_datastore = _boss_datastore
 	card_offset = _card_offset
-	champion_datastore = _champion_datastore
 	tier = _tier
 	
 func getInfoType() -> GDScript: return CardInfo

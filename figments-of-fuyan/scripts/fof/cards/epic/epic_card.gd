@@ -12,7 +12,7 @@ func onSave() -> SavedDataEpicCard:
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore, card_offset, champion_datastore, tier)
+	overworld_traits, bounty_kills, boss_datastore, card_offset, tier)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)

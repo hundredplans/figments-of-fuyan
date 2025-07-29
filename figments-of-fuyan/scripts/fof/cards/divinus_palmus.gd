@@ -5,6 +5,7 @@ extends CardGD
 # ABILITY [2]: Heal [1] HP to an ally or self
 # Remove interlinks for paths
 
+const ABILITY_DELAY: float = 2.4
 const SHOP_PRICE_MULT: float = 1.1
 var holy_travelled_amount: int
 
@@ -21,14 +22,16 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Coconut Touch":
+		var animation_action := AnimationAction.new(self, "Ability")
+		animation_action.setActionDelay(ABILITY_DELAY)
 		var actions: Array = [
+			animation_action,
 			HealAction.new(HealDatastore.new(Game.getFieldCard(PickedTile), 1))]
 		
 		if Tile != PickedTile:
 			onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 		
 		onPushAction(actions)
-		onAbility()
 		
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
 	return active_effect_tiles.pickable_tiles.pick_random()

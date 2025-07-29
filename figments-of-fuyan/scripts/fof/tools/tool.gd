@@ -22,6 +22,12 @@ func onLoadData(data: SavedData) -> void:
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
 	
+func getDuplicateData() -> SavedDataTool:
+	var data := onSave()
+	var dupe_data: SavedDataTool = data.duplicate()
+	dupe_data.public_id = 0
+	return dupe_data
+	
 func onSave() -> SavedDataTool:
 	return SavedDataTool.new(info.id, false, public_id, active_effects, charges, ability_save, tier)
 	

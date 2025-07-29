@@ -1,5 +1,6 @@
 extends CardGD
 
+const ABILITY_DELAY: float = 3.0
 const CHARMING_STANCE_FIELD_EFFECT_ID: int = 3
 const GUARANTEED_CHARMING_STANCE_UNIT_AMOUNT_AI: int = 2
 const SINGLE_UNIT_CHANCE: float = 0.1
@@ -26,14 +27,16 @@ func onPickable(x: TileGD) -> bool:
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
+		var animation_action := AnimationAction.new(self, "Ability")
+		animation_action.setActionDelay(ABILITY_DELAY)
 		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getAllyFieldCard(x, team))\
 			.filter(func(x: CardGD): return x.isHealable())
 			
-		var actions: Array = [HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))),
+		var actions: Array = [animation_action,
+			HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))),
 			StatAction.new(StatInfo.new(self, Game.Stats.ATTACK, cards.size()))]
 		
 		onPushAction(actions)
-		onAbility()
 		
 # Guaranteed for 2 units, 10% chance to use for 1 unit
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:

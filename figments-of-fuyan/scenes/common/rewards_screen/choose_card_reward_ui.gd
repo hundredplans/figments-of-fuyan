@@ -67,7 +67,9 @@ func onRewardPressed(CardUI: Control) -> void:
 	reward_taken.emit(reward)
 	
 	var Card: CardGD = CardUI.Card
-	Game.getSaveFile().onPushAction(AddToDeckAction.new(Card))
+	var data: SavedDataCard = Card.onSave()
+	var DupeCard: CardGD = SavedData.onLoadModel(Card.getDuplicateData(), Game.getSaveFile())
+	Game.getSaveFile().onPushAction(AddToDeckAction.new(DupeCard))
 	
 func onCreateClaimedLabel(CardUI: Control) -> Label:
 	var ClaimedLabel: Label = ClaimedLabelPacked.instantiate()

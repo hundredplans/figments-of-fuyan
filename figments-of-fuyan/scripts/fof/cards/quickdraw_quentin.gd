@@ -1,5 +1,6 @@
 extends CardGD
 
+const ABILITY_DELAY: float = 2.0
 const QUENTIN_BULLETS_FIELD_EFFECT_ID: int = 11
 
 var bullets: int
@@ -63,10 +64,14 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Reload":
+		var animation_action := AnimationAction.new(self, "Ability")
+		animation_action.setActionDelay(ABILITY_DELAY)
+		var actions: Array = [animation_action]
+		
 		setBullets(1)
-		onRemoveStatusEffect(getStatusEffect(DISARM_ID))
-		onStun()
-		onAbility()
+		actions.append(RemoveStatusEffectAction.new(getStatusEffect(DISARM_ID)))
+		actions += getStunActions()
+		onPushAction(actions)
 	
 func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
 	return bullets == getMaxBullets() or !inEnemyVision()
@@ -77,8 +82,9 @@ func setBullets(delta: int) -> void:
 	update_active_effect_description.emit()
 
 func getMaxBullets() -> int:
-	return 2 if Game.getChampionLevel() < 1 else 4
+	return 2 if getTier() == 1 else 4
 
-func onUpgrade(upgrade_level: int) -> void:
-	super(upgrade_level)
-	if upgrade_level == 1: bullets += 2
+func onRetiered(tier: int) -> void:
+	super(tier)
+	if tier == 2:
+		bullets += 2

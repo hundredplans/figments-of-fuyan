@@ -599,9 +599,6 @@ func onMouseInUI(state: bool) -> void:
 func isMouseInUI() -> bool:
 	return is_mouse_in_ui
 	
-func getChampionLevel() -> int:
-	return 0 if save_file == null else save_file.getChampionLevel()
-	
 func isLevel() -> bool:
 	return Game.getLevel() != null
 #endregion

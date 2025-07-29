@@ -1,5 +1,6 @@
 extends CardGD
 
+const ABILITY_DELAY: float = 2.2
 const SPECTATE_TELEPORTED_UNIT_DELAY: float = 1.5
 const HAT_ID: int = 1
 
@@ -33,6 +34,9 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	if active_effect is ActiveAbilityDatastore and active_effect.name == "Cocus Pocus":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		
+		var animation_action := AnimationAction.new(self, "Ability")
+		animation_action.setActionDelay(ABILITY_DELAY)
+		
 		var FirstHat: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(HAT_ID, true), Card)
 		FirstHat.setStartHat(true)
 		onForceAction(CreateVFXAction.new(FirstHat, false))
@@ -40,12 +44,11 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		var SecondHat: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(HAT_ID, true), Card)
 		SecondHat.setStartHat(false)
 		
-		var actions: Array = [CameraChangeAction.new(Card), OccupyAction.new(Card, getRandomSpawnTile()),\
+		var actions: Array = [animation_action, CameraChangeAction.new(Card), OccupyAction.new(Card, getRandomSpawnTile()),\
 			DestroyVFXAction.new(FirstHat), CameraChangeAction.new(self), CameraChangeAction.new(Card),\
 			HealAction.new(HealDatastore.new(Card, 2)), CreateVFXAction.new(SecondHat, true), CameraChangeAction.new(self)]
 		
 		onPushAction(actions)
-		onAbility()
 		
 # Escapes injured units in combat, sorts by energy
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:

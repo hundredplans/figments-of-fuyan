@@ -20,7 +20,7 @@ func onProcessAction(action: Action) -> void:
 
 func onRampage(_action: DeathAction) -> void:
 	var stat_infos: Array = [StatInfo.new(self, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [1, 1])]
-	if Game.getChampionLevel() >= 2:
+	if getTier() >= 3:
 		stat_infos.append(StatInfo.new(self, Game.Stats.HEALTH, 1))
 
 	var camera_change_action := CameraChangeAction.new(self)

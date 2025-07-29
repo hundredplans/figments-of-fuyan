@@ -328,8 +328,9 @@ func onActiveToolIconReleased() -> void:
 	var CardUI: Control = area.get_parent()
 	var Card: CardGD = CardUI.Card
 	var Tool: ToolGD = ActiveToolIcon.Tool
+	var DupeTool: ToolGD = SavedData.onLoadModel(Tool.getDuplicateData(), Game.getSaveFile())
 	
-	Card.onForceAction(AddToolAction.new(Card, Tool, true))
+	Card.onForceAction(AddToolAction.new(Card, DupeTool, true))
 	CardUI.onToolUpdated(Card.Tool)
 	active_tool_added.emit(CardUI)
 	

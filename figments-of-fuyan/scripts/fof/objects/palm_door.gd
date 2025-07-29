@@ -4,6 +4,7 @@ var is_open: bool
 var last_seen_open: bool
 var CollisionShape: CollisionShape3D
 
+const ABILITY_DELAY: float = 2.0
 const SHORT_MAX_MOVEMENT_HEIGHT: float = 1.0
 const TALL_MAX_MOVEMENT_HEIGHT: float = 2.5
 
@@ -77,7 +78,10 @@ func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) 
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
-	var actions: Array = [VisionAction.new(Game.inVisionRangeCards(Card.getTile(), true))]
+	var animation_action := AnimationAction.new(self, "Ability", !is_open)
+	animation_action.setActionDelay(ABILITY_DELAY)
+	
+	var actions: Array = [animation_action, VisionAction.new(Game.inVisionRangeCards(Card.getTile(), true))]
 	for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
 		actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
 	actions.append(CameraChangeAction.new(Card))
@@ -85,12 +89,12 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _
 		
 func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	if active_effect.name == "Open Door":
-		if isLevelVisible(): AniPlayer.play("Ability"); last_seen_open = true
+		if isLevelVisible(): last_seen_open = true
 		is_open = true
 		onDoorIsOpen(false)
 		
 	elif active_effect.name == "Close Door":
-		if isLevelVisible(): AniPlayer.play_backwards("Ability"); last_seen_open = false
+		if isLevelVisible(): last_seen_open = false
 		is_open = false
 		onDoorIsClosed(false)
 	onForceAction(CameraChangeAction.new(self))
