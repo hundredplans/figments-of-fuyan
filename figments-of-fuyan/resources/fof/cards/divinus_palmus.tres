@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=31 format=3 uid="uid://d0cemsb5ul7w3"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=29 format=3 uid="uid://d0cemsb5ul7w3"]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_my31a"]
 [ext_resource type="Resource" uid="uid://dfod534mlbwba" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
 [ext_resource type="Script" uid="uid://cmihmrsjxfdyi" path="res://scripts/fof/cards/divinus_palmus.gd" id="2_7n28t"]
 [ext_resource type="Script" uid="uid://bwd15dpd61xnh" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_qu6p4"]
@@ -14,18 +13,6 @@
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_0fay3"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_cqsfm"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_cui8c"]
-
-[sub_resource type="Resource" id="Resource_ehxq3"]
-script = ExtResource("1_my31a")
-ascended_description = ""
-ascended_max_charges = -1
-name = "Coconut Touch"
-description = "Heal [1] HP to an ally in vision or self"
-max_charges = 2
-delay = 2.4
-camera_type = 0
-charges = 2
-used = false
 
 [sub_resource type="Resource" id="Resource_ax8vu"]
 script = ExtResource("3_yh5yn")
@@ -182,7 +169,6 @@ energy = 2
 description = "ABILITY [[X]]: Heal [1] HP to an ally in vision or self"
 ascended_description = ""
 initial_traits = Array[ExtResource("3_276uu")]([])
-active_abilities = Array[ExtResource("1_my31a")]([SubResource("Resource_ehxq3")])
 id = 2
 name = "Divinus Palmus"
 gdscript = ExtResource("2_7n28t")

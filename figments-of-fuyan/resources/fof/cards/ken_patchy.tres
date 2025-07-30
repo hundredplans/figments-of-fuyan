@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://buob5tc4nr68"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_qlku1"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/ken_patchy.png" id="2_jpwix"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/ken_patchy.png" id="2_mxtni"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/mercenary.tres" id="2_nx5xl"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_g48pi"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="4_rsjp6"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ifa2t"]
-[ext_resource type="Script" path="res://scripts/fof/cards/ken_patchy.gd" id="6_nx5xl"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/ken_patchy.glb" id="7_flxe8"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_flxe8"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_dt3ow"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_uhcaj"]
+[ext_resource type="Image" uid="uid://rqf8oyjefkca" path="res://assets/sprites/game/cards/art_pop/ken_patchy.png" id="2_jpwix"]
+[ext_resource type="Texture2D" uid="uid://dac17h6ctfnth" path="res://assets/sprites/game/cards/art_mini/ken_patchy.png" id="2_mxtni"]
+[ext_resource type="Resource" uid="uid://r4emkni6o3hx" path="res://resources/fof/archetypes/mercenary.tres" id="2_nx5xl"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_g48pi"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="4_rsjp6"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ifa2t"]
+[ext_resource type="Script" uid="uid://cvt53bcrgxbwp" path="res://scripts/fof/cards/ken_patchy.gd" id="6_nx5xl"]
+[ext_resource type="PackedScene" uid="uid://dxec645yim4wi" path="res://assets/models/fof/cards/ken_patchy.glb" id="7_flxe8"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_flxe8"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_dt3ow"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_uhcaj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -116,7 +115,6 @@ energy = 3
 description = "On Hit: STUN this"
 ascended_description = "On Hit [1]: STUN this"
 initial_traits = Array[ExtResource("3_g48pi")]([])
-active_abilities = Array[ExtResource("1_qlku1")]([])
 id = 67
 name = "Ken Patchy"
 gdscript = ExtResource("6_nx5xl")

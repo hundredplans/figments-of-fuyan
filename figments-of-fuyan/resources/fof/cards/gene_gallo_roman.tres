@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=27 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3 uid="uid://b8a865ily42fx"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_ou3ee"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/gene_gallo_roman.png" id="2_ctojg"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ewxrt"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/adventurer.tres" id="2_xocpm"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_xdl1w"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bfhlm"]
-[ext_resource type="Script" path="res://scripts/fof/cards/gene_gallo_roman.gd" id="6_xocpm"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/gene_gallo_roman.glb" id="7_xocpm"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ug0ym"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_cocbe"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_qwq4s"]
+[ext_resource type="Texture2D" uid="uid://c4swx2x83oeug" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
+[ext_resource type="Image" uid="uid://cagnnyn0jah5t" path="res://assets/sprites/game/cards/art_pop/gene_gallo_roman.png" id="2_ctojg"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_ewxrt"]
+[ext_resource type="Resource" uid="uid://di2pr0npo4h1p" path="res://resources/fof/archetypes/adventurer.tres" id="2_xocpm"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_xdl1w"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bfhlm"]
+[ext_resource type="Script" uid="uid://bkkdavjpjqgsa" path="res://scripts/fof/cards/gene_gallo_roman.gd" id="6_xocpm"]
+[ext_resource type="PackedScene" uid="uid://3qyoualochqf" path="res://assets/models/fof/cards/gene_gallo_roman.glb" id="7_xocpm"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ug0ym"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_cocbe"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_qwq4s"]
 
 [sub_resource type="Resource" id="Resource_xocpm"]
 script = ExtResource("2_ewxrt")
@@ -152,7 +151,6 @@ energy = 2
 description = "RANGED [1-2]; On Hit {[X]/2}: This attack ignores ARMOR & SHIELD"
 ascended_description = "RANGED [1-3]; On Hit {[x]/2}: This attack ignores ARMOR & SHIELD"
 initial_traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_ug0ym")])
-active_abilities = Array[ExtResource("1_ou3ee")]([])
 id = 65
 name = "Gene Gallo-Roman"
 gdscript = ExtResource("6_xocpm")

@@ -97,7 +97,6 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	save_file.load_map.connect(onLoadMap)
 	save_file.load_main_menu.connect(onLoadMainMenu)
 	save_file.input_saved.connect(onSaveFileSaved)
-	save_file.exit_save.connect(onExitSaveFile)
 	save_file.onLoadGame()
 	
 func onLoadLevel(level_data: SavedDataLevel, save_file: SaveFileGD, area: AreaGD) -> void:
@@ -126,10 +125,6 @@ func onLoadMainMenu(skip_cutscene: bool = true) -> void:
 	else:
 		ActiveWorld.onNotFirstLoad()
 		ActiveScreen.onNotFirstLoad()
-	
-func onExitSaveFile() -> void:
-	for child in KeepAcross.get_children(): child.queue_free()
-	onLoadScreenWorld(main_menu_ui, main_menu_world)
 	
 var SaveFileTween: Tween
 func onSaveFileSaved() -> void:

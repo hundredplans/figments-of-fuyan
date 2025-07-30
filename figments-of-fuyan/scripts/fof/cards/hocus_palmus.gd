@@ -6,13 +6,13 @@ const HAT_ID: int = 1
 
 func getActiveEffectDisabled(active_effect: ActiveEffectDatastore) -> bool:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Cocus Pocus":
+	if active_effect.name == "Cocus Pocus":
 		return !isSpawnAvailable()
 	return true
 	
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Cocus Pocus":
+	if active_effect.name == "Cocus Pocus":
 		var allies: Array = Game.getAllyUnits(team)
 		allies.erase(self)
 		
@@ -31,7 +31,7 @@ func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Cocus Pocus":
+	if active_effect.name == "Cocus Pocus":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		
 		var animation_action := AnimationAction.new(self, "Ability")

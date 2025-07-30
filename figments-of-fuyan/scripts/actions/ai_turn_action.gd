@@ -171,9 +171,12 @@ func onApplyBehaviours(BehaviourCard: CardGD, enemies: Array, allies: Array, til
 
 func getBehaviours(BehaviourCard: CardGD) -> Array:
 	var archetype: ArchetypeInfo
-	if BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal(): archetype = load(ADVENTURER_ARCHETYPE_PATH)
-	elif Game.getAllyUnits(1).all(func(x: CardGD): return x is not EpicCardGD and x.getActiveArchetype().id == 1): archetype = load(BRUTE_ARCHETYPE_PATH)
-	else: archetype = Card.getActiveArchetype()
+	if BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal():
+		archetype = load(ADVENTURER_ARCHETYPE_PATH)
+	elif Game.getAllyUnits(1).size() == 1:
+		archetype = load(BRUTE_ARCHETYPE_PATH)
+	else:
+		archetype = Card.getActiveArchetype()
 	return archetype.behaviours.map(func(x: GDScript): var behaviour := Behaviour.new(); behaviour.set_script(x); return behaviour)
 	
 func setIsEndUseTypeBoss(state: bool) -> void:

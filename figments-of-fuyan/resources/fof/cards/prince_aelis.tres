@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://bns6l24jhlu8h"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_xv5dd"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_6jscv"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/support.tres" id="2_iu1m3"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/prince_aelis.png" id="2_mlci4"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/prince_aelis.png" id="2_rlngc"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_26pmu"]
-[ext_resource type="Script" path="res://scripts/fof/cards/prince_aelis.gd" id="6_l8njr"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qegqn"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/prince_aelis.glb" id="7_l8njr"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_l8njr"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_m6jx3"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_coh2o"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_6jscv"]
+[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_iu1m3"]
+[ext_resource type="Texture2D" uid="uid://bmm4rbcnebgmp" path="res://assets/sprites/game/cards/art_mini/prince_aelis.png" id="2_mlci4"]
+[ext_resource type="Image" uid="uid://dyc2hb5x5pjes" path="res://assets/sprites/game/cards/art_pop/prince_aelis.png" id="2_rlngc"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_26pmu"]
+[ext_resource type="Script" uid="uid://2df0m3u821fu" path="res://scripts/fof/cards/prince_aelis.gd" id="6_l8njr"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qegqn"]
+[ext_resource type="PackedScene" uid="uid://bij84iio2kuda" path="res://assets/models/fof/cards/prince_aelis.glb" id="7_l8njr"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_l8njr"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_m6jx3"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_coh2o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.960953, 2.01422, 0.775299)
@@ -116,7 +115,6 @@ energy = 2
 description = "Varoman cards in hand cost [1] less"
 ascended_description = "Varoman cards in hand cost [2] less"
 initial_traits = Array[ExtResource("2_6jscv")]([])
-active_abilities = Array[ExtResource("1_xv5dd")]([])
 id = 74
 name = "Prince Aelis"
 gdscript = ExtResource("6_l8njr")

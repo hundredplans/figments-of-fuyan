@@ -5,7 +5,7 @@ const MINIMUM_HEALTH_TO_USE_HELPFUL_HELMET_AI: int = 3
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Helpful Helmet":
+	if active_effect.name == "Helpful Helmet":
 		var tiles: Array = Game.getAdjacentTiles(Tile)
 		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team)))
 	return null
@@ -15,7 +15,7 @@ func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD
 		
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Helpful Helmet":
+	if active_effect.name == "Helpful Helmet":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		var field_effect_data := SavedDataFieldEffect.new(HELPFUL_HELMET_FIELD_EFFECT_ID, true)
 		var FieldEffect: FieldEffectGD = SavedData.onLoadModel(field_effect_data, Card)

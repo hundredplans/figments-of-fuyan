@@ -15,7 +15,7 @@ func getDescription(use_default_values: bool = false) -> String:
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Rousing Hair":
+	if active_effect.name == "Rousing Hair":
 		var adjacent_tiles: Array = Game.getAdjacentTiles(Tile, 1)
 		var tiles: Array = adjacent_tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team) != null)
 		return ActiveEffectTiles.new(adjacent_tiles, tiles)
@@ -26,7 +26,7 @@ func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD
 
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Rousing Hair":
+	if active_effect.name == "Rousing Hair":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		var attack_value: int = DEFAULT_ATTACK if tier == 1 else TIER_TWO_ATTACK
 		var animation_action := AnimationAction.new(self, "Ability")

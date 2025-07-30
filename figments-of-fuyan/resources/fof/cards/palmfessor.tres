@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://08q3be81deq4"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_krnpt"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8abg6"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/support.tres" id="2_hw1s4"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palmfessor.png" id="2_lq2ir"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palmfessor.png" id="2_vlei1"]
-[ext_resource type="Script" path="res://scripts/fof/cards/palmfessor.gd" id="3_2h6c5"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_rhojd"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_kcfhw"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palmfessor.glb" id="5_bcbbw"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_lwk41"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_gvyod"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rlmgp"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8abg6"]
+[ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_hw1s4"]
+[ext_resource type="Texture2D" uid="uid://0v2ajkdp844w" path="res://assets/sprites/game/cards/art_mini/palmfessor.png" id="2_lq2ir"]
+[ext_resource type="Image" uid="uid://dwfvvnip6sjim" path="res://assets/sprites/game/cards/art_pop/palmfessor.png" id="2_vlei1"]
+[ext_resource type="Script" uid="uid://byk7xvsqyuprf" path="res://scripts/fof/cards/palmfessor.gd" id="3_2h6c5"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_rhojd"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_kcfhw"]
+[ext_resource type="PackedScene" uid="uid://cqkw7xut50dq2" path="res://assets/models/fof/cards/palmfessor.glb" id="5_bcbbw"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_lwk41"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_gvyod"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rlmgp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x5vgm"]
 size = Vector3(0.794189, 1.37427, 0.350098)
@@ -116,7 +115,6 @@ energy = 2
 description = "Allies in vision on [1] ATT gain +1 ATT"
 ascended_description = "Allies in vision on [1] ATT gain +2 ATT"
 initial_traits = Array[ExtResource("2_8abg6")]([])
-active_abilities = Array[ExtResource("1_krnpt")]([])
 id = 18
 name = "Palmfessor"
 gdscript = ExtResource("3_2h6c5")

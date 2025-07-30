@@ -7,7 +7,7 @@ const SINGLE_UNIT_CHANCE: float = 0.1
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
+	if active_effect.name == "Charming Stance":
 		var tiles: Array = getVisibleTiles()
 		tiles.erase(Tile)
 		return ActiveEffectTiles.new(tiles, tiles.filter(onPickable))
@@ -15,7 +15,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 	
 func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
+	if active_effect.name == "Charming Stance":
 		onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 	
 func onPickable(x: TileGD) -> bool:
@@ -26,7 +26,7 @@ func onPickable(x: TileGD) -> bool:
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Charming Stance":
+	if active_effect.name == "Charming Stance":
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(ABILITY_DELAY)
 		var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getAllyFieldCard(x, team))\

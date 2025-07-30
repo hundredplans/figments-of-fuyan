@@ -3,7 +3,6 @@ class_name SaveFileGD extends FofGD
 signal load_map
 signal load_main_menu
 signal load_level
-signal exit_save
 signal update_shillings
 signal input_saved
 
@@ -175,7 +174,7 @@ func getBoon(boon_id: int) -> BoonGD:
 #region Game Loss
 func onGameLost() -> void:
 	DirAccess.remove_absolute(SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres")
-	exit_save.emit()
+	load_main_menu.emit()
 #endregion
 
 func onProcessAction(action: Action) -> void:

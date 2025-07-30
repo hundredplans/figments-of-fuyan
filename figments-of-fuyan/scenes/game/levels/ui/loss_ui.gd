@@ -4,7 +4,7 @@ signal mouse_in_ui
 signal exit
 
 func _on_loss_button_pressed() -> void:
-	Game.save_file.onGameLost()
+	Game.getSaveFile().onGameLost()
 	exit.emit()
 	
 func onMouseInUI(state: bool) -> void:

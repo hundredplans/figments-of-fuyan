@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=34 format=3 uid="uid://bt66y801ocpl0"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=32 format=3 uid="uid://bt66y801ocpl0"]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_gkstj"]
 [ext_resource type="Texture2D" uid="uid://bxkodabddetvr" path="res://assets/sprites/game/cards/art_mini/quickdraw_quentin.png" id="2_8x7e6"]
 [ext_resource type="Resource" uid="uid://di2pr0npo4h1p" path="res://resources/fof/archetypes/adventurer.tres" id="2_31ae6"]
 [ext_resource type="Script" uid="uid://bwd15dpd61xnh" path="res://scripts/fof_info/cards/champion_card_info.gd" id="2_s60fl"]
@@ -14,19 +13,6 @@
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_kr2gj"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_8o6vj"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_gr1kb"]
-
-[sub_resource type="Resource" id="Resource_qs1ev"]
-script = ExtResource("1_gkstj")
-ascended_description = ""
-ascended_max_charges = -1
-name = "Reload"
-description = "You have [X]/2 bullets left.
-Gain [1] Bullet and STUN self if in enemy vision"
-max_charges = -1
-delay = 2.0
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_ulhe5"]
 script = ExtResource("6_liqvw")
@@ -229,7 +215,6 @@ ABILITY: If an enemy is in vision STUN self to gain a bullet
 "
 ascended_description = ""
 initial_traits = Array[ExtResource("6_liqvw")]([SubResource("Resource_va7o5")])
-active_abilities = Array[ExtResource("1_gkstj")]([SubResource("Resource_qs1ev")])
 id = 3
 name = "Quickdraw Quentin"
 gdscript = ExtResource("2_vol13")

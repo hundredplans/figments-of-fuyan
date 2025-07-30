@@ -5,7 +5,7 @@ func onProcessAction(action: Action) -> void:
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Highjump":
+	if active_effect.name == "Highjump":
 		var hdiff: int = 3 if tier == 1 else 5
 		var adjacent_tiles: Array = Game.getAdjacentTiles(Tile).filter(func(x: TileGD): return (x.getHeight() > Tile.getHeight() + 1) and x.getHeight() - Tile.getHeight() <= hdiff)
 		var high_tiles: Array = adjacent_tiles.filter(func(x: TileGD): return !x.isOccupied() and !x.isSolid())
@@ -23,5 +23,5 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Highjump":
+	if active_effect.name == "Highjump":
 		onPushAction(MovementAction.new(self, [Tile, PickedTile]))

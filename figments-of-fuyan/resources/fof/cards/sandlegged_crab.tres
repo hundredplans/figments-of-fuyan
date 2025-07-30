@@ -1,29 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://cd1fm6xn6md3"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_0pxj8"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/hostile.tres" id="2_bdpwe"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_dg7vn"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/Sandlegged_Crab.png" id="2_mud08"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/Sandlegged_Crab.png" id="3_3i32s"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_wa8dr"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/sandlegged_crab.glb" id="4_q4tg0"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_spybi"]
-[ext_resource type="Script" path="res://scripts/fof/cards/sandlegged_crab.gd" id="5_4lucv"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_py00n"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_gb15k"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_wg4xy"]
-
-[sub_resource type="Resource" id="Resource_woacj"]
-script = ExtResource("1_0pxj8")
-ascended_description = ""
-ascended_max_charges = -1
-name = "Hardened Shell"
-description = "Gain ARMOR [1] for [1] Turn"
-max_charges = -1
-delay = 2.5
-camera_type = 0
-charges = -1
-used = false
+[ext_resource type="Resource" uid="uid://cm711yoprmaev" path="res://resources/fof/archetypes/hostile.tres" id="2_bdpwe"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_dg7vn"]
+[ext_resource type="Image" uid="uid://bug1bqmadah7c" path="res://assets/sprites/game/cards/art_pop/Sandlegged_Crab.png" id="2_mud08"]
+[ext_resource type="Texture2D" uid="uid://dg8ey7psr2ltn" path="res://assets/sprites/game/cards/art_mini/Sandlegged_Crab.png" id="3_3i32s"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_wa8dr"]
+[ext_resource type="PackedScene" uid="uid://3qtnmbnfu6uw" path="res://assets/models/fof/cards/sandlegged_crab.glb" id="4_q4tg0"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_spybi"]
+[ext_resource type="Script" uid="uid://bkldbfkha1ipm" path="res://scripts/fof/cards/sandlegged_crab.gd" id="5_4lucv"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_py00n"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_gb15k"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_wg4xy"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rw3ha"]
 size = Vector3(1, 0.85559, 0.891479)
@@ -149,7 +136,6 @@ energy = 2
 description = "HOSTILE; ABILITY: Gain ARMOR [1] for [1] Turn"
 ascended_description = ""
 initial_traits = Array[ExtResource("2_dg7vn")]([])
-active_abilities = Array[ExtResource("1_0pxj8")]([SubResource("Resource_woacj")])
 id = 28
 name = "Sandlegged Crab"
 gdscript = ExtResource("5_4lucv")

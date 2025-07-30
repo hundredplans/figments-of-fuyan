@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://c3k8afscj0cvv"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://c3k8afscj0cvv"]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_u23tf"]
 [ext_resource type="Texture2D" uid="uid://tj55flr5jslh" path="res://assets/sprites/game/cards/art_mini/neckus_palmus.png" id="2_8b6eu"]
 [ext_resource type="Image" uid="uid://b05u7eu8caa8i" path="res://assets/sprites/game/cards/art_pop/neckus_palmus.png" id="2_8i4fr"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_jja8n"]
@@ -116,7 +115,6 @@ energy = 4
 description = "When Healed to Full HP [[X]]: Gain +1 HP"
 ascended_description = "When Healed to Full HP [[X]]: Gain +2 HP"
 initial_traits = Array[ExtResource("2_jja8n")]([])
-active_abilities = Array[ExtResource("1_u23tf")]([])
 id = 11
 name = "Neckus Palmus"
 gdscript = ExtResource("4_sqndq")

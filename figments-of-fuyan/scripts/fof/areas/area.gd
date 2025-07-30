@@ -543,7 +543,9 @@ func getEpicFightRewards() -> Array:
 
 #region Random Enemy
 func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, progress: int, is_elite: bool) -> SavedDataCard:
-	var original_cards: Array = _cards.filter(func(x: CardInfo): return x.energy == energy)
+	var world_difficulty: int = getWorldDifficulty()
+	var original_cards: Array = _cards.filter(func(x: CardInfo):\
+		return x.getTierDatastore(world_difficulty).getEnergy() == energy)
 	var cards: Array = getCardsByRarity(original_cards)
 	
 	var card_info: CardInfo = cards.pick_random()
@@ -580,7 +582,8 @@ func getCardsByRarity(original_cards: Array) -> Array:
 func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amount: int, spawns: Array, progress: int, is_elite: bool) -> Array:
 	var cards: Array = Helper.getFofInfoArray(CardInfo).filter(func(x: CardInfo): return x.id in basic_card_ids)
 	
-	var energies: Array = cards.map(func(x: CardInfo): return x.energy)
+	var world_difficulty: int = getWorldDifficulty()
+	var energies: Array = cards.map(func(x: CardInfo): return x.getTierDatastore(world_difficulty).getEnergy())
 	var highest_cost: int = energies.max()
 	var lowest_cost: int = energies.min()
 	

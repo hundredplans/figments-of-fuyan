@@ -20,13 +20,13 @@ func onRevenge(_action: DamageAction) -> void:
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Blackclad Armor":
+	if active_effect.name == "Blackclad Armor":
 		return ActiveEffectTiles.new([getTile()], [getTile()])
 	return null
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Blackclad Armor":
+	if active_effect.name == "Blackclad Armor":
 		var trait_data := SavedDataTrait.new(1, true, 0, 1)
 		
 		var animation_action := AnimationAction.new(self, "Ability")

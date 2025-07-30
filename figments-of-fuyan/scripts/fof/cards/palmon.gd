@@ -2,14 +2,14 @@ extends CardGD
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Treeleaf Remedy":
+	if active_effect.name == "Treeleaf Remedy":
 		var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 2)
 		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team) != null))
 	return null
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Treeleaf Remedy":
+	if active_effect.name == "Treeleaf Remedy":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		var attack_gain: int = 1 if tier == 1 else 2
 		var actions: Array = [

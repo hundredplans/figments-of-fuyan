@@ -11,7 +11,6 @@ class_name ToolInfo extends FofInfo
 @export_group("")
 
 @export_group("Remove")
-@export var active_abilities: Array[ActiveAbilityDatastore]
 @export_multiline var description: String
 @export_multiline var ascended_description: String
 @export_group("")

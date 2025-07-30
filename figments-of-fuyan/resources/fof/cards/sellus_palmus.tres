@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=29 format=3 uid="uid://pudlbmekhwjv"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=27 format=3 uid="uid://pudlbmekhwjv"]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_jmwbd"]
 [ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
 [ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_iqmb7"]
@@ -12,18 +11,6 @@
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_xhb1x"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_burdn"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_nrtu7"]
-
-[sub_resource type="Resource" id="Resource_atwem"]
-script = ExtResource("1_jmwbd")
-ascended_description = "Heal [1] HP to adjacent allies"
-ascended_max_charges = 2
-name = "Palmsale"
-description = "Heal [1] HP to adjacent allies"
-max_charges = 2
-delay = 0.0
-camera_type = 0
-charges = 2
-used = false
 
 [sub_resource type="Resource" id="Resource_ghubt"]
 script = ExtResource("5_ox6gs")
@@ -175,7 +162,6 @@ energy = 2
 description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
 ascended_description = "MOBILE; ABILITY [[X]]: Heal [1] HP to adjacent allies"
 initial_traits = Array[ExtResource("5_ox6gs")]([SubResource("Resource_cjtft")])
-active_abilities = Array[ExtResource("1_jmwbd")]([SubResource("Resource_atwem")])
 id = 7
 name = "Sellus Palmus"
 gdscript = ExtResource("3_av7uo")

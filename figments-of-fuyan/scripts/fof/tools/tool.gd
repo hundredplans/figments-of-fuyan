@@ -32,8 +32,8 @@ func onSave() -> SavedDataTool:
 	return SavedDataTool.new(info.id, false, public_id, active_effects, charges, ability_save, tier)
 	
 func onCreateActiveEffects() -> void:
-	active_effects = []
-	onPushAction(info.active_abilities.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
+	onPushAction(getToolTierDatastore().getActiveAbilities()\
+		.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
 
 func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
@@ -144,3 +144,6 @@ func onChangeCharges(delta: int) -> void:
 
 func onRetiered(_tier: int) -> void:
 	tier = _tier
+
+func getToolTierDatastore(_tier: int = tier) -> ToolTierDatastore:
+	return info.getTierDatastore(_tier)

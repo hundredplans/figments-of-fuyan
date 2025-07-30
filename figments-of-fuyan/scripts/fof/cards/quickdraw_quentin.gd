@@ -57,13 +57,13 @@ func getActiveEffectDescription(active_effect: ActiveEffectDatastore, descriptio
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Reload":
+	if active_effect.name == "Reload":
 		return ActiveEffectTiles.new([Tile], [Tile])
 	return null
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Reload":
+	if active_effect.name == "Reload":
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(ABILITY_DELAY)
 		var actions: Array = [animation_action]

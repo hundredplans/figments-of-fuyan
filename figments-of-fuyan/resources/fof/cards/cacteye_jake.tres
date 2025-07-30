@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://y2hf3wpwuvji"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_pr1ge"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/cacteye_jake.png" id="2_60i47"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_kl5sj"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/cacteye_jake.png" id="2_yflw3"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_q4fv3"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_u15is"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_wtkqj"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_50bqa"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_82ts8"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_puyci"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_m5fx2"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_i6mye"]
+[ext_resource type="Image" uid="uid://dngy47x47yq0h" path="res://assets/sprites/game/cards/art_pop/cacteye_jake.png" id="2_60i47"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_kl5sj"]
+[ext_resource type="Texture2D" uid="uid://5wren2gj2c38" path="res://assets/sprites/game/cards/art_mini/cacteye_jake.png" id="2_yflw3"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_q4fv3"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_u15is"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_wtkqj"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_50bqa"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_82ts8"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_puyci"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_m5fx2"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_i6mye"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -116,7 +115,6 @@ energy = 3
 description = "RANGED [1-4]; On Hit: Mark an enemy; ABILITY [1]: BLIND [2] all Marked enemies"
 ascended_description = ""
 initial_traits = Array[ExtResource("3_q4fv3")]([])
-active_abilities = Array[ExtResource("1_pr1ge")]([])
 id = 40
 name = "\"Cacteye\" Jake"
 gdscript = ExtResource("4_u15is")

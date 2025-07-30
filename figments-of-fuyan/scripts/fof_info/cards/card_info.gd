@@ -39,22 +39,6 @@ const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/bas
 @export var eye: float
 @export_group("")
 
-@export_group("Remove")
-@export var plus_attack: int
-@export var plus_health: int
-@export var plus_speed: int
-@export var plus_energy: int
-@export var ascended_traits: Array[SavedDataTrait]
-@export var attack: int
-@export var health: int
-@export var speed: int
-@export var energy: int
-@export_multiline var description: String
-@export_multiline var ascended_description: String
-@export var initial_traits: Array[SavedDataTrait]
-@export var active_abilities: Array[ActiveAbilityDatastore]
-@export_group("")
-
 static func getInfoPath() -> String: return "res://resources/fof/cards"
 
 static func getFofName() -> String: return "Card"

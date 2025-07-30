@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://diugu0iimc4er"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_w0630"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/kitty_backfire.png" id="2_4ne3p"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_b1ojh"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/kitty_backfire.png" id="2_y2mfj"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gvjrl"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_8tttd"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_04tok"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_3d7ue"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="7_n65xx"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_5dscl"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_hmhjp"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_8atxo"]
+[ext_resource type="Texture2D" uid="uid://wmbgwti0mn65" path="res://assets/sprites/game/cards/art_mini/kitty_backfire.png" id="2_4ne3p"]
+[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_b1ojh"]
+[ext_resource type="Image" uid="uid://c2g35x20orkj6" path="res://assets/sprites/game/cards/art_pop/kitty_backfire.png" id="2_y2mfj"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_gvjrl"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_8tttd"]
+[ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_04tok"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_3d7ue"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_n65xx"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_5dscl"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_hmhjp"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_8atxo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ru2ex"]
 size = Vector3(0.611084, 1.88574, 0.241943)
@@ -116,7 +115,6 @@ energy = 2
 description = "RANGED [1-2]; On Hit: KNOCKBACK [2] this"
 ascended_description = ""
 initial_traits = Array[ExtResource("3_gvjrl")]([])
-active_abilities = Array[ExtResource("1_w0630")]([])
 id = 32
 name = "Kitty Backfire"
 gdscript = ExtResource("4_8tttd")

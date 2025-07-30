@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3 uid="uid://cf2xv060jet2q"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://cf2xv060jet2q"]
 
-[ext_resource type="Script" uid="uid://cdbphjba7jkam" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_e6ab5"]
 [ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_05brf"]
 [ext_resource type="Image" uid="uid://k35gyq4mh3hj" path="res://assets/sprites/game/cards/art_pop/cedric_baldwin.png" id="2_5gqms"]
 [ext_resource type="Texture2D" uid="uid://cxqcmmljc3e87" path="res://assets/sprites/game/cards/art_mini/cedric_baldwin.png" id="2_fbhtq"]
@@ -12,19 +11,6 @@
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_chjoo"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_n2pmv"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_bjrms"]
-
-[sub_resource type="Resource" id="Resource_05brf"]
-script = ExtResource("1_e6ab5")
-ascended_description = "Give an adjacent ally +2 ATT for [1] Turn"
-ascended_max_charges = 1
-name = "Rousing Hair"
-description = "Give an adjacent ally +1 ATT for [1] Turn"
-max_charges = 1
-delay = 0.0
-camera_type = 0
-charges = 1
-used = false
-metadata/_custom_type_script = "uid://cdbphjba7jkam"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -150,7 +136,6 @@ energy = 1
 description = "ABILITY [[X]]: Give an adjacent ally +1 ATT		 for [1] Turn"
 ascended_description = "ABILITY [[X]]: Give an adjacent ally +2 ATT for [1] Turn"
 initial_traits = Array[ExtResource("2_xlam3")]([])
-active_abilities = Array[ExtResource("1_e6ab5")]([SubResource("Resource_05brf")])
 id = 56
 name = "Cedric Baldwin"
 gdscript = ExtResource("6_05brf")

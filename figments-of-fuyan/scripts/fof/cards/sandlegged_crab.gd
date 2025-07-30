@@ -15,13 +15,13 @@ func onProcessAction(action: Action) -> void:
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Hardened Shell":
+	if active_effect.name == "Hardened Shell":
 		return ActiveEffectTiles.new([Tile], [Tile])
 	return null
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Hardened Shell":
+	if active_effect.name == "Hardened Shell":
 		var trait_data := SavedDataTrait.new(1, true, 0, 1)
 		armor_id = 1
 		ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN

@@ -3,6 +3,8 @@ class_name IObjectGD extends ObjectGD
 @warning_ignore("unused_signal")
 signal update_active_effect_description
 
+const IOBJECT_OUTLINE_PATH: String = "res://resources/materials/game/base_material_outline_thick/material/yellow_outline.tres"
+
 var AniPlayer: AnimationPlayer
 var active_effects: Array = []
 var ability_save: Dictionary = {}
@@ -35,6 +37,12 @@ func onLoadDataLevelFofInit() -> void:
 func onLoadModel() -> void:
 	super()
 	setTopVertexY()
+
+func onApplyGreyscaleMaterial() -> void:
+	var greyscale_material: ShaderMaterial = load(info.GREYSCALE_MATERIAL) if !isLevelVisible() and !Helper.admin_datastore.see else load(IOBJECT_OUTLINE_PATH)
+	for mesh in getMeshes():
+		for surface_id in mesh.get_surface_override_material_count():
+			mesh.set_surface_override_material(surface_id, greyscale_material)
 	
 func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 	super(tile_position_to_tile)

@@ -26,16 +26,6 @@ LOCK_OPEN_TX = ExtResource("3_7d34k")
 lock_lock_sfx = ExtResource("4_1w4q4")
 lock_unlock_sfx = ExtResource("5_cwm0q")
 
-[node name="DeckSlotUITexture" type="TextureRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-offset_right = 264.0
-offset_bottom = 410.0
-mouse_filter = 0
-texture = ExtResource("2_0mm81")
-script = ExtResource("3_moy0k")
-HOVER_COLOR = Color(1, 1, 1, 1)
-
 [node name="LockIcon" type="TextureRect" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
@@ -66,13 +56,23 @@ BASE_COLOR = Color(1, 0, 0, 1)
 HOVER_COLOR = Color(0.74, 0, 0, 1)
 DISABLED_COLOR = Color(0.31, 0, 0, 1)
 
-[connection signal="mouse_entered" from="DeckSlotUITexture" to="DeckSlotUITexture" method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="DeckSlotUITexture" to="DeckSlotUITexture" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="DeckSlotUITexture" to="." method="onMouseInUI"]
-[connection signal="pressed" from="DeckSlotUITexture" to="." method="onDeckSlotPressed"]
+[node name="DeckSlotUITexture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 264.0
+offset_bottom = 410.0
+mouse_filter = 0
+texture = ExtResource("2_0mm81")
+script = ExtResource("3_moy0k")
+HOVER_COLOR = Color(1, 1, 1, 1)
+
 [connection signal="mouse_entered" from="LockIcon" to="LockIcon" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="LockIcon" to="LockIcon" method="onMouseInUI" binds= [false]]
 [connection signal="mouse_in_ui" from="LockIcon" to="." method="onMouseInUI"]
 [connection signal="pressed" from="LockIcon" to="." method="onLockPressed"]
 [connection signal="mouse_in_ui" from="ExitButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ExitButton" to="." method="onExitButtonPressed"]
+[connection signal="mouse_entered" from="DeckSlotUITexture" to="DeckSlotUITexture" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="DeckSlotUITexture" to="DeckSlotUITexture" method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="DeckSlotUITexture" to="." method="onMouseInUI"]
+[connection signal="pressed" from="DeckSlotUITexture" to="." method="onDeckSlotPressed"]

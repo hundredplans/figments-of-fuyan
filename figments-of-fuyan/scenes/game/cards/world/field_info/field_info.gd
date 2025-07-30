@@ -182,7 +182,7 @@ func onCreateSpecificStat(type: Game.Stats, value: int) -> void:
 	match type:
 		Game.Stats.SPEED: onCreateStat(SpeedSpot, value, stat_datastore.speed, Card.speed)
 		Game.Stats.HEALTH: onCreateStat(HealthSpot, value, stat_datastore.health, Card.max_health)
-		Game.Stats.ATTACK: onCreateStat(AttackSpot, value, stat_datastore.attack, Card.info.attack)
+		Game.Stats.ATTACK: onCreateStat(AttackSpot, value, stat_datastore.attack, Card.attack)
 
 func setNumbersParticle(type: Game.Stats, value: int) -> void:
 	var NumbersParticle: GPUParticles3D = NumbersParticlePacked.instantiate()

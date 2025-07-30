@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://cwb3bcgscj7b1"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/active_ability_datastore.gd" id="1_swuye"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_cqeuy"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6ae6u"]
-[ext_resource type="Script" path="res://scripts/fof/cards/dumsy_palmsy.gd" id="4_p6qbm"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_sv20q"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="6_r8l0o"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_yo345"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_micap"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_sfcfk"]
+[ext_resource type="Image" uid="uid://ds2dbnyxdi26c" path="res://assets/sprites/game/cards/art_pop/dumsy_palmsy.png" id="2_2xs40"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_cqeuy"]
+[ext_resource type="Texture2D" uid="uid://5ffvvs8jmgd7" path="res://assets/sprites/game/cards/art_mini/dumsy_palmsy.png" id="2_k1blu"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_6ae6u"]
+[ext_resource type="Script" uid="uid://dflcirb6nrkyc" path="res://scripts/fof/cards/dumsy_palmsy.gd" id="4_p6qbm"]
+[ext_resource type="PackedScene" uid="uid://cit4w40jw1b6p" path="res://assets/models/fof/cards/dumsy_palmsy.glb" id="5_27uel"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_sv20q"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="6_r8l0o"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_yo345"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_micap"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_sfcfk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1071a"]
 size = Vector3(0.638306, 1.37494, 0.296631)
@@ -120,7 +119,6 @@ energy = 3
 description = "ARRIVE: Deal [2] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
 ascended_description = "ARRIVE: Deal [3] DMG to self; RAMPAGE: Heal this and allies in vision [1] HP"
 initial_traits = Array[ExtResource("3_6ae6u")]([])
-active_abilities = Array[ExtResource("1_swuye")]([])
 id = 9
 name = "Dumsy Palmsy"
 gdscript = ExtResource("4_p6qbm")

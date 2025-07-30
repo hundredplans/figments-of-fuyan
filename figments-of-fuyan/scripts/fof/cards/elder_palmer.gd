@@ -11,7 +11,7 @@ const CHANGE_BACK_DELAY: float = 2.0
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
+	if active_effect.name == "Palmist Prayer":
 		var tiles: Array = getVisibleFieldCardsAllies().filter(func(x: CardGD): return x.isHealable())\
 		.map(func(x: CardGD): return x.Tile)
 		tiles.erase(Tile)
@@ -23,7 +23,7 @@ func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Palmist Prayer":
+	if active_effect.name == "Palmist Prayer":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		var heal_amount: int = 1
 		var armor_amount: int = 1 if tier == 1 else 2

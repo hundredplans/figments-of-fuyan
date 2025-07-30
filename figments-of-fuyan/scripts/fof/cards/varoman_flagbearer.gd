@@ -6,7 +6,7 @@ func onProcessAction(action: Action) -> void:
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "For Varoma!":
+	if active_effect.name == "For Varoma!":
 		var pickable_tiles: Array = getVisibleFieldCardsAllies().map(func(x: CardGD): return x.getTile())
 		var tiles: Array = getVisibleTiles()
 		tiles.erase(Tile)
@@ -18,7 +18,7 @@ func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD
 
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "For Varoma!":
+	if active_effect.name == "For Varoma!":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
 		var attack_value: int = 1
 		var animation_action := AnimationAction.new(self, "Ability")

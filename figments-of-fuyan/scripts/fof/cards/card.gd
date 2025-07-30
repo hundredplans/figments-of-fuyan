@@ -984,9 +984,10 @@ func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effect.owner = self
 
 func onCreateInitialActiveAbilities() -> void:
-	var abilities: Array[ActiveAbilityDatastore] = info.active_abilities
-	onPushAction(abilities.map(func(x: ActiveAbilityDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
-
+	var tier_datastore := getCardTierDatastore(tier)
+	var new_active_effects: Array = tier_datastore.getActiveAbilities()
+	onPushAction(new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x)))
+	
 func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
 	for active_effect in active_effects:
 		if active_effect.name == _name: return active_effect
@@ -1011,7 +1012,7 @@ func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, descripti
 	return description
 	
 func getActiveAbilities() -> Array:
-	return active_effects.filter(func(x: ActiveEffectDatastore): return x is ActiveAbilityDatastore)
+	return active_effects
 	
 func getActiveEffects() -> Array:
 	return active_effects
@@ -1667,5 +1668,5 @@ func onGainShieldAction(FofObject: FofGD = null) -> AddFieldEffectAction:
 func getTier() -> int:
 	return tier
 	
-func getCardTierDatastore(tier: int = 1) -> CardTierDatastore:
-	return info.getTierDatastore(tier)
+func getCardTierDatastore(_tier: int = tier) -> CardTierDatastore:
+	return info.getTierDatastore(_tier)

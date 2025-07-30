@@ -68,7 +68,7 @@ func getDescription(use_default_values: bool = false) -> String:
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Blacksmith's Will":
+	if active_effect.name == "Blacksmith's Will":
 		return ActiveEffectTiles.new([getTile()], [getTile()])
 	return null
 	
@@ -77,7 +77,7 @@ func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
 	
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect is ActiveAbilityDatastore and active_effect.name == "Blacksmith's Will":
+	if active_effect.name == "Blacksmith's Will":
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(ABILITY_DELAY)
 		
