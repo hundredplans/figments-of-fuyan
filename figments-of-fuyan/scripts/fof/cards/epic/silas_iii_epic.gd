@@ -35,18 +35,22 @@ func onProcessAction(action: Action) -> void:
 		elif action is VisionNewUnitAction and action.Discoverer == self and\
 		action.Discovered.isEnemy(team) and boss_intent != null and boss_intent.name == "SilasStare":
 			onVisionNewUnitUpdateSilasStare(action.Discovered, action.enter_vision)
-		if action is StatAction and action.hasCard(self) and\
+		elif action is StatAction and action.hasCard(self) and\
 			(health <= FIRST_PHASE_CHANGE_HEALTH and getPhase() == 1):
 				onPushAction(ChangeBossPhaseAction.new())
+		elif action is AddFieldEffectAction and action.getCard() == self and action.getFieldEffectId() == SHIELD_ID:
+			onPushAction(AnimationModifierAction.new(self, "Hurt", "Parry"))
+		elif action is RemoveFieldEffectAction and action.getCard() == self and action.getFieldEffectId() == SHIELD_ID:
+			onPushAction(AnimationModifierAction.new(self, "Hurt", ""))
 		
 func onSave() -> SavedDataEpicCard:
 	ability_save['spinning_sword_turns'] = spinning_sword_turns
 	ability_save['active_speed'] = active_speed
 	ability_save['spinning_sword_public_id'] = spinning_sword_public_id
 	return super()
-	
-func onLoadData(data: SavedData) -> void:
-	super(data)
+
+func onLoadDataLevel() -> void:
+	super()
 	if spinning_sword_public_id > 0:
 		var SpinningSword: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(SPINNING_SWORD_VFX_ID, true), self)
 		spinning_sword_public_id = SpinningSword.public_id
@@ -67,9 +71,6 @@ func onUseBossIntent(enemies: Array, allies: Array, tiles: Array, use_type: UseT
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 	
 func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) -> BossIntent:
-	if boss_intents.any(func(x: BossIntent): return x.name == "JumpAttack"): # Remove later
-		return getBossIntentByName("JumpAttack")
-	
 	if boss_intent.name == "Reposition":
 		return getBossIntentByName("SpinAttack")
 		
@@ -140,11 +141,14 @@ func onSpinningSwordLowerTurns() -> void:
 	if spinning_sword_turns == 0:
 		onDestroySpinningSwordVFX()
 		
-func onDestroySpinningSwordVFX() -> void:
+func onDestroySpinningSwordVFX(is_force: bool = false) -> void:
 	spinning_sword_turns = -1
 	var SpinningSword: VFXGD = Game.onFindPublicIDObject(spinning_sword_public_id)
 	if SpinningSword == null: return
-	onPushAction(DestroyVFXAction.new(SpinningSword))
+	
+	var destroy_vfx_action := DestroyVFXAction.new(SpinningSword)
+	if is_force: onForceAction(destroy_vfx_action)
+	else: onPushAction(destroy_vfx_action)
 #endregion
 
 #region Reposition
@@ -611,6 +615,7 @@ func onRampagePassive() -> void:
 #region Phase Change
 func onChangeBossPhase() -> void:
 	super()
+	onDestroySpinningSwordVFX(true)
 	onForceAction(FieldInfoVisibleAction.new(self, false))
 	onForceAction(AnimationModifierAction.new(self, "Idle", "PhaseTwo"))
 	onForceAction(AnimationAction.new(self, "PhaseChange"))
@@ -618,8 +623,9 @@ func onChangeBossPhase() -> void:
 	
 func onChangeBossPhasePostDelay() -> void:
 	super()
+	
 	onIdle()
-	onForceAction(BossIntentUsedAction.new(boss_intent, UseType.END, [],\
-		getVisibleFieldCardsEnemies(), getVisibleFieldCardsAllies()))
+	var is_valid_boss_intent: bool = boss_intent.name in getBossIntentsFromInfo().map(func(x: BossIntent): return x.name)
+	onForceAction(ChangeBossIntentAction.new(getBossIntentByName(boss_intent.name) if is_valid_boss_intent else getBossIntentsFromInfo().pick_random()))
 	onForceAction(FieldInfoVisibleAction.new(self, true))
 	

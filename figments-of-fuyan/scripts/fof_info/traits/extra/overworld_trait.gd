@@ -1,6 +1,7 @@
 class_name OverworldTrait extends Resource
 
-enum AddedBy {NULL, REGULAR, CRAB, BUCKLER, ELDER_PALMER, LONE_RIDER, HAVEL_ROCKFOOT, JIBBEN, VAROMA_RACK}
+enum AddedBy {NULL, REGULAR, CRAB, BUCKLER, ELDER_PALMER, LONE_RIDER, HAVEL_ROCKFOOT, JIBBEN,
+	VAROMA_RACK, DOUBLE_GLAIVE}
 
 @export var data: SavedDataTrait
 @export var added_by: AddedBy

@@ -1,7 +1,13 @@
 extends ToolGD
 
+const MINIMUM_TIER_FOR_MOBILE: int = 2
+
 const TIER_ONE_SPEED_DIFF: int = 1
-const TIER_TWO_SPEED_DIFF: int = 2
+const TIER_TWO_SPEED_DIFF: int = 1
+const TIER_THREE_SPEED_DIFF: int = 2
+const TIER_FOUR_SPEED_DIF: int = 3
+
+const MOBILE_TRAIT_ID: int = 3
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -19,10 +25,15 @@ func onToolUnequipped() -> void:
 
 func onToolHolderAwakened() -> void: # Unit awakens
 	super()
-	var speed_diff: int = 1 if tier == 1 else 2
+	var speed_diff: int = getSpeedDiff()
 	var stat_action := StatAction.new(StatInfo.new(Card, [Game.Stats.MAX_SPEED, Game.Stats.ATTACK], [speed_diff, Card.speed - Card.attack]))
 	stat_action.owner = self
 	onPushAction(ToolActivatedAction.new(self, stat_action))
+	
+	if tier >= MINIMUM_TIER_FOR_MOBILE:
+		var mobile_trait_data := SavedDataTrait.new(MOBILE_TRAIT_ID, true, 0)
+		var mobile_overworld := OverworldTrait.new(mobile_trait_data, OverworldTrait.AddedBy.DOUBLE_GLAIVE, true)
+		onPushAction(mobile_overworld)
 
 func onRetiered(tier: int) -> void:
 	super(tier)
@@ -33,6 +44,14 @@ func onRetiered(tier: int) -> void:
 	
 func onToolAction(stat_action: StatAction) -> void:
 	onPushAction(stat_action)
+	
+func getSpeedDiff() -> int:
+	match tier:
+		1: return TIER_ONE_SPEED_DIFF
+		2: return TIER_TWO_SPEED_DIFF
+		3: return TIER_THREE_SPEED_DIFF
+		4: return TIER_FOUR_SPEED_DIF
+	return 0
 	
 func onCardTurnPassed() -> void:
 	super()

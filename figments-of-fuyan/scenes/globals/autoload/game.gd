@@ -45,6 +45,13 @@ var NUMBER_TO_ROMAN_NUMERAL: Dictionary[int, String] = {
 	10: "X"
 }
 
+var TIER_TO_COLOR: Dictionary[int, Color] = {
+	1: Color("703d19"),
+	2: Color("ccc4c4"),
+	3: Color("fdc100"),
+	4: Color("11f8fc"),
+}
+
 var TURN_STATES_TO_STRING: Dictionary = {
 	TurnStates.NULL: "Null",
 	TurnStates.PASSED: "Passed",
@@ -65,6 +72,7 @@ var cube_directions: Array[Vector3i] = [
 var tile_face_directions: Array[Vector3] = [
 ]
 
+const MAX_TOOL_TIER: int = 4
 const CARD_UI_SIZE := Vector2(264, 400)
 
 const FALL_DAMAGE_BEGIN_HEIGHT: int = 5
@@ -281,6 +289,9 @@ func getNewFieldCard(id: int, Tile: TileGD, team: int, tile_rotation: int, tier:
 
 func getUnitTiles() -> Array:
 	return get_tree().get_nodes_in_group("FieldCardsGD").map(func(x: CardGD): return x.Tile)
+	
+func getUnits() -> Array:
+	return get_tree().get_nodes_in_group("FieldCardsGD")
 #endregion
 
 #region Vision
@@ -356,6 +367,7 @@ func setPublicID(fof: FofGD) -> void:
 	
 func onFindPublicIDObject(public_id: int) -> FofGD:
 	if public_id_objects.has(public_id):
+		if !is_instance_valid(public_id_objects[public_id]): return
 		return public_id_objects[public_id]
 	return null
 #endregion 

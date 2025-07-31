@@ -1,5 +1,31 @@
 extends ToolGD
 
+const TIER_ONE_STAT_BUFF: int = 1
+const TIER_TWO_STAT_BUFF: int = 1
+const TIER_THREE_STAT_BUFF: int = 1
+const TIER_FOUR_STAT_BUFF: int = 2
+
+const TIER_ONE_TEMP_STAT_BUFF: int = 0
+const TIER_TWO_TEMP_STAT_BUFF: int = 1
+const TIER_THREE_TEMP_STAT_BUFF: int = 2
+const TIER_FOUR_TEMP_STAT_BUFF: int = 2
+
+func getStatBuff(_tier: int = tier) -> int:
+	match _tier:
+		1: return TIER_ONE_STAT_BUFF
+		2: return TIER_TWO_STAT_BUFF
+		3: return TIER_THREE_STAT_BUFF
+		4: return TIER_FOUR_STAT_BUFF
+	return 0
+	
+func getTempStatBuff() -> int:
+	match tier:
+		1: return TIER_ONE_TEMP_STAT_BUFF
+		2: return TIER_TWO_TEMP_STAT_BUFF
+		3: return TIER_THREE_TEMP_STAT_BUFF
+		4: return TIER_FOUR_TEMP_STAT_BUFF
+	return 0
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 
@@ -24,7 +50,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 			4: type = Game.Stats.ATTACK
 			6: type = Game.Stats.MAX_SPEED
 			
-		onPushAction(StatAction.new(StatInfo.new(Card, type, 1, turns)))
+		onPushAction(StatAction.new(StatInfo.new(Card, type, getTempStatBuff(), turns)))
 		
 func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
 	match info.id:
@@ -68,11 +94,15 @@ func onToolUnequipped() -> void:
 		4: type = Game.Stats.ATTACK
 		6: type = Game.Stats.MAX_SPEED
 
-	var stat_action := StatAction.new(StatInfo.new(Card, type, -1))
+	var stat_action := StatAction.new(StatInfo.new(Card, type, -getStatBuff()))
 	onPushAction(ToolActivatedAction.new(self, stat_action))
 
 func onToolHolderAwakened() -> void:
 	super()
+	var stat_action := getStatAction(getStatBuff())
+	onPushAction(ToolActivatedAction.new(self, stat_action))
+	
+func getStatAction(value: int) -> StatAction:
 	var types: Array = []
 	match info.id:
 		1: types.append(Game.Stats.MAX_HEALTH); types.append(Game.Stats.HEALTH)
@@ -81,9 +111,19 @@ func onToolHolderAwakened() -> void:
 		
 	var values: Array = []
 	values.resize(types.size())
-	values.fill(1)
+	values.fill(value)
 	var stat_action := StatAction.new(StatInfo.new(Card, types, values))
-	onPushAction(ToolActivatedAction.new(self, stat_action))
+	return stat_action
+	
+func onRetiered(_tier: int) -> void:
+	var old_tier: int = tier
+	super(_tier)
+	if tier == old_tier: return
+	
+	var current_value: int = getStatBuff()
+	var old_value: int = getStatBuff(old_tier)
+	var new_value: int = current_value - old_value
+	onPushAction(getStatAction(new_value))
 	
 func onToolHolderDeath() -> void:
 	super()

@@ -15,6 +15,8 @@ const PRECALCULATED_CLAIMED_LABEL_POSITION := Vector2(-195, 110)
 const CLAIMED_CARD_COLOR := Color(0.2, 0.2, 0.2)
 const CLAIMED_COLOR := Color(0.5, 0.5, 0.5, 1.0)
 
+const MAX_SCALE_SIZE: float = 1.1
+
 func setInfo(_reward: Reward) -> void:
 	reward = _reward
 	action = reward.getItem().getType(ChooseRewardAction)[0]
@@ -30,6 +32,7 @@ func setInfo(_reward: Reward) -> void:
 		var CardUI: Control = Card.onCreateCardUI(control, !is_taken, true, null)
 		if is_taken:
 			CardUI.onChangeBackgroundMouseFilter(false, false)
+			CardUI.scale = Vector2(MAX_SCALE_SIZE, MAX_SCALE_SIZE)
 		
 		CardUI.set_anchors_preset(Control.PRESET_CENTER)
 		CardUI.pressed.connect(onRewardPressed)
@@ -55,8 +58,7 @@ func onRewardPressed(CardUI: Control) -> void:
 	var tween := create_tween()
 	tween.tween_property(Main, "modulate", CLAIMED_COLOR, Game.FADE_TIME)
 
-	var scale_tween := create_tween()
-	scale_tween.tween_property(CardUI, "scale", Vector2.ONE, 0.25)
+	onScaleCardSize(CardUI, true)
 
 	var ClaimedLabel: Label = onCreateClaimedLabel(CardUI)
 	ClaimedLabel.modulate.a = 0.0
@@ -81,7 +83,10 @@ func onCreateClaimedLabel(CardUI: Control) -> Label:
 
 func onMouseInCardUI(state: bool, CardUI: Control) -> void:
 	if reward.isTaken(): return
+	onScaleCardSize(CardUI, state)
+	
+func onScaleCardSize(CardUI: Control, state: bool) -> void:
 	var tween: Tween = create_tween()
-	var target_value: float = 1.1 if state else 0.9
+	var target_value: float = MAX_SCALE_SIZE if state else 0.9
 	var value: float = target_value - CardUI.scale.x
 	tween.tween_property(CardUI, "scale", Vector2(value, value), 0.25).as_relative().set_trans(Tween.TRANS_SINE)

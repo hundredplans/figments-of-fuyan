@@ -9,7 +9,6 @@ const ROYAL_BUFF_MINIMUM_ALLY_IN_VISION: int = 1
 const SLEEP_OFF_COOLDOWN_ROLL_CHANCE: float = 0.5
 const ENERGY_TOTAL_STOP_SUMMON: int = 10
 const ENERGY_TOTAL_DECREASE_SUMMON_ODDS: int = 5
-const LOWER_ODDS_TO_SUMMON: float = 0.3
 const HIGHER_ODDS_TO_SUMMON: float = 0.66
 
 var solo_spawn_ids: Array = [73, 69, 67, 62, 61]
@@ -45,11 +44,7 @@ func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) ->
 		var energy_total: int = all_allies.reduce(func(a: int, x: CardGD): return x.energy + a, 0)
 		if energy_total >= ENERGY_TOTAL_STOP_SUMMON:
 			boss_intents = onKeepByNames(boss_intents, ["Sleep", "RoyalBoon"])
-		elif energy_total >= ENERGY_TOTAL_DECREASE_SUMMON_ODDS: # >= 5 energy
-			var is_summon: bool = Random.rollFloat(LOWER_ODDS_TO_SUMMON)
-			var keeps: Array = ["SoloSpawn", "DuoSpawn"] if is_summon else ["RoyalBoon", "Sleep"]
-			boss_intents = onKeepByNames(boss_intents, keeps)
-		else: # 5 < Energy
+		else: # 10 < energy
 			var is_summon: bool = Random.rollFloat(HIGHER_ODDS_TO_SUMMON)
 			var keeps: Array = ["SoloSpawn", "DuoSpawn"] if is_summon else ["RoyalBoon", "Sleep"]
 			boss_intents = onKeepByNames(boss_intents, keeps)
@@ -158,7 +153,7 @@ func onRoyalBoon(allies: Array, use_type: UseType) -> Array:
 			var AllyCard: CardGD = allies.pick_random()
 			var camera_change_action := CameraChangeAction.new(AllyCard)
 			camera_change_action.setActionDelay(ROYAL_BUFF_SPECTATE_DELAY)
-			actions.append(StatAction.new(StatInfo.new(AllyCard, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH], [1, 1])))
+			actions.append(StatAction.new(StatInfo.new(AllyCard, [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.MAX_HEALTH], [1, 1, 1])))
 			actions.append(camera_change_action)
 		actions.append(ClearTileIntentsAction.new())
 	return actions

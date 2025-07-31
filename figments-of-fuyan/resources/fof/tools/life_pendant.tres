@@ -23,7 +23,6 @@ script = ExtResource("7_h5u4r")
 name = "Life Pendant"
 description = "Heal [1] HP"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -31,8 +30,8 @@ used = false
 [sub_resource type="Resource" id="Resource_jtbrw"]
 script = ExtResource("8_jp3jr")
 description = "Gain +1 HP
-ABILITY [1]: Heal [1] HP"
-default_values = Array[int]([])
+ABILITY [[X]]: Heal [1] HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_f844k"]
 script = ExtResource("6_fjffo")
@@ -44,7 +43,6 @@ script = ExtResource("7_h5u4r")
 name = "Life Pendant"
 description = "Heal [2] HP"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -52,8 +50,8 @@ used = false
 [sub_resource type="Resource" id="Resource_jp3jr"]
 script = ExtResource("8_jp3jr")
 description = "Gain +1 HP
-ABILITY [1]: Heal [2] HP"
-default_values = Array[int]([])
+ABILITY [[X]]: Heal [2] HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_krus7"]
 script = ExtResource("6_fjffo")
@@ -65,7 +63,6 @@ script = ExtResource("7_h5u4r")
 name = "Life Pendant"
 description = "Heal [2] HP"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -73,8 +70,8 @@ used = false
 [sub_resource type="Resource" id="Resource_blges"]
 script = ExtResource("8_jp3jr")
 description = "Gain +2 HP
-ABILITY [1]: Heal [2] HP"
-default_values = Array[int]([])
+ABILITY [[X]]: Heal [2] HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_vpjvo"]
 script = ExtResource("6_fjffo")

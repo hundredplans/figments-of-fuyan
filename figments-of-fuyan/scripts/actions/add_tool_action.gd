@@ -13,13 +13,13 @@ func _init(_Card: CardGD = null, _Tool: ToolGD = null, _keep_tool: bool = false)
 	
 func onPreAction() -> void:
 	if Card.Tool != null:
-		if Card.Tool.info.id != Tool.info.id:
+		if Card.Tool.info.id != Tool.info.id or Card.Tool.getTier() < Tool.getTier():
 			onForceAction(RemoveToolAction.new(Card))
-		#elif !Card.Tool.getAscended():
-			#if !keep_tool:
-				#Tool.onClear()
-			#onForceAction(AscendToolAction.new(Card.Tool))
-			#onFailAction()
+		elif Card.Tool.getTier() == Tool.getTier() and Tool.getTier() != Game.MAX_TOOL_TIER:
+			if !keep_tool:
+				Tool.onClear()
+			onForceAction(ToolRetieredAction.new(Card.Tool, Card.Tool.getTier() + 1))
+			onFailAction()
 		else: onFailAction()
 	
 func onPostAction() -> void:

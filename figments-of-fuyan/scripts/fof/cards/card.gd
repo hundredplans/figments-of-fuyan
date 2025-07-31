@@ -111,6 +111,7 @@ func setAnimationModifier(animation_name: String, modifier: String) -> void:
 	match animation_name:
 		"Idle": setIdleModifier(modifier)
 		"Jump": anibility_datastore.setJumpModifier(modifier)
+		"Hurt": anibility_datastore.setHurtModifier(modifier)
 		
 func setAwakenedInCombat(state: bool) -> void:
 	is_awakened_in_combat = state
@@ -189,7 +190,7 @@ func onDeath() -> void:
 	onPlayAnimation("Death" + anibility_datastore.getDeathModifier())
 	
 func onHurt() -> void:
-	onPlayAnimation("Hurt")
+	onPlayAnimation("Hurt" + anibility_datastore.getHurtModifier())
 	
 func onAbility() -> void:
 	onPlayAnimation("Ability")
@@ -486,7 +487,7 @@ func onProcessAction(action: Action) -> void:
 				onBountyKill(action) # Needs to be here instead of in death action
 			elif action is AddToolAction and action.Tool == Tool:
 				tool_updated.emit(action.Tool)
-			elif action is ToolTierUpAction and action.Tool == Tool:
+			elif action is ToolRetieredAction and action.Tool == Tool:
 				tool_updated.emit(action.Tool)
 			elif action is RemoveToolAction and action.Card == self:
 				tool_updated.emit(null)
@@ -1229,10 +1230,10 @@ func onRetiered(_tier: int) -> void: # This doesn't account for tiering down as 
 	# Stat Region
 	tier = _tier
 	var stat_datastore: StatsDatastore = getStatsFromInfo()
-	var plus_attack: int = stat_datastore.attack - attack
-	var plus_health: int = stat_datastore.health - health
-	var plus_speed: int = stat_datastore.speed - speed
-	var plus_energy: int = stat_datastore.energy - energy
+	var plus_attack: int = stat_datastore.attack - base_stats.attack
+	var plus_health: int = stat_datastore.health - base_stats.health
+	var plus_speed: int = stat_datastore.speed - base_stats.speed
+	var plus_energy: int = stat_datastore.energy - base_stats.energy
 	
 	var types: Array = [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED, Game.Stats.ENERGY]
 	var values: Array = [plus_attack, plus_health, plus_health, plus_speed, plus_energy]
@@ -1676,3 +1677,18 @@ func getTier() -> int:
 	
 func getCardTierDatastore(_tier: int = tier) -> CardTierDatastore:
 	return info.getTierDatastore(_tier)
+
+func getAttack() -> int:
+	return attack
+	
+func getHealth() -> int:
+	return health
+	
+func getSpeed() -> int:
+	return speed
+	
+func getEnergy() -> int:
+	return energy
+
+func getTeam() -> int:
+	return team

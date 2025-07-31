@@ -112,9 +112,18 @@ func onUpdateStats() -> void:
 	SpeedLabel.text = str(Card.base_stats.speed)
 	EnergyLabel.text = str(Card.energy)
 	
+	var energy_modulate: Color
+	if Card.energy > Card.base_stats.energy: energy_modulate = Color.RED
+	elif Card.energy == Card.base_stats.energy: energy_modulate = Color.WHITE
+	else: energy_modulate = Color.GREEN
+	EnergyLabel.modulate = energy_modulate
+	
 func onToolUpdated(Tool: ToolGD) -> void:
 	ToolControl.visible = Tool != null
 	ToolIcon.setInfo(Tool, false)
+	
+	if Tool != null:
+		ToolIconBackground.modulate = Game.TIER_TO_COLOR[Tool.getTier()]
 	
 func onPressed() -> void:
 	if disabled: return

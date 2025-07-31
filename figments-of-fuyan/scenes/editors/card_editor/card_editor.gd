@@ -12,10 +12,12 @@ const CARD_UI_OFFSET := Vector2(-120, -400)
 @onready var SearchAreaCard: LineEdit = %SearchAreaCard
 @onready var CardParent: Node3D = %CardParent
 
+var tier: int = 1
+
 func _ready() -> void:
-	#var ActionManager: Node = ActionManagerPacked.instantiate()
-	#add_child(ActionManager)
-	#Game.ActionManagerReference = ActionManager
+	var ActionManager: Node = ActionManagerPacked.instantiate()
+	add_child(ActionManager)
+	Game.ActionManagerReference = ActionManager
 	
 	var card_id_to_area_id: Dictionary[int, int] = {}
 	for area_info: AreaInfo in Helper.getFofInfoArray(AreaInfo):
@@ -29,20 +31,14 @@ func _ready() -> void:
 		var card_data := SavedDataCard.new(card_info.id, true)
 		Game.setCardDataFromInfo(card_data, card_info)
 		var Card: CardGD = SavedData.onLoadModel(card_data, CardParent)
-		
-		var arr: Array[ActiveEffectDatastore] = []
-		arr.assign(Card.info.active_abilities)
-		
-		for a: ActiveEffectDatastore in arr:
-			a.charges = a.max_charges
-		
-		Card.active_effects = arr
 		onCreateDeckCardUI(Card)
 
 func getSortValue(x: CardInfo, y: CardInfo, card_id_to_area_id: Dictionary[int, int]) -> bool:
+	var x_energy: int = x.getTierDatastore(tier).getEnergy()
+	var y_energy: int = y.getTierDatastore(tier).getEnergy()
 	if card_id_to_area_id[x.id] != card_id_to_area_id[y.id]: return card_id_to_area_id[x.id] < card_id_to_area_id[y.id]
 	if x.rarity != y.rarity: return x.rarity < y.rarity
-	if x.energy != y.energy: return x.energy < y.energy
+	if x_energy!= y_energy: return x_energy < y_energy
 	return x.id < y.id
 func onAnimationNameButtonPressed(ani_name: String) -> void:
 	for Card in get_tree().get_nodes_in_group("CardsGD").filter(func(x: CardGD): return x.AniPlayer != null and x.AniPlayer.has_animation(ani_name)):
@@ -94,4 +90,5 @@ func _on_tier_up_button_pressed() -> void:
 	for Card: CardGD in get_tree().get_nodes_in_group("CardsGD"):
 		var next_tier: int = (Card.getTier() + 1) % (Card.info.tiers.size() + 1)
 		if next_tier == 0: next_tier = 1
+		tier = next_tier
 		Card.onRetiered(next_tier)

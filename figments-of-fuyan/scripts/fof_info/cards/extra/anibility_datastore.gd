@@ -5,6 +5,7 @@ class_name AnibilityDatastore extends Resource
 @export var walk_modifier: String
 @export var death_modifier: String
 @export var jump_modifier: String
+@export var hurt_modifier: String
 
 func setIdleModifier(_idle_modifier: String) -> void:
 	idle_modifier = _idle_modifier
@@ -20,6 +21,9 @@ func setDeathModifier(_death_modifier: String) -> void:
 	
 func setJumpModifier(_jump_modifier: String) -> void:
 	jump_modifier = _jump_modifier
+	
+func setHurtModifier(_hurt_modifier: String) -> void:
+	hurt_modifier = _hurt_modifier
 
 func getWalkModifier() -> String:
 	return walk_modifier
@@ -35,6 +39,9 @@ func getIdleModifier() -> String:
 	
 func getJumpModifier() -> String:
 	return jump_modifier
+	
+func getHurtModifier() -> String:
+	return hurt_modifier
 	
 func onResetWalkModifier() -> void:
 	setWalkModifier("")

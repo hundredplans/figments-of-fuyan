@@ -32,6 +32,8 @@ const PRECALCULATED_CLAIMED_LABEL_CARD_UI_OFFSET := Vector2(-125, 120)
 @onready var ToolIcon: Control = %ToolIcon
 var EpicCardUI: Control
 
+const MAX_SCALE_SIZE: float = 1.1
+
 func setInfo(_reward: Reward) -> void:
 	reward = _reward
 	action = reward.getItem().getType(ChooseRewardAction)[0]
@@ -72,6 +74,7 @@ func setInfo(_reward: Reward) -> void:
 			CardUI.pressed.connect(onCardUIPressed)
 			
 		if reward.isTaken() and i == action.chosen_index:
+			IconUI.scale = Vector2(MAX_SCALE_SIZE, MAX_SCALE_SIZE)
 			call_deferred("onCreateClaimedLabel", item)
 
 	BoonIcon.onDisplayCharges(false)
@@ -81,8 +84,11 @@ func setInfo(_reward: Reward) -> void:
 
 func onMouseInIconUI(state: bool, IconUI: Control) -> void:
 	if reward.isTaken(): return
+	onScaleIconUISize(IconUI, state)
+
+func onScaleIconUISize(IconUI: Control, state: bool) -> void:
 	var tween: Tween = create_tween()
-	var target_value: float = 1.1 if state else 0.9
+	var target_value: float = MAX_SCALE_SIZE if state else 0.9
 	var value: float = target_value - IconUI.scale.x
 	tween.tween_property(IconUI, "scale", Vector2(value, value), 0.25).as_relative().set_trans(Tween.TRANS_SINE)
 
@@ -97,14 +103,17 @@ func onBoonPressed(Boon: BoonGD, BoonUI: Control) -> void:
 	Game.getSaveFile().onPushAction(AddBoonAction.new(Boon.info.id, Game.getArea().getWorldDifficulty()))
 	onRewardTaken(BoonUI, Boon)
 	
-func onRewardTaken(_IconUI: Control, item: FofGD) -> void:
+func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 	onCreateClaimedLabel(item)
 	reward.setTaken(true)
 	
 	for NewIconUI: Control in [BoonIcon, ToolIcon, EpicCardUI]:
+		if NewIconUI == IconUI: continue
 		NewIconUI.setHighlightOnHover(false)
 		var tween := create_tween()
 		tween.tween_property(NewIconUI, "scale", Vector2.ONE, 0.25)
+		
+	onScaleIconUISize(IconUI, true)
 		
 	ToolIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
 	BoonIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)

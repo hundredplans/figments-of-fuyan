@@ -66,6 +66,9 @@ func onSwapCameraOnDeathInPlayerPhase() -> void:
 	
 func getCardSawDefenderDie(Card: CardGD) -> bool:
 	return card_to_visible_defender[Card]
+	
+func getGameObjectsInVision() -> Array:
+	return game_objects_in_vision
 
 func onCheckEndGame() -> bool:
 	if Game.getLevel().isEpic() and Game.getLevel().getBoss() == Defender:

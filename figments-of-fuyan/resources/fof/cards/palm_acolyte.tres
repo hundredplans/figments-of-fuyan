@@ -1,16 +1,16 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://di1jlfteof5pq"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
 
-[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_racig"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_sigte"]
-[ext_resource type="Image" uid="uid://b75kho28031ha" path="res://assets/sprites/game/cards/art_pop/palm_acolyte.png" id="3_8qtb0"]
-[ext_resource type="Texture2D" uid="uid://c8muitrvelbnt" path="res://assets/sprites/game/cards/art_mini/palm_acolyte.png" id="3_r3qlw"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_s3wjm"]
-[ext_resource type="Script" uid="uid://dediuf1xvriyq" path="res://scripts/fof/cards/palm_acolyte.gd" id="4_6mvja"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_8qtb0"]
-[ext_resource type="PackedScene" uid="uid://dowgcs0ja2fo4" path="res://assets/models/fof/cards/palm_acolyte.glb" id="7_r3qlw"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_glhbm"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uul8t"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rtjl2"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_racig"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_sigte"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/palm_acolyte.png" id="3_8qtb0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/palm_acolyte.png" id="3_r3qlw"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_s3wjm"]
+[ext_resource type="Script" path="res://scripts/fof/cards/palm_acolyte.gd" id="4_6mvja"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_8qtb0"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/palm_acolyte.glb" id="7_r3qlw"]
+[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_glhbm"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uul8t"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rtjl2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_80h08"]
 size = Vector3(0.746033, 2.12097, 0.492493)
@@ -33,7 +33,6 @@ script = ExtResource("11_glhbm")
 name = "Divine Light"
 description = "Deal [2] DMG to a unit in vision"
 max_charges = 1
-delay = 2.4
 camera_type = 0
 charges = 0
 used = false
@@ -113,18 +112,6 @@ collision_shape = SubResource("PackedScene_r3qlw")
 stat = 2.378
 top = 2.10577
 eye = 1.6687
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_sigte")]([])
-attack = 1
-health = 4
-speed = 2
-energy = 3
-description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-ascended_description = ""
-initial_traits = Array[ExtResource("2_sigte")]([])
 id = 79
 name = "Palm Acolyte"
 gdscript = ExtResource("4_6mvja")

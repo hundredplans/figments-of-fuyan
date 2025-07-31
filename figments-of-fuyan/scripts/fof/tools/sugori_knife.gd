@@ -2,6 +2,7 @@ extends ToolGD
 
 const SUGORI_KNIFE_FIELD_EFFECT_ID: int = 1
 
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if !action.post:

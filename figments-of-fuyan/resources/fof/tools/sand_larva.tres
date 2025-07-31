@@ -13,15 +13,14 @@ script = ExtResource("8_mso1s")
 name = "Sandy Spy"
 description = "REVEAL a random enemy for [1] Turn"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_i2w01"]
 script = ExtResource("9_33d7e")
-description = "ABILITY [1]: REVEAL a random enemy for [1] Turn"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: REVEAL a random enemy for [1] Turn"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_7nd5a"]
 script = ExtResource("7_2snsu")
@@ -33,15 +32,14 @@ script = ExtResource("8_mso1s")
 name = "Sandy Spy"
 description = "REVEAL [2] random enemies for [1] Turn"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_5ybf6"]
 script = ExtResource("9_33d7e")
-description = "ABILITY [1]: REVEAL [2] random enemies for [1] Turn"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: REVEAL [2] random enemies for [1] Turn"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_ofs41"]
 script = ExtResource("7_2snsu")
@@ -53,15 +51,14 @@ script = ExtResource("8_mso1s")
 name = "Sandy Spy"
 description = "REVEAL [2] random enemies for [2] Turns"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_33d7e"]
 script = ExtResource("9_33d7e")
-description = "ABILITY [1]: REVEAL [2] random enemies for [2] Turns"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: REVEAL [2] random enemies for [2] Turns"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_0d120"]
 script = ExtResource("7_2snsu")
@@ -73,15 +70,14 @@ script = ExtResource("8_mso1s")
 name = "Sandy Spy"
 description = "REVEAL [3] random enemies for [2] Turns"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_4cm1c"]
 script = ExtResource("9_33d7e")
-description = "ABILITY [1]: REVEAL [3] random enemies for [2] Turns"
-default_values = Array[int]([])
+description = "ABILITY [[X]: REVEAL [3] random enemies for [2] Turns"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_sixy0"]
 script = ExtResource("7_2snsu")

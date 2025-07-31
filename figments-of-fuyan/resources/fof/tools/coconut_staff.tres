@@ -13,15 +13,14 @@ script = ExtResource("7_2esoy")
 name = "Coconut Staff"
 description = "Heal allies in vision [1] HP"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_tr0e8"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [1]: Heal allies in vision [1] HP"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal allies in vision [1] HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_sj3uk"]
 script = ExtResource("6_iil5n")
@@ -31,17 +30,16 @@ description_datastore = SubResource("Resource_tr0e8")
 [sub_resource type="Resource" id="Resource_2esoy"]
 script = ExtResource("7_2esoy")
 name = "Coconut Staff"
-description = " Heal allies in vision [2] HP"
+description = "Heal allies in vision [2] HP"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_xjk8v"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [1]: Heal allies in vision [2] HP"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal allies in vision [2] HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_odp78"]
 script = ExtResource("6_iil5n")
@@ -53,15 +51,14 @@ script = ExtResource("7_2esoy")
 name = "Coconut Staff"
 description = "Heal all allies [2] HP"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_fus8k"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [1]: Heal all allies [2] HP"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal all allies [2] HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_sr3gn"]
 script = ExtResource("6_iil5n")
@@ -73,15 +70,14 @@ script = ExtResource("7_2esoy")
 name = "Coconut Staff"
 description = "Heal all allies [3] HP"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
 
 [sub_resource type="Resource" id="Resource_bd8v1"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [1]: Heal all allies [3] HP"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Heal all allies [3] HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_46vcf"]
 script = ExtResource("6_iil5n")

@@ -23,7 +23,6 @@ script = ExtResource("7_ooxts")
 name = "Wind Pendant"
 description = "Gain [1] SPD for [1] Turn"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -44,7 +43,6 @@ script = ExtResource("7_ooxts")
 name = "Wind Pendant"
 description = "Gain [2] SPD for [1] Turn"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -52,8 +50,8 @@ used = false
 [sub_resource type="Resource" id="Resource_v2ujl"]
 script = ExtResource("8_v2ujl")
 description = "Gain +1 SPD
-ABILITY [1]: Gain +2 SPD for [1] Turn"
-default_values = Array[int]([])
+ABILITY [[X]]: Gain +2 SPD for [1] Turn"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_mf3u1"]
 script = ExtResource("6_tugfb")
@@ -65,7 +63,6 @@ script = ExtResource("7_ooxts")
 name = "Wind Pendant"
 description = "Gain [2] SPD for [1] Turn"
 max_charges = 1
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -73,7 +70,7 @@ used = false
 [sub_resource type="Resource" id="Resource_ctjng"]
 script = ExtResource("8_v2ujl")
 description = "Gain +2 SPD
-ABILITY [1]: Gain +2 SPD for [1] Turn"
+ABILITY [[X]]: Gain +2 SPD for [1] Turn"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_7i5fm"]

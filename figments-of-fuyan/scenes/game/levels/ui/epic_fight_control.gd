@@ -1,5 +1,8 @@
 extends MarginContainer
 
+const SHIELD_ID: int = 3
+const ARMOR_ID: int = 1
+
 @onready var BossShieldUI: Control = %BossShieldUI
 @onready var BossNameLabel: Label = %BossNameLabel
 @onready var HealthBar: Control = %HealthBar
@@ -11,12 +14,13 @@ func setInfo() -> void:
 	BossNameLabel.modulate = Game.getRarityColor(BossCard.info.rarity)
 	onUpdateBossNameLabel(BossCard)
 	setHealthBar(BossCard)
+	setBossShieldUI(BossCard.getFirstFieldEffect(SHIELD_ID) != null)
 
 func setHealthBar(BossCard: CardGD) -> void:
 	HealthBar.size.x = FULL_HEALTHBAR_SIZE_X * (BossCard.health / float(BossCard.max_health))
 	
 	var health_bar_color := Color("ff0000")
-	if BossCard.getFieldTraitByID(1) != null:
+	if BossCard.getFieldTraitByID(ARMOR_ID) != null:
 		health_bar_color = Color("7d4545")
 		
 	HealthBar.modulate = health_bar_color

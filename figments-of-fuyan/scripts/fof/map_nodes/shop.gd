@@ -46,7 +46,8 @@ func onAddLocalForeignCardsBoonTools() -> void:
 	
 func getAllObjects(type: GDScript) -> Array:
 	if isFirstShop() and type == CardInfo:
-		return Helper.getFofInfoArray(type).filter(func(x: CardInfo): return x.energy < 4)
+		var world_difficulty: int = Game.getArea().getWorldDifficulty()
+		return Helper.getFofInfoArray(type).filter(func(x: CardInfo): return x.getTierDatastore(world_difficulty).energy < 4)
 	return Helper.getFofInfoArray(type) if type != BoonInfo else Game.getAvailableBoons()
 	
 func getForeign(info_type: GDScript, j: int) -> bool:
