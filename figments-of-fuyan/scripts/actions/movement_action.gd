@@ -32,7 +32,6 @@ func onPostAction() -> void:
 			var Attackables: Array = []
 			match MoveToTile.occupy_state:
 				TileGD.OccupyStates.NULL: pass
-				TileGD.OccupyStates.ATTACKABLE_IOBJECT: Attackables = MoveToTile.getAttackableIObjects()
 				_: Attackables.append(Game.getFieldCard(MoveToTile))
 			
 			if Attackables.is_empty() or destroy_on_occupy:

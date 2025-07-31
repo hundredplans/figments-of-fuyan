@@ -15,6 +15,7 @@ const GRAND_SLASH_ACTION_DELAY: float = 2.0
 const SPINNING_SWORD_VFX_ID: int = 2
 const JUMP_ATTACK_DISTANCE: int = 4
 const ARMOR_TRAIT_ID: int = 1
+const FIRST_PHASE_CHANGE_HEALTH: int = 14
 
 var spinning_sword_public_id: int
 var spinning_sword_turns: int
@@ -25,10 +26,18 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if isValidEndOfTurn(action) and spinning_sword_turns > 0:
 		onSpinningSwordLowerTurns()
+	elif getPhase() == 2 and isValidRampage(action):
+		onRampagePassive()
 		
 	if action.post:
 		if action is MoveToTileAction and action.Card == self:
 			active_speed = max(active_speed - 1, 0)
+		elif action is VisionNewUnitAction and action.Discoverer == self and\
+		action.Discovered.isEnemy(team) and boss_intent != null and boss_intent.name == "SilasStare":
+			onVisionNewUnitUpdateSilasStare(action.Discovered, action.enter_vision)
+		if action is StatAction and action.hasCard(self) and\
+			(health <= FIRST_PHASE_CHANGE_HEALTH and getPhase() == 1):
+				onPushAction(ChangeBossPhaseAction.new())
 		
 func onSave() -> SavedDataEpicCard:
 	ability_save['spinning_sword_turns'] = spinning_sword_turns
@@ -83,7 +92,11 @@ func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: A
 #endregion
 
 #region SilasStare
-func onSilasStareSetIntents() -> BossTileIntents: return BossTileIntents.new()
+func onSilasStareSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
+	for EnemyCard: CardGD in getVisibleFieldCardsEnemies():
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.PURPLE, OffsetDatastore.new(), EnemyCard.getCoords()))
+	return BossTileIntents.new(tile_intents, {})
 
 func onSilasStare(use_type: UseType) -> Array:
 	var actions: Array = []
@@ -95,6 +108,14 @@ func onSilasStare(use_type: UseType) -> Array:
 func onSilasStareCondition() -> BossIntentConditionResult:
 	return BossIntentConditionResult.new(\
 		getVisibleFieldCardsEnemies().size() >= SILAS_STARE_ENEMY_AMOUNT_CONDITION)
+		
+func onVisionNewUnitUpdateSilasStare(NewUnit: CardGD, enter_vision: bool) -> void:
+	var tile_intents: Array[TileIntentDatastore] = boss_datastore.getTileIntents().duplicate()
+	if !enter_vision:
+		tile_intents = tile_intents.filter(func(x: TileIntentDatastore): return x.getCoords() != NewUnit.getCoords())
+	else:
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.PURPLE, OffsetDatastore.new(), NewUnit.getCoords()))
+	boss_datastore.onFirstUpdateTileIntents(tile_intents)
 #endregion
 
 #region SpinningSword
@@ -414,17 +435,16 @@ func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
 		var tile_results := boss_datastore.getTileResults()
-		var tile_results_tiles: Array = tile_results.values()
 		
 		var StartJumpTile: TileGD
-		for TileResultTile: TileGD in tile_results.values():
+		for TileResultTile: TileGD in tile_results.keys():
 			if TileResultTile == null: continue
 			match tile_results[TileResultTile]:
 				"StartJumpTile": StartJumpTile = TileResultTile
 			
-			if StartJumpTile in tiles:
-				actions.append(MovementAction.new(self, StartJumpTile.getMovementPathTilesSafe(), false))
-				
+		if StartJumpTile in tiles:
+			actions.append(MovementAction.new(self, StartJumpTile.getMovementPathTiles(), false))
+					
 	elif use_type == UseType.END:
 		var tile_results := boss_datastore.getTileResults()
 		var tile_results_tiles: Array = tile_results.values()
@@ -434,7 +454,7 @@ func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		var low_damage_tiles: Array = []
 		var high_damage_tiles: Array = []
 		
-		for TileResultTile: TileGD in tile_results.values():
+		for TileResultTile: TileGD in tile_results.keys():
 			if TileResultTile == null: continue
 			match tile_results[TileResultTile]:
 				"JumpToTile": JumpToTile = TileResultTile
@@ -443,6 +463,14 @@ func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				"HighDamageTile": high_damage_tiles.append(TileResultTile)
 		
 		if getTile() != StartJumpTile: return []
+		actions.append(AnimationModifierAction.new(self, "Jump", ""))
+		actions.append(MoveToTileAction.new(self, JumpToTile, true))
+		
+		var low_damage_enemies: Array = low_damage_tiles.map(func(x: TileGD): return Game.getEnemyFieldCard(x, team)).filter(func(x: CardGD): return x != null)
+		var high_damage_enemies: Array = high_damage_tiles.map(func(x: TileGD): return Game.getEnemyFieldCard(x, team)).filter(func(x: CardGD): return x != null)
+		
+		actions.append(DamageAction.new(self, high_damage_enemies, attack, Game.DamageTypes.OTHER))
+		actions.append(DamageAction.new(self, low_damage_enemies, attack - 1, Game.DamageTypes.OTHER))
 	return actions
 	
 func onJumpAttackCondition() -> BossIntentConditionResult:
@@ -571,3 +599,27 @@ func isLongSlashEnemyAttackable(EnemyCard: CardGD, tiles: Array) -> TileGD:
 				return NewTile
 	return null
 #endregion
+
+#region Passives
+func onRampagePassive() -> void:
+	var actions: Array = []
+	for EnemyCard: CardGD in getVisibleFieldCardsEnemies():
+		actions.append(StatAction.new(StatInfo.new(EnemyCard, Game.Stats.MAX_SPEED, -1, 1)))
+	onPushAction(actions)
+#endregion
+
+#region Phase Change
+func onChangeBossPhase() -> void:
+	super()
+	onForceAction(FieldInfoVisibleAction.new(self, false))
+	onForceAction(AnimationModifierAction.new(self, "Idle", "PhaseTwo"))
+	onForceAction(AnimationAction.new(self, "PhaseChange"))
+	onForceAction(ClearTileIntentsAction.new())
+	
+func onChangeBossPhasePostDelay() -> void:
+	super()
+	onIdle()
+	onForceAction(BossIntentUsedAction.new(boss_intent, UseType.END, [],\
+		getVisibleFieldCardsEnemies(), getVisibleFieldCardsAllies()))
+	onForceAction(FieldInfoVisibleAction.new(self, true))
+	

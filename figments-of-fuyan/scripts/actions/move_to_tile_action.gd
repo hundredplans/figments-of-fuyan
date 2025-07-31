@@ -1,6 +1,6 @@
 class_name MoveToTileAction extends Action
 
-enum MOVEMENT_TYPES {REGULAR, RAMP, JUMP, FALL}
+enum MOVEMENT_TYPES {REGULAR, JUMP, FALL}
 var Card: CardGD
 
 var OriginalTile: TileGD
@@ -9,6 +9,8 @@ var movement_type: MOVEMENT_TYPES
 
 const DEFAULT_DELAY: float = 0.75
 const JUMP_FALL_TIME_OFFSET: float = 0.5
+const DISTANCE_JUMP_TIME: float = 0.25
+
 var fall_time: float
 var destroy_on_occupy: bool
 
@@ -23,7 +25,10 @@ func _init(_Card: CardGD = null, _DestinationTile: TileGD = null, _destroy_on_oc
 
 func setMovementTypeDelay() -> void:
 	fall_time = 1
-	if DestinationTile.isRamp() or Card.Tile.isRamp(): movement_type = MOVEMENT_TYPES.RAMP
+	if Game.getCoordsDistance(DestinationTile.getCoords(), Card.getCoords()) > 1:
+		movement_type = MOVEMENT_TYPES.JUMP
+		fall_time += JUMP_FALL_TIME_OFFSET
+		fall_time += (Game.getCoordsDistance(DestinationTile.getCoords(), Card.getCoords()) * DISTANCE_JUMP_TIME)
 	elif DestinationTile.getHeight() - Card.Tile.getHeight() >= 1: movement_type = MOVEMENT_TYPES.JUMP; fall_time += JUMP_FALL_TIME_OFFSET
 	elif DestinationTile.getHeight() - Card.Tile.getHeight() <= -1:
 		movement_type = MOVEMENT_TYPES.FALL

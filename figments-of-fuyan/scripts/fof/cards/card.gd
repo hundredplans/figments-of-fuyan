@@ -106,6 +106,11 @@ func setIdleModifier(idle_modifier: String) -> void:
 		
 func onResetIdleModifier() -> void:
 	setIdleModifier("")
+	
+func setAnimationModifier(animation_name: String, modifier: String) -> void:
+	match animation_name:
+		"Idle": setIdleModifier(modifier)
+		"Jump": anibility_datastore.setJumpModifier(modifier)
 		
 func setAwakenedInCombat(state: bool) -> void:
 	is_awakened_in_combat = state
@@ -161,7 +166,8 @@ func onPlayAnimation(animation_name: String, play_backwards: bool = false) -> vo
 		AniPlayer.set_current_animation(animation_name)
 		
 func onAnimationFinished(ani_name: String) -> void:
-	if !ani_name.begins_with("Death") and !AniPlayer.is_playing(): onIdle()
+	if !ani_name.begins_with("Death") and !AniPlayer.is_playing():
+		onIdle()
 		
 func onJump() -> void:
 	AniPlayer.stop()

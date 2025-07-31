@@ -12,6 +12,9 @@ func _init(_intent_type := Game.TileIntents.NULL, _offset_datastore: OffsetDatas
 func getTile() -> TileGD:
 	if isStaticTile(): return Game.getTile(coords)
 	return offset_datastore.getTile(coords)
+	
+func getCoords() -> Vector4i:
+	return coords
 
 func isStaticTile() -> bool:
 	return offset_datastore == null

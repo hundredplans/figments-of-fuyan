@@ -25,6 +25,6 @@ func getDisabled() -> bool:
 	return super()
 
 func isCardLimitedAbility(Card: CardGD) -> bool:
-	var abilities: Array = Card.info.active_abilities
+	var abilities: Array = Card.getActiveAbilities()
 	return !abilities.is_empty()
 		
