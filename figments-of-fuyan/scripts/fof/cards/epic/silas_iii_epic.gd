@@ -10,12 +10,13 @@ const DEFENSIVE_STANCE_ARMOR_TURNS: int = 3
 const LONG_SLASH_PHASE_ONE_RANGE: int = 4
 const LONG_SLASH_PHASE_TWO_RANGE: int = 5
 const LONG_SLASH_SPEED_LIMIT: int = 1
-const LONG_SLASH_ACTION_DELAY: float = 2.0
-const GRAND_SLASH_ACTION_DELAY: float = 2.0
+const LONG_SLASH_ACTION_DELAY: float = 1.2
+const GRAND_SLASH_ACTION_DELAY: float = 2.1
 const SPINNING_SWORD_VFX_ID: int = 2
 const JUMP_ATTACK_DISTANCE: int = 4
 const ARMOR_TRAIT_ID: int = 1
 const FIRST_PHASE_CHANGE_HEALTH: int = 14
+const SPINNING_SWORD_ACTION_DELAY: float = 2.4
 
 var spinning_sword_public_id: int
 var spinning_sword_turns: int
@@ -130,6 +131,10 @@ func onSpinningSword(use_type: UseType) -> Array:
 		spinning_sword_turns = SPINNING_SWORD_START_TURNS
 		var SpinningSword: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(SPINNING_SWORD_VFX_ID, true), self)
 		spinning_sword_public_id = SpinningSword.public_id
+		
+		var animation_action := AnimationAction.new(self, "SpinningSword")
+		animation_action.setActionDelay(SPINNING_SWORD_ACTION_DELAY)
+		
 		return [CreateVFXAction.new(SpinningSword, false)]
 	return []
 	
