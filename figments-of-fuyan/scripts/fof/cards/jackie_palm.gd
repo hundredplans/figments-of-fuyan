@@ -1,5 +1,10 @@
 extends CardGD
 
+const TIER_ONE_HEAL: int = 1
+const TIER_TWO_HEAL: int = 1
+const TIER_THREE_HEAL: int = 2
+const TIER_FOUR_HEAL: int = 2
+
 var revenge_charges: int
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -16,7 +21,7 @@ func onRevenge(action: DamageAction) -> void:
 	var palm_ids: Array = Helper.getFofInfoID(AreaInfo, 1).card_ids
 	if getVisibleFieldCardsAllies().any(func(x: CardGD): return x.info.id in palm_ids):
 		revenge_charges -= 1
-		onPushAction(HealAction.new(HealDatastore.new(self, 1)))
+		onPushAction(HealAction.new(HealDatastore.new(self, getTierHeal())))
 
 func onRegularReset() -> void:
 	super()
@@ -28,3 +33,11 @@ func getDefaultCharges() -> int:
 func onSave() -> SavedDataCard:
 	ability_save['revenge_charges'] = revenge_charges
 	return super()
+	
+func getTierHeal() -> int:
+	match tier:
+		1: return TIER_ONE_HEAL
+		2: return TIER_TWO_HEAL
+		3: return TIER_THREE_HEAL
+		4: return TIER_FOUR_HEAL
+	return 0

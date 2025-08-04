@@ -8,8 +8,7 @@ func _init(_VFX: VFXGD, _destroy_after_delay: bool = true) -> void:
 	VFX = _VFX
 	destroy_after_delay = _destroy_after_delay
 	
-func onPreAction() -> void:
-	setActionDelay(VFX.info.delay)
+func onPreAction() -> void: pass
 	
 func onPostAction() -> void:
 	VFX.onVFX()

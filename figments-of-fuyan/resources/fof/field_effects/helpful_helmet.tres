@@ -8,10 +8,9 @@
 [resource]
 script = ExtResource("1_p2xd5")
 icon = ExtResource("2_o1mis")
-description = "When this RAMPAGES it gains +1 HP"
-ascended_description = ""
-ascended_type = 0
-charges_label_position = Vector2(0, 0)
+description = "When this RAMPAGES it gains +[X] HP"
+display_number_type = 0
+remove_on_owner_death = true
 id = 5
 name = "Helpful Helmet"
 gdscript = ExtResource("1_f62a6")

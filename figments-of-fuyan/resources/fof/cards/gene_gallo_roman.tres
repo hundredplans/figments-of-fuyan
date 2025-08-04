@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3 uid="uid://b8a865ily42fx"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://b8a865ily42fx"]
 
 [ext_resource type="Texture2D" uid="uid://c4swx2x83oeug" path="res://assets/sprites/game/cards/art_mini/gene_gallo_roman.png" id="2_6cjoi"]
 [ext_resource type="Image" uid="uid://cagnnyn0jah5t" path="res://assets/sprites/game/cards/art_pop/gene_gallo_roman.png" id="2_ctojg"]
@@ -11,14 +11,6 @@
 [ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ug0ym"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_cocbe"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_qwq4s"]
-
-[sub_resource type="Resource" id="Resource_xocpm"]
-script = ExtResource("2_ewxrt")
-display_number = 2
-id = 2
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -35,14 +27,6 @@ _bundled = {
 "variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
 "version": 3
 }
-
-[sub_resource type="Resource" id="Resource_ug0ym"]
-script = ExtResource("2_ewxrt")
-display_number = 2
-id = 2
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_eae14"]
 script = ExtResource("13_qwq4s")
@@ -139,18 +123,6 @@ collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947
 top = 2.058
 eye = 1.788
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_xocpm")])
-attack = 2
-health = 1
-speed = 2
-energy = 2
-description = "RANGED [1-2]; On Hit {[X]/2}: This attack ignores ARMOR & SHIELD"
-ascended_description = "RANGED [1-3]; On Hit {[x]/2}: This attack ignores ARMOR & SHIELD"
-initial_traits = Array[ExtResource("2_ewxrt")]([SubResource("Resource_ug0ym")])
 id = 65
 name = "Gene Gallo-Roman"
 gdscript = ExtResource("6_xocpm")

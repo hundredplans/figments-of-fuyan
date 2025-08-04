@@ -496,7 +496,7 @@ func onChargeAttack(use_type: UseType) -> Array:
 		if ChargeEndTile == getTile() or ChargeEndTile == null: return []
 		else: path = ChargeEndTile.getMovementPathTiles()
 		
-		anibility_datastore.setWalkModifier("ChargeAttack")
+		actions.append(AnimationModifierAction.new(self, "Walk", "ChargeAttack"))
 		actions.append(MovementAction.new(self, path, true))
 		
 	elif use_type == UseType.END:
@@ -504,10 +504,10 @@ func onChargeAttack(use_type: UseType) -> Array:
 		var wall_adjacent_tiles: Array = condition_result.getWallAdjacentTiles()
 		var enemies: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return x.getTile() in wall_adjacent_tiles)
 		
-		anibility_datastore.onResetWalkModifier()
 		var animation_action := AnimationAction.new(self, "WalkChargeAttackHit")
 		animation_action.setActionDelay(CHARGE_ATTACK_HIT_ACTION_DELAY)
 		actions.append(animation_action)
+		actions.append(AnimationModifierAction.new(self, "Walk", ""))
 		actions.append(DamageAction.new(self, enemies, 2, Game.DamageTypes.OTHER))
 	return actions
 #endregion
@@ -654,7 +654,13 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 		actions.append(MovementAction.new(self, path))
 	return actions
 	
-func onAutoattackSetIntents() -> BossTileIntents: return BossTileIntents.new()
+func onAutoattackSetIntents() -> BossTileIntents:
+	var tile_intents: Array[TileIntentDatastore] = []
+	
+	var direction := Game.getCubeDirectionExtra(0)
+	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED,\
+		OffsetDatastore.new(direction, true, tile_rotation), coords))
+	return BossTileIntents.new(tile_intents, {})
 #endregion
 
 #region Fan Attack
@@ -875,7 +881,7 @@ func onRemoveGroundTilesWhenNotOnGround(tiles: Array) -> Array:
 func onChangeBossPhase() -> void:
 	super()
 	onForceAction(FieldInfoVisibleAction.new(self, false))
-	anibility_datastore.setDeathModifier("PhaseChange")
+	onForceAction(AnimationModifierAction.new(self, "Death", "PhaseChange"))
 	onDeath()
 	
 func onChangeBossPhasePostDelay() -> void:
@@ -883,7 +889,7 @@ func onChangeBossPhasePostDelay() -> void:
 	onForceAction(FieldInfoVisibleAction.new(self, true))
 	onIdle()
 	
-	anibility_datastore.setDeathModifier("")
+	onForceAction(AnimationModifierAction.new(self, "Death", ""))
 	var actions: Array = []
 	actions.append(ChangeBossIntentAction.new(getBossIntentByName("Maelstorm Attack")))
 	

@@ -8,10 +8,9 @@
 [resource]
 script = ExtResource("1_neofh")
 icon = ExtResource("2_ta13n")
-description = "This will deal [2] extra DMG on it's next attack and gain +1 ATT +1 HP"
-ascended_description = "This will deal [4] extra DMG on it's next attack and gain +1 ATT +1 HP"
-ascended_type = 1
-charges_label_position = Vector2(0, 0)
+description = "This will deal [[X]] extra DMG on it's next attack and gain +1 ATT +1 HP"
+display_number_type = 0
+remove_on_owner_death = true
 id = 8
 name = "Swingus OnHit"
 gdscript = ExtResource("1_morkv")

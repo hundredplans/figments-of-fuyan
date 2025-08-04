@@ -4,7 +4,7 @@ extends MapNodeGD
 var price_variance: int
 var world_datastore: WorldDatastore
 
-const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop_music.mp3"
+const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop.mp3"
 #endregion
 
 #region Saved Data
@@ -96,11 +96,11 @@ func onEntered() -> void:
 	super()
 	onCreateWorldScene()
 	onCreateScreen()
-	onPushAction(PlayMusicAction.new(load(SHOP_MUSIC_PATH)))
+	onPushAction(PlayMusicAction.new(Audio.SHOP))
 	
 func onFinished() -> void:
 	super()
-	onPushAction(PlayMusicAction.new())
+	onPushAction(PlayMusicAction.new(Audio.BACKGROUND))
 
 #region Rolls
 func onRerollBoon() -> PriceDatastore:

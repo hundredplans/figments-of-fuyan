@@ -45,7 +45,9 @@ func onIObject(action: Action) -> void:
 
 func onMinitool(action: Action, actions) -> void:
 	var id: int = range(8, 13).pick_random()
-	var Tool: ToolGD = SavedData.onLoadModel(Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true), action.Card)
+	var tool_data: SavedDataTool = Helper.getFofInfoID(ToolInfo, id).saved_data.new(id, true)
+	tool_data.tier = Game.getArea().getWorldDifficulty()
+	var Tool: ToolGD = SavedData.onLoadModel(tool_data, action.Card)
 	actions.append(AddToolAction.new(action.Card, Tool))
 	onRemoveMoveAndAttackActions(action.Card)
 

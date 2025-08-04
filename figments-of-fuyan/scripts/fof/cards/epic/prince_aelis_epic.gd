@@ -22,19 +22,17 @@ func onProcessAction(action: Action) -> void:
 		and action.StatusEffect.Card != null and action.StatusEffect.Card.isAlly(team) and action.StatusEffect.info.id == FATIGUE_ID:
 			action.onFailAction()
 			action.StatusEffect.onClear()
+		elif action is DeathAction and boss_intent != null and boss_intent.name == "RoyalBoon":
+			onRoyalBoonPotentialDeath(action)
 
 func onUseBossIntent(enemies: Array, allies: Array, _tiles: Array, use_type: UseType) -> void:
 	var actions: Array = []
 	match boss_intent.name:
-		"Sleep": actions = onSleep(use_type)
+		"Sleep": actions = onSleep(enemies, use_type)
 		"SoloSpawn": actions = onSoloSpawn(use_type)
 		"DuoSpawn": actions = onDuoSpawn(use_type)
 		"RoyalBoon": actions = onRoyalBoon(allies, use_type)
 		
-	if !enemies.is_empty() and use_type == UseType.START:
-		var EnemyCard: CardGD = enemies.pick_random()
-		var relative_tile_rotation: int = Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())
-		actions.push_front(ChangeTileRotationAction.new(self, relative_tile_rotation))
 	onPushAction(BossIntentUsedAction.new(boss_intent, use_type, actions, enemies, allies))
 	
 func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) -> BossIntent:
@@ -62,9 +60,14 @@ func onCheckBossIntentCondition(conditional_boss_intent: BossIntent, _enemies: A
 #endregion
 		
 #region Sleep
-func onSleep(use_type: UseType) -> Array:
+func onSleep(enemies: Array, use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
+		if !enemies.is_empty():
+			var EnemyCard: CardGD = enemies.pick_random()
+			var relative_tile_rotation: int = Game.getRelativeTileRotation(getTile(), EnemyCard.getTile())
+			actions.append(ChangeTileRotationAction.new(self, relative_tile_rotation))
+			
 		var animation_action := AnimationAction.new(self, "BossSleep")
 		animation_action.setActionDelay(SLEEP_DELAY)
 		actions.append(animation_action)
@@ -77,10 +80,14 @@ func onSleepSetIntents() -> BossTileIntents: return BossTileIntents.new()
 func onSoloSpawn(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
+		var tiles: Array = boss_datastore.getTileResults().keys()
+		actions.append(ChangeTileRotationAction.new(self,\
+			Game.getRelativeTileRotation(getTile(), tiles.pick_random())))
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(SUMMON_DELAY)
 		actions.append(animation_action)
-		var chosen_tiles: Array = boss_datastore.getTileResults().keys().filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
+		
+		var chosen_tiles: Array = tiles.filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
 		for SummonTile: TileGD in chosen_tiles:
 			var AllyCard: CardGD = Game.getNewFieldCard(solo_spawn_ids.pick_random(), SummonTile, team, range(6).pick_random(), tier, true)
 			actions.append(AwakenAction.new(AllyCard, SummonTile))
@@ -111,10 +118,13 @@ func onSoloSpawnSetIntents() -> BossTileIntents:
 func onDuoSpawn(use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
+		var tiles: Array = boss_datastore.getTileResults().keys()
+		actions.append(ChangeTileRotationAction.new(self,\
+			Game.getRelativeTileRotation(getTile(), tiles.pick_random())))
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(SUMMON_DELAY)
 		actions.append(animation_action)
-		var chosen_tiles: Array = boss_datastore.getTileResults().keys().filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
+		var chosen_tiles: Array = tiles.filter(func(x: TileGD): return x != null and !x.isSolid() and !x.isOccupied())
 		for SummonTile: TileGD in chosen_tiles:
 			var AllyCard: CardGD = Game.getNewFieldCard(duo_spawn_ids.pick_random(), SummonTile, team, range(6).pick_random(), tier, true)
 			actions.append(AwakenAction.new(AllyCard, SummonTile))
@@ -145,25 +155,45 @@ func onDuoSpawnSetIntents() -> BossTileIntents:
 func onRoyalBoon(allies: Array, use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START:
+		var ValidAlly: CardGD = boss_datastore.getConditionResult("RoyalBoon").getValidAlly()
+		
+		if ValidAlly.isAlive():
+			var relative_tr: int = Game.getRelativeTileRotation(getTile(), ValidAlly.getTile())
+			actions.append(ChangeTileRotationAction.new(self, relative_tr))
+		
 		var animation_action := AnimationAction.new(self, "BossBuff")
 		animation_action.setActionDelay(ROYAL_BUFF_DELAY)
 		actions.append(animation_action)
 		
-		if !allies.is_empty():
-			var AllyCard: CardGD = allies.pick_random()
-			var camera_change_action := CameraChangeAction.new(AllyCard)
-			camera_change_action.setActionDelay(ROYAL_BUFF_SPECTATE_DELAY)
-			actions.append(StatAction.new(StatInfo.new(AllyCard, [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.MAX_HEALTH], [1, 1, 1])))
-			actions.append(camera_change_action)
+		if !ValidAlly.isAlive(): return actions
+		
+		var camera_change_action := CameraChangeAction.new(ValidAlly)
+		camera_change_action.setActionDelay(ROYAL_BUFF_SPECTATE_DELAY)
+		actions.append(StatAction.new(StatInfo.new(ValidAlly, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [1, 1, 1])))
+		actions.append(camera_change_action)
 		actions.append(ClearTileIntentsAction.new())
 	return actions
 	
 func onRoyalBoonSetIntents() -> BossTileIntents:
+	var ValidAlly: CardGD = boss_datastore.getConditionResult("RoyalBoon").getValidAlly()
 	var tile_intents: Array[TileIntentDatastore] = []
-	for Card: CardGD in Game.getAllyUnits(team):
-		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(Vector4i.ZERO, false), getCoords()))
+	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.GREEN, OffsetDatastore.new(Vector4i.ZERO), ValidAlly.getCoords()))
 	return BossTileIntents.new(tile_intents, {})
 	
 func onRoyalBoonCondition() -> BossIntentConditionResult:
-	return BossIntentConditionResult.new(getVisibleFieldCardsAllies().size() >= ROYAL_BUFF_MINIMUM_ALLY_IN_VISION)
+	var valid_allies: Array = getVisibleFieldCardsAllies()
+	if valid_allies.size() >= ROYAL_BUFF_MINIMUM_ALLY_IN_VISION:
+		var ValidAlly: CardGD = valid_allies.pick_random()
+		var royal_boon_condition := BossIntentConditionResultRoyalBoon.new(true)
+		royal_boon_condition.setValidAllyPublicId(ValidAlly.public_id)
+		return royal_boon_condition
+	return BossIntentConditionResultRoyalBoon.new(false)
+	
+func onRoyalBoonPotentialDeath(action: DeathAction) -> void:
+	var ValidAlly: CardGD = boss_datastore.getConditionResult("RoyalBoon").getValidAlly()
+	if action.Defender != ValidAlly: return	
+	var valid_ally_coords: Vector4i = action.Tile.getCoords()
+	var tile_intents: Array[TileIntentDatastore] = boss_datastore.getTileIntents().duplicate()
+	tile_intents = tile_intents.filter(func(x: TileIntentDatastore): return x.getCoords() != valid_ally_coords)
+	boss_datastore.onFirstUpdateTileIntents(tile_intents)
 #endregion

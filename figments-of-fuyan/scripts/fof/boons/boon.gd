@@ -75,6 +75,9 @@ func onLevelStarted() -> void: # Called when the level literally starts
 	if info.auto_reset_charges:
 		onResetCharges()
 		
+func onRetiered(_tier: int) -> void:
+	tier = _tier
+		
 func onAdvanceTurn(_team: int) -> void: pass
 func onCardTurnPassed(_Card: CardGD) -> void: pass
 func onRemoveBoon() -> void: pass

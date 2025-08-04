@@ -1,7 +1,11 @@
 extends CardGD
 
 var on_hit_trigger_amount: int
-const TRIGGER_ON_HIT_AMOUNT: int = 2
+
+const TIER_ONE_TRIGGER_AMOUNT: int = 2
+const TIER_TWO_TRIGGER_AMOUNT: int = 2
+const MINIMUM_TIER_TRIGGER_INSTANTLY: int = 3
+
 const PIERCING_SHOT_ID: int = 13
 
 var piercing_shot_public_id: int = 0
@@ -21,13 +25,14 @@ func getDescription(use_default_values: bool = false) -> String:
 	return Helper.getDescription(super(), [on_hit_trigger_amount])
 
 func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
-	on_hit_trigger_amount += 1
-	if on_hit_trigger_amount == 1:
-		piercing_shot_public_id = onCreateBaseFieldEffect(PIERCING_SHOT_ID).public_id
-	
-	if on_hit_trigger_amount < TRIGGER_ON_HIT_AMOUNT: return
-	else:
-		on_hit_trigger_amount = 0
+	if tier < MINIMUM_TIER_TRIGGER_INSTANTLY:
+		on_hit_trigger_amount += 1
+		if on_hit_trigger_amount == 1:
+			piercing_shot_public_id = onCreateBaseFieldEffect(PIERCING_SHOT_ID).public_id
+		if on_hit_trigger_amount < getTriggerAmount(): return
+		
+	on_hit_trigger_amount = 0
+	if piercing_shot_public_id > 0:
 		var PiercingShotFieldEffect: FieldEffectGD = Game.onFindPublicIDObject(piercing_shot_public_id)
 		onPushAction(RemoveFieldEffectAction.new(PiercingShotFieldEffect))
 	
@@ -45,3 +50,9 @@ func onSave() -> SavedDataCard:
 	ability_save['on_hit_trigger_amount'] = on_hit_trigger_amount
 	ability_save['piercing_shot_public_id'] = piercing_shot_public_id
 	return super()
+
+func getTriggerAmount() -> int:
+	match tier:
+		1: return TIER_ONE_TRIGGER_AMOUNT
+		2: return TIER_TWO_TRIGGER_AMOUNT
+	return 0

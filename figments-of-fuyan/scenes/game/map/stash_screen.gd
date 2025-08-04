@@ -14,6 +14,7 @@ const RELATIVE_SIDE_FORCE_DIV: float = 15.0
 var active_tool_released: bool
 var ActiveToolIcon: Control
 
+@onready var DeckSlotUIRaycast: RayCast2D = %DeckSlotUIRaycast
 @onready var CardUIRaycast: RayCast2D = %CardUIRaycast
 @onready var EnergyLimitLabel: Label = %EnergyLimitLabel
 @onready var DeckLimitLabel: Label = %DeckLimitLabel
@@ -67,8 +68,6 @@ func setInfo() -> void:
 		var DeckSlotUI: Control = DeckSlotPacked.instantiate()
 		DeckSlotUI.mouse_in_ui.connect(onMouseInUI)
 		DeckSlotUI.lock_slot.connect(onSlotLocked)
-		DeckSlotUI.send_to_stash.connect(onSendToStash)
-		DeckSlotUI.pressed.connect(onDeckSlotPressed)
 		DeckSlotUI.remove_deck_card.connect(onRemoveDeckCard)
 		
 		var child_index: int = int(i >= DECK_CONTAINER_SPLIT_POINT[deck_slots.size()])
@@ -100,10 +99,7 @@ func setActiveToolIcon(_ActiveToolIcon: Control) -> void:
 	
 	var deck_card_uis: Array = getDeckContainerCardUI().filter(func(x: Control): return x != null)
 	for CardUI: Control in deck_card_uis:
-		CardUI.onChangeBackgroundMouseFilter(true, true)
-	
-	for CardUI: Control in deck_card_uis + StashContainer.get_children():
-		CardUI.setHighlightOnHover(true)
+		CardUI.onChangeBackgroundMouseFilter(true)
 	
 func setLimitLabels() -> void:
 	var energy_limit: int = Game.getSaveFile().getEnergyLimit()
@@ -145,24 +141,6 @@ func onSortBySortType() -> void:
 		4: onSortByArea()
 		5: onSortByTool()
 	
-var deck_slot_selected: DeckSlot
-func onDeckSlotPressed(deck_slot: DeckSlot, selected: bool) -> void:
-	for StashCardUI: Control in StashContainer.get_children():
-		StashCardUI.setHighlightOnHover(selected)
-	
-	if !selected:
-		for DeckSlotUI: Control in getDeckContainerDeckUI():
-			if DeckSlotUI.deck_slot == deck_slot_selected and DeckSlotUI.selected:
-				DeckSlotUI.onSelect(false)
-		deck_slot_selected = null
-		return
-	
-	for DeckSlotUI: Control in getDeckContainerDeckUI():
-		if DeckSlotUI.deck_slot != deck_slot and DeckSlotUI.selected:
-			DeckSlotUI.onSelect(false)
-		
-	deck_slot_selected = deck_slot
-	
 func getDeckContainerCardUI() -> Array:
 	return getDeckContainerDeckUI().map(func(x: Control): return x.CardUI)
 	
@@ -172,85 +150,94 @@ func getDeckContainerDeckUI() -> Array:
 		deck_uis += cont.get_children()
 	return deck_uis
 	
-func onRemoveDeckCard(_CardUI: Control, _deck_slot: DeckSlot) -> void:
+func onRemoveDeckCard(CardUI: Control, deck_slot: DeckSlot) -> void:
+	var DeckSlotUI: Control = getDeckSlotDeckUI(deck_slot)
+	DeckSlotUI.setCardUI(null)
+	CardUI.Card.onChangeCardPlace(Game.CardPlaces.STASH)
+	CardUI.queue_free()
+	onSendToStash(deck_slot, CardUI.Card)
 	setLimitLabels()
-	onDeckSlotPressed(deck_slot_selected, false)
 
-func onStashCardPressed(CardUI: Control) -> void:
-	if deck_slot_selected == null: return
-	
-	var card_public_id: int = deck_slot_selected.card_public_id
+func onStashCardHoveredDeckSlot(CardUI: Control, deck_slot: DeckSlot) -> void:
+	var card_public_id: int = deck_slot.card_public_id
+	var Card: CardGD = CardUI.Card
 	var DeckSlotCard: CardGD = Game.onFindPublicIDObject(card_public_id) if card_public_id > 0 else null
+	var DeckSlotCardUI: Control = getDeckSlotCardUI(DeckSlotCard)
 	
 	var replace_card_energy: int = 0 if DeckSlotCard == null else DeckSlotCard.energy
 	if (Game.getSaveFile().getDecksTotalEnergy() + CardUI.Card.energy - replace_card_energy) > Game.getSaveFile().getEnergyLimit():
 		if AniPlayer.is_playing(): return
-		
 		AniPlayer.play("EnergyLimitReached")
 		return
-		
-	for StashCardUI: Control in StashContainer.get_children():
-		StashCardUI.setHighlightOnHover(false)
 	
-	var Card: CardGD = CardUI.Card
 	CardUI.queue_free()
-	
 	if DeckSlotCard != null:
 		onCreateStashCardUI(DeckSlotCard)
+		DeckSlotCardUI.queue_free()
 	
-	deck_slot_selected.onAddCard(Card)
-	
-	for DeckSlotUI: Control in getDeckContainerDeckUI():
-		if DeckSlotUI.deck_slot == deck_slot_selected:
-			onCreateDeckCardUI(Card, DeckSlotUI)
-			DeckSlotUI.onSelect(false)
-			
-	deck_slot_selected = null
+	onCreateDeckCardUI(Card, getDeckSlotDeckUI(deck_slot))
+	deck_slot.onAddCard(Card)
 	setLimitLabels()
 	
 	deck_slot_changed.emit()
+	
+func onDeckCardUIHoveredDeckSlot(DeckCardUI: Control, other_deck_slot: DeckSlot) -> void:
+	var current_deck_slot: DeckSlot = getDeckSlotFromCardUI(DeckCardUI)
+	if current_deck_slot == other_deck_slot: return
+	
+	var CurrentCard: CardGD = DeckCardUI.Card
+	var OtherCard: CardGD = other_deck_slot.getCard()
+	
+	DeckCardUI.queue_free()
+	
+	current_deck_slot.onRemoveCard()
+	if OtherCard == null:
+		other_deck_slot.onAddCard(CurrentCard)
+		getDeckSlotDeckUI(current_deck_slot).setCardUI(null)
+		onCreateDeckCardUI(CurrentCard, getDeckSlotDeckUI(other_deck_slot))
+	else:
+		var OtherCardUI: Control = getDeckSlotCardUI(OtherCard)
+		
+		if OtherCardUI != null:
+			OtherCardUI.queue_free()
+		
+		other_deck_slot.onRemoveCard()
+		other_deck_slot.onAddCard(CurrentCard)
+		current_deck_slot.onAddCard(OtherCard)
+		
+		onCreateDeckCardUI(CurrentCard, getDeckSlotDeckUI(other_deck_slot))
+		onCreateDeckCardUI(OtherCard, getDeckSlotDeckUI(current_deck_slot))
 
 func onCreateStashCardUI(StashCard: CardGD) -> void:
-	var CardUI: Control = StashCard.onCreateCardUI(StashContainer, false, false)
-	CardUI.pressed.connect(onStashCardPressed)
+	var CardUI: Control = StashCard.onCreateCardUI(StashContainer, true, true, self)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.setDraggableTool(true)
 	CardUI.tool_drag_begin.connect(onToolDragBegin)
 	CardUI.tool_drag_end.connect(onToolDragEnd)
+	CardUI.dragged_init.connect(onCardDraggedInit)
+	CardUI.dragged_begin.connect(onCardDraggedBegin.bind(true))
+	CardUI.dragged_finished.connect(onCardDraggedFinished)
+	CardUI.dragged_end.connect(onCardDraggedEnd.bind(true))
 	
 func onCreateDeckCardUI(DeckCard: CardGD, DeckSlotUI: Control) -> void:
 	var CardUI: Control
 	if DeckCard != null:
-		CardUI = DeckCard.onCreateCardUI(DeckSlotUI, false, false)
+		CardUI = DeckCard.onCreateCardUI(DeckSlotUI.getCardUISpot(), true, true, self)
 		if CardUI != null:
 			CardUI.mouse_in_ui.connect(onMouseInUI)
-			CardUI.onChangeBackgroundMouseFilter(false, true)
+			#CardUI.onChangeBackgroundMouseFilter(false, true)
 			CardUI.setDraggableTool(true)
+			CardUI.dragged_begin.connect(onCardDraggedBegin.bind(false))
+			CardUI.dragged_end.connect(onCardDraggedEnd.bind(false))
 			CardUI.tool_drag_begin.connect(onToolDragBegin)
 			CardUI.tool_drag_end.connect(onToolDragEnd)
 	DeckSlotUI.setCardUI(CardUI)
 	
 func onToolDragBegin(CardUI: Control) -> void:
-	onDeckSlotPressed(null, false)
-	var deck_container_card_ui: Array = getDeckContainerCardUI()
-	for OtherCardUI: Control in (StashContainer.get_children() + deck_container_card_ui)\
-		.filter(func(x: Control): return x != null and x != CardUI):
-		OtherCardUI.setHighlightOnHover(true)
-	
-	for OtherCardUI: Control in deck_container_card_ui\
-		.filter(func(x: Control): return x != null and x != CardUI):
-		OtherCardUI.onChangeBackgroundMouseFilter(true, true)
+	CardUI.onChangeBackgroundMouseFilter(false)
 	
 func onToolDragEnd(CardUI: Control, tool_position: Vector2) -> void:
-	var deck_container_card_ui: Array = getDeckContainerCardUI()
-	for OtherCardUI: Control in (StashContainer.get_children() + deck_container_card_ui)\
-		.filter(func(x: Control): return x != null and x != CardUI):
-		OtherCardUI.setHighlightOnHover(false)
-		
-	for OtherCardUI: Control in deck_container_card_ui\
-		.filter(func(x: Control): return x != null and x != CardUI):
-		OtherCardUI.onChangeBackgroundMouseFilter(false, true)
-		
+	CardUI.onChangeBackgroundMouseFilter(true)
 	get_viewport().update_mouse_cursor_state()
 		
 	CardUIRaycast.global_position = tool_position
@@ -271,9 +258,9 @@ func onToolDragEnd(CardUI: Control, tool_position: Vector2) -> void:
 		actions.append(RemoveToolAction.new(Card, true))
 		actions.append(AddToolAction.new(OtherCard, FirstTool))
 	elif FirstTool.info.id == SecondTool.info.id and FirstTool.getTier() == SecondTool.getTier() and FirstTool.getTier() != Game.MAX_TOOL_TIER:
-			actions.append(RemoveToolAction.new(Card, false))
-			actions.append(ToolRetieredAction.new(SecondTool, FirstTool.getTier() + 1))
-			FirstTool = null
+		actions.append(RemoveToolAction.new(Card, false))
+		actions.append(ToolRetieredAction.new(SecondTool, FirstTool.getTier() + 1))
+		FirstTool = null
 	else:
 		actions.append(RemoveToolAction.new(Card, true))
 		actions.append(RemoveToolAction.new(OtherCard, true))
@@ -382,12 +369,14 @@ func onSortByTool() -> void:
 func onSortComparatorByTool(xUI: Control, yUI: Control) -> bool:
 	var x: CardInfo = xUI.Card.info
 	var y: CardInfo = yUI.Card.info
+	var x_energy: int = xUI.Card.getEnergy()
+	var y_energy: int = yUI.Card.getEnergy()
 	
 	var xHasTool: bool = xUI.Card.getTool() != null
 	var yHasTool: bool = yUI.Card.getTool() != null
 	
 	if xHasTool != yHasTool: return yHasTool
-	if x.energy != y.energy: return x.energy < y.energy
+	if x_energy != y_energy: return x_energy < y_energy
 	if x.rarity != y.rarity: return x.rarity < y.rarity
 	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
 	return x.id < y.id
@@ -395,8 +384,11 @@ func onSortComparatorByTool(xUI: Control, yUI: Control) -> bool:
 func onSortComparatorByArea(xUI: Control, yUI: Control) -> bool:
 	var x: CardInfo = xUI.Card.info
 	var y: CardInfo = yUI.Card.info
+	var x_energy: int = xUI.Card.getEnergy()
+	var y_energy: int = yUI.Card.getEnergy()
+	
 	if card_id_to_area_id[x.id] != card_id_to_area_id[y.id]: return card_id_to_area_id[x.id] < card_id_to_area_id[y.id]
-	if x.energy != y.energy: return x.energy < y.energy
+	if x_energy != y_energy: return x_energy < y_energy
 	if x.rarity != y.rarity: return x.rarity < y.rarity
 	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
 	return x.id < y.id
@@ -404,23 +396,32 @@ func onSortComparatorByArea(xUI: Control, yUI: Control) -> bool:
 func onSortComparatorByTier(xUI: Control, yUI: Control) -> bool:
 	var x: CardInfo = xUI.Card.info
 	var y: CardInfo = yUI.Card.info
+	var x_energy: int = xUI.Card.getEnergy()
+	var y_energy: int = yUI.Card.getEnergy()
+	
 	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
-	if x.energy != y.energy: return x.energy < y.energy
+	if x_energy != y_energy: return x_energy < y_energy
 	if x.rarity != y.rarity: return x.rarity < y.rarity
 	return x.id < y.id
 	
 func onSortComparatorByRarity(xUI: Control, yUI: Control) -> bool:
 	var x: CardInfo = xUI.Card.info
 	var y: CardInfo = yUI.Card.info
+	var x_energy: int = xUI.Card.getEnergy()
+	var y_energy: int = yUI.Card.getEnergy()
+	
 	if x.rarity != y.rarity: return x.rarity < y.rarity
-	if x.energy != y.energy: return x.energy < y.energy
+	if x_energy != y_energy: return x_energy < y_energy
 	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
 	return x.id < y.id
 	
 func onSortComparatorByEnergy(xUI: Control, yUI: Control) -> bool:
 	var x: CardInfo = xUI.Card.info
 	var y: CardInfo = yUI.Card.info
-	if x.energy != y.energy: return x.energy < y.energy
+	var x_energy: int = xUI.Card.getEnergy()
+	var y_energy: int = yUI.Card.getEnergy()
+	
+	if x_energy != y_energy: return x_energy < y_energy
 	if x.rarity != y.rarity: return x.rarity < y.rarity
 	if xUI.Card.getTier() != yUI.Card.getTier(): return xUI.Card.getTier() < yUI.Card.getTier()
 	return x.id < y.id
@@ -432,3 +433,90 @@ func onSortStashCards(new_children: Array) -> void:
 		
 	for child: Control in new_children:
 		StashContainer.add_child(child)
+		
+func onCardDraggedInit(CardUI: Control) -> void:
+	StashEmptyControl = Control.new()
+	StashEmptyControl.custom_minimum_size = CardUI.size
+	StashContainer.add_child(StashEmptyControl)
+	StashContainer.move_child(StashEmptyControl, CardUI.get_index())
+		
+var StashEmptyControl: Control
+func onCardDraggedBegin(CardUI: Control, is_stash_card: bool) -> void:
+	var ExcludeDeckSlotUI: Control = null if is_stash_card else getDeckSlotUIFromCardUI(CardUI)
+	CardUI.onChangeBackgroundMouseFilter(false)
+	for DeckSlotUI: Control in getDeckContainerDeckUI():
+		if DeckSlotUI != ExcludeDeckSlotUI:
+			DeckSlotUI.setBackgroundMouseFilter(Control.MOUSE_FILTER_STOP)
+			DeckSlotUI.setLockMouseFilter(Control.MOUSE_FILTER_IGNORE)
+			
+	for StashCardUI: Control in getStashCardsUI():
+		StashCardUI.onChangeBackgroundMouseFilter(false)
+		
+	for DeckCardUI: Control in getDeckContainerCardUI().filter(func(x: Control): return x != null):
+		DeckCardUI.onChangeBackgroundMouseFilter(false)
+
+func onCardDraggedEnd(CardUI: Control, pos: Vector2, is_stash_card: bool) -> void:
+	for DeckSlotUI: Control in getDeckContainerDeckUI():
+		DeckSlotUI.setBackgroundMouseFilter(Control.MOUSE_FILTER_IGNORE)
+		DeckSlotUI.setLockMouseFilter(Control.MOUSE_FILTER_STOP)
+	
+	for StashCardUI: Control in getStashCardsUI():
+		StashCardUI.onChangeBackgroundMouseFilter(true)
+		
+	for DeckCardUI: Control in getDeckContainerCardUI().filter(func(x: Control): return x != null):
+		DeckCardUI.onChangeBackgroundMouseFilter(true)
+		
+	DeckSlotUIRaycast.global_position = pos
+	DeckSlotUIRaycast.target_position = Vector2.ZERO
+	DeckSlotUIRaycast.force_raycast_update()
+	var area: Area2D = DeckSlotUIRaycast.get_collider()
+	if area == null: # Hovered outside
+		if is_stash_card: return
+		var Card: CardGD = CardUI.Card
+		if Card.info.rarity == Game.Rarities.CHAMPION: return
+		
+		var deck_slots: Array = Game.getSaveFile().getDeckSlots()
+		var deck_slot: DeckSlot = deck_slots.filter(func(x: DeckSlot):\
+			return x.card_public_id == Card.public_id)[0]
+		onRemoveDeckCard(CardUI, deck_slot)
+	else: # Hovered inside another deck slot
+		var deck_slot: DeckSlot = area.get_parent().deck_slot
+		if deck_slot.is_locked: return
+		
+		if is_stash_card:
+			onStashCardHoveredDeckSlot(CardUI, deck_slot)
+			if CardUI.is_queued_for_deletion():
+				onCardDraggedFinished(CardUI)
+		else: onDeckCardUIHoveredDeckSlot(CardUI, deck_slot)
+		
+func onCardDraggedFinished(CardUI: Control) -> void:
+	if StashEmptyControl != null:
+		if CardUI != null and !CardUI.is_queued_for_deletion():
+			StashContainer.move_child(CardUI, StashEmptyControl.get_index())
+		StashEmptyControl.queue_free()
+		StashEmptyControl = null
+		
+	get_viewport().call_deferred("update_mouse_cursor_state")
+		
+func getDeckSlotCardUI(Card: CardGD) -> Control:
+	for CardUI: Control in getDeckContainerCardUI().filter(func(x: Control): return x != null):
+		if CardUI.Card == Card: return CardUI
+	return null
+	
+func getDeckSlotDeckUI(deck_slot: DeckSlot) -> Control:
+	for DeckSlotUI: Control in getDeckContainerDeckUI().filter(func(x: Control): return x != null):
+		if DeckSlotUI.deck_slot == deck_slot: return DeckSlotUI
+	return null
+	
+func getDeckSlotFromCardUI(CardUI: Control) -> DeckSlot:
+	for DeckSlotUI: Control in getDeckContainerDeckUI():
+		if DeckSlotUI.CardUI == CardUI: return DeckSlotUI.deck_slot
+	return null
+	
+func getDeckSlotUIFromCardUI(CardUI: Control) -> Control:
+	for DeckSlotUI: Control in getDeckContainerDeckUI():
+		if DeckSlotUI.CardUI == CardUI: return DeckSlotUI
+	return null
+	
+func getStashCardsUI() -> Array:
+	return StashContainer.get_children().filter(func(x: Control): return x != StashEmptyControl)

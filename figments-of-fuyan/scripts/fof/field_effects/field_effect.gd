@@ -78,3 +78,5 @@ func getCharges() -> int:
 	return charges
 
 func onFieldEffectAdded() -> void: pass
+
+func getFofObject() -> FofGD: return FofObject

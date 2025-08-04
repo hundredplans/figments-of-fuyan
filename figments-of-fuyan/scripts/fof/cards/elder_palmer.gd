@@ -1,5 +1,15 @@
 extends CardGD
 
+const TIER_ONE_ARMOR_AMOUNT: int = 1
+const TIER_TWO_ARMOR_AMOUNT: int = 2
+const TIER_THREE_ARMOR_AMOUNT: int = 2
+const TIER_FOUR_ARMOR_AMOUNT: int = 3
+
+const TIER_ONE_HEAL: int = 1
+const TIER_TWO_HEAL: int = 1
+const TIER_THREE_HEAL: int = 2
+const TIER_FOUR_HEAL: int = 2
+
 const GUARANTEED_HEAL_UNIT_AMOUNT_AI: int = 2
 const SINGLE_UNIT_CHANCE: float = 0.1
 
@@ -25,8 +35,8 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect.name == "Palmist Prayer":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var heal_amount: int = 1
-		var armor_amount: int = 1 if tier == 1 else 2
+		var heal_amount: int = getTierHeal()
+		var armor_amount: int = getTierArmor()
 		
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(ABILITY_DELAY)
@@ -64,3 +74,19 @@ func getDescription(use_default_values: bool = false) -> String:
 	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
 	return super(true)
+
+func getTierArmor() -> int:
+	match tier:
+		1: return TIER_ONE_ARMOR_AMOUNT
+		2: return TIER_TWO_ARMOR_AMOUNT
+		3: return TIER_THREE_ARMOR_AMOUNT
+		4: return TIER_FOUR_ARMOR_AMOUNT
+	return 0
+
+func getTierHeal() -> int:
+	match tier:
+		1: return TIER_ONE_HEAL
+		2: return TIER_TWO_HEAL
+		3: return TIER_THREE_HEAL
+		4: return TIER_FOUR_HEAL
+	return 0

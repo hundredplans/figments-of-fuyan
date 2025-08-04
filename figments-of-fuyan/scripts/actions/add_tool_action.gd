@@ -20,7 +20,10 @@ func onPreAction() -> void:
 				Tool.onClear()
 			onForceAction(ToolRetieredAction.new(Card.Tool, Card.Tool.getTier() + 1))
 			onFailAction()
-		else: onFailAction()
+		else:
+			if !keep_tool:
+				Tool.onClear()
+			onFailAction()
 	
 func onPostAction() -> void:
 	Tool.reparent(Card)

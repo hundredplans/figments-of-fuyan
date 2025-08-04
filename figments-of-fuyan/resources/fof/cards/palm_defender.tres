@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://1bytr723e1jw"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://1bytr723e1jw"]
 
 [ext_resource type="Image" uid="uid://cdwhck256lnad" path="res://assets/sprites/game/cards/art_pop/palm_defender.png" id="2_0ye06"]
 [ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_f0m57"]
@@ -49,13 +49,21 @@ description = "ARMOR [1]
 BLOODTHIRST: Gain +1 HP if the killer was a Palm"
 default_values = Array[int]([])
 
+[sub_resource type="Resource" id="Resource_hx7t3"]
+script = ExtResource("2_rtj64")
+display_number = 1
+id = 1
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
 [sub_resource type="Resource" id="Resource_wp15d"]
 script = ExtResource("12_5caay")
 attack = 1
 health = 3
 speed = 2
 energy = 2
-traits = Array[ExtResource("2_rtj64")]([])
+traits = Array[ExtResource("2_rtj64")]([SubResource("Resource_hx7t3")])
 active_abilities = Array[ExtResource("11_hx7t3")]([])
 description_datastore = SubResource("Resource_2ronn")
 
@@ -65,13 +73,21 @@ description = "ARMOR [1]
 BLOODTHIRST: Gain +1 HP if the killer was a Palm"
 default_values = Array[int]([])
 
+[sub_resource type="Resource" id="Resource_oibkk"]
+script = ExtResource("2_rtj64")
+display_number = 1
+id = 1
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
 [sub_resource type="Resource" id="Resource_jenq7"]
 script = ExtResource("12_5caay")
 attack = 2
 health = 4
 speed = 2
 energy = 2
-traits = Array[ExtResource("2_rtj64")]([])
+traits = Array[ExtResource("2_rtj64")]([SubResource("Resource_oibkk")])
 active_abilities = Array[ExtResource("11_hx7t3")]([])
 description_datastore = SubResource("Resource_lle5h")
 
@@ -106,18 +122,6 @@ collision_shape = SubResource("PackedScene_jumla")
 stat = 2.31271
 top = 2.07831
 eye = 1.6564
-plus_attack = 0
-plus_health = 1
-plus_speed = 1
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_rtj64")]([])
-attack = 1
-health = 3
-speed = 2
-energy = 2
-description = "BLOODTHIRST: Gain +1 HP if the killer was a Palm"
-ascended_description = ""
-initial_traits = Array[ExtResource("2_rtj64")]([])
 id = 8
 name = "Palm Defender"
 gdscript = ExtResource("5_0sly7")

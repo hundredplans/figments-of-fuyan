@@ -112,6 +112,8 @@ func setAnimationModifier(animation_name: String, modifier: String) -> void:
 		"Idle": setIdleModifier(modifier)
 		"Jump": anibility_datastore.setJumpModifier(modifier)
 		"Hurt": anibility_datastore.setHurtModifier(modifier)
+		"Attack": anibility_datastore.setAttackModifier(modifier)
+		"Death": anibility_datastore.setDeathModifier(modifier)
 		
 func setAwakenedInCombat(state: bool) -> void:
 	is_awakened_in_combat = state
@@ -882,9 +884,7 @@ func isValidAttackTile(AttackTile: TileGD, GameObject: GameObjectGD) -> bool:
 	var top_self_y: float = position.y + getTopFromInfo()
 	
 	var is_in_unit_height: bool = max(bot_y, bot_self_y) <= min(top_y, top_self_y)
-	
-	var is_ranged: bool = getAttackRange() > 1 and hdiff <= 5
-	return (is_in_height or is_in_unit_height or is_ranged)
+	return (is_in_height or is_in_unit_height)
 		
 func getAttackDistanceFromEnemy(EnemyTile: TileGD, StartingTile: TileGD = Tile, _speed: int = speed) -> int:
 	return max(Game.getCoordsDistance(StartingTile.getCoords(), EnemyTile.getCoords()) - getAttackRange() - _speed, 0)
@@ -973,6 +973,9 @@ func getFieldTraits() -> Array:
 	
 func getActiveOverworldTraits() -> Array:
 	return overworld_traits.filter(func(x: OverworldTrait): return x.isActive())
+	
+func getOverworldTraits() -> Array:
+	return overworld_traits
 #endregion
 
 #region Tools
@@ -989,6 +992,9 @@ func getTool() -> ToolGD:
 func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.append(active_effect)
 	active_effect.owner = self
+	
+func onRemoveActiveEffect(active_effect: ActiveEffectDatastore) -> void:
+	active_effects.erase(active_effect)
 
 func onCreateInitialActiveAbilities() -> void:
 	var tier_datastore := getCardTierDatastore(tier)
@@ -1161,6 +1167,9 @@ func getFirstFieldEffect(id: int) -> FieldEffectGD:
 	for FieldEffect: FieldEffectGD in field_effects:
 		if FieldEffect.info.id == id: return FieldEffect
 	return null
+	
+func getFieldEffectsById(id: int) -> Array:
+	return field_effects.filter(func(x: FieldEffectGD): return x.info.id == id)
 #endregion
 
 #region Status Effects
@@ -1244,20 +1253,15 @@ func onRetiered(_tier: int) -> void: # This doesn't account for tiering down as 
 	var new_traits: Array = tier_datastore.getTraits()
 	actions += new_traits.map(func(x: SavedDataTrait):\
 		return AddOverworldTraitAction.new(self, OverworldTrait.new(x, OverworldTrait.AddedBy.REGULAR), true))
-	onPushAction(actions)
+		
+	var old_traits: Array = getOverworldTraits()
+	actions += old_traits.map(func(x: OverworldTrait): return RemoveOverworldTraitAction.new(self, x.data.id, OverworldTrait.AddedBy.REGULAR))
 		
 	# Active Effect Region
-	var old_active_effect_names: Array = active_effects.map(func(x: ActiveEffectDatastore): return x.name)
-	var new_active_effects: Array = tier_datastore.getActiveAbilities()\
-		.filter(func(x: ActiveEffectDatastore): return x.name not in old_active_effect_names)
-	for active_effect: ActiveEffectDatastore in new_active_effects:
-		actions.append(AddActiveEffectAction.new(self, active_effect))
-		
-	for active_effect: ActiveEffectDatastore in active_effects:
-		actions.append(ChangeActiveEffectUsedAction.new(active_effect, false))
-		if active_effect.getMaxCharges() == -1: continue
-		actions.append(ChangeActiveEffectChargesAction.new(active_effect, active_effect.getMaxCharges() - active_effect.getCharges()))
-		
+	var new_active_effects: Array = tier_datastore.getActiveAbilities()
+	actions += active_effects.map(func(x: ActiveEffectDatastore): return RemoveActiveEffectAction.new(self, x))
+	actions += new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x))
+	onPushAction(actions)
 	tier_updated.emit(tier)
 
 #region Temp Card
@@ -1527,7 +1531,7 @@ func setBaseStats(types: Array, values: Array) -> void:
 				base_stats.energy += values[i]
 				actions.append(CardEnergyAction.new(self, values[i]))
 			
-		if type != Game.Stats.ENERGY:
+		if type in [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED]:
 			stat_info.types.append(type)
 			stat_info.values.append(values[i])
 			
@@ -1683,6 +1687,9 @@ func getAttack() -> int:
 	
 func getHealth() -> int:
 	return health
+	
+func getMaxHealth() -> int:
+	return max_health
 	
 func getSpeed() -> int:
 	return speed

@@ -36,6 +36,7 @@ signal turn_state_changing
 signal camera_change_action
 signal active_effect_used
 signal active_effect_added
+signal active_effect_removed
 signal tile_occupied
 signal set_rewards # Signal for area to interpret
 signal game_started
@@ -138,7 +139,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	energy_changed.emit(energy)
 	
 	if isEpic() and !is_ended:
-		onPushAction(PlayMusicAction.new(Game.getArea().info.boss_music))
+		onPushAction(PlayMusicAction.new(Audio.COCONUT_SPRINGS_BOSS))
 		
 	if is_init:
 		var actions: Array = [StartGameAction.new(), ChangePhaseAction.new(Game.Phases.START)]
@@ -253,6 +254,8 @@ func onProcessAction(action: Action) -> void:
 			onRecalculateAITurn(action.Card)
 		elif action is AddActiveEffectAction:
 			active_effect_added.emit(action.active_effect)
+		elif action is RemoveActiveEffectAction:
+			active_effect_removed.emit(action.active_effect)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
 			onRecalculateAITurnOccupy(action, action.Card)
@@ -391,7 +394,7 @@ func onSpectateClosestAlly(Card: CardGD) -> void:
 
 #region Game Ended
 func setRewards(is_win: bool) -> void:
-	onPushAction(PlayMusicAction.new(null))
+	onPushAction(PlayMusicAction.new(Audio.BACKGROUND))
 	is_ended = true
 	set_rewards.emit(is_win)
 

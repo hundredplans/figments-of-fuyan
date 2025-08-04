@@ -1,6 +1,11 @@
 extends CardGD
 
 const ABILITY_DELAY: float = 2.0
+const TIER_ONE_ATTACK: int = 1
+const TIER_TWO_ATTACK: int = 1
+const TIER_THREE_ATTACK: int = 1
+const TIER_FOUR_ATTACK: int = 2
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 
@@ -20,7 +25,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect.name == "For Varoma!":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var attack_value: int = 1
+		var attack_value: int = getTierAttack()
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(ABILITY_DELAY)
 		
@@ -47,3 +52,11 @@ func getDescription(use_default_values: bool = false) -> String:
 	if !use_default_values and active_effect != null:
 		return Helper.getDescription(super(), [active_effect.charges])
 	return super(true)
+
+func getTierAttack() -> int:
+	match tier:
+		1: return TIER_ONE_ATTACK
+		2: return TIER_TWO_ATTACK
+		3: return TIER_THREE_ATTACK
+		4: return TIER_FOUR_ATTACK
+	return 0

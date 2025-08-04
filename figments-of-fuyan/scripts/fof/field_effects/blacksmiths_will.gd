@@ -7,7 +7,7 @@ func onLoadData(data: SavedData) -> void:
 	onForceUpdateDisplayNumber()
 
 func getDescription() -> String:
-	return Helper.getDescription(super(), [FofObject.ability_turns_remaining])
+	return Helper.getDescription(super(), [FofObject.ability_turns_remaining, FofObject.getTierTurns()])
 
 func onFieldEffectAdded() -> void:
 	super()

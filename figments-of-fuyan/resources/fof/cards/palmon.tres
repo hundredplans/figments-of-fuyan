@@ -34,7 +34,6 @@ name = "Treeleaf Remedy"
 description = "Give +1 ATT for [1] Turn to an ally in vision
 They heal [1] HP the turn after"
 max_charges = 2
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -60,7 +59,6 @@ name = "Treeleaf Remedy"
 description = "Give +2 ATT for [1] Turn to an ally in vision
 They heal [1] HP the turn after"
 max_charges = 2
-delay = 0.0
 camera_type = 0
 charges = 0
 used = false
@@ -126,20 +124,6 @@ collision_shape = SubResource("PackedScene_q2gnb")
 stat = 1.43967
 top = 0.791613
 eye = 0.60704
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_85cop")]([])
-attack = 2
-health = 1
-speed = 2
-energy = 2
-description = "ABILITY [[X]]: Give +1 ATT for [1] Turn to a double adjacent ally
-They heal [1] HP the turn after"
-ascended_description = "ABILITY [[X]]: Give +2 ATT for [1] Turn to a double adjacent ally
-They heal [1] HP the turn after"
-initial_traits = Array[ExtResource("2_85cop")]([])
 id = 14
 name = "Palmon"
 gdscript = ExtResource("3_bb4jm")

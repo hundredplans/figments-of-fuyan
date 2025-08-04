@@ -1,8 +1,16 @@
 extends CardGD
 
-const DEFAULT_ATTACK: int = 1
-const TIER_TWO_ATTACK: int = 2
 const ABILITY_DELAY: float = 2.0
+
+const TIER_ONE_ATTACK: int = 1
+const TIER_TWO_ATTACK: int = 2
+const TIER_THREE_ATTACK: int = 2
+const TIER_FOUR_ATTACK: int = 2
+
+const TIER_ONE_TURNS: int = 1
+const TIER_TWO_TURNS: int = 1
+const TIER_THREE_TURNS: int = 2
+const TIER_FOUR_TURNS: int = 2
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -28,14 +36,14 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect.name == "Rousing Hair":
 		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var attack_value: int = DEFAULT_ATTACK if tier == 1 else TIER_TWO_ATTACK
+		var attack_value: int = getTierAttack()
 		var animation_action := AnimationAction.new(self, "Ability")
 		animation_action.setActionDelay(ABILITY_DELAY)
 		
 		var camera_change_to_them_action := CameraChangeAction.new(Card)
 		camera_change_to_them_action.setActionDelay(1.0)
 		
-		var actions: Array = [animation_action, StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, attack_value, 1)),\
+		var actions: Array = [animation_action, StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, attack_value, getTierTurns())),\
 			camera_change_to_them_action, CameraChangeAction.new(self)]
 		onPushAction(actions)
 
@@ -61,3 +69,19 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 		#if enemies.any(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), getCoords()) <= )
 		return tiles.pick_random()
 	return null
+	
+func getTierAttack() -> int:
+	match tier:
+		1: return TIER_ONE_ATTACK
+		2: return TIER_TWO_ATTACK
+		3: return TIER_THREE_ATTACK
+		4: return TIER_FOUR_ATTACK
+	return 0
+
+func getTierTurns() -> int:
+	match tier:
+		1: return TIER_ONE_TURNS
+		2: return TIER_TWO_TURNS
+		3: return TIER_THREE_TURNS
+		4: return TIER_FOUR_TURNS
+	return 0

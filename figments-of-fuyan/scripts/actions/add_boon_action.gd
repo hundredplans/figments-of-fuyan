@@ -29,8 +29,13 @@ func getLogInfo() -> Array:
 func onCheckFail() -> void:
 	var existing_boons: Array = Game.getSaveFile().getBoons().filter(func(x: BoonGD): return x.info.id == id)
 	if existing_boons.is_empty(): return
+	if tier > Game.MAX_BOON_TIER: onFailAction(); return
 	
-	#var ExistingBoon: BoonGD = existing_boons[0]
-	#if !ExistingBoon.ascended:
-		#onPushAction(ChangeBoonAscenscionAction.new(ExistingBoon, true))
-	onFailAction()
+	var ExistingBoon: BoonGD = existing_boons[0]
+	if ExistingBoon.getTier() == tier:
+		onPushAction(BoonRetieredAction.new(ExistingBoon, ExistingBoon.getTier() + 1))
+		onFailAction()
+	elif tier > ExistingBoon.getTier(): # Removes existing boon
+		onPushAction(RemoveBoonAction.new(id))
+	else:
+		onFailAction() # If existing boon is higher tier

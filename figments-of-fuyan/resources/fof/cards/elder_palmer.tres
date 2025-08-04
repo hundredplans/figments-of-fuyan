@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://bd4cljnvkom7p"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3 uid="uid://bd4cljnvkom7p"]
 
 [ext_resource type="Texture2D" uid="uid://c4qmdx7sok48s" path="res://assets/sprites/game/cards/art_mini/elder_palmer.png" id="2_1owme"]
 [ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_bv4yk"]
@@ -33,7 +33,6 @@ script = ExtResource("11_7ws7a")
 name = "Palmist Prayer"
 description = "Heal an ally in vision [1] HP, they gain ARMOR [1], DISARM for [1] Turn"
 max_charges = 2
-delay = 2.0
 camera_type = 0
 charges = 0
 used = false
@@ -53,12 +52,11 @@ traits = Array[ExtResource("2_gdnhc")]([])
 active_abilities = Array[ExtResource("11_7ws7a")]([SubResource("Resource_7ws7a")])
 description_datastore = SubResource("Resource_ssvk7")
 
-[sub_resource type="Resource" id="Resource_rjrjt"]
+[sub_resource type="Resource" id="Resource_qkugh"]
 script = ExtResource("11_7ws7a")
 name = "Palmist Prayer"
-description = "Heal an ally in vision [2] HP, they gain ARMOR [3], DAZE for [1] Turn"
-max_charges = 3
-delay = 2.0
+description = "Heal an ally in vision [1] HP, they gain ARMOR [2], DAZE for [1] Turn"
+max_charges = 2
 camera_type = 0
 charges = 0
 used = false
@@ -76,8 +74,18 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_gdnhc")]([])
-active_abilities = Array[ExtResource("11_7ws7a")]([SubResource("Resource_rjrjt")])
+active_abilities = Array[ExtResource("11_7ws7a")]([SubResource("Resource_qkugh")])
 description_datastore = SubResource("Resource_o1bd3")
+
+[sub_resource type="Resource" id="Resource_yt8y2"]
+script = ExtResource("11_7ws7a")
+name = "Palmist Prayer"
+description = "Heal an ally in vision [2] HP, they gain ARMOR [2], DAZE for [1] Turn"
+max_charges = 3
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_grgxl"]
 script = ExtResource("13_u3b6a")
@@ -91,8 +99,18 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_gdnhc")]([])
-active_abilities = Array[ExtResource("11_7ws7a")]([SubResource("Resource_rjrjt")])
+active_abilities = Array[ExtResource("11_7ws7a")]([SubResource("Resource_yt8y2")])
 description_datastore = SubResource("Resource_grgxl")
+
+[sub_resource type="Resource" id="Resource_rjrjt"]
+script = ExtResource("11_7ws7a")
+name = "Palmist Prayer"
+description = "Heal an ally in vision [2] HP, they gain ARMOR [3], DAZE for [1] Turn"
+max_charges = 3
+camera_type = 0
+charges = 0
+used = false
+metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_u3b6a"]
 script = ExtResource("13_u3b6a")
@@ -124,18 +142,6 @@ collision_shape = SubResource("PackedScene_lt088")
 stat = 2.23768
 top = 1.92518
 eye = 1.808
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_gdnhc")]([])
-attack = 1
-health = 3
-speed = 2
-energy = 2
-description = "ABILITY [[X]]: Heal an ally in vision [1] HP, they gain ARMOR [1], DAZE for [1] Turn"
-ascended_description = "ABILITY [[X]]: Heal an ally in vision [1] HP, they gain ARMOR [2], DAZE for [1] Turn"
-initial_traits = Array[ExtResource("2_gdnhc")]([])
 id = 20
 name = "Elder Palmer"
 gdscript = ExtResource("4_wargf")

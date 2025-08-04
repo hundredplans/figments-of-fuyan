@@ -10,7 +10,7 @@
 [sub_resource type="Resource" id="Resource_08qgf"]
 script = ExtResource("6_pcbgj")
 description = "Your next [[X]] stat buff doubles"
-default_values = Array[int]([])
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_xhp27"]
 script = ExtResource("5_w686o")
@@ -54,8 +54,6 @@ display_trigger = true
 use_charges = true
 auto_reset_charges = true
 reset_to_default = true
-description = "Your next [1] stat buffs double"
-ascended_description = "Your next [2] stat buffs double"
 id = 6
 name = "Double-Up Boon"
 gdscript = ExtResource("1_o283v")

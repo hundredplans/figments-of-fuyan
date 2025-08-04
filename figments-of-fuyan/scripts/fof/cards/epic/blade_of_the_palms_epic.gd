@@ -539,8 +539,7 @@ func onDoubleTeleportAttackSetIntents() -> BossTileIntents:
 	
 func onDoubleTeleportAttack(use_type: UseType) -> Array:
 	if use_type == UseType.START:
-		onResetIdleModifier() # For hammer idle
-		var actions: Array = []
+		var actions: Array = [AnimationModifierAction.new(self, "Idle", "")]
 		var tile_results: Dictionary[TileGD, String] = boss_datastore.getTileResults()
 		
 		var enemies: Array = Game.getEnemyUnits(team)
@@ -648,7 +647,7 @@ func onChangeBossPhasePostDelay() -> void:
 	
 	var actions: Array = [ChangeTileRotationAction.new(self, 0),
 		CardOffsetAction.new(self, Vector3.ZERO, HAMMER_ROT_OFFSET),
-		IdleModifierAction.new(self, "Hammer"),
+		AnimationModifierAction.new(self, "Idle", "Hammer"),
 		TeleportAction.new(self, getPedestalTile()),
 		hammer_jump,
 		TweenPropertyAction.new(self, "position", HAMMER_END_RELATIVE_POS, HAMMER_FLY_TIME, Tween.TransitionType.TRANS_SINE, HAMMER_JUMP_AND_AFTER_DELAY),
@@ -775,7 +774,7 @@ func onHammerAttack(use_type: UseType) -> Array:
 		var enemies_in_landing: Array = enemy_cards.filter(func(x: CardGD): return x.getTile() in landing_tiles)
 		
 		actions.append(DamageAction.new(self, enemy_cards, attack, Game.DamageTypes.OTHER))
-		actions.append(IdleModifierAction.new(self, ""))
+		actions.append(AnimationModifierAction.new(self, "Idle", ""))
 		actions += getDefaultTeleportActions(LandingTile, true)
 		actions += enemies_in_landing.map(func(x: CardGD): return DestroyAction.new(x, self))
 		
@@ -790,7 +789,7 @@ func onHammerAttackFirstUpdateBossIntent() -> Array:
 	hammer_jump.setActionDelay(HAMMER_INITIAL_DELAY)
 	
 	var actions: Array = [
-		IdleModifierAction.new(self, "Hammer"),
+		AnimationModifierAction.new(self, "Idle", "Hammer"),
 		hammer_start,
 		ChangeTileRotationAction.new(self, 0),
 		CardOffsetAction.new(self, Vector3.ZERO, HAMMER_ROT_OFFSET),

@@ -56,7 +56,7 @@ func setInfo(_reward: Reward) -> void:
 	if item is BoonGD or item is ToolGD:
 		TextureDisplay.setInfo(item, true)
 		@warning_ignore("static_called_on_instance")
-		var text: String = "[%s%s=%s]" % [item.tier, item.info.getFofName().to_lower(), item.info.id]
+		var text: String = "[%s%s=%s] | %s" % [item.tier, item.info.getFofName().to_lower(), item.info.id, Game.NUMBER_TO_ROMAN_NUMERAL[item.tier]]
 		RewardDescription.setText(item.getDescription())
 		RewardTitle.setText(text)
 		TextureDisplay.setMouseFilter(Control.MOUSE_FILTER_IGNORE)

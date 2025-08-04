@@ -23,4 +23,3 @@ void fragment() {
 		discard;
 	}
 }
-

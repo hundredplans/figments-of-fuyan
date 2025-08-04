@@ -7,6 +7,11 @@ var rampage_charges: int
 var trauma_charges: int
 var bloodthirst_charges: int
 
+const TIER_ONE_CHARGES: int = 1
+const TIER_TWO_CHARGES: int = 2
+const TIER_THREE_CHARGES: int = -1
+const TIER_FOUR_CHARGES: int = -1
+
 func onAwaken() -> void:
 	super()
 	onResetCharges()
@@ -24,9 +29,10 @@ func onRetiered(tier: int) -> void:
 	onResetCharges()
 
 func onResetCharges() -> void:
-	rampage_charges = 1 if tier == 1 else 2
-	trauma_charges = 1 if tier == 1 else 2
-	bloodthirst_charges = 1 if tier == 1 else 2
+	var default_charges: int = getTierCharges()
+	rampage_charges = default_charges
+	trauma_charges = default_charges
+	bloodthirst_charges = default_charges
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -74,3 +80,10 @@ func onSave() -> SavedDataCard:
 	ability_save['bloodthirst_charges'] = bloodthirst_charges
 	return super()
 	
+func getTierCharges() -> int:
+	match tier:
+		1: return TIER_ONE_CHARGES
+		2: return TIER_TWO_CHARGES
+		3: return TIER_THREE_CHARGES
+		4: return TIER_FOUR_CHARGES
+	return 0

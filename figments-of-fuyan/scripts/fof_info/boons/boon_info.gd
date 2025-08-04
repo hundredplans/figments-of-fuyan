@@ -13,11 +13,6 @@ class_name BoonInfo extends FofInfo
 @export var reset_to_default: bool # Otherwise resets to 0
 @export_group("")
 
-@export_group("Remove")
-@export_multiline var description: String
-@export_multiline var ascended_description: String
-@export_group("")
-
 static func getFofName() -> String: return "Boon"
 
 static func getInfoPath() -> String: return "res://resources/fof/boons"

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://devkkol3v8n2s"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3 uid="uid://devkkol3v8n2s"]
 
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_3o6f8"]
 [ext_resource type="Texture2D" uid="uid://cqwda4xuuilox" path="res://assets/sprites/game/cards/art_mini/henry_hurst.png" id="2_cern8"]
@@ -27,14 +27,6 @@ _bundled = {
 "variants": [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00845337, 0.973806, 0.0105591), SubResource("BoxShape3D_ex838")],
 "version": 3
 }
-
-[sub_resource type="Resource" id="Resource_dvvd4"]
-script = ExtResource("2_3o6f8")
-display_number = 1
-id = 1
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_s8aw2"]
 script = ExtResource("13_chffd")
@@ -66,13 +58,21 @@ description = "ARMOR [1]
 REVENGE: Deal [1] DMG to the enemy if they are adjacent"
 default_values = Array[int]([])
 
+[sub_resource type="Resource" id="Resource_t72mn"]
+script = ExtResource("2_3o6f8")
+display_number = 1
+id = 1
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
 [sub_resource type="Resource" id="Resource_cnj7q"]
 script = ExtResource("12_nfaeg")
 attack = 1
 health = 4
 speed = 2
 energy = 3
-traits = Array[ExtResource("2_3o6f8")]([])
+traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_t72mn")])
 active_abilities = Array[ExtResource("11_t72mn")]([])
 description_datastore = SubResource("Resource_p48tj")
 
@@ -82,13 +82,21 @@ description = "ARMOR [1]
 REVENGE: Deal [1] DMG to the enemy if they are adjacent"
 default_values = Array[int]([])
 
+[sub_resource type="Resource" id="Resource_gb4cf"]
+script = ExtResource("2_3o6f8")
+display_number = 1
+id = 1
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
 [sub_resource type="Resource" id="Resource_nfaeg"]
 script = ExtResource("12_nfaeg")
 attack = 1
 health = 6
 speed = 2
 energy = 3
-traits = Array[ExtResource("2_3o6f8")]([])
+traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_gb4cf")])
 active_abilities = Array[ExtResource("11_t72mn")]([])
 description_datastore = SubResource("Resource_2mjfi")
 
@@ -98,13 +106,21 @@ description = "ARMOR [2]
 REVENGE: Deal [1] DMG to the enemy if they are adjacent"
 default_values = Array[int]([])
 
+[sub_resource type="Resource" id="Resource_htnm5"]
+script = ExtResource("2_3o6f8")
+display_number = 2
+id = 1
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
+
 [sub_resource type="Resource" id="Resource_4p520"]
 script = ExtResource("12_nfaeg")
 attack = 1
 health = 5
 speed = 2
 energy = 3
-traits = Array[ExtResource("2_3o6f8")]([])
+traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_htnm5")])
 active_abilities = Array[ExtResource("11_t72mn")]([])
 description_datastore = SubResource("Resource_chffd")
 
@@ -123,18 +139,6 @@ collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947
 top = 2.058
 eye = 1.788
-plus_attack = 0
-plus_health = 1
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_3o6f8")]([])
-attack = 1
-health = 3
-speed = 2
-energy = 3
-description = "ARMOR [1]; REVENGE: Deal [1] DMG to the enemy if they are adjacent"
-ascended_description = ""
-initial_traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_dvvd4")])
 id = 68
 name = "Henry Hurst"
 gdscript = ExtResource("6_dvvd4")

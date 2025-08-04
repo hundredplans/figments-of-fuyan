@@ -14,10 +14,8 @@ var MAIN_MENU_BUTTONS: Array = ["Start", "Settings", "Extras", "", "Exit"]
 @export var LoadMenuPacked: PackedScene
 @export var ChampionSelectUIPacked: PackedScene
 @export var MainMenuButtonPacked: PackedScene
-@export var main_menu_music: AudioStream
 
 var World: Node3D
-
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Back") and pressable:
 		onBackInputPressed()
@@ -32,7 +30,7 @@ func onNotFirstLoad() -> void:
 	AniPlayer.play("SlideUIElements")
 
 func _ready() -> void:
-	Audio.onPlayMusic(main_menu_music)
+	Audio.onPlayMusic(Audio.MAIN_MENU)
 	onLoadButtons(MAIN_MENU_BUTTONS, false)
 
 #region Mouse In UI

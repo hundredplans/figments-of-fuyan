@@ -6,4 +6,7 @@ func onProcessAction(action: Action) -> void:
 		onPushAction(FieldEffectActivatedAction.new(self, action))
 		
 func onFieldEffect(_death_action: DeathAction) -> void:
-	onPushAction(StatAction.new(StatInfo.new(Card, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [1, 1])))
+	onPushAction(StatAction.new(StatInfo.new(Card, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [display_number, display_number])))
+
+func getDescription() -> String:
+	return Helper.getDescription(super(), [display_number])

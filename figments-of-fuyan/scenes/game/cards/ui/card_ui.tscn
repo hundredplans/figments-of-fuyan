@@ -1,9 +1,12 @@
-[gd_scene load_steps=37 format=3 uid="uid://cqwfvh83nko7x"]
+[gd_scene load_steps=42 format=3 uid="uid://cqwfvh83nko7x"]
 
 [ext_resource type="Script" uid="uid://dupousrsi54yw" path="res://scenes/game/cards/ui/card_ui.gd" id="1_q53ix"]
 [ext_resource type="Image" uid="uid://ckxnjmhktgr8q" path="res://assets/sprites/game/cards/common/rarity/scrap.png" id="2_6wo8e"]
+[ext_resource type="Texture2D" uid="uid://dyrp88hkx4daf" path="res://assets/sprites/game/cards/common/ring/ring_regular.png" id="2_38jha"]
 [ext_resource type="Image" uid="uid://c30uml0aawfvd" path="res://assets/sprites/game/cards/common/rarity/neutral.png" id="3_8tmke"]
+[ext_resource type="Texture2D" uid="uid://c16x77bnldw3w" path="res://assets/sprites/game/cards/common/ring/ring_rare.png" id="3_ckdq5"]
 [ext_resource type="Image" uid="uid://duyj4dbtko3a6" path="res://assets/sprites/game/cards/common/rarity/common.png" id="4_nqgip"]
+[ext_resource type="Texture2D" uid="uid://omehyo6ivvao" path="res://assets/sprites/game/cards/common/ring/ring_champion.png" id="5_au1bc"]
 [ext_resource type="Image" uid="uid://q0va4msyj05p" path="res://assets/sprites/game/cards/common/rarity/rare.png" id="5_nm6rj"]
 [ext_resource type="Image" uid="uid://mp134f1rubor" path="res://assets/sprites/game/cards/common/rarity/exalt.png" id="6_ngrci"]
 [ext_resource type="Image" uid="uid://d2kkw5k3572mg" path="res://assets/sprites/game/cards/common/rarity/miniboss.png" id="7_uqhgb"]
@@ -29,10 +32,12 @@
 [ext_resource type="Texture2D" uid="uid://y0wdd1rb4n4u" path="res://assets/sprites/game/cards/common/rarity/boss_mask.png" id="17_cenpk"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="19_hlg43"]
 [ext_resource type="Resource" uid="uid://bw0qo7tuhyhqm" path="res://resources/ui/fancy_text/fancy_text_label_settings_tiny.tres" id="20_rm1pc"]
+[ext_resource type="Texture2D" uid="uid://pyxq8bu65qdl" path="res://assets/sprites/game/cards/common/ring/ring_boss.png" id="21_5aoho"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="25_rre5o"]
+[ext_resource type="Texture2D" uid="uid://dmjh1xeukbour" path="res://assets/sprites/game/cards/common/stats/tool_inside.png" id="26_481gw"]
+[ext_resource type="Texture2D" uid="uid://b6fe3ljavdhp5" path="res://assets/sprites/game/cards/common/stats/tool_outside.png" id="27_5aoho"]
 [ext_resource type="Texture2D" uid="uid://cgsjk5jrikksx" path="res://assets/sprites/game/cards/common/extra/temporary_card_marker.png" id="27_bxo26"]
 [ext_resource type="Texture2D" uid="uid://c8x28rsutci1j" path="res://assets/sprites/game/cards/common/extra/awakened_in_combat.png" id="28_5hwvt"]
-[ext_resource type="LabelSettings" uid="uid://wscpsay1s5fu" path="res://resources/ui/label_settings/darumadrop_medium.tres" id="42_xta2f"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ttbxi"]
 font = ExtResource("12_5qxhe")
@@ -64,6 +69,7 @@ offset_bottom = 400.0
 pivot_offset = Vector2(132, 200)
 mouse_filter = 2
 script = ExtResource("1_q53ix")
+ring_to_rarity = Array[Texture2D]([ExtResource("2_38jha"), ExtResource("2_38jha"), null, ExtResource("2_38jha"), ExtResource("3_ckdq5"), ExtResource("2_38jha"), ExtResource("21_5aoho"), ExtResource("21_5aoho"), ExtResource("5_au1bc")])
 white_outline_canvas = ExtResource("11_dkfsn")
 rarities = Array[Image]([ExtResource("2_6wo8e"), ExtResource("3_8tmke"), null, ExtResource("4_nqgip"), ExtResource("5_nm6rj"), ExtResource("6_ngrci"), ExtResource("7_uqhgb"), ExtResource("8_1oo08"), ExtResource("8_f8y83")])
 masks = Array[Texture2D]([ExtResource("11_rpyjc"), ExtResource("12_tyqt3"), null, ExtResource("13_2ncit"), ExtResource("14_cr14o"), ExtResource("15_miqu5"), ExtResource("16_cs2l5"), ExtResource("17_cenpk"), ExtResource("11_g8p6d")])
@@ -111,6 +117,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_wywqj")
+
+[node name="Ring" type="Sprite2D" parent="Art"]
+unique_name_in_owner = true
+centered = false
 
 [node name="ArtPop" type="TextureButton" parent="Art"]
 unique_name_in_owner = true
@@ -230,22 +240,36 @@ anchor_right = 0.672
 anchor_bottom = 0.992
 offset_left = 18.08
 offset_top = -178.568
-offset_right = 68.08
-offset_bottom = -128.568
+offset_right = 78.08
+offset_bottom = -118.568
 mouse_filter = 2
 
-[node name="ToolIconBackground" type="Sprite2D" parent="Stats/ToolControl"]
+[node name="ToolInside" type="Sprite2D" parent="Stats/ToolControl"]
 unique_name_in_owner = true
 texture_filter = 1
-texture = ExtResource("15_vn70k")
+texture = ExtResource("26_481gw")
+centered = false
+
+[node name="ToolOutside" type="Sprite2D" parent="Stats/ToolControl"]
+unique_name_in_owner = true
+texture_filter = 1
+texture = ExtResource("27_5aoho")
 centered = false
 
 [node name="ToolIcon" parent="Stats/ToolControl" instance=ExtResource("25_rre5o")]
 unique_name_in_owner = true
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 45.0
-offset_bottom = 45.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Energy" type="Control" parent="Stats"]
 layout_mode = 1
@@ -447,17 +471,6 @@ offset_bottom = 39.0
 rotation = -0.0427386
 text = "+"
 
-[node name="TierLabel" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 201.0
-offset_top = 293.0
-offset_right = 242.0
-offset_bottom = 341.0
-text = "III"
-label_settings = ExtResource("42_xta2f")
-horizontal_alignment = 1
-
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 0
@@ -473,5 +486,5 @@ polygon = PackedVector2Array(-15, -15, 29, -52, 60, -63, 112, -62, 156, -46, 184
 [connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseHovered" binds= [true]]
 [connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseHovered" binds= [false]]
 [connection signal="pressed" from="Stats/ToolControl/ToolIcon" to="." method="onToolIconPressed"]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseHovered"]
 [connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
+[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseHovered"]

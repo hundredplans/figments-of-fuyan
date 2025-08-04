@@ -1,7 +1,13 @@
 extends CardGD
 
 const ABILITY_DELAY: float = 2.4
-var rampage_charges: int = 3
+
+var rampage_charges: int
+const TIER_ONE_CHARGES: int = 3
+const TIER_TWO_CHARGES: int = -1
+const TIER_THREE_CHARGES: int = -1
+const TIER_FOUR_CHARGES: int = -1
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if isValidRampage(action) and rampage_charges != 0:
@@ -24,7 +30,7 @@ func onRampage(death_action: DeathAction) -> void:
 			rampage_charges -= 1
 
 func onResetCharges() -> void:
-	rampage_charges = 3 if tier == 1 else -1
+	rampage_charges = getTierCharges()
 
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:
@@ -51,3 +57,10 @@ func onRetiered(tier: int) -> void:
 	super(tier)
 	onResetCharges()
 	
+func getTierCharges() -> int:
+	match tier:
+		1: return TIER_ONE_CHARGES
+		2: return TIER_TWO_CHARGES
+		3: return TIER_THREE_CHARGES
+		4: return TIER_FOUR_CHARGES
+	return 0

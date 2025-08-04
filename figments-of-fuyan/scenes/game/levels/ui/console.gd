@@ -60,6 +60,9 @@ func status_effect(name_id: Variant, turns: int = 1) -> void:
 		if info != null:
 			SpectateObject.onCreateBaseStatusEffect(info.id, turns)
 
+func world(difficulty: int) -> void:
+	Game.getSaveFile().onPushAction(AreaFinishedAction.new(difficulty))
+	
 func deckcard(name_id: Variant, _tier: int = 1) -> void:
 	var card_info: CardInfo = getNameIDFofInfo(name_id, CardInfo)
 	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)

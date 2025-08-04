@@ -1,5 +1,10 @@
 extends CardGD
 
+const TIER_ONE_MAX_HP: int = 1
+const TIER_TWO_MAX_HP: int = 2
+const TIER_THREE_MAX_HP: int = 2
+const TIER_FOUR_MAX_HP: int = 3
+
 var when_healed_charges: int
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -8,7 +13,7 @@ func onProcessAction(action: Action) -> void:
 
 func onWhenHealed(_action: StatAction) -> void:
 	when_healed_charges -= 1
-	var max_hp_gain: int = 1 if tier == 1 else 2
+	var max_hp_gain: int = getTierMaxHp()
 	onPushAction(StatAction.new(StatInfo.new(self, [Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [max_hp_gain, max_hp_gain])))
 
 func getDescription(use_default_values: bool = false) -> String:
@@ -26,3 +31,11 @@ func onSave() -> SavedDataCard:
 func onRegularReset() -> void:
 	super()
 	when_healed_charges = getDefaultCharges()
+
+func getTierMaxHp() -> int:
+	match tier:
+		1: return TIER_ONE_MAX_HP
+		2: return TIER_TWO_MAX_HP
+		3: return TIER_THREE_MAX_HP
+		4: return TIER_FOUR_MAX_HP
+	return 0

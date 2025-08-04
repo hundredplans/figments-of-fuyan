@@ -3,15 +3,15 @@ extends Control
 signal mouse_in_ui
 signal pressed
 
-signal dragged_begin
-signal dragged_end
-signal dragged_finished
+signal dragged_init # Before position updates / reparenting
+signal dragged_begin # After reparenting
+signal dragged_end # Before card comes back to spot
+signal dragged_finished # When card comes back to spot
 
 signal tool_drag_begin
 signal tool_drag_end
 
 #region Onready
-@onready var TierLabel: Label = %TierLabel
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
 @onready var Background: ButtonAutomask = %Background
 @onready var ArtPop: ButtonAutomask = %ArtPop
@@ -24,7 +24,8 @@ signal tool_drag_end
 @onready var TextLabel: FancyTextLabel = %TextLabel
 @onready var ToolControl: Control = %ToolControl
 @onready var ToolIcon: Control = %ToolIcon
-@onready var ToolIconBackground: Sprite2D = %ToolIconBackground
+@onready var ToolInside: Sprite2D = %ToolInside
+@onready var ToolOutside: Sprite2D = %ToolOutside
 @onready var OutlineMask: TextureRect = %OutlineMask
 
 @onready var BuffControlAttack: Control = %BuffControlAttack
@@ -41,8 +42,11 @@ signal tool_drag_end
 
 @onready var TemporaryCardMarker: TextureRect = %TemporaryCardMarker
 @onready var AwakenedInCombatMarker: TextureRect = %AwakenedInCombatMarker
+@onready var Ring: Sprite2D = %Ring
+
 #endregion
 #region Exports
+@export var ring_to_rarity: Array[Texture2D]
 @export var white_outline_canvas: ShaderMaterial
 @export_group("Admin")
 @export var rarities: Array[Image]
@@ -85,6 +89,7 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	Background.setTexture(rarities[Card.info.rarity])
 	OutlineMask.texture = masks[Card.info.rarity]
 	ArtPop.setTexture(Card.info.art_pop)
+	Ring.texture = ring_to_rarity[Card.info.rarity]
 	TextLabel.setText(Card.getDescription())
 	AreaBackground.setTexture(Card.getArea().card_background)
 	NameLabel.text = Card.info.name
@@ -102,9 +107,9 @@ func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: boo
 	onTierUpdated(Card.getTier())
 	
 func onTierUpdated(tier: int) -> void:
-	TierLabel.text = Game.getTierString(tier)
 	onUpdateStats()
 	TextLabel.setText(Card.getDescription(true))
+	Ring.modulate = Game.getTierColor(tier)
 	
 func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.base_stats.attack)
@@ -123,7 +128,8 @@ func onToolUpdated(Tool: ToolGD) -> void:
 	ToolIcon.setInfo(Tool, false)
 	
 	if Tool != null:
-		ToolIconBackground.modulate = Game.TIER_TO_COLOR[Tool.getTier()]
+		ToolInside.modulate = Game.getRarityColor(Tool.getRarity())
+		ToolOutside.modulate = Game.getTierColor(Tool.getTier())
 	
 func onPressed() -> void:
 	if disabled: return
@@ -208,7 +214,6 @@ var last_small_offset_to_center: Vector2
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !is_held_moving and DraggableParent != null and !disabled:
 		onHeldBegan()
-		
 	elif Input.is_action_just_released("MainInput") and is_held and !is_held_moving and DraggableParent != null:
 		onHeldEnded()
 	elif Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
@@ -229,6 +234,7 @@ func _process(delta: float) -> void:
 		ToolIcon.rotation = lerp_angle(ToolIcon.rotation, 0, ROTATION_TOOL_SPEED_TO_MIDDLE * delta)
 		
 func onHeldBegan() -> void:
+	dragged_init.emit(self)
 	is_held = true
 	is_held_moving = true
 	original_position = global_position
@@ -276,6 +282,9 @@ func onHeldEnded() -> void:
 	global_position = original_position
 	dragged_finished.emit(self)
 	
+	get_viewport().update_mouse_cursor_state()
+	get_viewport().call_deferred("update_mouse_cursor_state")
+	
 func getCenterPos() -> Vector2:
 	return global_position + (size / 2)
 	
@@ -319,8 +328,10 @@ func onToolHeldBegan() -> void:
 	original_tool_icon_position = ToolIcon.position
 	original_tool_mouse_filter = ToolIcon.mouse_filter
 	
+	var original_global_position: Vector2 = ToolIcon.global_position
 	ToolIcon.disable_tooltip = true
-	ToolIcon.z_index = 99
+	ToolIcon.top_level = true
+	ToolIcon.global_position = original_global_position
 	ToolIcon.setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE)
 	Game.onMouseInUITooltip(false)
 	
@@ -332,9 +343,9 @@ func onToolHeldEnded() -> void:
 	
 	ToolIcon.setMouseFilter(original_tool_mouse_filter)
 	ToolIcon.disable_tooltip = original_tool_tooltip_state
+	ToolIcon.top_level = false
 	ToolIcon.position = original_tool_icon_position
 	ToolIcon.rotation_degrees = 0
-	ToolIcon.z_index = 0
 	
 	tool_drag_end.emit(self, tool_global_pos)
 

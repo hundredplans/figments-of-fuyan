@@ -7,11 +7,19 @@ var blacksmith_will_public_ids: Array = []
 var blacksmiths_aura_public_id: int
 
 const ARMOR_ID: int = 1
-const DEFAULT_ABILITY_TURNS: int = 3
-const TIER_TWO_ABILITY_TURNS: int = 5
 const ABILITY_DELAY: float = 2.0
 const BLACKSMITHS_WILL_ID: int = 17
 const BLACKSMITHS_AURA_ID: int = 19
+
+const TIER_ONE_ARMOR_AMOUNT: int = 1
+const TIER_TWO_ARMOR_AMOUNT: int = 1
+const TIER_THREE_ARMOR_AMOUNT: int = 1
+const TIER_FOUR_ARMOR_AMOUNT: int = 2
+
+const TIER_ONE_TURNS: int = 3
+const TIER_TWO_TURNS: int = 5
+const TIER_THREE_TURNS: int = 6
+const TIER_FOUR_TURNS: int = 6
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -42,7 +50,7 @@ func onUpdateFieldEffects() -> void:
 				
 func onAddToAura(Card: CardGD) -> void:
 	affected_cards.append(Card)
-	var trait_data := SavedDataTrait.new(ARMOR_ID, true, 0, 1)
+	var trait_data := SavedDataTrait.new(ARMOR_ID, true, 0, getTierArmor())
 	
 	var add_overworld_trait_action := AddOverworldTraitAction.new(Card, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.JIBBEN, true), true)
 	var add_field_effect_action: AddFieldEffectAction = Card.onCreateBaseFieldEffectAction(BLACKSMITHS_WILL_ID, -1, -1, self)
@@ -101,7 +109,7 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	return null
 
 func getDefaultCharges() -> int:
-	return TIER_TWO_ABILITY_TURNS if tier > 1 else DEFAULT_ABILITY_TURNS
+	return getTierTurns()
 
 func onRegularReset() -> void:
 	super()
@@ -117,3 +125,19 @@ func onSave() -> SavedDataCard:
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	affected_cards = affected_cards_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
+
+func getTierTurns() -> int:
+	match tier:
+		1: return TIER_ONE_TURNS
+		2: return TIER_TWO_TURNS
+		3: return TIER_THREE_TURNS
+		4: return TIER_FOUR_TURNS
+	return 0
+	
+func getTierArmor() -> int:
+	match tier:
+		1: return TIER_ONE_ARMOR_AMOUNT
+		2: return TIER_TWO_ARMOR_AMOUNT
+		3: return TIER_THREE_ARMOR_AMOUNT
+		4: return TIER_FOUR_ARMOR_AMOUNT
+	return 0

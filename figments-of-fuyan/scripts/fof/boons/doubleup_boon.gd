@@ -1,7 +1,17 @@
 extends BoonGD
 
-func getDefaultCharges() -> int:
-	return 1 if tier == 1 else 2
+const TIER_ONE_CHARGES: int = 1
+const TIER_TWO_CHARGES: int = 2
+const TIER_THREE_CHARGES: int = 3
+const TIER_FOUR_CHARGES: int = 4
+
+func getDefaultCharges(_tier: int = tier) -> int:
+	match _tier:
+		1: return TIER_ONE_CHARGES
+		2: return TIER_TWO_CHARGES
+		3: return TIER_THREE_CHARGES
+		4: return TIER_FOUR_CHARGES
+	return 0
 
 func onBoonAdded() -> void:
 	super()
@@ -13,12 +23,13 @@ func onProcessAction(action: Action) -> void:
 		and !action.stat_infos.all(func(x: StatInfo): return x.values.all(func(y: int): return y <= 0)\
 		or x.absolute or x.immutable) and charges > 0:
 			onForceAction(BoonActivatedAction.new(self, action))
-	
-#func onAscend(state: bool) -> void:
-	#super(state)
-	#
-	#if ascended: onPushAction(ChangeBoonChargesAction.new(self, 1))
-	#else: onPushAction(ChangeBoonChargesAction.new(self, -1))
+
+func onRetiered(_tier: int) -> void:
+	var old_tier: int = tier
+	super(_tier)
+	if old_tier == tier: return
+	var charges_difference: int = getDefaultCharges(tier) - getDefaultCharges(old_tier)
+	onPushAction(ChangeBoonChargesAction.new(self, charges_difference))
 
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:

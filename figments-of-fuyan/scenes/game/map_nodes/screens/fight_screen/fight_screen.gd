@@ -15,7 +15,7 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 		var curse_info: BoonInfo = Helper.getFofInfoID(BoonInfo, map_node.curse_id)
 		CurseNameLabel.text = curse_info.name
 		CurseIcon.texture = curse_info.icon
-		DescriptionLabel.setText(curse_info.description)
+		DescriptionLabel.setText(curse_info.getDescription(Game.getArea().getWorldDifficulty(), true))
 
 	var alpha_tween := create_tween()
 	alpha_tween.tween_property(BlackBackground, "color:a", 1, Game.FADE_TIME)

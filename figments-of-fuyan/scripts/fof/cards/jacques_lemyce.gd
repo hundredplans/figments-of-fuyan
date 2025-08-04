@@ -6,6 +6,11 @@ var rampage_charges: int = 1
 const RAMPAGE_DELAY: float = 2.0
 const MACE_SMASH_ID: int = 15
 
+const TIER_ONE_CHARGES: int = 1
+const TIER_TWO_CHARGES: int = -1
+const TIER_THREE_CHARGES: int = -1
+const TIER_FOUR_CHARGES: int = -1
+
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:
 		return super(use_default_values)
@@ -13,13 +18,13 @@ func getDescription(use_default_values: bool = false) -> String:
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if rampage_charges > 0 and isValidRampage(action):
+	if rampage_charges != 0 and isValidRampage(action):
 		onPushAction(RampageAction.new(self, action))
 	elif is_stun_attack and isValidOnHit(action):
 		onPushAction(OnHitAction.new(self, action))
 		
 func getDefaultCharges() -> int:
-	return 1
+	return getTierCharges()
 	
 func onRegularReset() -> void:
 	super()
@@ -36,8 +41,10 @@ func onRampage(_death_action: DeathAction) -> void:
 	animation_action.setActionDelay(RAMPAGE_DELAY)
 	
 	var camera_change_action := CameraChangeAction.new(self)
-	rampage_charges -= 1
 	
+	if rampage_charges > 0:
+		rampage_charges -= 1
+		
 	var add_field_effect_action := onCreateBaseFieldEffectAction(MACE_SMASH_ID)
 	mace_smash_public_id = add_field_effect_action.FieldEffect.public_id
 	onPushAction([camera_change_action, animation_action, add_field_effect_action])
@@ -49,3 +56,11 @@ func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
 		Defender.onStun(1)
 	
 	onPushAction(RemoveFieldEffectAction.new(Game.onFindPublicIDObject(mace_smash_public_id)))
+
+func getTierCharges() -> int:
+	match tier:
+		1: return TIER_ONE_CHARGES
+		2: return TIER_TWO_CHARGES
+		3: return TIER_THREE_CHARGES
+		4: return TIER_FOUR_CHARGES
+	return 0

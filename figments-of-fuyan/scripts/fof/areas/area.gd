@@ -71,7 +71,7 @@ func onLoadWorldDatastore() -> void:
 	
 var is_init: bool = false
 var world: WorldDatastore
-func onFofInit() -> void:	
+func onFofInit() -> void:
 	is_init = true
 	empty_spots = onGenerateEmptyMapSpots()
 	onGenerateMapLinks()
@@ -463,11 +463,14 @@ func getAddBoonAddTool(fight_rewards_datastore: FightRewardsDatastore, is_elite:
 	return [add_boon, add_tool]
 	
 func onAddToolReward(_active_level: LevelGD) -> ToolGD:
-	var Tool: ToolGD = SavedData.onLoadModel(Random.getRandomFofByOdds(ToolInfo), _active_level)
+	var tool_data: SavedDataTool = Random.getRandomFofByOdds(ToolInfo)
+	tool_data.tier = getWorldDifficulty()
+	var Tool: ToolGD = SavedData.onLoadModel(tool_data, _active_level)
 	return Tool
 	
 func onAddBoonReward() -> BoonGD:
 	var boon_data: SavedDataBoon = Random.getRandomFofByOdds(BoonInfo)
+	boon_data.tier = getWorldDifficulty()
 	if boon_data != null:
 		var Boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
 		return Boon
@@ -534,6 +537,11 @@ func getEpicFightRewards() -> Array:
 	var boon_data := SavedDataBoon.new(boss_card.info.boon_id, true)
 	var tool_data := SavedDataTool.new(boss_card.info.tool_id, true)
 	
+	var world_difficulty: int = getWorldDifficulty()
+	boon_data.tier = world_difficulty
+	tool_data.tier = world_difficulty
+	card_data.tier = world_difficulty
+	
 	var Card: CardGD = SavedData.onLoadModel(card_data, active_level)
 	var Boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
 	var Tool: ToolGD = SavedData.onLoadModel(tool_data, active_level)
@@ -542,7 +550,7 @@ func getEpicFightRewards() -> Array:
 #endregion
 
 #region Random Enemy
-func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, progress: int, is_elite: bool) -> SavedDataCard:
+func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, progress: int, is_elite: bool, tier: int) -> SavedDataCard:
 	var world_difficulty: int = getWorldDifficulty()
 	var original_cards: Array = _cards.filter(func(x: CardInfo):\
 		return x.getTierDatastore(world_difficulty).getEnergy() == energy)
@@ -550,6 +558,7 @@ func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, pro
 	
 	var card_info: CardInfo = cards.pick_random()
 	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	card_data.tier = tier
 	card_data.team = 1
 	card_data.coords = spawn.coords
 	
@@ -598,7 +607,7 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 	while(true):
 		var enemies: Array = []
 		for i in range(energy_combination.size()):
-			var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress, is_elite)
+			var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress, is_elite, world_difficulty)
 			enemies.append(card_data)
 		
 		var enemies_ids: Array = enemies.map(func(x: SavedDataCard): return x.id)

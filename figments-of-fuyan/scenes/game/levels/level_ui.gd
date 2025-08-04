@@ -89,6 +89,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.awakened.connect(onAwakened)
 	level.active_effect_used.connect(onActiveEffectUsed)
 	level.active_effect_added.connect(onActiveEffectAdded)
+	level.active_effect_removed.connect(onActiveEffectRemoved)
 	level.tile_occupied.connect(onTileOccupied)
 	level.game_started.connect(onGameStarted)
 	level.game_started_post.connect(onGameStartedPost)
@@ -392,6 +393,9 @@ func onActiveEffectUsed(_active_effect: ActiveEffectDatastore) -> void:
 	onUpdateActiveEffects()
 	
 func onActiveEffectAdded(_active_effect: ActiveEffectDatastore) -> void:
+	onUpdateActiveEffects()
+	
+func onActiveEffectRemoved(_active_effect: ActiveEffectDatastore) -> void:
 	onUpdateActiveEffects()
 	
 func onToolRemoved() -> void:

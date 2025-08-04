@@ -7,7 +7,7 @@ func onLoadData(data: SavedData) -> void:
 
 func getDescription() -> String:
 	assert(FofObject != null)
-	return Helper.getDescription(super(), [FofObject.ability_turns_remaining])
+	return Helper.getDescription(super(), [FofObject.ability_turns_remaining, FofObject.getTierArmor()])
 
 func onFieldEffectAdded() -> void:
 	super()

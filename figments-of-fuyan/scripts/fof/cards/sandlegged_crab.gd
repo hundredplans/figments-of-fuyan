@@ -6,6 +6,11 @@ var ai_ability_cooldown_turns_left: int
 var remove_armor_next_turn: bool = false
 var armor_id: int
 
+const TIER_ONE_ARMOR_AMOUNT: int = 1
+const TIER_TWO_ARMOR_AMOUNT: int = 1
+const TIER_THREE_ARMOR_AMOUNT: int = 1
+const TIER_FOUR_ARMOR_AMOUNT: int = 2
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -22,7 +27,7 @@ func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectT
 func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
 	super(active_effect, PickedTile, active_effect_tiles)
 	if active_effect.name == "Hardened Shell":
-		var trait_data := SavedDataTrait.new(1, true, 0, 1)
+		var trait_data := SavedDataTrait.new(1, true, 0, getTierArmor())
 		armor_id = 1
 		ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN
 		
@@ -52,3 +57,11 @@ func onCardTurnPassed(Card: CardGD) -> void:
 	if self != Card: return
 	
 	ai_ability_cooldown_turns_left = max(ai_ability_cooldown_turns_left - 1, 0)
+
+func getTierArmor() -> int:
+	match tier:
+		1: return TIER_ONE_ARMOR_AMOUNT
+		2: return TIER_TWO_ARMOR_AMOUNT
+		3: return TIER_THREE_ARMOR_AMOUNT
+		4: return TIER_FOUR_ARMOR_AMOUNT
+	return 0

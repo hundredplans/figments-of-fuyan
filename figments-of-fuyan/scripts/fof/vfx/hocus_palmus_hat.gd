@@ -3,6 +3,8 @@ extends VFXGD
 const OFFSET: float = 0.2
 var is_start_hat: bool
 
+const HAT_TIME: float = 1.5
+
 func onVFX() -> void:
 	super()
 	var Card: CardGD = get_parent()
@@ -19,22 +21,22 @@ func onVFX() -> void:
 		position.y = Card.getTopFromInfo() + OFFSET
 		
 		var down_tween := create_tween()
-		down_tween.tween_property(self, "position:y", -position.y, info.delay)\
+		down_tween.tween_property(self, "position:y", -position.y, HAT_TIME)\
 			.as_relative().set_trans(Tween.TRANS_SINE)
 			
 		var scale_tween := create_tween()
-		scale_tween.tween_property(Card.getModel(), "scale:y", -0.99, info.delay)\
+		scale_tween.tween_property(Card.getModel(), "scale:y", -0.99, HAT_TIME)\
 			.as_relative().set_trans(Tween.TRANS_SINE)
 			
 	elif !is_start_hat:
 		position.y = 0
 		
 		var up_tween := create_tween()
-		up_tween.tween_property(self, "position:y", Card.getTopFromInfo() + OFFSET, info.delay)\
+		up_tween.tween_property(self, "position:y", Card.getTopFromInfo() + OFFSET, HAT_TIME)\
 			.as_relative().set_trans(Tween.TRANS_SINE)
 			
 		var scale_tween := create_tween()
-		scale_tween.tween_property(Card.getModel(), "scale:y", 0.99, info.delay)\
+		scale_tween.tween_property(Card.getModel(), "scale:y", 0.99, HAT_TIME)\
 			.as_relative().set_trans(Tween.TRANS_SINE)
 
 func setStartHat(_is_start_hat: bool) -> void:

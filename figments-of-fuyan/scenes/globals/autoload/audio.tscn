@@ -1,16 +1,91 @@
-[gd_scene load_steps=3 format=3 uid="uid://cykplgpg4kxa8"]
+[gd_scene load_steps=12 format=3 uid="uid://cykplgpg4kxa8"]
 
 [ext_resource type="Script" uid="uid://b43rr6hcwbhrm" path="res://scenes/globals/autoload/audio.gd" id="1_075ho"]
+[ext_resource type="AudioStream" uid="uid://dmakqfrlki57s" path="res://assets/sounds/music/background1.mp3" id="2_bfytk"]
 [ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="2_yepjn"]
+[ext_resource type="AudioStream" uid="uid://bg031thv2ns04" path="res://assets/sounds/music/background2.mp3" id="3_1gxiq"]
+[ext_resource type="AudioStream" uid="uid://cgfqiqeaglb0h" path="res://assets/sounds/music/shop.mp3" id="4_ynl04"]
+[ext_resource type="AudioStream" uid="uid://dvcbwf5t1xgjj" path="res://assets/sounds/music/main_menu.mp3" id="5_0e27j"]
+[ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="6_0e27j"]
+
+[sub_resource type="Animation" id="Animation_0e27j"]
+resource_name = "MusicFadeIn"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MusicPlayer:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-30.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_87tux"]
+resource_name = "MusicFadeOut"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MusicPlayer:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -30.0]
+}
+
+[sub_resource type="Animation" id="Animation_qknm1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MusicPlayer:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-30.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_87tux"]
+_data = {
+&"MusicFadeIn": SubResource("Animation_0e27j"),
+&"MusicFadeOut": SubResource("Animation_87tux"),
+&"RESET": SubResource("Animation_qknm1")
+}
 
 [node name="Audio" type="Node"]
 script = ExtResource("1_075ho")
+background_one_music = ExtResource("2_bfytk")
+background_two_music = ExtResource("3_1gxiq")
+shop_music = ExtResource("4_ynl04")
+main_menu_music = ExtResource("5_0e27j")
+coconut_springs_boss_music = ExtResource("6_0e27j")
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
+volume_db = -30.0
 
 [node name="SFXPlayers" type="Node" parent="."]
 unique_name_in_owner = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="SFXPlayers"]
 stream = ExtResource("2_yepjn")
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_87tux")
+}
+
+[connection signal="finished" from="MusicPlayer" to="." method="onMusicFinished"]

@@ -39,6 +39,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		if revenge_triggers > 0:
 			actions.append(StatAction.new(StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.HEALTH], [revenge_triggers, revenge_triggers])))
 			actions.append(RemoveFieldEffectAction.new(Game.onFindPublicIDObject(black_rage_public_id)))
+			black_rage_public_id = 0
 			revenge_triggers = 0
 		
 		onPushAction(actions)

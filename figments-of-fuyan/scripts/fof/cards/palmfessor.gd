@@ -3,12 +3,22 @@ extends CardGD
 var affected_cards: Array = []
 const PALMFESSORS_STUDENT_ID: int = 6
 
+const TIER_ONE_ATTACK_GAIN: int = 1
+const TIER_TWO_ATTACK_GAIN: int = 2
+const TIER_THREE_ATTACK_GAIN: int = 2
+const TIER_FOUR_ATTACK_GAIN: int = 3
+
+const TIER_ONE_MINIMUM_ATTACK: int = 1
+const TIER_TWO_MINIMUM_ATTACK: int = 1
+const TIER_THREE_MINIMUM_ATTACK: int = 2
+const TIER_FOUR_MINIMUM_ATTACK: int = 2
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
 		if card_place == Game.CardPlaces.FIELD:
 			if action is VisionNewUnitAction and action.Discoverer == self and action.Discovered.isAlly(team):
-				if action.enter_vision and action.Discovered.attack == 1:
+				if action.enter_vision and action.Discovered.attack <= getTierMinimumAttack():
 					onAddToAura(action.Discovered)
 				elif !action.enter_vision and action.Discovered in affected_cards:
 					onRemoveFromAura(action.Discovered)
@@ -19,7 +29,7 @@ func onProcessAction(action: Action) -> void:
 			for Card in affected_cards.duplicate(): onRemoveFromAura(Card)
 
 func getAttackBuff() -> int:
-	return 1 if tier == 1 else 2
+	return getTierAttackGain()
 	
 func onAddToAura(Card: CardGD) -> void:
 	if Card != self:
@@ -34,9 +44,12 @@ func onRemoveFromAura(Card: CardGD) -> void:
 	
 func onCheckAllyStats() -> void:
 	var ally_field_cards: Array = getVisibleFieldCardsAllies()
+	var min_attack: int = getTierMinimumAttack()
+	var attack_gain: int = getTierAttackGain()
+	
 	for Card in ally_field_cards:
-		if Card.attack == 1 and Card not in affected_cards: onAddToAura(Card)
-		elif Card.attack != (1 + getAttackBuff()) and Card in affected_cards: onRemoveFromAura(Card)
+		if Card.attack <= min_attack and Card not in affected_cards: onAddToAura(Card)
+		elif Card.attack not in [1 + attack_gain, 2 + attack_gain] and Card in affected_cards: onRemoveFromAura(Card)
 
 func onSave() -> SavedDataCard:
 	ability_save['affected_cards'] = affected_cards.map(func(x: CardGD): return x.public_id)
@@ -47,7 +60,8 @@ func onLoadData(data: SavedData) -> void:
 	affected_cards = affected_cards.map(func(id: int): return Game.onFindPublicIDObject(id))
 
 func isValidEliteLevelSpawns(enemy_cards: Array) -> bool:
-	var one_attack_amount: int = enemy_cards.filter(func(x: SavedDataCard): return x.attack == 1).size()
+	var min_attack: int = getTierMinimumAttack()
+	var one_attack_amount: int = enemy_cards.filter(func(x: SavedDataCard): return x.attack <= min_attack).size()
 	return one_attack_amount >= 2
 	
 #func onAscendedUpdated(state: bool) -> void:
@@ -59,3 +73,19 @@ func isValidEliteLevelSpawns(enemy_cards: Array) -> bool:
 func onRegularReset() -> void:
 	super()
 	affected_cards = []
+
+func getTierAttackGain() -> int:
+	match tier:
+		1: return TIER_ONE_ATTACK_GAIN
+		2: return TIER_TWO_ATTACK_GAIN
+		3: return TIER_THREE_ATTACK_GAIN
+		4: return TIER_FOUR_ATTACK_GAIN
+	return 0
+	
+func getTierMinimumAttack() -> int:
+	match tier:
+		1: return TIER_ONE_MINIMUM_ATTACK
+		2: return TIER_TWO_MINIMUM_ATTACK
+		3: return TIER_THREE_MINIMUM_ATTACK
+		4: return TIER_FOUR_MINIMUM_ATTACK
+	return 0

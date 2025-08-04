@@ -45,13 +45,6 @@ var NUMBER_TO_ROMAN_NUMERAL: Dictionary[int, String] = {
 	10: "X"
 }
 
-var TIER_TO_COLOR: Dictionary[int, Color] = {
-	1: Color("703d19"),
-	2: Color("ccc4c4"),
-	3: Color("fdc100"),
-	4: Color("11f8fc"),
-}
-
 var TURN_STATES_TO_STRING: Dictionary = {
 	TurnStates.NULL: "Null",
 	TurnStates.PASSED: "Passed",
@@ -73,6 +66,7 @@ var tile_face_directions: Array[Vector3] = [
 ]
 
 const MAX_TOOL_TIER: int = 4
+const MAX_BOON_TIER: int = 4
 const CARD_UI_SIZE := Vector2(264, 400)
 
 const FALL_DAMAGE_BEGIN_HEIGHT: int = 5
@@ -132,15 +126,25 @@ func getRarityString(rarity: Rarities) -> String:
 	
 func getRarityColor(rarity: Rarities) -> Color:
 	match rarity:
-		Rarities.SCRAP: return Color(0.627, 0.627, 0.627)
-		Rarities.NEUTRAL: return Color(0.498, 0.2, 0)
-		Rarities.COMMON: return Color(0.81, 0.62, 0.5)
-		Rarities.RARE: return Color(0, 0.77, 0.56)
-		Rarities.EXALT: return Color(0.859, 0.859, 0.859)
-		Rarities.MINIBOSS: return Color(0.475, 0.161, 0.62)
-		Rarities.BOSS: return Color(0.647, 0.188, 0.188)
-		Rarities.CHAMPION: return Color(0.086, 0.549, 0.878)
-	return Color(1, 1, 1)
+		Rarities.SCRAP: return Color("a0a0a0")
+		Rarities.NEUTRAL: return Color("7f3300")
+		Rarities.COMMON: return Color("cf9e80")
+		Rarities.RARE: return Color("00c48f")
+		Rarities.EXALT: return Color("dbdbdb")
+		Rarities.MINIBOSS: return Color("79299e")
+		Rarities.BOSS: return Color("a53030")
+		Rarities.CHAMPION: return Color("168ce0f")
+	return Color("ffffff")
+	
+func getTierColor(tier: int) -> Color:
+	match tier:
+		1: return Color("9c7760")
+		2: return Color("00916b")
+		3: return Color("a8a8a8")
+		4: return Color("521c6b")
+		5: return Color("732121")
+		6: return Color("116cad")
+	return Color.WHITE
 
 func getShopType(shop_type: ShopTypes) -> String:
 	match shop_type:
@@ -367,7 +371,7 @@ func setPublicID(fof: FofGD) -> void:
 	
 func onFindPublicIDObject(public_id: int) -> FofGD:
 	if public_id_objects.has(public_id):
-		if !is_instance_valid(public_id_objects[public_id]): return
+		if !is_instance_valid(public_id_objects[public_id]): return null
 		return public_id_objects[public_id]
 	return null
 #endregion 

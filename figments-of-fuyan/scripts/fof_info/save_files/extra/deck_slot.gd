@@ -29,3 +29,8 @@ func onRemoveCard() -> void:
 	card_public_id = 0
 	is_locked = false
 	Card.onChangeCardPlace(Game.CardPlaces.STASH)
+	
+func getCard() -> CardGD:
+	if card_public_id == 0: return null
+	var Card: CardGD = Game.onFindPublicIDObject(card_public_id)
+	return Card

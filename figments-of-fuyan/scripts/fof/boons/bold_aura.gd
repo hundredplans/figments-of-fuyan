@@ -6,6 +6,12 @@ const REGULAR_FIGHT_POINTS: int = 1
 
 var current_points: int = 0
 var max_kills: int = 1
+
+const TIER_ONE_MAX_KILLS: int = 1
+const TIER_TWO_MAX_KILLS: int = 2
+const TIER_THREE_MAX_KILLS: int = 3
+const TIER_FOUR_MAX_KILLS: int = 4
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -19,10 +25,14 @@ func onLevelEnded(is_win: bool) -> void:
 	if level == null or level.isEpic(): return
 	
 	current_points += REGULAR_FIGHT_POINTS if !level.isElite() else ELITE_FIGHT_POINTS
-	if current_points >= POINTS_TO_UPGRADE:
-		current_points = 0
-		max_kills += 1
-		onResetCharges()
+	if current_points >= POINTS_TO_UPGRADE and tier < Game.MAX_BOON_TIER:
+		onPushAction(BoonRetieredAction.new(self, tier + 1))
+
+func onRetiered(_tier: int) -> void:
+	super(_tier)
+	current_points = 0
+	max_kills = _tier
+	onResetCharges()
 
 func getDescription(use_default_values: bool = false) -> String:
 	if use_default_values:

@@ -124,6 +124,7 @@ func onLoadLevel(level_data: SavedDataLevel) -> void:
 	
 func onLoadMap() -> void:
 	load_map.emit(self, area)
+	onPushAction(PlayMusicAction.new(Audio.BACKGROUND))
 	
 func onLoadMainMenu() -> void:
 	onSaveToFile()
@@ -133,19 +134,19 @@ func onLoadGame() -> void:
 	if area.active_level_data == null: onLoadMap()
 	else: onLoadLevel(area.active_level_data)
 	
-func onAreaFinished() -> void:
-	world_difficulty += 1
+func onAreaFinished(difficulty: int) -> void:
+	world_difficulty = difficulty
 	area.queue_free()
 	
 	await get_tree().process_frame # Important for everything to despawn
-	onChooseArea()
+	onChooseArea(true)
 	onLoadMap()
 	area.init_load.emit()
 	
-func onChooseArea() -> void:
+func onChooseArea(is_area_finished: bool = false) -> void:
 	var valid_areas: Array = [1, 3]
 	if area != null: valid_areas.erase(area.info.id)
-	if area == null and Helper.admin_datastore.starting_area_id > 0:
+	if !is_area_finished and area == null and Helper.admin_datastore.starting_area_id > 0:
 		valid_areas = valid_areas.filter(func(x: int):\
 			return x == Helper.admin_datastore.starting_area_id)
 			
