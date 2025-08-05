@@ -144,7 +144,16 @@ func onChangeCharges(delta: int) -> void:
 
 func onRetiered(_tier: int) -> void:
 	tier = _tier
-
+	var tier_datastore: ToolTierDatastore = info.getTierDatastore(tier)
+	var actions: Array = []
+	var new_active_effects: Array = tier_datastore.getActiveAbilities()
+	actions += active_effects.map(func(x: ActiveEffectDatastore): return RemoveActiveEffectAction.new(self, x))
+	actions += new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x))
+	onPushAction(actions)
+	
+func onRemoveActiveEffect(active_effect: ActiveEffectDatastore) -> void:
+	active_effects.erase(active_effect)
+	
 func getToolTierDatastore(_tier: int = tier) -> ToolTierDatastore:
 	return info.getTierDatastore(_tier)
 

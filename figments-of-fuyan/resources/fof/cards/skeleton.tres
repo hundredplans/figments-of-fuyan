@@ -65,10 +65,10 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_01tms"]
 script = ExtResource("12_01tms")
-attack = 2
-health = 2
+attack = 3
+health = 3
 speed = 2
-energy = 2
+energy = 3
 traits = Array[ExtResource("2_ydtej")]([])
 active_abilities = Array[ExtResource("11_chsth")]([])
 description_datastore = SubResource("Resource_j268k")
@@ -80,10 +80,10 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_frn6a"]
 script = ExtResource("12_01tms")
-attack = 2
-health = 2
+attack = 4
+health = 4
 speed = 2
-energy = 2
+energy = 4
 traits = Array[ExtResource("2_ydtej")]([])
 active_abilities = Array[ExtResource("11_chsth")]([])
 description_datastore = SubResource("Resource_k4pvf")
@@ -103,18 +103,6 @@ collision_shape = SubResource("PackedScene_k8073")
 stat = 1.89913
 top = 1.72058
 eye = 1.55749
-plus_attack = 1
-plus_health = 1
-plus_speed = 0
-plus_energy = 1
-ascended_traits = Array[ExtResource("2_ydtej")]([])
-attack = 1
-health = 1
-speed = 2
-energy = 1
-description = ""
-ascended_description = ""
-initial_traits = Array[ExtResource("2_ydtej")]([])
 id = 29
 name = "Skeleton"
 gdscript = ExtResource("4_mob2a")

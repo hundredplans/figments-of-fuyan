@@ -17,6 +17,7 @@ const JUMP_ATTACK_DISTANCE: int = 4
 const ARMOR_TRAIT_ID: int = 1
 const FIRST_PHASE_CHANGE_HEALTH: int = 14
 const SPINNING_SWORD_ACTION_DELAY: float = 2.4
+const JUMP_ATTACK_LAND_DELAY: float = 0.6
 
 var spinning_sword_public_id: int
 var spinning_sword_turns: int
@@ -135,7 +136,7 @@ func onSpinningSword(use_type: UseType) -> Array:
 		var animation_action := AnimationAction.new(self, "SpinningSword")
 		animation_action.setActionDelay(SPINNING_SWORD_ACTION_DELAY)
 		
-		return [CreateVFXAction.new(SpinningSword, false)]
+		return [animation_action, CreateVFXAction.new(SpinningSword, false)]
 	return []
 	
 func isSpinningSword() -> bool:
@@ -187,7 +188,10 @@ func onAutoattackSetIntents() -> BossTileIntents:
 func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType) -> Array:
 	var actions: Array = []
 	if use_type == UseType.START and getPhase() == 1:
-		active_speed = AUTOATTACK_PHASE_ONE_SPEED_LIMIT
+		if getPhase() == 1:
+			active_speed = AUTOATTACK_PHASE_ONE_SPEED_LIMIT
+		if isSpinningSword():
+			actions.append(AnimationModifierAction.new(self, "Attack", "Spin"))
 		
 	if use_type != UseType.END:
 		if getPhase() == 1: tiles = getsetMovementRange(active_speed)
@@ -217,6 +221,10 @@ func onAutoattack(enemies: Array, allies: Array, tiles: Array, use_type: UseType
 		adjacent_enemies = adjacent_enemies\
 			.filter(func(x: CardGD): return Game.getTile(coords + Game.getCubeDirectionExtra(tile_rotation)) == x.getTile())
 		actions.append(DamageAction.new(self, adjacent_enemies, attack, Game.DamageTypes.OTHER))
+	
+	if use_type == UseType.END:
+		actions.append(AnimationModifierAction.new(self, "Attack", ""))
+	
 	return actions
 #endregion Autoattack
 
@@ -452,6 +460,7 @@ func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				"StartJumpTile": StartJumpTile = TileResultTile
 			
 		if StartJumpTile in tiles:
+			actions.append(AnimationModifierAction.new(self, "Jump", "Attack"))
 			actions.append(MovementAction.new(self, StartJumpTile.getMovementPathTiles(), false))
 					
 	elif use_type == UseType.END:
@@ -472,8 +481,12 @@ func onJumpAttack(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				"HighDamageTile": high_damage_tiles.append(TileResultTile)
 		
 		if getTile() != StartJumpTile: return []
-		actions.append(AnimationModifierAction.new(self, "Jump", ""))
 		actions.append(MoveToTileAction.new(self, JumpToTile, true))
+		actions.append(AnimationModifierAction.new(self, "Jump", ""))
+		
+		var animation_action := AnimationAction.new(self, "JumpAttackLand")
+		animation_action.setActionDelay(JUMP_ATTACK_LAND_DELAY)
+		actions.append(animation_action)
 		
 		var low_damage_enemies: Array = low_damage_tiles.map(func(x: TileGD): return Game.getEnemyFieldCard(x, team)).filter(func(x: CardGD): return x != null)
 		var high_damage_enemies: Array = high_damage_tiles.map(func(x: TileGD): return Game.getEnemyFieldCard(x, team)).filter(func(x: CardGD): return x != null)
@@ -556,7 +569,11 @@ func onLongSlash(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 		if BestTile != null:
 			actions.append(MovementAction.new(self, BestTile.getMovementPathTiles()))
 	elif use_type == UseType.END:
-		if no_attackables: return []
+		var animation_action := AnimationAction.new(self, "LongSlash")
+		animation_action.setActionDelay(LONG_SLASH_ACTION_DELAY)
+		actions.append(animation_action)
+		
+		if no_attackables: return actions
 		var attackables_array: Array = attackables.keys().filter(func(x: CardGD): return attackables[x] != null)
 		attackables_array.sort_custom(func(x: CardGD, y: CardGD): return x.energy > y.energy)
 		BestTile = attackables_array[0].getTile()
@@ -578,10 +595,6 @@ func onLongSlash(enemies: Array, tiles: Array, use_type: UseType) -> Array:
 				var index: int = all_enemy_tiles.find(NewTile)
 				if index == -1: continue
 				damagables.append(all_enemies[index])
-		
-		var animation_action := AnimationAction.new(self, "LongSlash")
-		animation_action.setActionDelay(LONG_SLASH_ACTION_DELAY)
-		actions.append(animation_action)
 		
 		if isSpinningSword():
 			var adjacent_enemies: Array = Game.getEnemyUnits(team).filter(func(x: CardGD): return Game.isAdjacent(x.getTile(), getTile()))

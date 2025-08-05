@@ -1,16 +1,16 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bjxualvtruxfg"]
 
-[ext_resource type="Shader" uid="uid://dbdpp6042et4r" path="res://resources/shaders/base_material_alphagrey_hashing.tres" id="1_v5560"]
+[ext_resource type="Shader" uid="uid://btr6yqokhnalt" path="res://resources/shaders/base_material_unshaded_alphagrey_hashing.tres" id="1_f32nq"]
 [ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="2_ucmbf"]
 [ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="3_4lbov"]
 [ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="4_tdgyi"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_v5560")
-shader_parameter/alpha_hash_scale = 1.0
-shader_parameter/EmissionStrength = 3.0
-shader_parameter/max_grey = 0.5
+shader = ExtResource("1_f32nq")
 shader_parameter/tx_attributes = ExtResource("2_ucmbf")
 shader_parameter/tx_color = ExtResource("3_4lbov")
 shader_parameter/tx_emission = ExtResource("4_tdgyi")
+shader_parameter/alpha_hash_scale = 1.0
+shader_parameter/EmissionStrength = 3.0
+shader_parameter/max_grey = 0.5

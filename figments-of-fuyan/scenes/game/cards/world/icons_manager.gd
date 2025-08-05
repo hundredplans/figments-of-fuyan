@@ -1,9 +1,9 @@
 extends Node3D
 
-const COLUMNS: int = 5
-const SPACING: float = 0.6
+const COLUMNS: int = 4
+const SPACING: float = 0.3
 func _ready() -> void:
-	position.x = -((COLUMNS / 4.0) - (SPACING / 2.0))
+	position.x = -0.45
 	onSortNodes()
 
 func _on_child_entered_tree(node: Node) -> void:

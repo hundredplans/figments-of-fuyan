@@ -43,6 +43,7 @@ var boss_datastore: BossDatastore # Null in here
 var is_knockback: bool # Not saved
 var card_offset: CardOffset # Offset of ronotation and position
 var tier: int
+var death_ids: Array[int] # id's of every unit this killed, used for blade
 #endregion
 
 #region Globals
@@ -174,7 +175,7 @@ func onAnimationFinished(ani_name: String) -> void:
 		
 func onJump() -> void:
 	AniPlayer.stop()
-	onPlayAnimation("Jump")
+	onPlayAnimation("Jump" + anibility_datastore.getJumpModifier())
 		
 func onAttack(DefenderTile: TileGD, delay: float) -> void:
 	onPlayAnimation("Attack" + anibility_datastore.getAttackModifier())
@@ -237,7 +238,7 @@ func onSave() -> SavedDataCard:
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore, card_offset, tier)
+	overworld_traits, bounty_kills, boss_datastore, card_offset, tier, death_ids)
 
 func onPreSave() -> void:
 	for delayed: Variant in delayed_stats: delayed.onSave()
@@ -276,6 +277,7 @@ func onLoadData(data: SavedData) -> void:
 	draw_order = data.draw_order
 	card_offset = data.card_offset
 	tier = data.tier
+	death_ids = data.death_ids
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -456,9 +458,9 @@ func onInspectCard() -> void:
 #endregion
 
 #region TurnStates
-func setTurnState(_turn_state: Game.TurnStates) -> void:
+func setTurnState(_turn_state: Game.TurnStates, instant: bool = false) -> void:
 	turn_state = _turn_state
-	if FieldInfo != null: FieldInfo.setInfoSpriteTurnState()
+	if FieldInfo != null: FieldInfo.onUpdateTurnState(instant)
 		
 func onCardTurnPassed(Card: CardGD) -> void:
 	if self != Card: return
@@ -487,6 +489,7 @@ func onProcessAction(action: Action) -> void:
 				ai_datastore.setLastSeenViolence(0)
 			elif isValidRampage(action):
 				onBountyKill(action) # Needs to be here instead of in death action
+				death_ids.append(action.Defender.info.id)
 			elif action is AddToolAction and action.Tool == Tool:
 				tool_updated.emit(action.Tool)
 			elif action is ToolRetieredAction and action.Tool == Tool:
@@ -609,7 +612,7 @@ func onAwaken() -> void:
 	onCreateVisionRay()
 	setPositionToTile()
 	setTileRotation(tile_rotation)
-	setTurnState(turn_state)
+	setTurnState(turn_state, true)
 	onCreateIdleRareTimer()
 	onUpdateLevelVisible()
 #endregion
@@ -809,8 +812,8 @@ func isCardSurviveFallDamage(_temp_fall_damage: int) -> bool:
 func isInCombat() -> bool:
 	return !getVisibleFieldCardsEnemies().is_empty()
 
-func setEnemyInMovementRange(state: bool) -> void:
-	if !isAlly(0) and FieldInfo != null: FieldInfo.setInfoSpriteEnemyInMovementRange(state)
+func setEnemyInMovementRange(_state: bool) -> void:
+	pass
 
 func isAttackable(Card: CardGD) -> bool:
 	return !Card.isAlly(team)
@@ -1699,3 +1702,9 @@ func getEnergy() -> int:
 
 func getTeam() -> int:
 	return team
+
+func getDeathIds() -> Array[int]:
+	return death_ids
+
+func getTurnState() -> Game.TurnStates:
+	return turn_state

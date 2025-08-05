@@ -1,15 +1,15 @@
 class_name RemoveActiveEffectAction extends Action
 
-var Card: CardGD
+var Fof: FofGD
 var active_effect: ActiveEffectDatastore
 
-func _init(_Card: CardGD = null, _active_effect: ActiveEffectDatastore = null) -> void:
+func _init(_Fof: FofGD = null, _active_effect: ActiveEffectDatastore = null) -> void:
 	super()
-	Card = _Card
+	Fof = _Fof
 	active_effect = _active_effect
 	
 func onPreAction() -> void:
 	pass
 	
 func onPostAction() -> void:
-	Card.onRemoveActiveEffect(active_effect)
+	Fof.onRemoveActiveEffect(active_effect)

@@ -142,7 +142,7 @@ func onSortKillValue(x: CardGD, y: CardGD) -> bool:
 	return x.health > y.health
 	
 func isAttackableKillable(Defender: CardGD, Damager: CardGD) -> bool:
-	var damage_action := GetDamageAction.new(Damager, Defender, Damager.getAttackDamage() + temp_att)
+	var damage_action := GetDamageAction.new(Damager, Defender, Damager.getAttackDamage() + temp_att, Game.DamageTypes.ATTACK)
 	Damager.onForceAction(damage_action)
 	return damage_action.damage >= Defender.health
 	

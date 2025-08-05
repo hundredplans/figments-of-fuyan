@@ -2,6 +2,7 @@ class_name AttackAction extends Action
 
 var Attacker: GameObjectGD
 var Defenders: Array
+var plus_damage: int
 
 func _init(_Attacker: GameObjectGD = null, _Defenders: Variant = null) -> void:
 	super()
@@ -9,6 +10,9 @@ func _init(_Attacker: GameObjectGD = null, _Defenders: Variant = null) -> void:
 	
 	if _Defenders is Array: Defenders = _Defenders
 	elif _Defenders is GameObjectGD: Defenders = [_Defenders]
+	
+func onAddPlusDamage(_plus_damage: int) -> void:
+	plus_damage += _plus_damage
 	
 func onPreAction() -> void:
 	setActionDelay(Game.ATTACK_DELAY if Attacker.isLevelVisible() or Defenders.any(func(x: GameObjectGD): return x.isLevelVisible()) else 0.0)
@@ -27,6 +31,6 @@ func onPostAction() -> void:
 	if Attacker is CardGD:
 		actions.append(StatAction.new(StatInfo.new(Attacker, Game.Stats.SPEED, 0, 0, true, false, true)))
 		
-	actions.append(DamageAction.new(Attacker, Defenders, Attacker.getAttackDamage()))
+	actions.append(DamageAction.new(Attacker, Defenders, Attacker.getAttackDamage() + plus_damage))
 	actions.append(ChangeTileRotationAction.new(Attacker, relative_tile_rotation)) # Change back for ranged
 	onPushAction(actions)

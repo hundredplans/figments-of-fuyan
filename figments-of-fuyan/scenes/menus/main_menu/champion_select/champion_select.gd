@@ -25,7 +25,6 @@ func _ready() -> void:
 		ChampionCard.onCreateFieldInfo()
 		ChampionCard.setFieldInfoVisible(false)
 		
-		ChampionCard.FieldInfo.setInfoSpriteTexture(null)
 		ChampionCard.FieldInfo.position.z = RADIUS
 		
 		ChampionCard.setMeshesMaterial(BaseMaterial, ChampionCard.getModel())
