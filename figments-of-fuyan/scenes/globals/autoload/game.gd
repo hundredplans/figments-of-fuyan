@@ -133,7 +133,7 @@ func getRarityColor(rarity: Rarities) -> Color:
 		Rarities.EXALT: return Color("dbdbdb")
 		Rarities.MINIBOSS: return Color("79299e")
 		Rarities.BOSS: return Color("a53030")
-		Rarities.CHAMPION: return Color("168ce0f")
+		Rarities.CHAMPION: return Color("168ce0")
 	return Color("ffffff")
 	
 func getTierColor(tier: int) -> Color:
