@@ -29,9 +29,9 @@ func setInfo(_reward: Reward) -> void:
 		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		CardContainer.add_child(control)
 		
-		var CardUI: Control = Card.onCreateCardUI(control, !is_taken, true, null)
+		var CardUI: Control = Card.onCreateCardUI(control, !is_taken, true)
 		if is_taken:
-			CardUI.onChangeBackgroundMouseFilter(false, false)
+			CardUI.onChangeBackgroundMouseFilter(false)
 			CardUI.scale = Vector2(MAX_SCALE_SIZE, MAX_SCALE_SIZE)
 		
 		CardUI.set_anchors_preset(Control.PRESET_CENTER)
@@ -50,8 +50,8 @@ func onRewardPressed(CardUI: Control) -> void:
 	
 	for control: Control in CardContainer.get_children():
 		var _CardUI: Control = control.get_child(0)
-		_CardUI.setHighlightOnHover(false)
-		_CardUI.onChangeBackgroundMouseFilter(false, false)
+		_CardUI.setHoverable(false)
+		_CardUI.onChangeBackgroundMouseFilter(false)
 	
 	get_viewport().update_mouse_cursor_state()
 	

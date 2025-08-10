@@ -161,3 +161,6 @@ func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
 	for active_effect in active_effects:
 		if active_effect.name == _name: return active_effect
 	return null
+
+func getCard() -> CardGD:
+	return Card

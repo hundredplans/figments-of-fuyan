@@ -215,10 +215,10 @@ func onPauseAnimationWithDelay(delay: float) -> void:
 #endregion
 
 #region Card
-func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspectable: bool = true, DraggableParent: Control = null) -> Control:
+func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspectable: bool = true, draggable: bool = false) -> Control:
 	var CardUI: Control = load(info.CARD_UI_SCENE_PATH).instantiate()
 	parent.add_child(CardUI)
-	CardUI.setInfo(self, highlight_on_hover, ui_inspectable, DraggableParent)
+	CardUI.setInfo(self, highlight_on_hover, ui_inspectable, draggable)
 	return CardUI
 #endregion
 
@@ -1708,3 +1708,6 @@ func getDeathIds() -> Array[int]:
 
 func getTurnState() -> Game.TurnStates:
 	return turn_state
+
+func getRarity() -> Game.Rarities:
+	return info.rarity

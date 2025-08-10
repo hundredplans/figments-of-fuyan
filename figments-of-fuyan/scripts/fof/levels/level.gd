@@ -511,6 +511,9 @@ func isElite() -> bool:
 
 func isEpic() -> bool:
 	return fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]
+	
+func isEliteOrEpic() -> bool:
+	return isElite() or isEpic()
 
 #region Boss
 func getBoss() -> EpicCardGD:

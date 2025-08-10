@@ -77,16 +77,18 @@ func damage(damage_dealt: int) -> void:
 		SpectateObject.onPushAction(DamageAction.new(SpectateObject, SpectateObject, damage_dealt))
 
 func tool(name_id: Variant, _tier: int = 1) -> void:
-	if SpectateObject is CardGD:
-		if name_id is int and name_id == 0: # Remove tool if id is 0
-			Game.getArea().onPushAction(RemoveToolAction.new(SpectateObject))
-			return
-			
-		var info: ToolInfo = getNameIDFofInfo(name_id, ToolInfo)
-		if info != null:
-			var Tool: ToolGD = SavedData.onLoadModel(info.saved_data.new(info.id, true, 0), SpectateObject)
-			Tool.tier = _tier
-			Game.getArea().onPushAction(AddToolAction.new(SpectateObject, Tool))
+	var ToolCard: CardGD = SpectateObject if SpectateObject != null and SpectateObject is CardGD else\
+		Game.getSaveFile().getChampionCard()
+		
+	if name_id is int and name_id == 0: # Remove tool if id is 0
+		Game.getArea().onPushAction(RemoveToolAction.new(ToolCard))
+		return
+		
+	var info: ToolInfo = getNameIDFofInfo(name_id, ToolInfo)
+	if info != null:
+		var Tool: ToolGD = SavedData.onLoadModel(info.saved_data.new(info.id, true, 0), ToolCard)
+		Tool.tier = _tier
+		Game.getArea().onPushAction(AddToolAction.new(ToolCard, Tool))
 
 func stat(type: Game.Stats, value: int) -> void:
 	if SpectateObject is CardGD:

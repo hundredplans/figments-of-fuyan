@@ -84,3 +84,6 @@ func onRemoveBoon() -> void: pass
 
 func onChangeCharges(delta: int) -> void:
 	charges = max(charges + delta, 0) 
+
+func getRarity() -> Game.Rarities:
+	return info.rarity

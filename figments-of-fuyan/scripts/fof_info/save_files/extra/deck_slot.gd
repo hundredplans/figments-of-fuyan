@@ -24,11 +24,14 @@ func getCardData() -> SavedDataCard:
 	
 	return Card.onSave()
 
-func onRemoveCard() -> void:
+func onRemoveCard(send_to_stash: bool = true) -> void:
 	var Card: CardGD = Game.onFindPublicIDObject(card_public_id)
 	card_public_id = 0
 	is_locked = false
-	Card.onChangeCardPlace(Game.CardPlaces.STASH)
+	
+	if send_to_stash: Card.onChangeCardPlace(Game.CardPlaces.STASH)
+	else: Card.onClear()
+		
 	
 func getCard() -> CardGD:
 	if card_public_id == 0: return null

@@ -182,7 +182,7 @@ func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = fal
 #region Hand
 @onready var HandBox: Container = %HandBox
 func onDrawCardUI(Card: CardGD) -> void:
-	var CardUI: Control = Card.onCreateCardUI(HandBox, true, true, self)
+	var CardUI: Control = Card.onCreateCardUI(HandBox, true, true)
 	Card.setInspectable(true, self)
 	CardUI.dragged_begin.connect(onCardDraggedBegin)
 	CardUI.dragged_finished.connect(onCardDraggedFinished)

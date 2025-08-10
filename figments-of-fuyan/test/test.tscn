@@ -1,6 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://bf5dsa2jkyr6t"]
+[gd_scene load_steps=3 format=3 uid="uid://bf5dsa2jkyr6t"]
 
 [ext_resource type="Script" uid="uid://yyspxjm5t0vd" path="res://test/test.gd" id="1_rnhbs"]
+[ext_resource type="Texture2D" uid="uid://nosox6pxp86q" path="res://assets/sprites/ui/scene_specific/stash_screen/hand.png" id="2_8a8pi"]
 
 [node name="Test" type="Node"]
 script = ExtResource("1_rnhbs")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 141.0
+offset_top = 90.0
+offset_right = 181.0
+offset_bottom = 130.0
+
+[node name="TestNode" type="TextureRect" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 92.0
+offset_top = 68.0
+offset_right = 348.0
+offset_bottom = 196.0
+texture = ExtResource("2_8a8pi")
+
+[node name="Button" type="Button" parent="."]
+offset_right = 278.0
+offset_bottom = 87.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

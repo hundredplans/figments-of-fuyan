@@ -15,7 +15,6 @@ var ChampionUpgradeUI: Control
 @onready var AreaNameLabel: Label = %AreaNameLabel
 @onready var AniPlayer: AnimationPlayer = %UIAnimationPlayer
 @onready var ShillingsLabel: FancyTextLabel = %ShillingsLabel
-@onready var BackgroundDarkener: Control = %BackgroundDarkener
 @onready var LegendBox: VBoxContainer = %LegendBox
 @onready var BoonBox: GridContainer = %BoonBox
 @onready var TimeLabel: Label = %TimeLabel
@@ -36,9 +35,6 @@ func getDeckPanel() -> Control:
 #endregion
 
 #region Base Functions
-func _ready() -> void:
-	BackgroundDarkener.visible = false
-	
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Back") and PauseMenu == null:
 		PauseMenu = Game.onCreatePauseMenu(self)
@@ -53,8 +49,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area = save_file.area
 	area.process_action.connect(onProcessAction)
 	area.init_load.connect(onInitLoad)
-	
-	AniPlayer.play("UnfadeBackground")
 	
 	BoonBox.onUpdate()
 	setLegendBox()
@@ -112,12 +106,16 @@ func onUpdateShillings() -> void:
 func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
 	add_child(ActiveScreen)
 	ActiveScreen.setInfo(save_file, area, World, self, map_node)
-	BackgroundDarkener.visible = ActiveScreen.onDimBackground()
+	
+	if ActiveScreen.onFadeBackground():
+		FadeBackground.color = Color(1, 1, 1, 0)
+		FadeBackground.FADE_COLOR = ActiveScreen.getFadeBackgroundColor()
+		FadeBackground.onFade(true)
 	LegendBox.visible = false
 	screen_created.emit()
 	
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
-	BackgroundDarkener.visible = false
+	FadeBackground.onFade(false)
 	LegendBox.visible = true
 
 func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Variant = null) -> void:
@@ -160,6 +158,9 @@ func onCreateStashScreen() -> void:
 	StashScreen.tree_exited.connect(onStashExited)
 	StashScreen.exit_start.connect(onStashExitStart)
 	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
+	
+	if Game.getArea().getEnteredMapNode().info.is_shop:
+		StashScreen.onStashIsSellable()
 	
 	var tween := create_tween()
 	tween.tween_property(BoonBox, "modulate:a", 0.0, FADE_BOON_BOX_TIME)

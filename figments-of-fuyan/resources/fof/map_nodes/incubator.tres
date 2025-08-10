@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=7 format=3 uid="uid://csv4s4isnxiba"]
+
+[ext_resource type="Script" uid="uid://ckx1ajnixc5mo" path="res://scripts/fof/map_nodes/map_node.gd" id="1_0vxau"]
+[ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_yi8d2"]
+[ext_resource type="Texture2D" uid="uid://kcitn6i05q53" path="res://assets/sprites/game/map/shop.png" id="2_jcim6"]
+[ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop.glb" id="3_6mfnv"]
+[ext_resource type="Script" uid="uid://1nhagdcu8nfi" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_wu8qv"]
+[ext_resource type="PackedScene" uid="uid://ca067vx7dy1b" path="res://scenes/game/map_nodes/screens/shop_screen/shop_screen.tscn" id="5_c3p50"]
+
+[resource]
+script = ExtResource("1_yi8d2")
+screen = ExtResource("5_c3p50")
+icon = ExtResource("2_jcim6")
+model = ExtResource("3_6mfnv")
+is_encounter = false
+is_shop = false
+is_unique = false
+float_y = 0.0
+legend_order = 0
+id = 13
+name = "Incubator"
+gdscript = ExtResource("1_0vxau")
+saved_data = ExtResource("4_wu8qv")
+metadata/_custom_type_script = "uid://bsrlnsfamr6p"

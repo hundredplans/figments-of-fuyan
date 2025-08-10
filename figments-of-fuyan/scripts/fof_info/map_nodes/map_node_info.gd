@@ -2,10 +2,11 @@ class_name MapNodeInfo extends FofInfo
 
 #region Exports
 @export var screen: PackedScene
-@export var world: PackedScene
 @export var icon: Texture2D
 @export var model: PackedScene
-@export var is_unique_node: bool
+@export var is_encounter: bool
+@export var is_shop: bool
+@export var is_unique: bool
 @export var float_y: float
 @export var legend_order: int
 #endregion

@@ -1,21 +1,22 @@
 extends Node
 
 func onTools() -> void:
-	for tool_info: ToolInfo in Helper.getFofInfoArray(ToolInfo):
-		var datastores: Array[ToolTierDatastore] = tool_info.tiers
-		datastores.pop_back()
-		
-		var tier_two_datastore: ToolTierDatastore = datastores[1]
-		var tier_three_datastore := ToolTierDatastore.new()
-		tier_three_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
-		tier_three_datastore.active_abilities = tier_two_datastore.active_abilities.duplicate()
-		
-		var tier_four_datastore := ToolTierDatastore.new()
-		tier_four_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
-		tier_four_datastore.active_abilities = tier_two_datastore.active_abilities.duplicate()
-		
-		datastores.append(tier_three_datastore)
-		datastores.append(tier_four_datastore)
+	pass
+	#for tool_info: ToolInfo in Helper.getFofInfoArray(ToolInfo):
+		#var datastores: Array[ToolTierDatastore] = tool_info.tiers
+		#datastores.pop_back()
+		#
+		#var tier_two_datastore: ToolTierDatastore = datastores[1]
+		#var tier_three_datastore := ToolTierDatastore.new()
+		#tier_three_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
+		#tier_three_datastore.active_abilities = tier_two_datastore.active_abilities.duplicate()
+		#
+		#var tier_four_datastore := ToolTierDatastore.new()
+		#tier_four_datastore.description_datastore = tier_two_datastore.description_datastore.duplicate()
+		#tier_four_datastore.active_abilities = tier_two_datastore.active_abilities.duplicate()
+		#
+		#datastores.append(tier_three_datastore)
+		#datastores.append(tier_four_datastore)
 		
 		#var datastore := ToolTierDatastore.new()
 		#var adatastore := ToolTierDatastore.new()
@@ -41,8 +42,8 @@ func onTools() -> void:
 		#datastores.append(datastore)
 		#datastores.append(adatastore)
 		#datastores.append(adatastore.duplicate())
-		tool_info.tiers = datastores
-		ResourceSaver.save(tool_info)
+		#tool_info.tiers = datastores
+		#ResourceSaver.save(tool_info)
 
 func onBoons() -> void:
 	for boon_info: BoonInfo in Helper.getFofInfoArray(BoonInfo):
@@ -75,12 +76,13 @@ func onBoons() -> void:
 		ResourceSaver.save(boon_info)
 
 func _ready() -> void:
-	for card_info: CardInfo in Helper.getFofInfoArray(CardInfo):
-		var datastores: Array[CardTierDatastore] = card_info.tiers
-		for i in range(1, 4):
-			var datastore: CardTierDatastore = datastores[i]
-			var d: String = card_info.description if card_info.ascended_description.is_empty() else card_info.ascended_description
-			datastore.description_datastore.description = d
+	pass
+	#for card_info: CardInfo in Helper.getFofInfoArray(CardInfo):
+		#var datastores: Array[CardTierDatastore] = card_info.tiers
+		#for i in range(1, 4):
+			#var datastore: CardTierDatastore = datastores[i]
+			#var d: String = card_info.description if card_info.ascended_description.is_empty() else card_info.ascended_description
+			#datastore.description_datastore.description = d
 		
 		#datastores.resize(2)
 		#
@@ -97,8 +99,8 @@ func _ready() -> void:
 		#
 		#datastores.append(tier_three_datastore)
 		#datastores.append(tier_four_datastore)
-		card_info.tiers = datastores
-		ResourceSaver.save(card_info)
+		#card_info.tiers = datastores
+		#ResourceSaver.save(card_info)
 		
 		#for tier_datastore: TierDatastore in card_info._tiers:
 			#var card_tier_datastore := CardTierDatastore.new()
@@ -160,3 +162,10 @@ func _ready() -> void:
 		#card_info.tiers[0] = tier_datastore
 		#card_info.tiers[1] = atier_datastore
 		#ResourceSaver.save(card_info)
+
+
+func _on_button_pressed() -> void:
+	print("It worked!")
+	var original_global_position: Vector2 = %TestNode.global_position
+	%TestNode.top_level = true
+	%TestNode.global_position = original_global_position

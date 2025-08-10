@@ -1,16 +1,82 @@
-[gd_scene load_steps=12 format=3 uid="uid://ca067vx7dy1b"]
+[gd_scene load_steps=21 format=3 uid="uid://ca067vx7dy1b"]
 
 [ext_resource type="Script" uid="uid://bujwxaar1n04b" path="res://scenes/game/map_nodes/screens/shop_screen/shop_screen.gd" id="1_wcyr3"]
-[ext_resource type="LabelSettings" uid="uid://rtes1t31euap" path="res://resources/ui/label_settings/jacquard_massive.tres" id="2_rv443"]
+[ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="2_fifuk"]
 [ext_resource type="PackedScene" uid="uid://bd25cc7h0xg0q" path="res://scenes/game/map/extra/purchasable_remove.tscn" id="3_dvy4k"]
 [ext_resource type="PackedScene" uid="uid://bwch12ke7ea65" path="res://scenes/game/map/extra/purchasable_card.tscn" id="3_nsqt1"]
+[ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="3_or0ga"]
+[ext_resource type="Script" uid="uid://c4e0un8luq87o" path="res://scripts/common/shop/shop_card_datastore.gd" id="4_or0ga"]
 [ext_resource type="PackedScene" uid="uid://nr8qdav842ar" path="res://scenes/game/map/extra/purchasable_boon.tscn" id="5_wgmd6"]
 [ext_resource type="PackedScene" uid="uid://c1uy4uqnnkrrv" path="res://scenes/game/map/extra/purchasable_tool.tscn" id="6_afqjs"]
-[ext_resource type="PackedScene" uid="uid://dvnoqpn6m0fnl" path="res://scenes/common/minimap/minimap.tscn" id="7_3a77e"]
 [ext_resource type="PackedScene" uid="uid://jo4ubuikkvku" path="res://scenes/game/map/extra/purchasable_transform.tscn" id="7_bo7jg"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="8_w8www"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="9_o4he1"]
 [ext_resource type="Texture2D" uid="uid://d203lqs8t7rqv" path="res://assets/sprites/ui/icons/minimap.png" id="10_oit0k"]
+[ext_resource type="Texture2D" uid="uid://cdtgandyuulnq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/general_shop_bg_icon.png" id="10_rk0v1"]
+[ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="13_r6pve"]
+[ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="14_rk0v1"]
+
+[sub_resource type="Resource" id="Resource_r6pve"]
+script = ExtResource("4_or0ga")
+foreign_odds = 0.0
+tool_odds = 0.05
+tool_tier_up_odds = 0.05
+item_type = 0
+price_variance = 0
+tier_up_flat_price_increase = 0
+tier_up_percentage_increase = 0.0
+position = Vector2(0, 0)
+use_default_prices = false
+use_default_odds = false
+use_default_price_variance = 0
+metadata/_custom_type_script = "uid://c4e0un8luq87o"
+
+[sub_resource type="Resource" id="Resource_rk0v1"]
+script = ExtResource("2_fifuk")
+id = 6
+items = Array[ExtResource("3_or0ga")]([SubResource("Resource_r6pve")])
+merchant_frames = Array[Texture2D]([])
+background_main_color = Color(0, 0.533333, 0, 1)
+metadata/_custom_type_script = "uid://doid1bi8h7kwu"
+
+[sub_resource type="Animation" id="Animation_cgm1o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoopingBG:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -171)]
+}
+
+[sub_resource type="Animation" id="Animation_vhrld"]
+resource_name = "new_animation"
+length = 10.0
+loop_mode = 1
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoopingBG:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667, 0.4, 0.433333, 0.466667, 0.5, 0.533333, 0.566667, 0.6, 0.633333, 0.666667, 0.7, 0.733333, 0.766667, 0.8, 0.833333, 0.866667, 0.9, 0.933333, 0.966667, 1, 1.03333, 1.06667, 1.1, 1.13333, 1.16667, 1.2, 1.23333, 1.26667, 1.3, 1.33333, 1.36667, 1.4, 1.43333, 1.46667, 1.5, 1.53333, 1.56667, 1.6, 1.63333, 1.66667, 1.7, 1.73333, 1.76667, 1.8, 1.83333, 1.86667, 1.9, 1.93333, 1.96667, 2, 2.03333, 2.06667, 2.1, 2.13333, 2.16667, 2.2, 2.23333, 2.26667, 2.3, 2.33333, 2.36667, 2.4, 2.43333, 2.46667, 2.5, 2.53333, 2.56667, 2.6, 2.63333, 2.66667, 2.7, 2.73333, 2.76667, 2.8, 2.83333, 2.86667, 2.9, 2.93333, 2.96667, 3, 3.03333, 3.06667, 3.1, 3.13333, 3.16667, 3.2, 3.23333, 3.26667, 3.3, 3.33333, 3.36667, 3.4, 3.43333, 3.46667, 3.5, 3.53333, 3.56667, 3.6, 3.63333, 3.66667, 3.7, 3.73333, 3.76667, 3.8, 3.83333, 3.86667, 3.9, 3.93333, 3.96667, 4, 4.03333, 4.06667, 4.1, 4.13333, 4.16667, 4.2, 4.23333, 4.26667, 4.3, 4.33333, 4.36667, 4.4, 4.43333, 4.46667, 4.5, 4.53333, 4.56667, 4.6, 4.63333, 4.66667, 4.7, 4.73333, 4.76667, 4.8, 4.83333, 4.86667, 4.9, 4.93333, 4.96667, 5, 5.03333, 5.06667, 5.1, 5.13333, 5.16667, 5.2, 5.23333, 5.26667, 5.3, 5.33333, 5.36667, 5.4, 5.43333, 5.46667, 5.5, 5.53333, 5.56667, 5.6, 5.63333, 5.66667, 5.7, 5.73333, 5.76667, 5.8, 5.83333, 5.86667, 5.9, 5.93333, 5.96667, 6, 6.03333, 6.06667, 6.1, 6.13333, 6.16667, 6.2, 6.23333, 6.26667, 6.3, 6.33333, 6.36667, 6.4, 6.43333, 6.46667, 6.5, 6.53333, 6.56667, 6.6, 6.63333, 6.66667, 6.7, 6.73333, 6.76667, 6.8, 6.83333, 6.86667, 6.9, 6.93333, 6.96667, 7, 7.03333, 7.06667, 7.1, 7.13333, 7.16667, 7.2, 7.23333, 7.26667, 7.3, 7.33333, 7.36667, 7.4, 7.43333, 7.46667, 7.5, 7.53333, 7.56667, 7.6, 7.63333, 7.66667, 7.7, 7.73333, 7.76667, 7.8, 7.83333, 7.86667, 7.9, 7.93333, 7.96667, 8, 8.03333, 8.06667, 8.1, 8.13333, 8.16667, 8.2, 8.23333, 8.26667, 8.3, 8.33333, 8.36667, 8.4, 8.43333, 8.46667, 8.5, 8.53333, 8.56667, 8.6, 8.63333, 8.66667, 8.7, 8.73333, 8.76667, 8.8, 8.83333, 8.86667, 8.9, 8.93333, 8.96667, 9, 9.03333, 9.06667, 9.1, 9.13333, 9.16667, 9.2, 9.23333, 9.26667, 9.3, 9.33333, 9.36667, 9.4, 9.43333, 9.46667, 9.5, 9.53333, 9.56667, 9.6, 9.63333, 9.66667, 9.7, 9.73333, 9.76667, 9.8, 9.83333, 9.86667, 9.9, 9.93333, 9.96667, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -171), Vector2(0, -171.027), Vector2(0, -171.11), Vector2(0, -171.247), Vector2(0, -171.438), Vector2(0, -171.685), Vector2(0, -171.986), Vector2(0, -172.341), Vector2(0, -172.75), Vector2(0, -173.214), Vector2(0, -173.732), Vector2(0, -174.303), Vector2(0, -174.927), Vector2(0, -175.605), Vector2(0, -176.335), Vector2(0, -177.118), Vector2(0, -177.953), Vector2(0, -178.84), Vector2(0, -179.778), Vector2(0, -180.767), Vector2(0, -181.807), Vector2(0, -182.897), Vector2(0, -184.036), Vector2(0, -185.225), Vector2(0, -186.462), Vector2(0, -187.747), Vector2(0, -189.079), Vector2(0, -190.459), Vector2(0, -191.885), Vector2(0, -193.356), Vector2(0, -194.873), Vector2(0, -196.434), Vector2(0, -198.038), Vector2(0, -199.686), Vector2(0, -201.376), Vector2(0, -203.107), Vector2(0, -204.879), Vector2(0, -206.691), Vector2(0, -208.542), Vector2(0, -210.432), Vector2(0, -212.359), Vector2(0, -214.322), Vector2(0, -216.322), Vector2(0, -218.357), Vector2(0, -220.425), Vector2(0, -222.527), Vector2(0, -224.661), Vector2(0, -226.826), Vector2(0, -229.022), Vector2(0, -231.247), Vector2(0, -233.5), Vector2(0, -235.781), Vector2(0, -238.088), Vector2(0, -240.421), Vector2(0, -242.778), Vector2(0, -245.158), Vector2(0, -247.561), Vector2(0, -249.984), Vector2(0, -252.428), Vector2(0, -254.892), Vector2(0, -257.373), Vector2(0, -259.871), Vector2(0, -262.385), Vector2(0, -264.914), Vector2(0, -267.456), Vector2(0, -270.011), Vector2(0, -272.577), Vector2(0, -275.154), Vector2(0, -277.74), Vector2(0, -280.333), Vector2(0, -282.934), Vector2(0, -285.54), Vector2(0, -288.151), Vector2(0, -290.766), Vector2(0, -293.382), Vector2(0, -296), Vector2(0, -298.618), Vector2(0, -301.234), Vector2(0, -303.849), Vector2(0, -306.46), Vector2(0, -309.066), Vector2(0, -311.667), Vector2(0, -314.26), Vector2(0, -316.846), Vector2(0, -319.423), Vector2(0, -321.989), Vector2(0, -324.544), Vector2(0, -327.086), Vector2(0, -329.615), Vector2(0, -332.129), Vector2(0, -334.627), Vector2(0, -337.108), Vector2(0, -339.572), Vector2(0, -342.016), Vector2(0, -344.439), Vector2(0, -346.842), Vector2(0, -349.222), Vector2(0, -351.579), Vector2(0, -353.912), Vector2(0, -356.219), Vector2(0, -358.5), Vector2(0, -360.753), Vector2(0, -362.978), Vector2(0, -365.174), Vector2(0, -367.339), Vector2(0, -369.473), Vector2(0, -371.575), Vector2(0, -373.643), Vector2(0, -375.678), Vector2(0, -377.678), Vector2(0, -379.641), Vector2(0, -381.568), Vector2(0, -383.458), Vector2(0, -385.309), Vector2(0, -387.121), Vector2(0, -388.893), Vector2(0, -390.624), Vector2(0, -392.314), Vector2(0, -393.962), Vector2(0, -395.566), Vector2(0, -397.127), Vector2(0, -398.644), Vector2(0, -400.115), Vector2(0, -401.541), Vector2(0, -402.921), Vector2(0, -404.253), Vector2(0, -405.538), Vector2(0, -406.775), Vector2(0, -407.964), Vector2(0, -409.103), Vector2(0, -410.193), Vector2(0, -411.233), Vector2(0, -412.222), Vector2(0, -413.16), Vector2(0, -414.047), Vector2(0, -414.882), Vector2(0, -415.665), Vector2(0, -416.395), Vector2(0, -417.073), Vector2(0, -417.697), Vector2(0, -418.268), Vector2(0, -418.786), Vector2(0, -419.25), Vector2(0, -419.659), Vector2(0, -420.014), Vector2(0, -420.315), Vector2(0, -420.562), Vector2(0, -420.753), Vector2(0, -420.89), Vector2(0, -420.973), Vector2(0, -421), Vector2(0, -420.973), Vector2(0, -420.89), Vector2(0, -420.753), Vector2(0, -420.562), Vector2(0, -420.315), Vector2(0, -420.014), Vector2(0, -419.659), Vector2(0, -419.25), Vector2(0, -418.786), Vector2(0, -418.268), Vector2(0, -417.697), Vector2(0, -417.073), Vector2(0, -416.395), Vector2(0, -415.665), Vector2(0, -414.882), Vector2(0, -414.047), Vector2(0, -413.16), Vector2(0, -412.222), Vector2(0, -411.233), Vector2(0, -410.193), Vector2(0, -409.103), Vector2(0, -407.964), Vector2(0, -406.775), Vector2(0, -405.538), Vector2(0, -404.253), Vector2(0, -402.921), Vector2(0, -401.541), Vector2(0, -400.115), Vector2(0, -398.644), Vector2(0, -397.127), Vector2(0, -395.566), Vector2(0, -393.962), Vector2(0, -392.314), Vector2(0, -390.624), Vector2(0, -388.893), Vector2(0, -387.121), Vector2(0, -385.309), Vector2(0, -383.458), Vector2(0, -381.568), Vector2(0, -379.641), Vector2(0, -377.678), Vector2(0, -375.678), Vector2(0, -373.643), Vector2(0, -371.575), Vector2(0, -369.473), Vector2(0, -367.339), Vector2(0, -365.174), Vector2(0, -362.978), Vector2(0, -360.753), Vector2(0, -358.5), Vector2(0, -356.219), Vector2(0, -353.912), Vector2(0, -351.579), Vector2(0, -349.222), Vector2(0, -346.842), Vector2(0, -344.439), Vector2(0, -342.016), Vector2(0, -339.572), Vector2(0, -337.108), Vector2(0, -334.627), Vector2(0, -332.129), Vector2(0, -329.615), Vector2(0, -327.086), Vector2(0, -324.544), Vector2(0, -321.989), Vector2(0, -319.423), Vector2(0, -316.846), Vector2(0, -314.26), Vector2(0, -311.667), Vector2(0, -309.066), Vector2(0, -306.46), Vector2(0, -303.849), Vector2(0, -301.234), Vector2(0, -298.618), Vector2(0, -296), Vector2(0, -293.382), Vector2(0, -290.766), Vector2(0, -288.151), Vector2(0, -285.54), Vector2(0, -282.934), Vector2(0, -280.333), Vector2(0, -277.74), Vector2(0, -275.154), Vector2(0, -272.577), Vector2(0, -270.011), Vector2(0, -267.456), Vector2(0, -264.914), Vector2(0, -262.385), Vector2(0, -259.871), Vector2(0, -257.373), Vector2(0, -254.892), Vector2(0, -252.428), Vector2(0, -249.984), Vector2(0, -247.561), Vector2(0, -245.158), Vector2(0, -242.778), Vector2(0, -240.421), Vector2(0, -238.088), Vector2(0, -235.781), Vector2(0, -233.5), Vector2(0, -231.247), Vector2(0, -229.022), Vector2(0, -226.826), Vector2(0, -224.661), Vector2(0, -222.527), Vector2(0, -220.425), Vector2(0, -218.357), Vector2(0, -216.322), Vector2(0, -214.322), Vector2(0, -212.359), Vector2(0, -210.432), Vector2(0, -208.542), Vector2(0, -206.691), Vector2(0, -204.879), Vector2(0, -203.107), Vector2(0, -201.376), Vector2(0, -199.686), Vector2(0, -198.038), Vector2(0, -196.434), Vector2(0, -194.873), Vector2(0, -193.356), Vector2(0, -191.885), Vector2(0, -190.459), Vector2(0, -189.079), Vector2(0, -187.747), Vector2(0, -186.462), Vector2(0, -185.225), Vector2(0, -184.036), Vector2(0, -182.897), Vector2(0, -181.807), Vector2(0, -180.767), Vector2(0, -179.778), Vector2(0, -178.84), Vector2(0, -177.953), Vector2(0, -177.118), Vector2(0, -176.335), Vector2(0, -175.605), Vector2(0, -174.927), Vector2(0, -174.303), Vector2(0, -173.732), Vector2(0, -173.214), Vector2(0, -172.751), Vector2(0, -172.341), Vector2(0, -171.986), Vector2(0, -171.685), Vector2(0, -171.438), Vector2(0, -171.247), Vector2(0, -171.11), Vector2(0, -171.027), Vector2(0, -171)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mtm0o"]
+_data = {
+&"RESET": SubResource("Animation_cgm1o"),
+&"new_animation": SubResource("Animation_vhrld")
+}
 
 [node name="ShopScreen" type="Control"]
 layout_mode = 3
@@ -21,109 +87,209 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_wcyr3")
+shop_datastores = Array[ExtResource("2_fifuk")]([SubResource("Resource_rk0v1")])
 PurchasableCardPacked = ExtResource("3_nsqt1")
 PurchasableRemovePacked = ExtResource("3_dvy4k")
 PurchasableBoonPacked = ExtResource("5_wgmd6")
 PurchasableToolPacked = ExtResource("6_afqjs")
 PurchasableTransformPacked = ExtResource("7_bo7jg")
-MinimapPacked = ExtResource("7_3a77e")
 
-[node name="Label" type="Label" parent="."]
+[node name="LoopingBG" type="GridContainer" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -103.0
-offset_top = -510.0
-offset_right = 112.0
-offset_bottom = -413.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -171.0
+offset_right = -940.0
+offset_bottom = -521.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Wares"
-label_settings = ExtResource("2_rv443")
-
-[node name="TopRow" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(1920, 0)
-layout_mode = 0
-offset_top = 228.0
-offset_right = 1924.0
-offset_bottom = 628.0
-
-[node name="Cards" type="HBoxContainer" parent="TopRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(1620, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="CardsFiller" type="Control" parent="TopRow/Cards"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
+scale = Vector2(2, 2)
 mouse_filter = 2
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 50
+columns = 6
 
-[node name="RemoveCardControl" type="Control" parent="TopRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+[node name="TextureRect" type="TextureRect" parent="LoopingBG"]
 layout_mode = 2
 mouse_filter = 2
+texture = ExtResource("10_rk0v1")
 
-[node name="RemoveCardPosition" type="Control" parent="TopRow/RemoveCardControl"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -120.0
-offset_right = 120.0
-offset_bottom = 240.0
-grow_horizontal = 2
+[node name="TextureRect2" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
 mouse_filter = 2
+texture = ExtResource("10_rk0v1")
 
-[node name="BottomRow" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_top = 766.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-
-[node name="Boons" type="HBoxContainer" parent="BottomRow"]
-unique_name_in_owner = true
+[node name="TextureRect17" type="TextureRect" parent="LoopingBG"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 200
-alignment = 1
-
-[node name="Filler" type="Control" parent="BottomRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.25
 mouse_filter = 2
+texture = ExtResource("10_rk0v1")
 
-[node name="Tools" type="HBoxContainer" parent="BottomRow"]
-unique_name_in_owner = true
+[node name="TextureRect18" type="TextureRect" parent="LoopingBG"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 200
-alignment = 1
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
 
-[node name="TransformControl" type="Control" parent="BottomRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+[node name="TextureRect19" type="TextureRect" parent="LoopingBG"]
 layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
 
-[node name="TransformPosition" type="Control" parent="BottomRow/TransformControl"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -120.0
-offset_right = 120.0
-offset_bottom = 240.0
-grow_horizontal = 2
+[node name="TextureRect20" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect21" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect22" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect23" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect24" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect25" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect26" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect27" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect28" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect29" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect30" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect31" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect32" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect33" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect34" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect35" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect36" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect3" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect4" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect5" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect6" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect7" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect8" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect9" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect10" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect11" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect12" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect13" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect14" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect15" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
+
+[node name="TextureRect16" type="TextureRect" parent="LoopingBG"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_rk0v1")
 
 [node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("8_w8www")]
 layout_mode = 1
@@ -156,15 +322,30 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("10_oit0k")
 
-[node name="MinimapControl" type="Control" parent="."]
-unique_name_in_owner = true
-layout_mode = 3
+[node name="ShopMerchantUI" type="Control" parent="."]
+texture_filter = 1
 anchors_preset = 0
-offset_left = 1015.0
-offset_top = 177.0
-offset_right = 1015.0
-offset_bottom = 177.0
-mouse_filter = 2
+offset_left = 1394.0
+offset_top = 148.0
+offset_right = 1650.0
+offset_bottom = 404.0
+scale = Vector2(2, 2)
+
+[node name="FrameMerchantBase" type="Sprite2D" parent="ShopMerchantUI"]
+unique_name_in_owner = true
+texture = ExtResource("13_r6pve")
+centered = false
+
+[node name="FrameMerchantSprite" type="Sprite2D" parent="ShopMerchantUI"]
+unique_name_in_owner = true
+texture_filter = 1
+texture = ExtResource("14_rk0v1")
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_mtm0o")
+}
 
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="MapPanel/MarginContainer/MinimapButton" to="." method="_on_minimap_button_pressed"]

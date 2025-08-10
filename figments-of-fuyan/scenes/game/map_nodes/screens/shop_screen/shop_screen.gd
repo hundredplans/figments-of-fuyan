@@ -1,73 +1,65 @@
-extends MapNodeScreen
+class_name ShopScreen extends MapNodeScreen
 
 const TRANSFORM_WAIT_PRESSED_TIME: float = 1.5
 const CARD_FLIP_TIME: float = 0.25
 
-@onready var Cards: Control = %Cards
-@onready var RemoveCardPosition: Control = %RemoveCardPosition
+@onready var FrameMerchantBase: Sprite2D = %FrameMerchantBase
+@onready var FrameMerchantSprite: Sprite2D = %FrameMerchantSprite
+@onready var FadeBackground: Control = %FadeBackground
 
-@onready var Boons: Control = %Boons
-@onready var Tools: Control = %Tools
-@onready var TransformPosition: Control = %TransformPosition
-@onready var RemoveCardControl: Control = %RemoveCardControl
-@onready var TransformControl: Control = %TransformControl
-@onready var MinimapControl: Control = %MinimapControl
-
-@onready var CardsFiller: Control = %CardsFiller
-
+@export var shop_datastores: Array[ShopDatastore]
 @export var PurchasableCardPacked: PackedScene
 @export var PurchasableRemovePacked: PackedScene
 @export var PurchasableBoonPacked: PackedScene
 @export var PurchasableToolPacked: PackedScene
 @export var PurchasableTransformPacked: PackedScene
 
-@export var MinimapPacked: PackedScene
-
 func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, shop: MapNodeGD) -> void:
 	super(_save_file, _area, _World, _UI, shop)
 	var items: Array = shop.items
-	var boon_ids: Array = []
+	var shop_datastore: ShopDatastore = getShopDatastore()
+	$AnimationPlayer.play("new_animation")
 	
-	for price_datastore: PriceDatastore in items:
-		var item: SavedData = price_datastore.data
-		var purchasable_packed: PackedScene
-		var parent: Control
+	onFrameSprite()
+	
+	#for price_datastore: PriceDatastore in items:
+		#var item: SavedData = price_datastore.data
+		#var purchasable_packed: PackedScene
+		#var parent: Control
+		#
+		#match item.getInfoType().getFofName():
+			#"Card":
+				#purchasable_packed = PurchasableCardPacked
+				#parent = Cards
+			#"ActionWrapper":
+				#if item.hasType(RemoveFromDeckAction):
+					#purchasable_packed = PurchasableRemovePacked
+					#parent = RemoveCardPosition
+				#elif item.hasType(TransformCardAction):
+					#purchasable_packed = PurchasableTransformPacked
+					#parent = TransformPosition
+			#"Boon":
+				#boon_ids.append(item.id)
+					#
+				#if item != null:
+					#purchasable_packed = PurchasableBoonPacked
+					#parent = Boons
+			#"Tool":
+				#purchasable_packed = PurchasableToolPacked
+				#parent = Tools
 		
-		match item.getInfoType().getFofName():
-			"Card":
-				purchasable_packed = PurchasableCardPacked
-				parent = Cards
-			"ActionWrapper":
-				if item.hasType(RemoveFromDeckAction):
-					purchasable_packed = PurchasableRemovePacked
-					parent = RemoveCardPosition
-				elif item.hasType(TransformCardAction):
-					purchasable_packed = PurchasableTransformPacked
-					parent = TransformPosition
-			"Boon":
-				boon_ids.append(item.id)
-					
-				if item != null:
-					purchasable_packed = PurchasableBoonPacked
-					parent = Boons
-			"Tool":
-				purchasable_packed = PurchasableToolPacked
-				parent = Tools
+		#var fof: FofGD = SavedData.onLoadModel(price_datastore.data, World.ActiveWorld)
+		#if purchasable_packed == null: continue
 		
-		var fof: FofGD = SavedData.onLoadModel(price_datastore.data, World.ActiveWorld)
-		if purchasable_packed == null: continue
+		#var purchasable: Control = purchasable_packed.instantiate()
+		#parent.add_child(purchasable)
+		#purchasable.setInfo(fof, price_datastore, save_file)
+		#
+		#purchasable.create_screen.connect(onCreateScreen)
+		#purchasable.pressed.connect(onItemPressed.bind(shop))
 		
-		var purchasable: Control = purchasable_packed.instantiate()
-		parent.add_child(purchasable)
-		purchasable.setInfo(fof, price_datastore, save_file)
-		
-		purchasable.create_screen.connect(onCreateScreen)
-		purchasable.pressed.connect(onItemPressed.bind(shop))
-	Cards.move_child(CardsFiller, 2)
-		
-	if shop.isFirstShop():
-		RemoveCardControl.custom_minimum_size.x = 0
-		TransformControl.custom_minimum_size.x = 0
+func getShopDatastore() -> ShopDatastore:
+	return shop_datastores.filter(func(x: ShopDatastore): return x.id == map_node.info.id)[0]
 		
 func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Control, shop: MapNodeGD) -> void:
 	price_datastore.bought = true
@@ -111,17 +103,21 @@ func onFlipCardAnimation(CardUI: Control, NewCard: CardGD) -> Control:
 func _on_exit_button_pressed() -> void:
 	finished.emit()
 	
-func onDimBackground() -> bool:
-	return false
+func onFadeBackground() -> bool:
+	return true
+	
+func getFadeBackgroundColor() -> Color:
+	return getShopDatastore().getBackgroundMainColor()
 	
 func onCreateScreen(screen: Control) -> void:
 	add_child(screen)
 	
-#region Minimap
-var Minimap: Control
 func _on_minimap_button_pressed() -> void:
-	if Minimap == null:
-		Minimap = MinimapPacked.instantiate()
-		MinimapControl.add_child(Minimap)
-	else: Minimap.queue_free()
-#endregion
+	pass
+
+const timer_time: float = 1.0
+func onFrameSprite(start: int = 1) -> void:
+	FrameMerchantSprite.texture = load("res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab" + str(start) + ".png")
+	await get_tree().create_timer(timer_time).timeout
+	onFrameSprite(1 if start == 2 else 2)
+	

@@ -1,20 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://ct1cn5tc1ofmb"]
+[gd_scene load_steps=3 format=3 uid="uid://ct1cn5tc1ofmb"]
 
-[ext_resource type="Material" uid="uid://byprpvtvga6km" path="res://resources/materials/ui/ascended_outline_canvas_thick.tres" id="1_bnhqu"]
 [ext_resource type="Script" uid="uid://dnwbg2etx5qyr" path="res://scenes/game/boons/boon_icon.gd" id="1_k0ec6"]
-[ext_resource type="Material" uid="uid://b73rx0symxoxf" path="res://resources/materials/ui/ascended_outline_canvas_thick_disabled.tres" id="3_3oetg"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="4_fbu1m"]
 
-[node name="BoonIcon" type="TextureRect"]
+[node name="BoonIcon" type="Control"]
 texture_filter = 1
 custom_minimum_size = Vector2(80, 80)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 80.0
 offset_bottom = 80.0
-mouse_filter = 0
-expand_mode = 2
+pivot_offset = Vector2(40, 40)
 script = ExtResource("1_k0ec6")
-ASCENDED_CANVAS_MATERIAL = ExtResource("1_bnhqu")
-ASCENDED_CANVAS_MATERIAL_DISABLED = ExtResource("3_3oetg")
 
 [node name="ChargesLabel" type="Label" parent="."]
 unique_name_in_owner = true
@@ -30,6 +27,18 @@ offset_right = 12.84
 offset_bottom = 12.76
 rotation = 0.0920866
 label_settings = ExtResource("4_fbu1m")
+
+[node name="BoonTextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 2
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

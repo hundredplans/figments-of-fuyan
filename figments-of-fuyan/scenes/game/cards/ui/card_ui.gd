@@ -1,15 +1,4 @@
-extends Control
-
-signal mouse_in_ui
-signal pressed
-
-signal dragged_init # Before position updates / reparenting
-signal dragged_begin # After reparenting
-signal dragged_end # Before card comes back to spot
-signal dragged_finished # When card comes back to spot
-
-signal tool_drag_begin
-signal tool_drag_end
+extends TbcUI
 
 #region Onready
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
@@ -23,7 +12,7 @@ signal tool_drag_end
 @onready var EnergyLabel: Label = %EnergyLabel
 @onready var TextLabel: FancyTextLabel = %TextLabel
 @onready var ToolControl: Control = %ToolControl
-@onready var ToolIcon: Control = %ToolIcon
+@onready var ToolIcon: TbcUI = %ToolIcon
 @onready var ToolInside: Sprite2D = %ToolInside
 @onready var ToolOutside: Sprite2D = %ToolOutside
 @onready var OutlineMask: TextureRect = %OutlineMask
@@ -54,35 +43,22 @@ signal tool_drag_end
 @export var REGULAR_TOOL_ICON_BACKGROUND: Texture2D
 #endregion
 #region Globals
-const CARD_TO_CENTER_HELD_TIMER: float = 0.2
-const ROTATION_TOOL_SPEED_TO_MIDDLE: float = 15.0
-const ROTATION_SPEED_TO_MIDDLE: float = 10.0
-const RELATIVE_SIDE_FORCE_DIV: float = 15.0
-const RELATIVE_TOOL_SIDE_FORCE_DIV: float = 2.5
-
 var Card: CardGD
-var highlight_on_hover: bool
 var ignore_mouse: bool
-var disabled: bool
-var selected: bool
 var inspectable: bool
-var DraggableParent: Control
 var child_index: int
-
-var disable_tooltip: bool
 
 var is_held: bool
 var original_position: Vector2
 var is_held_moving: bool
 var offset_to_center: Vector2
-var progress_to_center: float = CARD_TO_CENTER_HELD_TIMER # How far along is the Card UI to moving to the center of the mouse
 var original_parent: Control
 #endregion
 
-func setInfo(_Card: CardGD, _highlight_on_hover: bool = false, _inspectable: bool = true, _DraggableParent: Control = null) -> void:
-	highlight_on_hover = _highlight_on_hover
+func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true, _draggable: bool = false) -> void:
+	hoverable = _hoverable
 	inspectable = _inspectable
-	DraggableParent = _DraggableParent
+	draggable = _draggable
 	
 	Card = _Card
 	
@@ -125,63 +101,25 @@ func onUpdateStats() -> void:
 	
 func onToolUpdated(Tool: ToolGD) -> void:
 	ToolControl.visible = Tool != null
-	ToolIcon.setInfo(Tool, false)
+	ToolIcon.setTool(Tool)
 	
 	if Tool != null:
 		ToolInside.modulate = Game.getRarityColor(Tool.getRarity())
 		ToolOutside.modulate = Game.getTierColor(Tool.getTier())
-	
-func onPressed() -> void:
-	if disabled: return
-	pressed.emit(self)
-
-var is_mouse_in_ui: bool = false
-func onMouseHovered(state: bool) -> void:
-	is_mouse_in_ui = state
-	if is_held: return
-	mouse_in_ui.emit(state)
-	onUpdateModulate()
-		
-func setHighlightOnHover(state: bool) -> void:
-	highlight_on_hover = state
-	onUpdateModulate()
 
 func setDisabled(_disabled: bool) -> void:
 	disabled = _disabled
 	ToolIcon.setDisabled(disabled)
 	if disabled:
-		onMouseHovered(false)
-		onSelected(false)
+		onMouseInUI(false)
 	onUpdateModulate()
-
-func onUpdateModulate() -> void:
-	if disabled: modulate = Color(0.2, 0.2, 0.2)
-	elif highlight_on_hover and is_mouse_in_ui: modulate = Color(0.5, 0.5, 0.5)
-	else: modulate = Color(1, 1, 1)
-
-func onSelected(_selected: bool) -> void:
-	selected = _selected
-	OutlineMask.material = white_outline_canvas if selected else null
 	
 const MASSIVE_MOVEMENT_PREVENT: int = 200
 func _input(event: InputEvent) -> void:
+	super(event)
 	if Input.is_action_just_pressed("InspectCard") and is_mouse_in_ui and inspectable and \
 	!(get_viewport().gui_get_focus_owner() as LineEdit):
 		Card.onInspectCard()
-		
-	elif event is InputEventMouseMotion and Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
-		if is_held:
-			#if (event.relative.x + event.relative.y) < MASSIVE_MOVEMENT_PREVENT:
-			position += event.relative
-			rotation_degrees += event.relative.x / RELATIVE_SIDE_FORCE_DIV
-			#else:
-				#position = get_viewport().get_mouse_position() - (size / 2)
-		elif is_tool_dragging:
-			#if (event.relative.x + event.relative.y) < MASSIVE_MOVEMENT_PREVENT:
-			ToolIcon.position += event.relative
-			ToolIcon.rotation_degrees += event.relative.x / RELATIVE_TOOL_SIDE_FORCE_DIV
-			#else:
-				#ToolIcon.position = get_viewport().get_mouse_position() - (size / 2)
 		
 func setBuffLabels() -> void:
 	var attack_diff: int = Card.attack - Card.base_stats.attack
@@ -210,80 +148,6 @@ func onUpdateAwakenedInCombat() -> void:
 	AwakenedInCombatMarker.visible = Card.is_awakened_in_combat
 
 #region Holding
-var last_small_offset_to_center: Vector2
-func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !is_held_moving and DraggableParent != null and !disabled:
-		onHeldBegan()
-	elif Input.is_action_just_released("MainInput") and is_held and !is_held_moving and DraggableParent != null:
-		onHeldEnded()
-	elif Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
-		onPressed()
-	elif Input.is_action_just_released("MainInput") and is_tool_dragging:
-		onToolHeldEnded()
-		
-	if DraggableParent != null and progress_to_center < CARD_TO_CENTER_HELD_TIMER:
-		progress_to_center += delta
-		var sine_progress = sin(progress_to_center / CARD_TO_CENTER_HELD_TIMER * PI * 0.5)
-		var small_offset: Vector2 = sine_progress * offset_to_center
-		position += (small_offset - last_small_offset_to_center)
-		last_small_offset_to_center = small_offset
-		
-	rotation = lerp_angle(rotation, 0, ROTATION_SPEED_TO_MIDDLE * delta)
-	
-	if is_tool_dragging:
-		ToolIcon.rotation = lerp_angle(ToolIcon.rotation, 0, ROTATION_TOOL_SPEED_TO_MIDDLE * delta)
-		
-func onHeldBegan() -> void:
-	dragged_init.emit(self)
-	is_held = true
-	is_held_moving = true
-	original_position = global_position
-	onChangeBackgroundMouseFilter(false)
-	
-	original_parent = get_parent()
-	child_index = get_index()
-	get_parent().remove_child(self)
-	DraggableParent.add_child(self)
-	global_position = original_position
-	
-	var mouse_pos: Vector2 = get_viewport().get_mouse_position()
-	offset_to_center = mouse_pos - getCenterPos()
-	
-	progress_to_center = 0
-		
-	await get_tree().create_timer(CARD_TO_CENTER_HELD_TIMER).timeout
-	
-	is_held_moving = false
-	last_small_offset_to_center = Vector2.ZERO
-	
-	if !Input.is_action_pressed("MainInput"):
-		onHeldEnded()
-	else:
-		dragged_begin.emit(self)
-	
-func onHeldEnded() -> void:
-	dragged_end.emit(self, getCenterPos())
-	is_held = false
-	
-	offset_to_center = original_position - global_position
-	progress_to_center = 0
-	
-	is_held_moving = true
-	await get_tree().create_timer(CARD_TO_CENTER_HELD_TIMER).timeout
-	
-	is_held_moving = false
-	last_small_offset_to_center = Vector2.ZERO
-	
-	onChangeBackgroundMouseFilter(true)
-	if !is_mouse_in_ui: onMouseHovered(is_mouse_in_ui)
-	get_parent().remove_child(self)
-	original_parent.add_child(self)
-	original_parent.move_child(self, child_index)
-	global_position = original_position
-	dragged_finished.emit(self)
-	
-	get_viewport().update_mouse_cursor_state()
-	get_viewport().call_deferred("update_mouse_cursor_state")
 	
 func getCenterPos() -> Vector2:
 	return global_position + (size / 2)
@@ -299,6 +163,11 @@ func onChangeBackgroundMouseFilter(is_stop: bool, ignore_tool: bool = false) -> 
 		ToolIcon.setMouseFilter(new_mouse_filter)
 	
 	get_viewport().update_mouse_cursor_state()
+	
+func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
+	super(_mouse_filter)
+	if _mouse_filter == Control.MouseFilter.MOUSE_FILTER_STOP: onChangeBackgroundMouseFilter(true)
+	else: onChangeBackgroundMouseFilter(false)
 #endregion
 
 func onMouseInText(state: bool):
@@ -309,45 +178,16 @@ func setDisableTooltip(state: bool) -> void:
 	disable_tooltip = state
 	ToolIcon.disable_tooltip = state
 
-var draggable_tool: bool
-var is_tool_dragging: bool
-var original_tool_tooltip_state: bool
-var original_tool_icon_position: Vector2
-var original_tool_mouse_filter: Control.MouseFilter
-
-func setDraggableTool(_draggable_tool: bool) -> void:
-	draggable_tool = _draggable_tool
-
-func onToolIconPressed(_Tool: ToolGD) -> void:
-	if !draggable_tool: return
-	onToolHeldBegan()
-	
-func onToolHeldBegan() -> void:
-	is_tool_dragging = true
-	original_tool_tooltip_state = ToolIcon.disable_tooltip
-	original_tool_icon_position = ToolIcon.position
-	original_tool_mouse_filter = ToolIcon.mouse_filter
-	
-	var original_global_position: Vector2 = ToolIcon.global_position
-	ToolIcon.disable_tooltip = true
-	ToolIcon.top_level = true
-	ToolIcon.global_position = original_global_position
-	ToolIcon.setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE)
-	Game.onMouseInUITooltip(false)
-	
-	tool_drag_begin.emit(self)
-
-func onToolHeldEnded() -> void:
-	is_tool_dragging = false
-	var tool_global_pos: Vector2 = ToolIcon.global_position
-	
-	ToolIcon.setMouseFilter(original_tool_mouse_filter)
-	ToolIcon.disable_tooltip = original_tool_tooltip_state
-	ToolIcon.top_level = false
-	ToolIcon.position = original_tool_icon_position
-	ToolIcon.rotation_degrees = 0
-	
-	tool_drag_end.emit(self, tool_global_pos)
-
 func getCard() -> CardGD:
 	return Card
+
+func getTool() -> ToolGD:
+	return ToolIcon.Tool
+
+func getPriceLabelPosition() -> Vector2:
+	return Vector2(100, 400)
+
+func getItem() -> FofGD: return Card
+	
+func getToolIcon() -> TbcUI:
+	return ToolIcon

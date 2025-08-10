@@ -12,8 +12,11 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 		CampfireRewardNode.setInfo(map_node.campfire_reward_taken[i])
 		CampfireRewardNode.pressed.connect(onCampfireRewardPressed.bind(i))
 
-func onDimBackground() -> bool:
+func onFadeBackground() -> bool:
 	return true
+	
+func getFadeBackgroundColor() -> Color:
+	return Color(0.7, 0.7, 0.7)
 
 func onChoiceButtonPressed(identifier: String) -> void:
 	var trait_data: SavedDataTrait

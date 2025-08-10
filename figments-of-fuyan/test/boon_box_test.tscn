@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8l3lm7k0khqq"]
+
+[ext_resource type="Script" uid="uid://bubybh0wb28v6" path="res://test/boon_box_test.gd" id="1_vqw64"]
+[ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="2_wp6m2"]
+[ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="3_6pmvj"]
+
+[node name="BoonBoxTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vqw64")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 457.0
+offset_top = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MainScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="BoonScrollContainer" type="ScrollContainer" parent="MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="BoonBox" type="GridContainer" parent="MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
+script = ExtResource("2_wp6m2")
+BoonIconPacked = ExtResource("3_6pmvj")

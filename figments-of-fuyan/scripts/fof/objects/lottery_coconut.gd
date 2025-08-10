@@ -6,12 +6,12 @@ var stepped_on_card_public_id: int
 func onFofInit() -> void:
 	super()
 	var odds: Resource = load(info.LOTTERY_COCONUT_DATASTORE_PATH)
-	stepped_on_choice = Random.getRandomKey(Random.onConvertPercentOdds(odds.getDict()))
+	stepped_on_choice = Random.getRandomKey(odds.getDict())
 
 func onLoadDataLevelFofInit() -> void:
 	super()
 	var odds: Resource = load(info.LOTTERY_COCONUT_DATASTORE_PATH)
-	stepped_on_choice = Random.getRandomKey(Random.onConvertPercentOdds(odds.getDict()))
+	stepped_on_choice = Random.getRandomKey(odds.getDict())
 
 func onProcessAction(action: Action) -> void:
 	super(action)

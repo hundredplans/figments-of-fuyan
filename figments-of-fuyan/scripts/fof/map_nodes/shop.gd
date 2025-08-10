@@ -16,10 +16,6 @@ func onFofInit() -> void:
 	super()
 	onAddLocalForeignCardsBoonTools()
 	
-	if isFirstShop(): return # Doesn't activate on first shop
-	onAddRemoveCard()
-	onAddTransformation()
-	
 func onSave() -> SavedDataMapNode:
 	return SavedDataShop.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, items)
 
@@ -58,12 +54,6 @@ func getForeign(info_type: GDScript, j: int) -> bool:
 	return false
 	
 func isFirstShop() -> bool: return map_location.progress == 1
-	
-func onAddRemoveCard() -> void:
-	var remove_card_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), self)
-	remove_card_wrapper.setActions(RemoveFromDeckAction.new(null, true))
-	
-	onAddToItems(PriceDatastore.new(world_datastore.remove_card_price, remove_card_wrapper.onSave()))
 
 func onAddTransformation() -> void:
 	var transformation_ids: Array = [5, 6]
@@ -94,7 +84,6 @@ func onAddPriceVariance(price: int) -> int:
 
 func onEntered() -> void:
 	super()
-	onCreateWorldScene()
 	onCreateScreen()
 	onPushAction(PlayMusicAction.new(Audio.SHOP))
 	
@@ -110,9 +99,9 @@ func onRerollBoon() -> PriceDatastore:
 func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> PriceDatastore:
 	if objects.is_empty(): return null
 	
-	var odds: Dictionary = world_datastore.shop_rarity_odds.getDictionary()
+	var odds: Dictionary = world_datastore.getBaseRarityOdds().getDictionary()
 	@warning_ignore("int_as_enum_without_cast")
-	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
+	var rarity: Game.Rarities = int(Random.getRandomKey(odds))
 	var rarity_objects: Array = objects.filter(func(x: FofInfo): return x.rarity == rarity)
 	
 	if script_type == CardInfo and !foreign: # Local cards only

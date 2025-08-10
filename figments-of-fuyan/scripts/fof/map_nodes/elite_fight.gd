@@ -93,10 +93,10 @@ func getChief(chief_infos: Array, chief_spawn_coords: Vector4i) -> SavedDataCard
 	card_data.team = 1
 	card_data.coords = chief_spawn_coords
 	
-	var add_tool: bool = Random.rollFloat(Game.area.getWorld().tool_enemy_spawn_rate / 100.0)
+	var add_tool: bool = Random.rollFloat(Game.area.getWorld().tool_enemy_spawn_rate)
 	if add_tool:
-		card_data.tool_data = Random.getRandomFofByOdds(ToolInfo, Game.area.getWorld().tool_enemy_spawn_rarity_odds.getDictionary())
-		
+		card_data.tool_data = Random.getRandomToolData(Game.getArea().getWorld().getToolEnemySpawnRarityOdds(),\
+			Game.getArea().getWorld().getToolEnemySpawnTierOdds())
 	return card_data
 #endregion
 

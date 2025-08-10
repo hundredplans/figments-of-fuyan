@@ -137,21 +137,15 @@ func onGenerateEmptySpotsByProgress() -> Dictionary:
 			empty_spots_by_progress[empty_spot.progress].append(empty_spot)
 		else: empty_spots_by_progress[empty_spot.progress] = [empty_spot]
 	return empty_spots_by_progress
-	
-func onGenerateMapNodeOddsRollable(map_node_odds: Dictionary) -> Dictionary:
-	var map_node_odds_rollable: Dictionary = {}
-	for key in map_node_odds:
-		map_node_odds_rollable[key] = {"fight": map_node_odds[key].regular_fight / 100,\
-		"encounter": map_node_odds[key].encounter / 100}
-	return map_node_odds_rollable
 #endregion
 
 #region Link-related
 func onCreateMapLinks(empty_spots_by_progress: Dictionary[int, Array]) -> void:
 	var section_one_batch: Dictionary[int, Array] = {}
 	var section_two_batch: Dictionary[int, Array] = {}
+	var is_divinus: bool = Game.isDivinus()
 	for key: int in empty_spots_by_progress:
-		if (key == 11 and !Game.isDivinus()) or key == 12: continue
+		if (key == 11 and !is_divinus) or key == 12: continue
 		
 		var batch: Array = empty_spots_by_progress[key]
 		var next_batch: Array = empty_spots_by_progress[key + 1]
@@ -164,8 +158,9 @@ func onCreateMapLinks(empty_spots_by_progress: Dictionary[int, Array]) -> void:
 				if next_empty_spot.lane == empty_spot.lane or key in [0, 1, 4, 5, 9]:
 					empty_spot.links.append(EmptyMapNodeLink.new(next_empty_spot))
 		
-	onGenerateLinksPerSection(section_one_batch, empty_spots_by_progress)
-	onGenerateLinksPerSection(section_two_batch, empty_spots_by_progress)
+	if !is_divinus:
+		onGenerateLinksPerSection(section_one_batch, empty_spots_by_progress)
+		onGenerateLinksPerSection(section_two_batch, empty_spots_by_progress)
 		
 func onGenerateLinksPerSection(section_batch: Dictionary[int, Array], empty_spots_by_progress: Dictionary[int, Array]) -> void:
 	var section_progresses: Array = section_batch.keys()
@@ -197,92 +192,77 @@ func onGenerateLinksPerSection(section_batch: Dictionary[int, Array], empty_spot
 #region Set Empty ID
 func setEmptySpotsIDS(unique_node_ids: Array) -> void:
 	empty_spots.shuffle()
+		
+	var unique_nodes: Array = Game.getSaveFile().getChampionCard().info.unique_nodes_id
+	var used_ids: Array = []
+	var encounter_progresses: Array = []
+	var segment_two_encounter_pairs: Array = [[6, 9], [7, 9], [6, 8], [7, 8]].pick_random()
+	encounter_progresses += segment_two_encounter_pairs
 	
-	var unique_nodes: Array = unique_node_ids\
-		.filter(func(x: int): return x != 10)\
-		.map(func(x: int):
-		return SegmentNode.new(x, Random.getBool() if getWorldDifficulty() != 1 else false))
+	if getWorldDifficulty() == 1:
+		encounter_progresses.append([3, 4].pick_random())
+	else:
+		var segment_one_encounter_pairs: Array = [[1, 4], [2, 4], [1, 3], [2, 3]].pick_random()
+		encounter_progresses += segment_one_encounter_pairs
 		
+	var segment_one_encounter_lane: int 
+	var segment_one_encounter_progress: int
+	var segment_two_encounter_lane: int
+	var segment_two_encounter_progress: int
 	var is_divinus: bool = Game.isDivinus()
-	var shops: Array = []
-	if getWorldDifficulty() == 1: shops = [SegmentNode.new(6, false, is_divinus)]
-	elif !is_divinus: shops = [SegmentNode.new(6, false), SegmentNode.new(6, true)]
-	elif is_divinus:
-		var is_segment_one_shop_holy: int = int(Random.getBool())
-		shops = [SegmentNode.new(6, true, is_segment_one_shop_holy),\
-			SegmentNode.new(6, false, abs(is_segment_one_shop_holy - 1))]
-		
-	#var segment_one_encounter_limit: int = getWorld().getEncounterAmount()
-	#var segment_two_encounter_limit: int = getWorld().getEncounterAmount()
-	var non_fights_assigned: Array = []
-	#if getWorldDifficulty() == 1:
-		#segment_one_encounter_limit = min(segment_one_encounter_limit, 1)
 	
 	for empty_spot: EmptyMapNode in empty_spots:
-		var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
+		#var is_holy: bool = empty_spot.links.any(func(x: EmptyMapNodeLink): return x.is_holy)
 		match empty_spot.progress:
-			0:
-				empty_spot.id = 1
-				continue
-			1:
-				if getWorldDifficulty() == 1:
-					empty_spot.id = 3 if getWorldDifficulty() > 1 else (6 if Helper.admin_datastore.spawn_instead_of_shop_id == 0 else Helper.admin_datastore.spawn_instead_of_shop_id)
-					continue
-			2:
-				if getWorldDifficulty() == 1:
-					empty_spot.id = 3
-					continue
-			5:
-				empty_spot.id = 7
-				continue
+			0: empty_spot.id = 1
+			5: empty_spot.id = 7
 			10:
 				if is_divinus: empty_spot.id = 10
 				else: empty_spot.id = 8
-				continue
 			11:
 				if is_divinus: empty_spot.id = 8
 				else: empty_spot.id = 2
-				continue
-			12:
-				empty_spot.id = 2
-				continue
+			12: empty_spot.id = 2
 			_:
-				if non_fights_assigned.is_empty() or non_fights_assigned.all(func(x: EmptyMapNode): return !x.isLink(empty_spot)):
-					if onSelectUniqueNodeGeneration(unique_nodes, empty_spot):
-						non_fights_assigned.append(empty_spot)
-						continue
-					elif onSelectShop(shops, empty_spot, is_holy):
-						non_fights_assigned.append(empty_spot)
-						continue
-		
-		#if (empty_spot.isSegmentOne() and segment_one_encounter_limit > 0) or (empty_spot.isSegmentTwo() and segment_two_encounter_limit): # Roll an encounter
-			#if non_fights_assigned.is_empty() or non_fights_assigned.all(func(x: EmptyMapNode): return !x.isLink(empty_spot)):
-				#non_fights_assigned.append(empty_spot)
-				#empty_spot.id = 5
-				#
-				#if empty_spot.isSegmentOne(): segment_one_encounter_limit -= 1
-				#else: segment_two_encounter_limit -= 1
-				#
-				#continue
-		empty_spot.id = 3
-		
-func onSelectUniqueNodeGeneration(unique_nodes: Array, empty_spot: EmptyMapNode) -> bool:
-	for segment_node in unique_nodes.filter(func(x: SegmentNode):\
-		return (x.segment_one and empty_spot.progress < 5) or (!x.segment_one and empty_spot.progress > 5)):
-		empty_spot.id = segment_node.id
-		unique_nodes.erase(segment_node)
-		return true
-	return false
-		
-func onSelectShop(shops: Array, empty_spot: EmptyMapNode, is_holy: bool) -> bool:
-	for segment_node in shops.filter(func(x: SegmentNode):\
-		return (x.segment_one and empty_spot.progress < 5) or (!x.segment_one and empty_spot.progress > 5)\
-		and is_holy == x.is_holy):
-		empty_spot.id = 6
-		shops.erase(segment_node)
-		return true
-	return false
-		
+				if empty_spot.progress == 1 and getWorldDifficulty() == 1:
+					empty_spot.id = (6 if Helper.admin_datastore.spawn_instead_of_shop_id == 0 else Helper.admin_datastore.spawn_instead_of_shop_id)
+				elif empty_spot.progress == 2 and getWorldDifficulty() == 1: empty_spot.id = 3
+				elif empty_spot.progress in encounter_progresses:
+					if empty_spot.progress < 5 and getWorldDifficulty() == 1: # First half of world one is two encounters
+						setRandomEncounterId(empty_spot, used_ids, unique_nodes)
+					elif empty_spot.isSegmentOne() and segment_one_encounter_lane == 0:
+						segment_one_encounter_lane = empty_spot.lane
+						segment_one_encounter_progress = empty_spot.progress
+						setRandomEncounterId(empty_spot, used_ids, unique_nodes)
+					elif empty_spot.isSegmentTwo() and segment_two_encounter_lane == 0:
+						segment_two_encounter_lane = empty_spot.lane
+						segment_two_encounter_progress = empty_spot.progress
+						setRandomEncounterId(empty_spot, used_ids, unique_nodes)
+					elif empty_spot.isSegmentOne():
+						setSegmentEncounterShopId(empty_spot, segment_one_encounter_progress, segment_one_encounter_lane, used_ids, unique_nodes)
+					elif empty_spot.isSegmentTwo():
+						setSegmentEncounterShopId(empty_spot, segment_two_encounter_progress, segment_two_encounter_lane, used_ids, unique_nodes)
+				else: empty_spot.id = 3
+				
+func setSegmentEncounterShopId(empty_spot: EmptyMapNode, segment_progress: int, segment_lane: int, used_ids: Array, unique_nodes: Array) -> void:
+	if empty_spot.lane != segment_lane and empty_spot.progress == segment_progress:
+		setRandomShopId(empty_spot, used_ids)
+	elif empty_spot.lane != segment_lane and empty_spot.progress != segment_progress:
+		setRandomEncounterId(empty_spot, used_ids, unique_nodes)
+	elif empty_spot.lane == segment_lane and empty_spot.progress != segment_progress:
+		setRandomShopId(empty_spot, used_ids)
+				
+func setRandomShopId(empty_spot: EmptyMapNode, used_ids: Array) -> void:
+	empty_spot.id = Helper.getFofInfoArray(MapNodeInfo).filter(func(x: MapNodeInfo):\
+		return x.is_shop and !x.is_unique and x.id not in used_ids).pick_random().id
+	
+func setRandomEncounterId(empty_spot: EmptyMapNode, used_ids: Array, unique_nodes: Array) -> void:
+	if unique_nodes.any(func(x: int): return x == 9) and empty_spot.progress >= 8: # Bounty Board
+		empty_spot.id = 9
+		unique_nodes.erase(9)
+		return
+	empty_spot.id = Helper.getFofInfoArray(MapNodeInfo).filter(func(x: MapNodeInfo):\
+		return x.is_encounter and !x.is_shop and !x.is_unique and x.id not in used_ids).pick_random().id
 #endregion
 
 #region Elites
@@ -433,7 +413,7 @@ func setRewards(is_win: bool) -> void:
 		if add_boon: items.append(onAddBoonReward())
 		items.append(onAddCardRewards(active_level, is_epic, is_elite, level_preview))
 		
-		if add_tool: items.append(onAddToolReward(active_level))
+		if add_tool: items.append(onAddToolReward())
 			
 		var rewards := Rewards.new(items.map(func(x: FofGD): return Reward.new(x)))
 		rewards.setInfo(active_level)
@@ -451,26 +431,26 @@ func getAddBoonAddTool(fight_rewards_datastore: FightRewardsDatastore, is_elite:
 	var add_boon: bool
 	
 	if !is_elite and !is_epic:
-		add_tool = Random.rollFloat(fight_rewards_datastore.tool_odds / 100.0)
-		add_boon = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds) / 100.0)
+		add_tool = Random.rollFloat(fight_rewards_datastore.tool_odds)
+		add_boon = Random.rollFloat(getDivinusBoonOdds(fight_rewards_datastore.boon_odds))
 	else: # 50 / 50 chance if divinus, otherwise 66% 33% chance
-		add_tool = Random.rollFloat((fight_rewards_datastore.tool_odds / 100.0) if !Game.isDivinus() else 0.5)
+		add_tool = Random.rollFloat((fight_rewards_datastore.tool_odds) if !Game.isDivinus() else 0.5)
 		if !add_tool: add_boon = true
 			
-		if Random.rollFloat(getWorld().elite_fight_rewards_second_item_odds / 100.0):
+		if Random.rollFloat(getWorld().elite_fight_rewards_second_item_odds):
 			add_tool = true
 			add_boon = true
 	return [add_boon, add_tool]
 	
-func onAddToolReward(_active_level: LevelGD) -> ToolGD:
-	var tool_data: SavedDataTool = Random.getRandomFofByOdds(ToolInfo)
-	tool_data.tier = getWorldDifficulty()
-	var Tool: ToolGD = SavedData.onLoadModel(tool_data, _active_level)
+func onAddToolReward() -> ToolGD:
+	var is_elite: bool = active_level.isEliteOrEpic()
+	var tool_data: SavedDataTool = Random.getRandomToolData(getWorld().getToolRewardRarityOdds(is_elite), getWorld().getToolTierUpOdds(is_elite))
+	var Tool: ToolGD = SavedData.onLoadModel(tool_data, active_level)
 	return Tool
 	
 func onAddBoonReward() -> BoonGD:
-	var boon_data: SavedDataBoon = Random.getRandomFofByOdds(BoonInfo)
-	boon_data.tier = getWorldDifficulty()
+	var is_elite: bool = active_level.isEliteOrEpic()
+	var boon_data: SavedDataBoon = Random.getRandomBoonData(getWorld().getBoonRewardRarityOdds(is_elite), getWorld().getBoonRewardTierUpOdds(is_elite))
 	if boon_data != null:
 		var Boon: BoonGD = SavedData.onLoadModel(boon_data, active_level)
 		return Boon
@@ -494,37 +474,43 @@ func onAddShillingReward(fight_rewards_datastore: FightRewardsDatastore) -> Acti
 	
 func onRollRegularCardRewards() -> Array:
 	var base_tier: int = getWorldDifficulty()
-	var enemy_cards: Array = []
-	var enemy_ids: Array = basic_card_ids.duplicate()
+	var card_ids: Array = basic_card_ids.duplicate()
+	var card_rewards: Array = []
+	var fight_rewards_datastore: FightRewardsDatastore = getWorld().getFightRewardsDatastore()
+	var card_rarity_odds: RarityOddsDatastore = fight_rewards_datastore.getCardRarityOdds()
+	var tool_rarity_odds: RarityOddsDatastore = fight_rewards_datastore.getCardToolRarityOdds()
+	var tool_odds: float = fight_rewards_datastore.getCardToolOdds()
+	var tool_tier_up_odds: float = fight_rewards_datastore.getCardToolTierUpOdds()
+	var tier_up_odds: float = fight_rewards_datastore.getCardTierUpOdds()
+	
 	for i in range(Game.CARD_REWARD_DEFAULT_AMOUNT):
-		var odds: Dictionary = getWorld().base_rarity_odds.getDictionary()
-		var tool_chance: float = getWorld().tool_enemy_spawn_rate / 100.0
-		var tool_tier_up_odds: float = getWorld().base_tier_up_rate / 100.0
-		var tool_odds: Dictionary = getWorld().base_rarity_odds.getDictionary()
-		var tier_up_odds: float = getWorld().base_tier_up_rate / 100.0
-		var card_data: SavedDataCard = Random.getRandomCardData(enemy_ids, odds, tool_chance, tool_tier_up_odds, tool_odds, tier_up_odds, base_tier)
-		
+		var card_data: SavedDataCard = Random.getRandomCardData(card_ids, card_rarity_odds, tool_rarity_odds,\
+			base_tier, tier_up_odds, tool_odds, tool_tier_up_odds)
 		card_data.team = 1
-		enemy_ids.erase(card_data.id)
-		enemy_cards.append(SavedData.onLoadModel(card_data, active_level))
-	return enemy_cards
+		card_ids.erase(card_data.id)
+		card_rewards.append(SavedData.onLoadModel(card_data, active_level))
+	return card_rewards
 	
 func onRollEpicCardRewards() -> Array:
 	var base_tier: int = getWorldDifficulty()
-	var enemy_cards: Array = []
+	var card_rewards: Array = []
+	var card_ids: Array = []
 	var enemy_ids: Array = basic_card_ids.duplicate()
+	var elite_fight_rewards_datastore: FightRewardsDatastore = getWorld().getEliteFightRewardsDatastore()
+	var card_rarity_odds: RarityOddsDatastore = elite_fight_rewards_datastore.getCardRarityOdds()
+	var tool_rarity_odds: RarityOddsDatastore = elite_fight_rewards_datastore.getCardToolRarityOdds()
+	var tool_odds: float = elite_fight_rewards_datastore.getCardToolOdds()
+	var tool_tier_up_odds: float = elite_fight_rewards_datastore.getCardToolTierUpOdds()
+	var tier_up_odds: float = elite_fight_rewards_datastore.getCardTierUpOdds()
+	
 	for i in range(EPIC_CARD_REWARDS_CARD_AMOUNT):
-		var odds: Dictionary = getWorld().enemy_spawn_rarity_odds.getDictionary()
-		var tool_chance: float = getWorld().tool_enemy_spawn_rate / 100.0
-		var tool_tier_up_odds: float = getWorld().tool_enemy_spawn_rate_tier_up / 100.0
-		var tool_odds: Dictionary = getWorld().tool_enemy_spawn_rarity_odds.getDictionary()
-		var tier_up_odds: float = getWorld().elite_enemy_tier_up_rate / 100.0
-		var card_data: SavedDataCard = Random.getRandomCardData(enemy_ids, odds, tool_chance, tool_tier_up_odds, tool_odds, tier_up_odds, base_tier)
+		var card_data: SavedDataCard = Random.getRandomCardData(card_ids, card_rarity_odds, tool_rarity_odds,\
+			base_tier, tier_up_odds, tool_odds, tool_tier_up_odds)
 		
 		card_data.team = 1
-		enemy_ids.erase(card_data.id)
-		enemy_cards.append(SavedData.onLoadModel(card_data, active_level))
-	return enemy_cards
+		card_ids.erase(card_data.id)
+		card_rewards.append(SavedData.onLoadModel(card_data, active_level))
+	return card_rewards
 	
 func getEpicFightRewards() -> Array:
 	var boss_card: EpicCardGD = active_level.getBoss()
@@ -568,22 +554,22 @@ func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, pro
 		
 	if card_info.rarity != Game.Rarities.EXALT:
 		var tier_up_rate: float = getWorld().enemy_tier_up_rate if !is_elite else getWorld().elite_enemy_tier_up_rate
-		var tier_up_card: bool = Random.rollFloat(tier_up_rate / 100.0)
+		var tier_up_card: bool = Random.rollFloat(tier_up_rate)
 		if tier_up_card: card_data.onTierUp()
 	
 	var tool_spawn_rate: float = getWorld().tool_enemy_spawn_rate
-	var add_tool: bool = Random.rollFloat(tool_spawn_rate / 100.0)
+	var add_tool: bool = Random.rollFloat(tool_spawn_rate)
 	if !add_tool:
 		Game.setCardDataFromInfo(card_data, card_info)
 		return card_data
 	
-	card_data.tool_data = Random.getRandomFofByOdds(ToolInfo, getWorld().tool_enemy_spawn_rarity_odds.getDictionary())
+	card_data.tool_data = Random.getRandomToolData(getWorld().getToolEnemySpawnRarityOdds(), getWorld().getToolEnemySpawnTierOdds())
 	Game.setCardDataFromInfo(card_data, card_info)
 	return card_data
 	
 func getCardsByRarity(original_cards: Array) -> Array:
 	@warning_ignore("int_as_enum_without_cast")
-	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(getWorld().enemy_spawn_rarity_odds.getDictionary())))
+	var rarity: Game.Rarities = int(Random.getRandomKey(getWorld().getEnemySpawnRarityOdds().getDictionary()))
 	var cards: Array = original_cards.filter(func(x: CardInfo): return x.rarity == rarity)
 	if cards.is_empty(): return getCardsByRarity(original_cards)
 	return cards

@@ -14,5 +14,4 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	save_file = _save_file
 	map_node = _map_node
 
-func onDimBackground() -> bool:
-	return false
+func onFadeBackground() -> bool: return false

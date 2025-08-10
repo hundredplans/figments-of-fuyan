@@ -17,7 +17,9 @@ void fragment() {
 	float d = mod(pixel.x + pixel.y, spacing);
 	if (d < line_width){
 		float t = (sin(TIME * color_speed) + 1.0) * 0.5;
-		COLOR = mix(lowest_color, highest_color, t);
+		vec4 combined_color =  mix(lowest_color, highest_color, t);
+		combined_color.a = COLOR.a;
+		COLOR = combined_color;
 	}
 	else {
 		discard;

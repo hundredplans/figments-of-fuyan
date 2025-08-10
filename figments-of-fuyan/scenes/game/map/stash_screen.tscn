@@ -1,8 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=27 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
+[ext_resource type="PackedScene" uid="uid://chlcllps1hfda" path="res://scenes/game/map_nodes/screens/shop_screen/price_label.tscn" id="2_cajyl"]
 [ext_resource type="PackedScene" uid="uid://c4feu28rxx6ev" path="res://scenes/game/map/deck_slot_ui.tscn" id="2_dd1xv"]
+[ext_resource type="Texture2D" uid="uid://d0ckaebv8qia0" path="res://assets/sprites/ui/scene_specific/stash_screen/hand_closed.png" id="2_iniqv"]
+[ext_resource type="PackedScene" uid="uid://cjlqbuh73ripg" path="res://scenes/game/map_nodes/screens/shop_screen/shillings_effect.tscn" id="2_l4vsq"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_sli05"]
 [ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="3_jpe4s"]
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
@@ -16,6 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://daf1o5n16hkbe" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_area.png" id="14_504a2"]
 [ext_resource type="Texture2D" uid="uid://by2sd6erbaes8" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_energy.png" id="15_cajyl"]
 [ext_resource type="Texture2D" uid="uid://b6u27mcqxdyc5" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_rarity.png" id="16_l4vsq"]
+[ext_resource type="Material" uid="uid://dfy3xmbj23xht" path="res://resources/materials/ui/sell_zone.tres" id="17_y0ya4"]
+[ext_resource type="Texture2D" uid="uid://nosox6pxp86q" path="res://assets/sprites/ui/scene_specific/stash_screen/hand.png" id="18_504a2"]
 
 [sub_resource type="Animation" id="Animation_jpe4s"]
 resource_name = "EnergyLimitReached"
@@ -121,6 +126,30 @@ tracks/3/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SellZone:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SellZoneHand:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_dd1xv"]
 resource_name = "SlideUIElements"
@@ -146,6 +175,9 @@ _data = {
 &"SlideUIElements": SubResource("Animation_dd1xv")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cajyl"]
+size = Vector2(181, 900)
+
 [node name="StashScreen" type="Control"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
@@ -154,6 +186,10 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 script = ExtResource("1_vh71u")
+HAND_CLOSED_TX = ExtResource("2_iniqv")
+HAND_OPEN_TX = ExtResource("18_504a2")
+ShillingsEffectPacked = ExtResource("2_l4vsq")
+PriceLabelPacked = ExtResource("2_cajyl")
 DeckSlotPacked = ExtResource("2_dd1xv")
 
 [node name="AniPlayer" type="AnimationPlayer" parent="."]
@@ -315,7 +351,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_filter = 0
+mouse_filter = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 2
@@ -372,7 +408,7 @@ texture_normal = ExtResource("16_l4vsq")
 [node name="CardUIRaycast" type="RayCast2D" parent="."]
 unique_name_in_owner = true
 target_position = Vector2(0, 0)
-collision_mask = 4
+collision_mask = 20
 hit_from_inside = true
 collide_with_areas = true
 collide_with_bodies = false
@@ -380,18 +416,72 @@ collide_with_bodies = false
 [node name="DeckSlotUIRaycast" type="RayCast2D" parent="."]
 unique_name_in_owner = true
 target_position = Vector2(0, 0)
-collision_mask = 8
+collision_mask = 24
 hit_from_inside = true
 collide_with_areas = true
 collide_with_bodies = false
 
+[node name="SellZoneRaycast" type="RayCast2D" parent="."]
+unique_name_in_owner = true
+target_position = Vector2(0, 0)
+collision_mask = 16
+hit_from_inside = true
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="SellZone" type="Control" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_left = 1740.0
+offset_top = 147.0
+offset_right = 1920.0
+offset_bottom = 1047.0
+
+[node name="ColorRect" type="ColorRect" parent="SellZone"]
+material = ExtResource("17_y0ya4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.638955, 1.34766e-06, 1)
+
+[node name="Label" type="Label" parent="SellZone"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+offset_left = 180.0
+offset_right = 980.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.57079
+text = "Sell  Zone"
+label_settings = ExtResource("4_sli05")
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="SellZoneArea" type="Area2D" parent="SellZone"]
+unique_name_in_owner = true
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SellZone/SellZoneArea"]
+position = Vector2(90.5, 450)
+shape = SubResource("RectangleShape2D_cajyl")
+
+[node name="SellZoneHand" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+top_level = true
+position = Vector2(1940, 567)
+texture = ExtResource("18_504a2")
+
 [connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
-[connection signal="mouse_entered" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onExitButtonPressed"]
-[connection signal="mouse_entered" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onSortByTool"]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByTierButton" to="." method="onMouseInUI"]

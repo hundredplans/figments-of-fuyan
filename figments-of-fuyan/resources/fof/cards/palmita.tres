@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=27 format=3 uid="uid://1kd1ppwnuqtn"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3 uid="uid://1kd1ppwnuqtn"]
 
 [ext_resource type="Image" uid="uid://cp6mthlsnebq0" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
 [ext_resource type="Texture2D" uid="uid://casdghvavfct7" path="res://assets/sprites/game/cards/art_mini/palmita.png" id="2_doo6g"]
@@ -79,25 +79,16 @@ description_datastore = SubResource("Resource_ow28b")
 
 [sub_resource type="Resource" id="Resource_vyjta"]
 script = ExtResource("13_iuas3")
-description = "MOBILE
-ABILITY: This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+description = "ABILITY: This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
 default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_7qr8q"]
-script = ExtResource("2_gibdl")
-display_number = -1
-id = 3
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_a4xqi"]
 script = ExtResource("12_a4xqi")
 attack = 1
-health = 1
+health = 2
 speed = 3
 energy = 1
-traits = Array[ExtResource("2_gibdl")]([SubResource("Resource_7qr8q")])
+traits = Array[ExtResource("2_gibdl")]([])
 active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_5y68w")])
 description_datastore = SubResource("Resource_vyjta")
 
@@ -113,25 +104,16 @@ metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_iuas3"]
 script = ExtResource("13_iuas3")
-description = "MOBILE
-ABILITY: This dies to give an adjacent ally +2 HP instantly and when it RAMPAGES"
+description = "ABILITY: This dies to give an adjacent ally +2 HP instantly and when it RAMPAGES"
 default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_fpa8y"]
-script = ExtResource("2_gibdl")
-display_number = -1
-id = 3
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_pn3bc"]
 script = ExtResource("12_a4xqi")
 attack = 1
-health = 1
+health = 2
 speed = 3
 energy = 1
-traits = Array[ExtResource("2_gibdl")]([SubResource("Resource_fpa8y")])
+traits = Array[ExtResource("2_gibdl")]([])
 active_abilities = Array[ExtResource("11_1cb68")]([SubResource("Resource_jjy02")])
 description_datastore = SubResource("Resource_iuas3")
 

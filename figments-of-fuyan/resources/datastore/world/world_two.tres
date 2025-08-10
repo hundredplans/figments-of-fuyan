@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="WorldDatastore" load_steps=18 format=3 uid="uid://c8epcaodidvwx"]
+[gd_resource type="Resource" script_class="WorldDatastore" load_steps=11 format=3 uid="uid://c8epcaodidvwx"]
 
 [ext_resource type="Script" uid="uid://b4u5t7a8bjufi" path="res://scripts/common/rewards/rarity_odds_datastore.gd" id="1_adcua"]
 [ext_resource type="Script" uid="uid://b86r3lxt1v8fp" path="res://scripts/fof_info/world_datastore.gd" id="2_6vuag"]
 [ext_resource type="Script" uid="uid://bl6dfw0necxsf" path="res://scripts/common/rewards/fight_rewards_datastore.gd" id="2_imoxh"]
-[ext_resource type="Script" uid="uid://6cx111b6rsmf" path="res://scripts/common/price/rarity_price_datastore.gd" id="2_n1e13"]
+[ext_resource type="Script" uid="uid://6cx111b6rsmf" path="res://scripts/common/shop/rarity_price_datastore.gd" id="2_n1e13"]
 
 [sub_resource type="Resource" id="Resource_imoxh"]
 script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
+common = 0.6
+rare = 0.35
+exalt = 0.05
 miniboss = 0.0
 boss = 0.0
 metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
@@ -32,92 +32,31 @@ miniboss = 45
 boss = 55
 metadata/_custom_type_script = "uid://6cx111b6rsmf"
 
-[sub_resource type="Resource" id="Resource_v4uvf"]
-script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
-miniboss = 0.0
-boss = 0.0
-metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
-
-[sub_resource type="Resource" id="Resource_5pyno"]
-script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
-miniboss = 0.0
-boss = 0.0
-metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
-
 [sub_resource type="Resource" id="Resource_ikwl5"]
 script = ExtResource("2_imoxh")
 shillings_min = 20
 shillings_max = 24
-boon_rarity_odds = SubResource("Resource_v4uvf")
-boon_odds = 33.0
-boon_ascension_rate = 7.5
-tool_rarity_odds = SubResource("Resource_5pyno")
-tool_odds = 67.0
-tool_ascension_rate = 7.5
+boon_odds = 0.33
+tool_odds = 0.67
+tool_tier_up_rate = 0.09
+boon_tier_up_rate = 0.09
+card_tier_up_rate = 0.09
+card_tool_odds = 0.1
+card_tool_tier_up_rate = 0.09
 metadata/_custom_type_script = "uid://bl6dfw0necxsf"
-
-[sub_resource type="Resource" id="Resource_n1e13"]
-script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
-miniboss = 0.0
-boss = 0.0
-metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
-
-[sub_resource type="Resource" id="Resource_2v14h"]
-script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
-miniboss = 0.0
-boss = 0.0
-metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
-
-[sub_resource type="Resource" id="Resource_7l4pm"]
-script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
-miniboss = 0.0
-boss = 0.0
-metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
 
 [sub_resource type="Resource" id="Resource_stl2c"]
 script = ExtResource("2_imoxh")
 shillings_min = 14
 shillings_max = 18
-boon_rarity_odds = SubResource("Resource_2v14h")
-boon_odds = 10.0
-boon_ascension_rate = 5.0
-tool_rarity_odds = SubResource("Resource_7l4pm")
-tool_odds = 20.0
-tool_ascension_rate = 5.0
+boon_odds = 0.1
+tool_odds = 0.2
+tool_tier_up_rate = 0.06
+boon_tier_up_rate = 0.06
+card_tier_up_rate = 0.06
+card_tool_odds = 0.1
+card_tool_tier_up_rate = 0.09
 metadata/_custom_type_script = "uid://bl6dfw0necxsf"
-
-[sub_resource type="Resource" id="Resource_mehiu"]
-script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
-miniboss = 0.0
-boss = 0.0
-metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
-
-[sub_resource type="Resource" id="Resource_2p4pu"]
-script = ExtResource("1_adcua")
-common = 47.5
-rare = 45.0
-exalt = 7.5
-miniboss = 0.0
-boss = 0.0
-metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
 
 [sub_resource type="Resource" id="Resource_avty1"]
 script = ExtResource("2_n1e13")
@@ -132,35 +71,21 @@ metadata/_custom_type_script = "uid://6cx111b6rsmf"
 script = ExtResource("2_6vuag")
 world = 2
 base_rarity_odds = SubResource("Resource_imoxh")
-base_tier_up_rate = 6.0
-enemy_spawn_rarity_odds = SubResource("Resource_n1e13")
+base_tier_up_rate = 0.06
 fight_rewards = SubResource("Resource_stl2c")
 elite_fight_rewards = SubResource("Resource_ikwl5")
-elite_fight_rewards_second_item_odds = 10.0
+elite_fight_rewards_second_item_odds = 0.1
 budget_for_fights = Array[int]([11, 12, 13, 16, 18, 18, 19, 21, 22, 25, 27])
 elite_fights_budget_offset = 2
-enemy_tier_up_rate = 7.5
-elite_enemy_tier_up_rate = 12.5
-tool_enemy_spawn_rarity_odds = SubResource("Resource_2p4pu")
-tool_enemy_spawn_rate = 15.0
-tool_enemy_spawn_rate_tier_up = 15.0
+enemy_tier_up_rate = 0.075
+elite_enemy_tier_up_rate = 0.1
+tool_enemy_spawn_rate = 0.15
+tool_enemy_spawn_rate_tier_up = 0.15
 card_rarity_prices = SubResource("Resource_tnqnj")
 tool_rarity_prices = SubResource("Resource_avty1")
 boon_rarity_prices = SubResource("Resource_hsfgb")
 foreign_card_base_price_increase = 4
-transform_by_rarity_price = 20
-transform_by_cost_price = 25
-remove_card_price = 15
-shop_rarity_odds = SubResource("Resource_mehiu")
 default_shop_variance = 3
+card_reward_tool_chance = 0.0
 UPGRADE_REGULAR_FIGHT = 0.125
-ENCOUNTER_COUNT_FIGHT_ODDS = {
-"1": 0,
-"2": 0,
-"3": 0.25,
-"4": 0.5,
-"5": 1.0
-}
 MIN_ELITE_FIGHTS = 2
-MIN_ENCOUNTER_AMOUNT = 1
-MAX_ENCOUNTER_AMOUNT = 2

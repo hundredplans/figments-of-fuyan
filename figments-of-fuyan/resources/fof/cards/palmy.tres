@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://b5l7g2cmbrkwb"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://b5l7g2cmbrkwb"]
 
 [ext_resource type="Resource" uid="uid://27tqk2ax0xx2" path="res://resources/fof/archetypes/scout.tres" id="2_1gpix"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_bypfo"]
@@ -75,8 +75,17 @@ description_datastore = SubResource("Resource_ctje0")
 
 [sub_resource type="Resource" id="Resource_onfpg"]
 script = ExtResource("13_267bq")
-description = "TRAUMA [[X]]: Gain +1 SPD"
+description = "MOBILE
+TRAUMA [[X]]: Gain +1 SPD"
 default_values = Array[int]([2])
+
+[sub_resource type="Resource" id="Resource_welj0"]
+script = ExtResource("3_6dcot")
+display_number = -1
+id = 3
+first_init = true
+public_id = 0
+metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_2dtej"]
 script = ExtResource("12_avipo")
@@ -84,7 +93,7 @@ attack = 2
 health = 2
 speed = 3
 energy = 1
-traits = Array[ExtResource("3_6dcot")]([])
+traits = Array[ExtResource("3_6dcot")]([SubResource("Resource_welj0")])
 active_abilities = Array[ExtResource("11_welj0")]([])
 description_datastore = SubResource("Resource_onfpg")
 

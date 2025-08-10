@@ -24,7 +24,7 @@ func getMusicFromEnum(enum_value: int) -> AudioStream:
 	return null
 
 func onPlayMusic(enum_value: int) -> void:
-	if enum_value == current_enum_value: return
+	if enum_value == current_enum_value and MusicPlayer.is_playing(): return
 	current_enum_value = enum_value
 	if Helper.admin_datastore.NO_MUSIC: return
 	

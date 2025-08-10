@@ -479,12 +479,11 @@ collision_mask = 0
 position = Vector2(44, 78)
 polygon = PackedVector2Array(-15, -15, 29, -52, 60, -63, 112, -62, 156, -46, 184, -16, 205, 31, 205, 75, 193, 108, 177, 131, 191, 149, 189, 174, 171, 188, 172, 229, 174, 262, 190, 267, 184, 307, 173, 315, 140, 311, 106, 316, 75, 311, 43, 317, 10, 312, -21, 317, -29, 279, 3, 269, -6, 207, -2, 151, -33, 131, -22, 93, -33, 44)
 
-[connection signal="mouse_entered" from="Art/AreaBackground" to="." method="onMouseHovered" binds= [true]]
-[connection signal="mouse_exited" from="Art/AreaBackground" to="." method="onMouseHovered" binds= [false]]
-[connection signal="mouse_entered" from="Art/Background" to="." method="onMouseHovered" binds= [true]]
-[connection signal="mouse_exited" from="Art/Background" to="." method="onMouseHovered" binds= [false]]
-[connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseHovered" binds= [true]]
-[connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseHovered" binds= [false]]
-[connection signal="pressed" from="Stats/ToolControl/ToolIcon" to="." method="onToolIconPressed"]
+[connection signal="mouse_entered" from="Art/AreaBackground" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Art/AreaBackground" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="Art/Background" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Art/Background" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseInUI" binds= [false]]
 [connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseHovered"]
+[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInUI"]

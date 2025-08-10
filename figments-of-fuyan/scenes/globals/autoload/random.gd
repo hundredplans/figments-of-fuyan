@@ -20,12 +20,6 @@ static func getRandomKeyVariant(odds: Dictionary) -> Variant:
 		total += odds[key]
 	push_error("Odds don't add up to 1")
 	return null
-	
-static func onConvertPercentOdds(odds: Dictionary) -> Dictionary:
-	var new_odds: Dictionary = {}
-	for key in odds.keys():
-		new_odds[key] = (odds[key] / 100.0)
-	return new_odds
 
 static func getBool() -> bool:
 	return randf() > 0.5
@@ -33,50 +27,64 @@ static func getBool() -> bool:
 static func rollFloat(x: float) -> bool:
 	return x > randf()
 
-static func getRandomFofInRarity(type: GDScript, rarity: Game.Rarities) -> SavedData:
-	var arr: Array = Helper.getFofInfoArray(type)
-	arr = arr.filter(func(x: FofInfo): return x.rarity == rarity)
+static func getRandomCardData(keep_ids: Array, odds_datastore: RarityOddsDatastore, tool_odds_datastore: RarityOddsDatastore,\
+base_tier: int, tier_up_odds: float, tool_odds: float, tool_tier_up_odds: float) -> SavedDataCard:
+	if base_tier == 0: base_tier = Game.getArea().getWorldDifficulty()
+	var odds: Dictionary = odds_datastore.getDictionary()
 	
-	if type == BoonInfo:
-		var boon_ids: Array = Game.save_file.boons.filter(func(x: BoonGD): return x.tier == 4).map(func(y: BoonGD): return y.info.id)
-		arr = arr.filter(func(x: BoonInfo): return x.id not in boon_ids)
-	
-	if arr.is_empty(): return null
-	var info: FofInfo = arr.pick_random()
-	
-	var data: SavedData = Game.setCardDataFromInfo(SavedDataCard.new(info.id, true), info) if info is CardInfo else info.saved_data.new(info.id, true)
-	return data
-	
-static func getRandomFofByOdds(type: GDScript, odds: Dictionary = Game.area.getWorld().base_rarity_odds.getDictionary()) -> SavedData:
 	@warning_ignore("int_as_enum_without_cast")
-	var rarity: Game.Rarities = int(Random.getRandomKey(Random.onConvertPercentOdds(odds)))
-	return Random.getRandomFofInRarity(type, rarity)
+	var rarity: Game.Rarities = int(Random.getRandomKey(odds))
+	var card_infos: Array = Helper.getFofInfoArray(CardInfo)
+	var card_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_CARD_TIER)
 	
-# Area id = 0 if we want all cards
-static func getRandomCardData(ids: Array, odds: Dictionary, tool_chance: float, tool_tier_up_rate: float, tool_odds: Dictionary, tier_up_rate: float, base_tier: int) -> SavedDataCard:
-	var attempts: float = 0
-	var total_attempts: float = 16
-	while(attempts < total_attempts):
-		var card_infos: Array = ids.map(func(x: int): return Helper.getFofInfoID(CardInfo, x))
-		
-		@warning_ignore("int_as_enum_without_cast")
-		var rarity: Game.Rarities = int(getRandomKey(onConvertPercentOdds(odds)))
-		card_infos = card_infos.filter(func(x: CardInfo): return x.rarity == rarity)
-		
-		if card_infos.is_empty(): attempts += 1; break
-		var chosen_info: CardInfo = card_infos.pick_random()
-		
-		var tier_up_card: bool = rarity != Game.Rarities.EXALT and Random.rollFloat(tier_up_rate)
-		var tool_data: SavedDataTool = null
-		if Random.rollFloat(tool_chance):
-			tool_data = getRandomFofByOdds(ToolInfo, tool_odds)
-			var roll_tool_tier_up: bool = rollFloat(tool_tier_up_rate)
-			tool_data.tier = base_tier
-			if roll_tool_tier_up: tool_data.onTierUp()
-		
-		var tier: int = base_tier
-		if tier_up_card: tier = min(tier + 1, 4)
-		
-		var card_data: SavedDataCard = Game.onCreateBaseCard(chosen_info.id, tier, tool_data)
-		return card_data
-	return null
+	if !keep_ids.is_empty(): card_infos = card_infos.filter(func(x: CardInfo): return x.id in keep_ids)
+	card_infos = card_infos.filter(func(x: CardInfo): return x.rarity == rarity)
+	if card_infos.is_empty(): return null
+	var card_info: CardInfo = card_infos.pick_random()
+	
+	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	card_data.tier = card_tier
+	Game.setCardDataFromInfo(card_data, card_info)
+	
+	if Random.rollFloat(tool_odds):
+		card_data.tool_data = getRandomToolData(tool_odds_datastore, tool_tier_up_odds, base_tier)
+	return card_data
+	
+static func getRandomToolData(odds_datastore: RarityOddsDatastore, tier_up_odds: float,\
+base_tier: int = Game.getArea().getWorldDifficulty(), used_ids: Array = []) -> SavedDataTool:
+	var odds: Dictionary = odds_datastore.getDictionary()
+	@warning_ignore("int_as_enum_without_cast")
+	var rarity: Game.Rarities = int(Random.getRandomKey(odds))
+	var tool_infos: Array = Helper.getFofInfoArray(ToolInfo)
+	var tool_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_TOOL_TIER)
+	tool_infos = tool_infos.filter(func(x: ToolInfo): return x.rarity == rarity)
+	
+	if !used_ids.is_empty():
+		tool_infos = tool_infos.filter(func(x: ToolInfo): return x.id not in used_ids)
+	
+	if tool_infos.is_empty(): return null
+	var tool_info: ToolInfo = tool_infos.pick_random()
+	var tool_data: SavedDataTool = tool_info.saved_data.new(tool_info.id, true)
+	tool_data.tier = tool_tier
+	return tool_data
+	
+static func getRandomBoonData(odds_datastore: RarityOddsDatastore, tier_up_odds: float,\
+base_tier: int = Game.getArea().getWorldDifficulty()) -> SavedDataBoon:
+	var odds: Dictionary = odds_datastore.getDictionary()
+	@warning_ignore("int_as_enum_without_cast")
+	var rarity: Game.Rarities = int(Random.getRandomKey(odds))
+	var boon_infos: Array = Helper.getFofInfoArray(BoonInfo)
+	var boon_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_BOON_TIER)
+	boon_infos = boon_infos.filter(func(x: BoonInfo): return x.rarity == rarity)
+	boon_infos = boon_infos.filter(onBoonDoesntExistAtTier.bind(boon_tier))
+	if boon_infos.is_empty(): return null
+	var boon_info: BoonInfo = boon_infos.pick_random()
+	var boon_data: SavedDataBoon = boon_info.saved_data.new(boon_info.id, true)
+	boon_data.tier = boon_tier
+	return boon_data
+
+static func onBoonDoesntExistAtTier(boon_info: BoonInfo, tier: int) -> bool:
+	var existing_boons: Array = Game.getSaveFile().getBoons()
+	if existing_boons.is_empty(): return true
+	return existing_boons.all(func(x: BoonGD):\
+		return x.info.id != boon_info.id and x.getTier() != tier)

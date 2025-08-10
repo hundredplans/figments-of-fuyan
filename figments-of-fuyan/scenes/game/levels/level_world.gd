@@ -61,8 +61,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	UI.active_effect_box_pressed.connect(onActiveEffectBoxPressed)
 	UI.create_movement_range.connect(onCreateMovementRange)
 	
-	UI.dragged_begin.connect(onCardDraggedBegin)
-	UI.dragged_end.connect(onCardDraggedEnd)
+	UI.drag_begin.connect(onCardDraggedBegin)
+	UI.drag_end.connect(onCardDraggedEnd)
 	
 	area.process_action.connect(onProcessAction)
 	

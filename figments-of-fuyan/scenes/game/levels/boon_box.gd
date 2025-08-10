@@ -4,10 +4,9 @@ extends GridContainer
 signal mouse_in_ui
 
 func onAddBoon(Boon: BoonGD) -> void:
-	var BoonIcon: TextureRect = BoonIconPacked.instantiate()
+	var BoonIcon: Control = BoonIconPacked.instantiate()
 	add_child(BoonIcon)
 	BoonIcon.setInfo(Boon)
-	BoonIcon.mouse_in_ui.connect(onMouseInUI)
 	BoonIcon.setDisabled(Boon.getDisabled())
 
 func onUpdate() -> void:

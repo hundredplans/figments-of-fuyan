@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://c4mlkrj5d1usp"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=26 format=3 uid="uid://c4mlkrj5d1usp"]
 
 [ext_resource type="Texture2D" uid="uid://cj1ihg5ofwain" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="2_1nj2i"]
 [ext_resource type="Image" uid="uid://b8vjfjivxqkpd" path="res://assets/sprites/game/cards/art_pop/havel_rockfoot.png" id="2_f4kx2"]
@@ -55,6 +55,15 @@ traits = Array[ExtResource("2_gdxwm")]([])
 active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_jhexs")])
 description_datastore = SubResource("Resource_xw6wc")
 
+[sub_resource type="Resource" id="Resource_w1cug"]
+script = ExtResource("11_jhexs")
+name = "Blackclad Armor"
+description = "Gain ARMOR [1] and +1 ATT +1 HP per REVENGE triggered"
+max_charges = 1
+camera_type = 0
+charges = 0
+used = false
+
 [sub_resource type="Resource" id="Resource_myut2"]
 script = ExtResource("13_5crwq")
 description = "REVENGE: Gain
@@ -70,8 +79,17 @@ health = 6
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
-active_abilities = Array[ExtResource("11_jhexs")]([])
+active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_w1cug")])
 description_datastore = SubResource("Resource_myut2")
+
+[sub_resource type="Resource" id="Resource_kws7v"]
+script = ExtResource("11_jhexs")
+name = "Blackclad Armor"
+description = "Gain ARMOR [1] and +1 ATT +1 HP per REVENGE triggered"
+max_charges = 1
+camera_type = 0
+charges = 0
+used = false
 
 [sub_resource type="Resource" id="Resource_wkkql"]
 script = ExtResource("13_5crwq")
@@ -88,8 +106,17 @@ health = 7
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
-active_abilities = Array[ExtResource("11_jhexs")]([])
+active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_kws7v")])
 description_datastore = SubResource("Resource_wkkql")
+
+[sub_resource type="Resource" id="Resource_q1sfi"]
+script = ExtResource("11_jhexs")
+name = "Blackclad Armor"
+description = "Gain ARMOR [1] and +1 ATT +1 HP per REVENGE triggered"
+max_charges = 1
+camera_type = 0
+charges = 0
+used = false
 
 [sub_resource type="Resource" id="Resource_5crwq"]
 script = ExtResource("13_5crwq")
@@ -106,7 +133,7 @@ health = 9
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
-active_abilities = Array[ExtResource("11_jhexs")]([])
+active_abilities = Array[ExtResource("11_jhexs")]([SubResource("Resource_q1sfi")])
 description_datastore = SubResource("Resource_5crwq")
 
 [resource]

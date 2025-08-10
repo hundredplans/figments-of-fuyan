@@ -45,6 +45,13 @@ var NUMBER_TO_ROMAN_NUMERAL: Dictionary[int, String] = {
 	10: "X"
 }
 
+const TIER_TO_SHILLINGS_MULTIPLIER: Dictionary[int, float] = {
+	1: 1.0,
+	2: 1.3,
+	3: 1.6,
+	4: 2.0
+}
+
 var TURN_STATES_TO_STRING: Dictionary = {
 	TurnStates.NULL: "Null",
 	TurnStates.PASSED: "Passed",
@@ -65,6 +72,8 @@ var cube_directions: Array[Vector3i] = [
 var tile_face_directions: Array[Vector3] = [
 ]
 
+const SELL_MULT: float = 0.5
+const MAX_CARD_TIER: int = 4
 const MAX_TOOL_TIER: int = 4
 const MAX_BOON_TIER: int = 4
 const CARD_UI_SIZE := Vector2(264, 400)
@@ -458,7 +467,7 @@ func onRemoveCardWithAnimation(Card: CardGD, parent: Control, action_user: FofGD
 	await get_tree().create_timer(REMOVE_CARD_ANIMATION_TIME + REMOVE_CARD_ANIMATION_OFFSET).timeout
 	
 	action_user.onPushAction(RemoveFromDeckAction.new(Card, true))
-	
+		
 func onCreateBaseCard(id: int, tier: int = 1, tool_data: SavedDataTool = null) -> SavedDataCard:
 	var card_data := SavedDataCard.new(id, true)
 	card_data.tier = tier
@@ -647,4 +656,21 @@ func getCubeDirectionsExtra() -> Array:
 	
 func getTierString(tier: int) -> String:
 	return NUMBER_TO_ROMAN_NUMERAL[tier]
+	
+func getTierShillingsMultiplier(tier: int) -> float:
+	return TIER_TO_SHILLINGS_MULTIPLIER[tier]
 #endregion
+
+func getPriceForItem(item: FofGD) -> int:
+	var world: WorldDatastore = Game.getArea().getWorld()
+	var rarity_prices: RarityPriceDatastore
+	if item is BoonGD: rarity_prices = world.getBoonRarityPrices()
+	elif item is ToolGD: rarity_prices = world.getToolRarityPrices()
+	elif item is CardGD: rarity_prices = world.getCardRarityPrices()
+	
+	var sh: int = int(float(rarity_prices.getByRarity(item.getRarity())) * Game.getTierShillingsMultiplier(item.getTier()))
+	if item is CardGD and item.getTool() != null:
+		rarity_prices = world.getToolRarityPrices()
+		var Tool: ToolGD = item.getTool()
+		sh += int(float(rarity_prices.getByRarity(Tool.getRarity())) * Game.getTierShillingsMultiplier(Tool.getTier()))
+	return sh

@@ -54,8 +54,11 @@ func setWantedLabel() -> void:
 func setPriceLabel() -> void:
 	PriceLabel.setText("Price: " + str(map_node.price) + " SH [ +" + str(PRICE_INCREASE) + " SH ]\nDuels are worth [2] kills")
 
-func onDimBackground() -> bool:
+func onFadeBackground() -> bool:
 	return true
+	
+func getFadeBackgroundColor() -> Color:
+	return Color(0.7, 0.7, 0.7)
 
 func _on_leave_button_pressed() -> void:
 	finished.emit()

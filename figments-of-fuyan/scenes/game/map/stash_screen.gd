@@ -5,15 +5,29 @@ signal exit_start
 signal deck_slot_changed
 signal mouse_in_ui
 
+var sellable: bool
 var is_exit_start: bool
 
+const SELL_ZONE_HAND_GRAB_TIME: float = 0.5
+const SELL_ZONE_FADE_TIME: float = 0.25
 const TOOL_ADDED_EXIT_DELAY: float = 1.0
 const ROTATION_SPEED_TO_MIDDLE: float = 10.0
 const RELATIVE_SIDE_FORCE_DIV: float = 15.0
 
+var DragIconUI: TbcUI
 var active_tool_released: bool
 var ActiveToolIcon: Control
+var sellable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.Rarities.EXALT,\
+	Game.Rarities.MINIBOSS, Game.Rarities.BOSS]
 
+@export var HAND_CLOSED_TX: Texture2D
+@export var HAND_OPEN_TX: Texture2D
+
+@onready var SellZoneArea: Area2D = %SellZoneArea
+@onready var SellZoneHand: Sprite2D = %SellZoneHand
+@onready var SellZone: Control = %SellZone
+
+@onready var SellZoneRaycast: RayCast2D = %SellZoneRaycast
 @onready var DeckSlotUIRaycast: RayCast2D = %DeckSlotUIRaycast
 @onready var CardUIRaycast: RayCast2D = %CardUIRaycast
 @onready var EnergyLimitLabel: Label = %EnergyLimitLabel
@@ -30,6 +44,8 @@ var ActiveToolIcon: Control
 
 @onready var BoonBox: Container = %BoonBox
 
+@export var ShillingsEffectPacked: PackedScene
+@export var PriceLabelPacked: PackedScene
 @export var DeckSlotPacked: PackedScene
 
 const DECK_SLOTS_GAP: int = 50
@@ -128,10 +144,8 @@ func onSlotLocked(deck_slot: DeckSlot, state: bool) -> void:
 	deck_slot.is_locked = state
 	
 func onSendToStash(deck_slot: DeckSlot, Card: CardGD) -> void:
-	deck_slot.card_public_id = 0
 	onCreateStashCardUI(Card)
 	onSortBySortType()
-	deck_slot_changed.emit()
 	
 func onSortBySortType() -> void:
 	match sort_type:
@@ -150,12 +164,15 @@ func getDeckContainerDeckUI() -> Array:
 		deck_uis += cont.get_children()
 	return deck_uis
 	
-func onRemoveDeckCard(CardUI: Control, deck_slot: DeckSlot) -> void:
+func onRemoveDeckCard(CardUI: Control, deck_slot: DeckSlot, send_to_stash: bool = true) -> void:
 	var DeckSlotUI: Control = getDeckSlotDeckUI(deck_slot)
 	DeckSlotUI.setCardUI(null)
-	CardUI.Card.onChangeCardPlace(Game.CardPlaces.STASH)
 	CardUI.queue_free()
-	onSendToStash(deck_slot, CardUI.Card)
+	deck_slot.onRemoveCard(send_to_stash)
+	
+	if send_to_stash: onSendToStash(deck_slot, CardUI.Card)
+	
+	deck_slot_changed.emit()
 	setLimitLabels()
 
 func onStashCardHoveredDeckSlot(CardUI: Control, deck_slot: DeckSlot) -> void:
@@ -209,42 +226,55 @@ func onDeckCardUIHoveredDeckSlot(DeckCardUI: Control, other_deck_slot: DeckSlot)
 		onCreateDeckCardUI(OtherCard, getDeckSlotDeckUI(current_deck_slot))
 
 func onCreateStashCardUI(StashCard: CardGD) -> void:
-	var CardUI: Control = StashCard.onCreateCardUI(StashContainer, true, true, self)
+	var CardUI: Control = StashCard.onCreateCardUI(StashContainer, true, true, true)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
-	CardUI.setDraggableTool(true)
-	CardUI.tool_drag_begin.connect(onToolDragBegin)
-	CardUI.tool_drag_end.connect(onToolDragEnd)
-	CardUI.dragged_init.connect(onCardDraggedInit)
-	CardUI.dragged_begin.connect(onCardDraggedBegin.bind(true))
-	CardUI.dragged_finished.connect(onCardDraggedFinished)
-	CardUI.dragged_end.connect(onCardDraggedEnd.bind(true))
+	var ToolIcon: TbcUI = CardUI.getToolIcon()
+	ToolIcon.drag_begin.connect(onToolDragBegin.bind(CardUI))
+	ToolIcon.drag_end.connect(onToolDragEnd.bind(CardUI))
+	ToolIcon.setHoverable(true)
+	ToolIcon.setDraggable(true)
+	CardUI.drag_begin.connect(onCardDraggedBegin.bind(true))
+	CardUI.drag_end.connect(onCardDraggedEnd.bind(true))
 	
 func onCreateDeckCardUI(DeckCard: CardGD, DeckSlotUI: Control) -> void:
 	var CardUI: Control
 	if DeckCard != null:
-		CardUI = DeckCard.onCreateCardUI(DeckSlotUI.getCardUISpot(), true, true, self)
+		CardUI = DeckCard.onCreateCardUI(DeckSlotUI.getCardUISpot(), true, true, true)
 		if CardUI != null:
 			CardUI.mouse_in_ui.connect(onMouseInUI)
-			#CardUI.onChangeBackgroundMouseFilter(false, true)
-			CardUI.setDraggableTool(true)
-			CardUI.dragged_begin.connect(onCardDraggedBegin.bind(false))
-			CardUI.dragged_end.connect(onCardDraggedEnd.bind(false))
-			CardUI.tool_drag_begin.connect(onToolDragBegin)
-			CardUI.tool_drag_end.connect(onToolDragEnd)
+			var ToolIcon: TbcUI = CardUI.getToolIcon()
+			ToolIcon.drag_begin.connect(onToolDragBegin.bind(CardUI))
+			ToolIcon.drag_end.connect(onToolDragEnd.bind(CardUI))
+			ToolIcon.setHoverable(true)
+			ToolIcon.setDraggable(true)
+			CardUI.drag_begin.connect(onCardDraggedBegin.bind(false))
+			CardUI.drag_end.connect(onCardDraggedEnd.bind(false))
 	DeckSlotUI.setCardUI(CardUI)
 	
-func onToolDragBegin(CardUI: Control) -> void:
+func onToolDragBegin(ToolIcon: TbcUI, CardUI: Control) -> void:
+	if ToolIcon.getItem().getRarity() in sellable_rarities:
+		DragIconUI = ToolIcon
+		onShowSellZone()
+		onCreatePriceLabel(ToolIcon, ToolIcon.getItem())
+		
 	CardUI.onChangeBackgroundMouseFilter(false)
 	
-func onToolDragEnd(CardUI: Control, tool_position: Vector2) -> void:
+func onToolDragEnd(ToolIcon: TbcUI, CardUI: Control) -> void:
+	if ToolIcon.getItem().getRarity() in sellable_rarities:
+		DragIconUI = null
+		onHideSellZone()
+		ToolIcon.onRemovePriceLabel()
+		
 	CardUI.onChangeBackgroundMouseFilter(true)
 	get_viewport().update_mouse_cursor_state()
 		
-	CardUIRaycast.global_position = tool_position
+	CardUIRaycast.global_position = get_viewport().get_mouse_position()
 	CardUIRaycast.target_position = Vector2.ZERO
 	CardUIRaycast.force_raycast_update()
 	var area: Area2D = CardUIRaycast.get_collider()
 	if area == null: return
+	elif area == SellZoneArea: onItemSold(CardUI.ToolIcon, CardUI.getTool()); return
+	
 	var OtherCardUI: Control = area.get_parent()
 	if CardUI == OtherCardUI: return
 	
@@ -276,6 +306,32 @@ func onToolDragEnd(CardUI: Control, tool_position: Vector2) -> void:
 	else: # Ascenscion happened
 		OtherCardUI.onToolUpdated(SecondTool)
 		CardUI.onToolUpdated(FirstTool)
+		
+func onBoonDragBegin(BoonIcon: Control) -> void:
+	if BoonIcon.Boon.getRarity() in sellable_rarities:
+		DragIconUI = BoonIcon
+		onShowSellZone()
+		onCreatePriceLabel(BoonIcon, BoonIcon.Boon)
+	
+func onBoonDragEnd(BoonIcon: Control) -> void:
+	if BoonIcon.Boon.getRarity() in sellable_rarities:
+		DragIconUI = null
+		onHideSellZone()
+		BoonIcon.onRemovePriceLabel()
+		
+	SellZoneRaycast.global_position = get_viewport().get_mouse_position()
+	SellZoneRaycast.target_position = Vector2.ZERO
+	SellZoneRaycast.force_raycast_update()
+	var area: Area2D = SellZoneRaycast.get_collider()
+	if area == null: return
+	if area == SellZoneArea and sellable:
+		onItemSold(BoonIcon, BoonIcon.getItem())
+
+func onCreatePriceLabel(IconUI: Control, item: FofGD) -> void:
+	var PriceLabel: Control = PriceLabelPacked.instantiate()
+	IconUI.onAddPriceLabel(PriceLabel)
+	var sh: int = int(float(Game.getPriceForItem(item)) * Game.SELL_MULT)
+	PriceLabel.setShillings(sh)
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ScrollUp"):
@@ -293,6 +349,9 @@ func _input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if ActiveToolIcon != null and !is_exit_start:
 		ActiveToolIcon.rotation = lerp_angle(ActiveToolIcon.rotation, 0, ROTATION_SPEED_TO_MIDDLE * delta)
+		
+	if DragIconUI != null:
+		SellZoneHand.position.y = DragIconUI.position.y + DragIconUI.pivot_offset.y
 		
 const SCROLL_STRENGTH: int = 200
 const SCROLL_SPEED: float = 0.1
@@ -433,15 +492,14 @@ func onSortStashCards(new_children: Array) -> void:
 		
 	for child: Control in new_children:
 		StashContainer.add_child(child)
-		
-func onCardDraggedInit(CardUI: Control) -> void:
-	StashEmptyControl = Control.new()
-	StashEmptyControl.custom_minimum_size = CardUI.size
-	StashContainer.add_child(StashEmptyControl)
-	StashContainer.move_child(StashEmptyControl, CardUI.get_index())
-		
-var StashEmptyControl: Control
+
 func onCardDraggedBegin(CardUI: Control, is_stash_card: bool) -> void:
+	StashContainer.queue_sort()
+	if CardUI.Card.getRarity() in sellable_rarities:
+		DragIconUI = CardUI
+		onShowSellZone()
+		onCreatePriceLabel(CardUI, CardUI.Card)
+		
 	var ExcludeDeckSlotUI: Control = null if is_stash_card else getDeckSlotUIFromCardUI(CardUI)
 	CardUI.onChangeBackgroundMouseFilter(false)
 	for DeckSlotUI: Control in getDeckContainerDeckUI():
@@ -455,7 +513,12 @@ func onCardDraggedBegin(CardUI: Control, is_stash_card: bool) -> void:
 	for DeckCardUI: Control in getDeckContainerCardUI().filter(func(x: Control): return x != null):
 		DeckCardUI.onChangeBackgroundMouseFilter(false)
 
-func onCardDraggedEnd(CardUI: Control, pos: Vector2, is_stash_card: bool) -> void:
+func onCardDraggedEnd(CardUI: Control, is_stash_card: bool) -> void:
+	if CardUI.Card.getRarity() in sellable_rarities:
+		DragIconUI = null
+		onHideSellZone()
+		CardUI.onRemovePriceLabel()
+	
 	for DeckSlotUI: Control in getDeckContainerDeckUI():
 		DeckSlotUI.setBackgroundMouseFilter(Control.MOUSE_FILTER_IGNORE)
 		DeckSlotUI.setLockMouseFilter(Control.MOUSE_FILTER_STOP)
@@ -466,7 +529,7 @@ func onCardDraggedEnd(CardUI: Control, pos: Vector2, is_stash_card: bool) -> voi
 	for DeckCardUI: Control in getDeckContainerCardUI().filter(func(x: Control): return x != null):
 		DeckCardUI.onChangeBackgroundMouseFilter(true)
 		
-	DeckSlotUIRaycast.global_position = pos
+	DeckSlotUIRaycast.global_position = get_viewport().get_mouse_position()
 	DeckSlotUIRaycast.target_position = Vector2.ZERO
 	DeckSlotUIRaycast.force_raycast_update()
 	var area: Area2D = DeckSlotUIRaycast.get_collider()
@@ -479,24 +542,15 @@ func onCardDraggedEnd(CardUI: Control, pos: Vector2, is_stash_card: bool) -> voi
 		var deck_slot: DeckSlot = deck_slots.filter(func(x: DeckSlot):\
 			return x.card_public_id == Card.public_id)[0]
 		onRemoveDeckCard(CardUI, deck_slot)
+	elif area == SellZoneArea and sellable:
+		onItemSold(CardUI, CardUI.Card)
 	else: # Hovered inside another deck slot
 		var deck_slot: DeckSlot = area.get_parent().deck_slot
 		if deck_slot.is_locked: return
 		
 		if is_stash_card:
 			onStashCardHoveredDeckSlot(CardUI, deck_slot)
-			if CardUI.is_queued_for_deletion():
-				onCardDraggedFinished(CardUI)
 		else: onDeckCardUIHoveredDeckSlot(CardUI, deck_slot)
-		
-func onCardDraggedFinished(CardUI: Control) -> void:
-	if StashEmptyControl != null:
-		if CardUI != null and !CardUI.is_queued_for_deletion():
-			StashContainer.move_child(CardUI, StashEmptyControl.get_index())
-		StashEmptyControl.queue_free()
-		StashEmptyControl = null
-		
-	get_viewport().call_deferred("update_mouse_cursor_state")
 		
 func getDeckSlotCardUI(Card: CardGD) -> Control:
 	for CardUI: Control in getDeckContainerCardUI().filter(func(x: Control): return x != null):
@@ -519,4 +573,77 @@ func getDeckSlotUIFromCardUI(CardUI: Control) -> Control:
 	return null
 	
 func getStashCardsUI() -> Array:
-	return StashContainer.get_children().filter(func(x: Control): return x != StashEmptyControl)
+	return StashContainer.get_children()
+
+func onStashIsSellable() -> void:
+	sellable = true
+	SellZoneHand.visible = true
+	
+	for BoonIcon: Control in BoonBox.get_children():
+		BoonIcon.setDraggable(true)
+		BoonIcon.setHoverable(true)
+		BoonIcon.drag_begin.connect(onBoonDragBegin)
+		BoonIcon.drag_end.connect(onBoonDragEnd)
+
+func onShowSellZone() -> void:
+	if !sellable: return
+	var tween := create_tween()
+	tween.tween_property(SellZone, "modulate:a", 1.0, SELL_ZONE_FADE_TIME).as_relative().set_trans(Tween.TRANS_SINE)
+	
+func onHideSellZone() -> void:
+	if !sellable: return
+	var tween := create_tween()
+	tween.tween_property(SellZone, "modulate:a", -1.0, SELL_ZONE_FADE_TIME).as_relative().set_trans(Tween.TRANS_SINE)
+
+func onItemSold(ItemUI: Control, item: FofGD) -> void:
+	if item.getRarity() not in sellable_rarities: return
+	ItemUI.setIgnoreDragPositionReset(true)
+	var price: int = int(float(Game.getPriceForItem(item)) * Game.SELL_MULT)
+	await onItemSoldVisual(ItemUI, item, price)
+	Game.getSaveFile().onPushAction(ChangeShillingsAction.new(price))
+	
+	if item is CardGD:
+		var deck_slot: DeckSlot = getDeckSlotFromCardUI(ItemUI)
+		onRemoveDeckCard(ItemUI, deck_slot, false)
+	elif item is BoonGD:
+		Game.getSaveFile().onPushAction(RemoveBoonAction.new(item.info.id))
+	elif item is ToolGD:
+		var Card: CardGD = item.getCard()
+		Game.getSaveFile().onPushAction(RemoveToolAction.new(Card))
+		var card_uis: Array = (getStashCardsUI() + getDeckContainerCardUI())\
+			.filter(func(x: TbcUI): return x != null)
+		var CardUI: TbcUI = card_uis.filter(func(x: TbcUI): return x.getCard() == Card)[0]
+		CardUI.onToolUpdated(null)
+
+func onItemSoldVisual(ItemUI: Control, item: FofGD, price: int) -> void:
+	ItemUI.onDisableDraggable()
+	ItemUI.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
+	
+	var initial_hand_position: Vector2 = SellZoneHand.global_position
+	var tween := create_tween()
+	var item_center: Vector2 = ItemUI.global_position + ItemUI.pivot_offset
+	tween.tween_property(SellZoneHand, "global_position", item_center - SellZoneHand.global_position, SELL_ZONE_HAND_GRAB_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	await tween.finished
+	SellZoneHand.texture = HAND_CLOSED_TX
+	var ntween := create_tween()
+	ntween.tween_property(SellZoneHand, "global_position", Vector2(500, 0), SELL_ZONE_HAND_GRAB_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+		
+	var ShillingsEffect: Control = ShillingsEffectPacked.instantiate()
+	add_child(ShillingsEffect)
+	ShillingsEffect.setInfo(price, item_center)
+		
+	var mtween := create_tween()
+	mtween.tween_property(ItemUI, "global_position", Vector2(500, 0), SELL_ZONE_HAND_GRAB_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	
+	await ntween.finished
+	SellZoneHand.texture = HAND_OPEN_TX
+	
+	var jtween := create_tween()
+	jtween.tween_property(SellZoneHand, "global_position", initial_hand_position - SellZoneHand.global_position, SELL_ZONE_HAND_GRAB_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	
+	if item is BoonGD or item is CardGD: # Tool don't get queue'd
+		ItemUI.queue_free()

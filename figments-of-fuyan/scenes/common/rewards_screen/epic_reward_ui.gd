@@ -65,7 +65,7 @@ func setInfo(_reward: Reward) -> void:
 		elif item is CardGD:
 			var CardUI: Control = item.onCreateCardUI(CardControl, !reward.isTaken())
 			if reward.isTaken():
-				CardUI.onChangeBackgroundMouseFilter(false, false)
+				CardUI.onChangeBackgroundMouseFilter(false)
 			IconUI = CardUI
 			EpicCardUI = CardUI
 			CardUI.position = Vector2(80, 0)
@@ -109,7 +109,7 @@ func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 	
 	for NewIconUI: Control in [BoonIcon, ToolIcon, EpicCardUI]:
 		if NewIconUI == IconUI: continue
-		NewIconUI.setHighlightOnHover(false)
+		NewIconUI.setHoverable(false)
 		var tween := create_tween()
 		tween.tween_property(NewIconUI, "scale", Vector2.ONE, 0.25)
 		
@@ -117,7 +117,7 @@ func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 		
 	ToolIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
 	BoonIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
-	EpicCardUI.onChangeBackgroundMouseFilter(false, false)
+	EpicCardUI.onChangeBackgroundMouseFilter(false)
 	reward_taken.emit(reward)
 	
 	var new_tween := create_tween()
