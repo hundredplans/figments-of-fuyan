@@ -3,23 +3,31 @@ class_name ShopScreen extends MapNodeScreen
 const TRANSFORM_WAIT_PRESSED_TIME: float = 1.5
 const CARD_FLIP_TIME: float = 0.25
 
+@onready var PurchasableManager: Control = %PurchasableManager
 @onready var FrameMerchantBase: Sprite2D = %FrameMerchantBase
 @onready var FrameMerchantSprite: Sprite2D = %FrameMerchantSprite
 @onready var FadeBackground: Control = %FadeBackground
 
-@export var shop_datastores: Array[ShopDatastore]
 @export var PurchasableCardPacked: PackedScene
-@export var PurchasableRemovePacked: PackedScene
 @export var PurchasableBoonPacked: PackedScene
 @export var PurchasableToolPacked: PackedScene
-@export var PurchasableTransformPacked: PackedScene
+
+func getPurchasableFromType(type: GDScript) -> PackedScene:
+	if type == BoonInfo: return PurchasableBoonPacked
+	elif type == CardInfo: return PurchasableCardPacked
+	elif type == ToolInfo: return PurchasableToolPacked
+	return null
+
+func onFirstEntered() -> void:
+	pass
 
 func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, shop: MapNodeGD) -> void:
 	super(_save_file, _area, _World, _UI, shop)
-	var items: Array = shop.items
-	var shop_datastore: ShopDatastore = getShopDatastore()
-	$AnimationPlayer.play("new_animation")
-	
+	for price_datastore: PriceDatastore in shop.getItems():
+		var data: SavedData = price_datastore.getData()
+		var PurchasableScene: Control = getPurchasableFromType(data.getInfoType()).instantiate()
+		PurchasableManager.add_child(PurchasableScene)
+		PurchasableScene.setInfo(price_datastore)
 	onFrameSprite()
 	
 	#for price_datastore: PriceDatastore in items:
@@ -57,9 +65,6 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 		#
 		#purchasable.create_screen.connect(onCreateScreen)
 		#purchasable.pressed.connect(onItemPressed.bind(shop))
-		
-func getShopDatastore() -> ShopDatastore:
-	return shop_datastores.filter(func(x: ShopDatastore): return x.id == map_node.info.id)[0]
 		
 func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Control, shop: MapNodeGD) -> void:
 	price_datastore.bought = true
@@ -107,7 +112,7 @@ func onFadeBackground() -> bool:
 	return true
 	
 func getFadeBackgroundColor() -> Color:
-	return getShopDatastore().getBackgroundMainColor()
+	return map_node.getShopDatastore().getBackgroundMainColor()
 	
 func onCreateScreen(screen: Control) -> void:
 	add_child(screen)
@@ -117,7 +122,7 @@ func _on_minimap_button_pressed() -> void:
 
 const timer_time: float = 1.0
 func onFrameSprite(start: int = 1) -> void:
-	FrameMerchantSprite.texture = load("res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab" + str(start) + ".png")
+	FrameMerchantSprite.texture = map_node.getShopDatastore().getMerchantFrames()[start - 1]
 	await get_tree().create_timer(timer_time).timeout
 	onFrameSprite(1 if start == 2 else 2)
 	

@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="WorldDatastore" load_steps=11 format=3 uid="uid://ctfukjvhoe8nm"]
+[gd_resource type="Resource" script_class="WorldDatastore" load_steps=7 format=3 uid="uid://ctfukjvhoe8nm"]
 
-[ext_resource type="Script" uid="uid://6cx111b6rsmf" path="res://scripts/common/shop/rarity_price_datastore.gd" id="1_irbdm"]
 [ext_resource type="Script" uid="uid://b4u5t7a8bjufi" path="res://scripts/common/rewards/rarity_odds_datastore.gd" id="2_8uwip"]
 [ext_resource type="Script" uid="uid://bl6dfw0necxsf" path="res://scripts/common/rewards/fight_rewards_datastore.gd" id="2_27jhm"]
 [ext_resource type="Script" uid="uid://b86r3lxt1v8fp" path="res://scripts/fof_info/world_datastore.gd" id="2_h8y7y"]
@@ -12,22 +11,6 @@ rare = 0.45
 exalt = 0.075
 miniboss = 0.0
 boss = 0.0
-
-[sub_resource type="Resource" id="Resource_giks2"]
-script = ExtResource("1_irbdm")
-common = 26
-rare = 33
-exalt = 41
-miniboss = 51
-boss = 61
-
-[sub_resource type="Resource" id="Resource_e0jms"]
-script = ExtResource("1_irbdm")
-common = 20
-rare = 28
-exalt = 35
-miniboss = 45
-boss = 55
 
 [sub_resource type="Resource" id="Resource_akddw"]
 script = ExtResource("2_27jhm")
@@ -53,14 +36,6 @@ card_tier_up_rate = 0.05
 card_tool_odds = 0.1
 card_tool_tier_up_rate = 0.05
 
-[sub_resource type="Resource" id="Resource_vnak7"]
-script = ExtResource("1_irbdm")
-common = 14
-rare = 20
-exalt = 28
-miniboss = 38
-boss = 48
-
 [resource]
 script = ExtResource("2_h8y7y")
 world = 1
@@ -75,11 +50,10 @@ enemy_tier_up_rate = 0.05
 elite_enemy_tier_up_rate = 0.075
 tool_enemy_spawn_rate = 0.1
 tool_enemy_spawn_rate_tier_up = 0.1
-card_rarity_prices = SubResource("Resource_e0jms")
-tool_rarity_prices = SubResource("Resource_vnak7")
-boon_rarity_prices = SubResource("Resource_giks2")
-foreign_card_base_price_increase = 4
-default_shop_variance = 3
 card_reward_tool_chance = 0.0
 UPGRADE_REGULAR_FIGHT = 0.125
 MIN_ELITE_FIGHTS = 2
+foreign_card_base_price_increase = 4
+default_shop_variance = 3
+card_with_tool_percentage_price = 0.9
+card_with_tool_odds = 0.1

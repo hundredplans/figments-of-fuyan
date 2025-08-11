@@ -159,7 +159,8 @@ func onCreateStashScreen() -> void:
 	StashScreen.exit_start.connect(onStashExitStart)
 	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
 	
-	if Game.getArea().getEnteredMapNode().info.is_shop:
+	var EnteredMapNode: MapNodeGD = Game.getArea().getEnteredMapNode()
+	if !EnteredMapNode.is_finished and EnteredMapNode.info.is_shop:
 		StashScreen.onStashIsSellable()
 	
 	var tween := create_tween()

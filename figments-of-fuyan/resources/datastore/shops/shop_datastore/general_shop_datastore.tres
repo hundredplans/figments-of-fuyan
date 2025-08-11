@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="ShopDatastore" load_steps=18 format=3 uid="uid://bhoaiduu3j7vx"]
+
+[ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="1_ye3vs"]
+[ext_resource type="Resource" uid="uid://b7kcrs7gcdyp1" path="res://resources/datastore/shops/rarity_prices/card_rarity_prices.tres" id="2_ynn2a"]
+[ext_resource type="Script" uid="uid://c4e0un8luq87o" path="res://scripts/common/shop/shop_card_datastore.gd" id="3_qulre"]
+[ext_resource type="Resource" uid="uid://dypcxce3yrfoe" path="res://resources/datastore/shops/rarity_prices/tool_rarity_prices.tres" id="4_2jueg"]
+[ext_resource type="Resource" uid="uid://ckgqhorrni7il" path="res://resources/datastore/shops/rarity_prices/boon_rarity_prices.tres" id="5_4naeq"]
+[ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="6_dg6sx"]
+[ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="6_qulre"]
+[ext_resource type="Texture2D" uid="uid://btvht0n6tmf46" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab2.png" id="7_2jueg"]
+[ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="7_xr5r0"]
+
+[sub_resource type="Resource" id="Resource_r6pve"]
+script = ExtResource("3_qulre")
+foreign_odds = 0.0
+item_type = 0
+rarity_price_datastore = ExtResource("2_ynn2a")
+position = Vector2(100, 200)
+metadata/_custom_type_script = "uid://c4e0un8luq87o"
+
+[sub_resource type="Resource" id="Resource_5gjyt"]
+script = ExtResource("3_qulre")
+foreign_odds = 0.0
+item_type = 0
+rarity_price_datastore = ExtResource("2_ynn2a")
+position = Vector2(450, 200)
+metadata/_custom_type_script = "uid://c4e0un8luq87o"
+
+[sub_resource type="Resource" id="Resource_xeay4"]
+script = ExtResource("3_qulre")
+foreign_odds = 0.25
+item_type = 0
+rarity_price_datastore = ExtResource("2_ynn2a")
+position = Vector2(800, 200)
+metadata/_custom_type_script = "uid://c4e0un8luq87o"
+
+[sub_resource type="Resource" id="Resource_nhpnu"]
+script = ExtResource("3_qulre")
+foreign_odds = 1.0
+item_type = 0
+rarity_price_datastore = ExtResource("2_ynn2a")
+position = Vector2(1150, 200)
+metadata/_custom_type_script = "uid://c4e0un8luq87o"
+
+[sub_resource type="Resource" id="Resource_wt34x"]
+script = ExtResource("1_ye3vs")
+item_type = 1
+rarity_price_datastore = ExtResource("4_2jueg")
+position = Vector2(150, 700)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_rdrdv"]
+script = ExtResource("1_ye3vs")
+item_type = 1
+rarity_price_datastore = ExtResource("4_2jueg")
+position = Vector2(500, 700)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_yc8xn"]
+script = ExtResource("1_ye3vs")
+item_type = 2
+rarity_price_datastore = ExtResource("5_4naeq")
+position = Vector2(850, 700)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_wqfsb"]
+script = ExtResource("1_ye3vs")
+item_type = 2
+rarity_price_datastore = ExtResource("5_4naeq")
+position = Vector2(1200, 700)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[resource]
+script = ExtResource("7_xr5r0")
+id = 6
+items = Array[ExtResource("1_ye3vs")]([SubResource("Resource_r6pve"), SubResource("Resource_5gjyt"), SubResource("Resource_xeay4"), SubResource("Resource_nhpnu"), SubResource("Resource_wt34x"), SubResource("Resource_rdrdv"), SubResource("Resource_yc8xn"), SubResource("Resource_wqfsb")])
+merchant_icon_base = ExtResource("6_dg6sx")
+merchant_frames = Array[Texture2D]([ExtResource("6_qulre"), ExtResource("7_2jueg")])
+background_main_color = Color(0, 0.533333, 0, 1)
+metadata/_custom_type_script = "uid://doid1bi8h7kwu"

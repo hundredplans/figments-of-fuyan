@@ -662,15 +662,20 @@ func getTierShillingsMultiplier(tier: int) -> float:
 #endregion
 
 func getPriceForItem(item: FofGD) -> int:
+	return getPriceForItemData(item.onSave())
+	
+func getPriceForItemData(data: SavedData) -> int:
 	var world: WorldDatastore = Game.getArea().getWorld()
 	var rarity_prices: RarityPriceDatastore
-	if item is BoonGD: rarity_prices = world.getBoonRarityPrices()
-	elif item is ToolGD: rarity_prices = world.getToolRarityPrices()
-	elif item is CardGD: rarity_prices = world.getCardRarityPrices()
+	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
+	if data is SavedDataBoon: rarity_prices = world.getBoonRarityPrices()
+	elif data is SavedDataTool: rarity_prices = world.getToolRarityPrices()
+	elif data is SavedDataCard: rarity_prices = world.getCardRarityPrices()
 	
-	var sh: int = int(float(rarity_prices.getByRarity(item.getRarity())) * Game.getTierShillingsMultiplier(item.getTier()))
-	if item is CardGD and item.getTool() != null:
+	var sh: int = int(float(rarity_prices.getByRarity(info.rarity)) * Game.getTierShillingsMultiplier(data.tier))
+	if data is SavedDataCard and data.tool_data != null:
 		rarity_prices = world.getToolRarityPrices()
-		var Tool: ToolGD = item.getTool()
-		sh += int(float(rarity_prices.getByRarity(Tool.getRarity())) * Game.getTierShillingsMultiplier(Tool.getTier()))
+		var tool_data: SavedDataTool = data.tool_data
+		var tool_info: ToolInfo = Helper.getFofInfoID(ToolInfo, tool_data.id)
+		sh += int(float(rarity_prices.getByRarity(tool_info.rarity)) * Game.getTierShillingsMultiplier(tool_data.tier))
 	return sh

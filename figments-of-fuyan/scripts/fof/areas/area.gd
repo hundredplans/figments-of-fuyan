@@ -770,3 +770,6 @@ func onClearMapNodes() -> void:
 	if map_nodes_data.is_empty():
 		map_nodes_data = SavedData.onSaveGroup(get_tree().get_nodes_in_group("MapNodesGD")) # Save map nodes data
 	get_tree().call_group("MapNodesGD", "onClear")
+
+func getBasicCardIds() -> Array:
+	return basic_card_ids.duplicate()

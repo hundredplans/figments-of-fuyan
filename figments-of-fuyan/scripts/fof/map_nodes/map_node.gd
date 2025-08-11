@@ -19,6 +19,7 @@ var StaticBody: StaticBody3D
 var mesh: MeshInstance3D
 var HoverUI: Control
 var ability_save: Dictionary
+var screen: Control
 
 var saved_rotation_y: float = 0
 const PROGRESS_OFFSET: float = 3
@@ -203,7 +204,7 @@ func onOtherMapNodeFinished(map_node: MapNodeGD) -> void:
 		link.setIsFinished(true)
 		
 func onCreateScreen() -> void:
-	var screen: Control = info.screen.instantiate()
+	screen = info.screen.instantiate()
 	screen.finished.connect(onFinished)
 	create_screen.emit(self, screen)
 	

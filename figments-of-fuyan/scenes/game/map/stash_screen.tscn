@@ -1,13 +1,16 @@
-[gd_scene load_steps=27 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=29 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
 [ext_resource type="PackedScene" uid="uid://chlcllps1hfda" path="res://scenes/game/map_nodes/screens/shop_screen/price_label.tscn" id="2_cajyl"]
 [ext_resource type="PackedScene" uid="uid://c4feu28rxx6ev" path="res://scenes/game/map/deck_slot_ui.tscn" id="2_dd1xv"]
-[ext_resource type="Texture2D" uid="uid://d0ckaebv8qia0" path="res://assets/sprites/ui/scene_specific/stash_screen/hand_closed.png" id="2_iniqv"]
+[ext_resource type="Texture2D" uid="uid://d0ckaebv8qia0" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_closed.png" id="2_iniqv"]
+[ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_open.png" id="2_k3tv2"]
 [ext_resource type="PackedScene" uid="uid://cjlqbuh73ripg" path="res://scenes/game/map_nodes/screens/shop_screen/shillings_effect.tscn" id="2_l4vsq"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_sli05"]
+[ext_resource type="Texture2D" uid="uid://bodfwk4s5uaqu" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_closed.png" id="3_61rum"]
 [ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="3_jpe4s"]
+[ext_resource type="Texture2D" uid="uid://cgwubb4ahkk6w" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_open.png" id="3_ma1bm"]
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_sli05"]
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="5_jpe4s"]
@@ -20,7 +23,6 @@
 [ext_resource type="Texture2D" uid="uid://by2sd6erbaes8" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_energy.png" id="15_cajyl"]
 [ext_resource type="Texture2D" uid="uid://b6u27mcqxdyc5" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_rarity.png" id="16_l4vsq"]
 [ext_resource type="Material" uid="uid://dfy3xmbj23xht" path="res://resources/materials/ui/sell_zone.tres" id="17_y0ya4"]
-[ext_resource type="Texture2D" uid="uid://nosox6pxp86q" path="res://assets/sprites/ui/scene_specific/stash_screen/hand.png" id="18_504a2"]
 
 [sub_resource type="Animation" id="Animation_jpe4s"]
 resource_name = "EnergyLimitReached"
@@ -150,6 +152,18 @@ tracks/5/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SellZoneHand:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_dd1xv"]
 resource_name = "SlideUIElements"
@@ -162,6 +176,18 @@ tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SellZoneHand:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.25),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
@@ -186,8 +212,8 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 script = ExtResource("1_vh71u")
-HAND_CLOSED_TX = ExtResource("2_iniqv")
-HAND_OPEN_TX = ExtResource("18_504a2")
+general_shop_hands = Array[Texture2D]([ExtResource("2_k3tv2"), ExtResource("3_61rum")])
+junk_man_hands = Array[Texture2D]([ExtResource("3_ma1bm"), ExtResource("2_iniqv")])
 ShillingsEffectPacked = ExtResource("2_l4vsq")
 PriceLabelPacked = ExtResource("2_cajyl")
 DeckSlotPacked = ExtResource("2_dd1xv")
@@ -379,7 +405,8 @@ columns = 6
 
 [node name="MarginContainer3" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 0
-offset_right = 851.0
+offset_left = 174.0
+offset_right = 610.0
 offset_bottom = 120.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer3"]
@@ -476,9 +503,10 @@ shape = SubResource("RectangleShape2D_cajyl")
 [node name="SellZoneHand" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 visible = false
+modulate = Color(1, 1, 1, 0)
 top_level = true
-position = Vector2(1940, 567)
-texture = ExtResource("18_504a2")
+position = Vector2(2060, 567)
+texture = ExtResource("3_ma1bm")
 
 [connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onExitButtonPressed"]

@@ -1,8 +1,8 @@
 extends MapNodeGD
 
 #region Globals
-var price_variance: int
-var world_datastore: WorldDatastore
+const GENERAL_SHOP_DATASTORE_PATH: String = "res://resources/datastore/shops/shop_datastore/general_shop_datastore.tres"
+var shop_datastore: ShopDatastore
 
 const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop.mp3"
 #endregion
@@ -14,75 +14,55 @@ var items: Array # [PriceDatastore]
 #region Load / Save
 func onFofInit() -> void:
 	super()
-	onAddLocalForeignCardsBoonTools()
-	
+	onLoadShopDatastore()
+		
 func onSave() -> SavedDataMapNode:
 	return SavedDataShop.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, items)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	items = data.items
-	world_datastore = Game.area.getWorld()
-	price_variance = world_datastore.default_shop_variance
+	onLoadShopDatastore()
 #endregion
 
 #region Setting Prices
-func onAddLocalForeignCardsBoonTools() -> void:
-	var info_types: Array = [CardInfo, BoonInfo, ToolInfo]
-	for i in range(info_types.size()):
-		var type: GDScript = info_types[i]
-		var objects: Array = getAllObjects(type)
+func onCreateItems() -> void:
+	for shop_item: ShopItemDatastore in shop_datastore.getItems():
+		var data: SavedData
+		var odds_datastore := shop_item.getRarityOddsDatastore()
+		var base_tier: int = Game.getArea().getWorldDifficulty()
+		var tier_up_odds: float = shop_item.getTierUpOdds()
+		match shop_item.item_type:
+			ShopItemDatastore.ItemType.CARD:
+				var is_foreign: bool = Random.rollFloat(shop_item.getForeignOdds())
+				var keep_ids: Array = []
+				var tool_odds_datastore: RarityOddsDatastore = shop_item.getToolOddsDatastore()
+				var tool_odds: float = shop_item.getToolOdds()
+				var tool_tier_up_odds: float = shop_item.getToolTierUpOdds()
+				if !is_foreign:
+					keep_ids = Game.getArea().getBasicCardIds()
+				data = Random.getRandomCardData(keep_ids, odds_datastore, tool_odds_datastore, base_tier,\
+					tier_up_odds, tool_odds, tool_tier_up_odds)
+			ShopItemDatastore.ItemType.BOON:
+				data = Random.getRandomBoonData(odds_datastore, tier_up_odds, base_tier)
+				pass
+			ShopItemDatastore.ItemType.TOOL:
+				data = Random.getRandomToolData(odds_datastore, tier_up_odds, base_tier)
 		
-		for j in range(2 if type != CardInfo else 4):
-			var foreign: bool = getForeign(type, j)
-			var price_datastore: PriceDatastore = onRollFof(objects, type, foreign)
-			if price_datastore == null: continue
-			
-			onAddToItems(price_datastore)
-	
-func getAllObjects(type: GDScript) -> Array:
-	if isFirstShop() and type == CardInfo:
-		var world_difficulty: int = Game.getArea().getWorldDifficulty()
-		return Helper.getFofInfoArray(type).filter(func(x: CardInfo): return x.getTierDatastore(world_difficulty).energy < 4)
-	return Helper.getFofInfoArray(type) if type != BoonInfo else Game.getAvailableBoons()
-	
-func getForeign(info_type: GDScript, j: int) -> bool:
-	if isFirstShop(): return false
-	if info_type == CardInfo:
-		if j == 2: return Random.getBool()
-		elif j == 3: return true
-	return false
-	
-func isFirstShop() -> bool: return map_location.progress == 1
-
-func onAddTransformation() -> void:
-	var transformation_ids: Array = [5, 6]
-	var id: int = transformation_ids.pick_random()
-	
-	var action_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), self)
-	var action: Action
-	
-	var base_price: int = 0
-	
-	match id:
-		5:
-			action = TransformCardAction.new(null, TransformCardAction.TransformType.Rarity)
-			base_price = world_datastore.transform_by_rarity_price
-		6:
-			action = TransformCardAction.new(null, TransformCardAction.TransformType.Energy)
-			base_price = world_datastore.transform_by_cost_price
+		var price_variance: int = shop_item.getPriceVariance()
+		var price: int = Game.getPriceForItemData(data) + randi_range(-price_variance, price_variance)
 		
-	action_wrapper.setActions(action)
-	onAddToItems(PriceDatastore.new(base_price, action_wrapper.onSave()))
-
-func onAddToItems(price_datastore: PriceDatastore) -> void:
-	items.append(price_datastore)
-	
-func onAddPriceVariance(price: int) -> int:
-	return price + randi_range(-price_variance, price_variance)
+		var get_shop_price_action := GetShopPriceAction.new(price, self)
+		onForceAction(get_shop_price_action)
+		price = get_shop_price_action.getFinalPrice()
+		
+		var price_datastore := PriceDatastore.new(price, data, shop_item.getPosition())
+		items.append(price_datastore)
 #endregion
 
 func onEntered() -> void:
+	if !is_entered: # First time enter
+		onCreateItems()
 	super()
 	onCreateScreen()
 	onPushAction(PlayMusicAction.new(Audio.SHOP))
@@ -90,43 +70,17 @@ func onEntered() -> void:
 func onFinished() -> void:
 	super()
 	onPushAction(PlayMusicAction.new(Audio.BACKGROUND))
+	
+func onLoadShopDatastore() -> void:
+	if shop_datastore != null: return
+	var path: String
+	match info.id:
+		6: path = GENERAL_SHOP_DATASTORE_PATH
+		_: path = GENERAL_SHOP_DATASTORE_PATH
+	shop_datastore = load(path)
 
-#region Rolls
-func onRerollBoon() -> PriceDatastore:
-	var available_boons: Array = Game.getAvailableBoons()
-	return onRollFof(available_boons, BoonInfo)
-		
-func onRollFof(objects: Array, script_type: GDScript, foreign: bool = false) -> PriceDatastore:
-	if objects.is_empty(): return null
-	
-	var odds: Dictionary = world_datastore.getBaseRarityOdds().getDictionary()
-	@warning_ignore("int_as_enum_without_cast")
-	var rarity: Game.Rarities = int(Random.getRandomKey(odds))
-	var rarity_objects: Array = objects.filter(func(x: FofInfo): return x.rarity == rarity)
-	
-	if script_type == CardInfo and !foreign: # Local cards only
-		rarity_objects = rarity_objects.filter(func(x: CardInfo): return x.id in Game.area.basic_card_ids)
-	elif script_type == CardInfo and foreign: # Non-local cards only (have to make it from this world only later)
-		rarity_objects = rarity_objects.filter(func(x: CardInfo): return x.id not in Game.area.basic_card_ids)
-	
-	if rarity_objects.is_empty(): return
-	
-	var picked_info: FofInfo = rarity_objects.pick_random()
-	objects.erase(picked_info)
-	var picked_data: SavedData = picked_info.saved_data.new(picked_info.id, true)
-	if picked_data is SavedDataCard:
-		Game.setCardDataFromInfo(picked_data, picked_info)
+func getShopDatastore() -> ShopDatastore:
+	return shop_datastore
 
-	var fof_name: String = picked_info.get_script().getFofName().to_lower() # "Boon", "Card"
-	var base_price: int = world_datastore.get(fof_name + "_rarity_prices").getByRarity(picked_info.rarity)
-	
-	if script_type == CardInfo and foreign: # Extra base_price for foreign cards
-		base_price += world_datastore.foreign_card_base_price_increase
-		
-	var final_price: int = onAddPriceVariance(base_price)
-	var get_shop_price_action := GetShopPriceAction.new(final_price, self)
-	onForceAction(get_shop_price_action)
-	final_price = get_shop_price_action.final_price
-	
-	return PriceDatastore.new(final_price, picked_data)
-#endregion
+func getItems() -> Array:
+	return items

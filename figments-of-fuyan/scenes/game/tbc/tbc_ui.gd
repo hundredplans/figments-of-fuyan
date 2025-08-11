@@ -22,6 +22,8 @@ signal mouse_in_ui
 signal drag_begin
 signal drag_end
 
+@onready var ModulateMain: Control = %ModulateMain
+
 #region Abstract
 func getItem() -> FofGD: return null
 func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
@@ -64,9 +66,11 @@ func onMouseInUI(state: bool) -> void:
 	onUpdateModulate()
 
 func onUpdateModulate() -> void:
-	if disabled: modulate = Color(0.2, 0.2, 0.2)
-	elif (is_mouse_in_ui and hoverable) or is_dragging: modulate = Color(0.5, 0.5, 0.5)
-	else: modulate = Color.WHITE
+	var color: Color
+	if disabled: color = Color(0.2, 0.2, 0.2)
+	elif (is_mouse_in_ui and hoverable) or is_dragging: color = Color(0.5, 0.5, 0.5)
+	else: color = Color.WHITE
+	ModulateMain.modulate = color
 
 func setDraggable(_draggable: bool) -> void:
 	draggable = _draggable
@@ -82,16 +86,18 @@ func onDragBegin() -> void:
 	original_mouse_filter = current_mouse_filter
 	disable_tooltip = true
 	
-	var original_global_position: Vector2 = global_position
-	top_level = true
-	position = original_global_position
-	
 	setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE)
 	Game.onMouseInUITooltip(false)
 	drag_begin.emit(self)
 	
 	get_viewport().call_deferred("update_mouse_cursor_state")
 	onUpdateModulate()
+	#call_deferred("set_as_top_level", true)
+	
+	await get_tree().process_frame
+	var original_global_position: Vector2 = global_position
+	top_level = true
+	global_position = original_global_position
 	
 func onDragEnd() -> void:
 	drag_end.emit(self)
@@ -114,7 +120,7 @@ func setIgnoreDragPositionReset(_ignore_drag_position_reset: bool) -> void:
 	
 func onPressed() -> void:
 	if disabled: return
-	pressed.emit(getItem())
+	pressed.emit(self)
 	if !draggable: return
 	onDragBegin()
 	

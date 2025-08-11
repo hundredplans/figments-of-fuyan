@@ -1,16 +1,16 @@
 extends Purchasable
 
 @onready var ToolIcon: Control = %ToolIcon
-@onready var NameLabel: FancyTextLabel = %NameLabel
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
-	super(_item, _price_datastore, _save_file)
-	ToolIcon.setInfo(item, true)
+func setInfo(_price_datastore: PriceDatastore) -> void:
+	var data: SavedDataTool = _price_datastore.getData()
+	data.public_id = 0
+	
+	var Tool: ToolGD = SavedData.onLoadModel(data, Game.getArea().getEnteredMapNode()) 
+	ToolIcon.setInfo(Tool, true)
 	ToolIcon.pressed.connect(onToolSelected)
 	DisplayedUI = ToolIcon
-	
-	var text: String = "[" + str(item.tier) + "tool=" + str(item.info.id) + "]"
-	NameLabel.setText(text)
+	super(_price_datastore)
 	
 func onToolSelected(_Tool: ToolGD) -> void:
 	ToolIcon.top_level = true
@@ -31,10 +31,5 @@ func onStashScreenExit() -> void:
 func setDisabled(state: bool) -> void:
 	super(state)
 	ToolIcon.setDisabled(state)
-
-func onPressed(load_bought: bool = false) -> void:
-	super()
-	ShillingsLabel.queue_free()
-	NameLabel.queue_free()
 	
-	if load_bought: ToolIcon.queue_free()
+	

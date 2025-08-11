@@ -1,5 +1,9 @@
 class_name WorldDatastore extends Resource
 
+const CARD_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/shops/rarity_prices/card_rarity_prices.tres"
+const BOON_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/shops/rarity_prices/boon_rarity_prices.tres"
+const TOOL_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/shops/rarity_prices/tool_rarity_prices.tres"
+
 @export var world: int
 
 @export_group("Base")
@@ -20,15 +24,6 @@ class_name WorldDatastore extends Resource
 @export_group("Tools")
 @export_range(0, 1, 0.005) var tool_enemy_spawn_rate: float
 @export_range(0, 1, 0.005) var tool_enemy_spawn_rate_tier_up: float
-
-@export_group("")
-
-@export_group("Shop")
-@export var card_rarity_prices: RarityPriceDatastore
-@export var tool_rarity_prices: RarityPriceDatastore
-@export var boon_rarity_prices: RarityPriceDatastore
-@export_range(0, 100, 1) var foreign_card_base_price_increase: int
-@export_range(0, 10, 1) var default_shop_variance: int
 @export_group("")
 
 @export_group("Rewards")
@@ -41,6 +36,9 @@ class_name WorldDatastore extends Resource
 
 @export_group("Constants across Worlds")
 @export var MIN_ELITE_FIGHTS: int = 2
+@export_range(0, 100, 1) var foreign_card_base_price_increase: int = 4
+@export_range(0, 10, 1) var default_shop_variance: int = 3
+@export_range(0, 1, 0.005) var card_with_tool_odds: float = 0.1
 @export_group("")
 
 static func getInfoPath() -> String: return "res://resources/datastore/world"
@@ -84,11 +82,23 @@ func getFightRewardsDatastore() -> FightRewardsDatastore:
 	return fight_rewards
 	
 func getCardRarityPrices() -> RarityPriceDatastore:
-	return card_rarity_prices
+	return load(CARD_RARITY_PRICES_DATASTORE_PATH)
 	
 func getToolRarityPrices() -> RarityPriceDatastore:
-	return tool_rarity_prices
+	return load(TOOL_RARITY_PRICES_DATASTORE_PATH)
 	
 func getBoonRarityPrices() -> RarityPriceDatastore:
-	return boon_rarity_prices
+	return load(BOON_RARITY_PRICES_DATASTORE_PATH)
 #endregion
+
+func getPriceVariance() -> int:
+	return default_shop_variance
+	
+func getCardWithToolOdds() -> float:
+	return card_with_tool_odds
+	
+func getCardWithToolTierUpOdds() -> float:
+	return base_tier_up_rate
+
+func getBaseTierUpOdds() -> float:
+	return base_tier_up_rate

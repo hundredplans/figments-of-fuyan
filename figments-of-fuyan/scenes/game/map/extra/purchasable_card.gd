@@ -1,22 +1,23 @@
 extends Purchasable
 
+
 @onready var MainContainer: Container = %MainContainer
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
-	DisplayedUI = _item.onCreateCardUI(MainContainer, true)
-	super(_item, _price_datastore, _save_file)
+func setInfo(_price_datastore: PriceDatastore) -> void:
+	var card_data: SavedDataCard = _price_datastore.getData()
+	card_data.public_id = 0
 	
+	if card_data.tool_data != null:
+		card_data.tool_data.public_id = 0
+	
+	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getArea().getEnteredMapNode())
+	DisplayedUI = Card.onCreateCardUI(self, true)
 	DisplayedUI.pressed.connect(func(__: Control): onPressed())
-	MainContainer.move_child(DisplayedUI, 0)
+	
+	super(_price_datastore)
 	
 func setDisabled(state: bool = true) -> void:
 	super(state)
 	DisplayedUI.setDisabled(state)
 
-func onPressed(load_bought: bool = false) -> void:
-	super()
-	ShillingsLabel.queue_free()
-	
-	if load_bought: DisplayedUI.queue_free()
-	
 	

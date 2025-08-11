@@ -1,25 +1,21 @@
 extends Purchasable
 
 @onready var BoonIcon: Control = %BoonIcon
-@onready var NameLabel: FancyTextLabel = %NameLabel
 
-func setInfo(_item: FofGD, _price_datastore: PriceDatastore, _save_file: SaveFileGD) -> void:
-	super(_item, _price_datastore, _save_file)
-	BoonIcon.setInfo(item, true)
-	BoonIcon.onDisplayCharges(false)
-	BoonIcon.pressed.connect(func(_x: BoonGD): onPressed())
-	DisplayedUI = BoonIcon
+func setInfo(_price_datastore: PriceDatastore) -> void:
+	var data: SavedDataBoon = _price_datastore.getData()
+	data.public_id = 0
 	
-	var text: String = "[" + str(item.tier) + "boon=" + str(item.info.id) + "]"
-	NameLabel.setText(text)
+	var Boon: BoonGD = SavedData.onLoadModel(data, Game.getArea().getEnteredMapNode()) 
+	
+	BoonIcon.setInfo(Boon, true)
+	BoonIcon.onDisplayCharges(false)
+	BoonIcon.pressed.connect(func(_x: TbcUI): onPressed())
+	DisplayedUI = BoonIcon
+	super(_price_datastore)
 
 func setDisabled(state: bool = true) -> void:
 	super(state)
 	BoonIcon.setDisabled(state)
 
-func onPressed(load_bought: bool = false) -> void:
-	super()
-	ShillingsLabel.queue_free()
-	NameLabel.queue_free()
 	
-	if load_bought: BoonIcon.queue_free()

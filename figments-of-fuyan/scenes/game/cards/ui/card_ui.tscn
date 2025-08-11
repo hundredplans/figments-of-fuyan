@@ -75,7 +75,17 @@ rarities = Array[Image]([ExtResource("2_6wo8e"), ExtResource("3_8tmke"), null, E
 masks = Array[Texture2D]([ExtResource("11_rpyjc"), ExtResource("12_tyqt3"), null, ExtResource("13_2ncit"), ExtResource("14_cr14o"), ExtResource("15_miqu5"), ExtResource("16_cs2l5"), ExtResource("17_cenpk"), ExtResource("11_g8p6d")])
 REGULAR_TOOL_ICON_BACKGROUND = ExtResource("15_vn70k")
 
-[node name="Art" type="Control" parent="."]
+[node name="ModulateMain" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Art" type="Control" parent="ModulateMain"]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
@@ -85,7 +95,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="OutlineMask" type="TextureRect" parent="Art"]
+[node name="OutlineMask" type="TextureRect" parent="ModulateMain/Art"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -96,7 +106,7 @@ grow_vertical = 2
 mouse_filter = 2
 stretch_mode = 2
 
-[node name="AreaBackground" type="TextureButton" parent="Art"]
+[node name="AreaBackground" type="TextureButton" parent="ModulateMain/Art"]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 1
@@ -107,7 +117,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_wywqj")
 
-[node name="Background" type="TextureButton" parent="Art"]
+[node name="Background" type="TextureButton" parent="ModulateMain/Art"]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 1
@@ -118,11 +128,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_wywqj")
 
-[node name="Ring" type="Sprite2D" parent="Art"]
+[node name="Ring" type="Sprite2D" parent="ModulateMain/Art"]
 unique_name_in_owner = true
 centered = false
 
-[node name="ArtPop" type="TextureButton" parent="Art"]
+[node name="ArtPop" type="TextureButton" parent="ModulateMain/Art"]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 1
@@ -133,7 +143,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_wywqj")
 
-[node name="Stats" type="Control" parent="."]
+[node name="Stats" type="Control" parent="ModulateMain"]
 anchors_preset = 0
 offset_left = 7.0
 offset_top = 338.0
@@ -141,7 +151,7 @@ offset_right = 242.0
 offset_bottom = 392.0
 mouse_filter = 2
 
-[node name="Attack" type="Control" parent="Stats"]
+[node name="Attack" type="Control" parent="ModulateMain/Stats"]
 layout_mode = 1
 anchor_left = 0.081
 anchor_top = 1.0
@@ -153,13 +163,13 @@ offset_right = 39.965
 offset_bottom = -3.0
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Attack"]
+[node name="Sprite2D" type="Sprite2D" parent="ModulateMain/Stats/Attack"]
 texture_filter = 1
 position = Vector2(18, 0)
 texture = ExtResource("11_et8ce")
 centered = false
 
-[node name="AttackLabel" type="Label" parent="Stats/Attack"]
+[node name="AttackLabel" type="Label" parent="ModulateMain/Stats/Attack"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -23.0
@@ -171,7 +181,7 @@ label_settings = SubResource("LabelSettings_ttbxi")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Health" type="Control" parent="Stats"]
+[node name="Health" type="Control" parent="ModulateMain/Stats"]
 layout_mode = 1
 anchor_left = 0.366
 anchor_top = 0.99
@@ -183,13 +193,13 @@ offset_right = 39.99
 offset_bottom = -0.0800171
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Health"]
+[node name="Sprite2D" type="Sprite2D" parent="ModulateMain/Stats/Health"]
 texture_filter = 1
 position = Vector2(18, 0)
 texture = ExtResource("13_tpr3o")
 centered = false
 
-[node name="HealthLabel" type="Label" parent="Stats/Health"]
+[node name="HealthLabel" type="Label" parent="ModulateMain/Stats/Health"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -23.0
@@ -201,7 +211,7 @@ label_settings = SubResource("LabelSettings_bripp")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Speed" type="Control" parent="Stats"]
+[node name="Speed" type="Control" parent="ModulateMain/Stats"]
 layout_mode = 1
 anchor_left = 0.672
 anchor_top = 0.992
@@ -213,13 +223,13 @@ offset_right = 40.08
 offset_bottom = 0.135986
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Speed"]
+[node name="Sprite2D" type="Sprite2D" parent="ModulateMain/Stats/Speed"]
 texture_filter = 1
 position = Vector2(18, 0)
 texture = ExtResource("14_blvmk")
 centered = false
 
-[node name="SpeedLabel" type="Label" parent="Stats/Speed"]
+[node name="SpeedLabel" type="Label" parent="ModulateMain/Stats/Speed"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -25.0
@@ -231,7 +241,7 @@ label_settings = SubResource("LabelSettings_4wtu4")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ToolControl" type="Control" parent="Stats"]
+[node name="ToolControl" type="Control" parent="ModulateMain/Stats"]
 unique_name_in_owner = true
 layout_mode = 1
 anchor_left = 0.672
@@ -244,19 +254,19 @@ offset_right = 78.08
 offset_bottom = -118.568
 mouse_filter = 2
 
-[node name="ToolInside" type="Sprite2D" parent="Stats/ToolControl"]
+[node name="ToolInside" type="Sprite2D" parent="ModulateMain/Stats/ToolControl"]
 unique_name_in_owner = true
 texture_filter = 1
 texture = ExtResource("26_481gw")
 centered = false
 
-[node name="ToolOutside" type="Sprite2D" parent="Stats/ToolControl"]
+[node name="ToolOutside" type="Sprite2D" parent="ModulateMain/Stats/ToolControl"]
 unique_name_in_owner = true
 texture_filter = 1
 texture = ExtResource("27_5aoho")
 centered = false
 
-[node name="ToolIcon" parent="Stats/ToolControl" instance=ExtResource("25_rre5o")]
+[node name="ToolIcon" parent="ModulateMain/Stats/ToolControl" instance=ExtResource("25_rre5o")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -271,7 +281,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Energy" type="Control" parent="Stats"]
+[node name="Energy" type="Control" parent="ModulateMain/Stats"]
 layout_mode = 1
 anchor_left = 0.672
 anchor_top = 0.992
@@ -283,14 +293,14 @@ offset_right = -96.92
 offset_bottom = -165.568
 mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Stats/Energy"]
+[node name="Sprite2D" type="Sprite2D" parent="ModulateMain/Stats/Energy"]
 texture_filter = 1
 position = Vector2(6, 7)
 scale = Vector2(0.78125, 0.78125)
 texture = ExtResource("15_vfgvq")
 centered = false
 
-[node name="EnergyLabel" type="Label" parent="Stats/Energy"]
+[node name="EnergyLabel" type="Label" parent="ModulateMain/Stats/Energy"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 8.0
@@ -302,7 +312,7 @@ label_settings = ExtResource("16_jx4jy")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Text" type="Control" parent="."]
+[node name="Text" type="Control" parent="ModulateMain"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -312,7 +322,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("10_cav0f")
 
-[node name="NameLabel" type="Label" parent="Text"]
+[node name="NameLabel" type="Label" parent="ModulateMain/Text"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 70.0
@@ -322,7 +332,7 @@ offset_bottom = 217.0
 text = "Frederic the Fearless"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Text"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ModulateMain/Text"]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 233.0
@@ -331,14 +341,14 @@ offset_bottom = 347.0
 mouse_filter = 2
 alignment = 1
 
-[node name="TextLabel" parent="Text/VBoxContainer" instance=ExtResource("19_hlg43")]
+[node name="TextLabel" parent="ModulateMain/Text/VBoxContainer" instance=ExtResource("19_hlg43")]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 2
 mouse_filter = 0
 settings = ExtResource("20_rm1pc")
 
-[node name="ArtAboveText" type="Control" parent="."]
+[node name="ArtAboveText" type="Control" parent="ModulateMain"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -347,7 +357,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ArtAboveText"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ModulateMain/ArtAboveText"]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 233.0
@@ -355,28 +365,28 @@ offset_right = 85.0
 offset_bottom = 316.0
 mouse_filter = 2
 
-[node name="TemporaryCardMarker" type="TextureRect" parent="ArtAboveText/VBoxContainer"]
+[node name="TemporaryCardMarker" type="TextureRect" parent="ModulateMain/ArtAboveText/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("27_bxo26")
 stretch_mode = 2
 
-[node name="AwakenedInCombatMarker" type="TextureRect" parent="ArtAboveText/VBoxContainer"]
+[node name="AwakenedInCombatMarker" type="TextureRect" parent="ModulateMain/ArtAboveText/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("28_5hwvt")
 stretch_mode = 2
 
-[node name="BuffLabels" type="Control" parent="."]
+[node name="BuffLabels" type="Control" parent="ModulateMain"]
 anchors_preset = 0
 offset_top = 400.0
 offset_right = 264.0
 offset_bottom = 440.0
 mouse_filter = 2
 
-[node name="BuffControlAttack" type="Control" parent="BuffLabels"]
+[node name="BuffControlAttack" type="Control" parent="ModulateMain/BuffLabels"]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.976471, 0.454902, 0.105882, 1)
@@ -388,7 +398,7 @@ offset_bottom = 34.0
 rotation = 0.118102
 mouse_filter = 2
 
-[node name="BuffLabelAttack" type="Label" parent="BuffLabels/BuffControlAttack"]
+[node name="BuffLabelAttack" type="Label" parent="ModulateMain/BuffLabels/BuffControlAttack"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 23.5467
@@ -399,7 +409,7 @@ rotation = 0.1026
 text = "3"
 metadata/_edit_lock_ = true
 
-[node name="BuffLabelAttackSign" type="Label" parent="BuffLabels/BuffControlAttack"]
+[node name="BuffLabelAttackSign" type="Label" parent="ModulateMain/BuffLabels/BuffControlAttack"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 20.0
@@ -407,7 +417,7 @@ offset_bottom = 38.0
 text = "+"
 metadata/_edit_lock_ = true
 
-[node name="BuffControlHealth" type="Control" parent="BuffLabels"]
+[node name="BuffControlHealth" type="Control" parent="ModulateMain/BuffLabels"]
 unique_name_in_owner = true
 visible = false
 modulate = Color(1, 0, 0, 1)
@@ -419,7 +429,7 @@ offset_bottom = 38.0
 rotation = 0.000577815
 mouse_filter = 2
 
-[node name="BuffLabelHealth" type="Label" parent="BuffLabels/BuffControlHealth"]
+[node name="BuffLabelHealth" type="Label" parent="ModulateMain/BuffLabels/BuffControlHealth"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 21.0
@@ -429,7 +439,7 @@ offset_bottom = 37.9879
 rotation = -0.138573
 text = "3"
 
-[node name="BuffLabelHealthSign" type="Label" parent="BuffLabels/BuffControlHealth"]
+[node name="BuffLabelHealthSign" type="Label" parent="ModulateMain/BuffLabels/BuffControlHealth"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 0.000577811
@@ -439,7 +449,7 @@ offset_bottom = 39.0
 rotation = -0.0427386
 text = "+"
 
-[node name="BuffControlSpeed" type="Control" parent="BuffLabels"]
+[node name="BuffControlSpeed" type="Control" parent="ModulateMain/BuffLabels"]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.282353, 0.678431, 0.113725, 1)
@@ -451,7 +461,7 @@ offset_bottom = 33.0
 rotation = 0.160813
 mouse_filter = 2
 
-[node name="BuffLabelSpeed" type="Label" parent="BuffLabels/BuffControlSpeed"]
+[node name="BuffLabelSpeed" type="Label" parent="ModulateMain/BuffLabels/BuffControlSpeed"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 21.0
@@ -461,7 +471,7 @@ offset_bottom = 37.9879
 rotation = -0.138573
 text = "3"
 
-[node name="BuffLabelSpeedSign" type="Label" parent="BuffLabels/BuffControlSpeed"]
+[node name="BuffLabelSpeedSign" type="Label" parent="ModulateMain/BuffLabels/BuffControlSpeed"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 0.000577811
@@ -479,11 +489,11 @@ collision_mask = 0
 position = Vector2(44, 78)
 polygon = PackedVector2Array(-15, -15, 29, -52, 60, -63, 112, -62, 156, -46, 184, -16, 205, 31, 205, 75, 193, 108, 177, 131, 191, 149, 189, 174, 171, 188, 172, 229, 174, 262, 190, 267, 184, 307, 173, 315, 140, 311, 106, 316, 75, 311, 43, 317, 10, 312, -21, 317, -29, 279, 3, 269, -6, 207, -2, 151, -33, 131, -22, 93, -33, 44)
 
-[connection signal="mouse_entered" from="Art/AreaBackground" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Art/AreaBackground" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="Art/Background" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Art/Background" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInUI"]
+[connection signal="mouse_entered" from="ModulateMain/Art/AreaBackground" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="ModulateMain/Art/AreaBackground" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="ModulateMain/Art/Background" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="ModulateMain/Art/Background" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_entered" from="ModulateMain/Art/ArtPop" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="ModulateMain/Art/ArtPop" to="." method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
+[connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInUI"]

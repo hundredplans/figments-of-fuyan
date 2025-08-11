@@ -86,5 +86,5 @@ base_tier: int = Game.getArea().getWorldDifficulty()) -> SavedDataBoon:
 static func onBoonDoesntExistAtTier(boon_info: BoonInfo, tier: int) -> bool:
 	var existing_boons: Array = Game.getSaveFile().getBoons()
 	if existing_boons.is_empty(): return true
-	return existing_boons.all(func(x: BoonGD):\
-		return x.info.id != boon_info.id and x.getTier() != tier)
+	return !existing_boons.any(func(x: BoonGD):\
+		return x.info.id == boon_info.id and x.getTier() == tier)

@@ -2,39 +2,28 @@
 
 [ext_resource type="Script" uid="uid://c1iio725mmqxh" path="res://scenes/game/map/extra/purchasable_boon.gd" id="1_e6cqj"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="2_5m3wn"]
-[ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="3_koevc"]
+[ext_resource type="PackedScene" uid="uid://chlcllps1hfda" path="res://scenes/game/map_nodes/screens/shop_screen/price_label.tscn" id="3_eafij"]
 
 [node name="PurchasableBoon" type="Control"]
 custom_minimum_size = Vector2(160, 202)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 160.0
-offset_bottom = 202.0
+offset_bottom = 208.0
 mouse_filter = 2
 script = ExtResource("1_e6cqj")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="BoonIcon" parent="VBoxContainer" instance=ExtResource("2_5m3wn")]
+[node name="BoonIcon" parent="." instance=ExtResource("2_5m3wn")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
+offset_right = 160.0
+offset_bottom = 160.0
+pivot_offset = Vector2(80, 80)
 
-[node name="ShillingsLabel" parent="VBoxContainer" instance=ExtResource("3_koevc")]
+[node name="PriceLabel" parent="." instance=ExtResource("3_eafij")]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="NameLabel" parent="." instance=ExtResource("3_koevc")]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = -292.0
-offset_top = -60.0
-offset_right = 459.0
-offset_bottom = -11.0
+offset_left = 42.0
+offset_top = 165.0
+offset_right = 175.0
+offset_bottom = 208.0
