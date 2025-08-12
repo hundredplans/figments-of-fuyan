@@ -12,21 +12,10 @@ func setInfo(_price_datastore: PriceDatastore) -> void:
 	DisplayedUI = ToolIcon
 	super(_price_datastore)
 	
-func onToolSelected(_Tool: ToolGD) -> void:
-	ToolIcon.top_level = true
-	ToolIcon.setDisableTooltip(true)
-	Game.onEmptyTooltip(false)
-	
-	var StashScreen: Control = Game.onCreateStashScreen(self, ToolIcon)
-	StashScreen.exit_start.connect(onStashScreenExit)
+func onToolSelected(_ToolIcon: Control) -> void:
+	var StashScreen: Control = Game.onCreateStashScreen(get_parent().get_parent(), ToolIcon)
 	StashScreen.global_position = Vector2.ZERO
 	StashScreen.active_tool_added.connect(func(_CardUI: Control): onPressed())
-	
-func onStashScreenExit() -> void:
-	if ToolIcon == null: return
-	ToolIcon.position = Vector2.ZERO
-	ToolIcon.top_level = false
-	ToolIcon.setDisableTooltip(false)
 	
 func setDisabled(state: bool) -> void:
 	super(state)

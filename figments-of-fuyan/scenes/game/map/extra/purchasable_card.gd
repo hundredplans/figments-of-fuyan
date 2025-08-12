@@ -20,4 +20,5 @@ func setDisabled(state: bool = true) -> void:
 	super(state)
 	DisplayedUI.setDisabled(state)
 
-	
+func getSoldLabelPosition(SoldLabel: Label) -> Vector2:
+	return super(SoldLabel) + Vector2(5, 0)

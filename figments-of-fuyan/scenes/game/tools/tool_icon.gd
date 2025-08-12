@@ -8,6 +8,7 @@ var Tool: ToolGD
 func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
 	Tool = _Tool
 	setInfoDirect(Tool.getIcon() if Tool != null else null, _hoverable)
+	setMouseFilter(mouse_filter)
 	
 func setTool(_Tool: ToolGD) -> void:
 	Tool = _Tool
@@ -21,9 +22,6 @@ func setInfoDirect(icon: Texture2D, _hoverable: bool = false) -> void:
 func setDisabled(state: bool) -> void:
 	disabled = state
 	onUpdateModulate()
-	
-func setDisableTooltip(_disable_tooltip: bool) -> void:
-	disable_tooltip = _disable_tooltip
 	
 func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
 	super(_mouse_filter)
@@ -40,3 +38,8 @@ func getPriceLabelPosition() -> Vector2:
 	return Vector2(-10, 43)
 	
 func getItem() -> FofGD: return Tool
+
+func onMouseInUI(state: bool) -> void:
+	super(state)
+	if !disable_tooltip:
+		Game.onMouseInUITooltip(state, Tool, self, true)

@@ -20,8 +20,6 @@ const RELATIVE_SIDE_FORCE_DIV: float = 15.0
 const HAND_X_OFFSET: int = 150
 
 var DragIconUI: TbcUI
-var active_tool_released: bool
-var ActiveToolIcon: Control
 var sellable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.Rarities.EXALT,\
 	Game.Rarities.MINIBOSS, Game.Rarities.BOSS]
 
@@ -32,6 +30,7 @@ var sellable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.R
 @onready var SellZoneHand: Sprite2D = %SellZoneHand
 @onready var SellZone: Control = %SellZone
 
+@onready var DeckCardUIRaycast: RayCast2D = %DeckCardUIRaycast
 @onready var SellZoneRaycast: RayCast2D = %SellZoneRaycast
 @onready var DeckSlotUIRaycast: RayCast2D = %DeckSlotUIRaycast
 @onready var CardUIRaycast: RayCast2D = %CardUIRaycast
@@ -110,10 +109,10 @@ func setInfo() -> void:
 	await get_tree().create_timer(Game.FADE_TIME).timeout
 	is_start_finished = true
 	
-func setActiveToolIcon(_ActiveToolIcon: Control) -> void:
-	ActiveToolIcon = _ActiveToolIcon
-	ActiveToolIcon.global_position = get_viewport().get_mouse_position() - (ActiveToolIcon.size / 2)
-	ActiveToolIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
+func setToolIcon(ToolIcon: TbcUI) -> void:
+	ToolIcon.setDraggable(true)
+	ToolIcon.setEndDragOnRelease(false)
+	ToolIcon.drag_end.connect(onToolIconDragEnd)
 	
 	for DeckSlotUI: Control in getDeckContainerDeckUI():
 		DeckSlotUI.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
@@ -142,6 +141,7 @@ func onExitButtonPressed() -> void:
 	exit_start.emit()
 	AniPlayer.play_backwards("SlideUIElements")
 	FadeCreamBackground.onFade(false)
+	Game.update_stash_screen.emit(false)
 	await AniPlayer.animation_finished
 	queue_free()
 
@@ -254,6 +254,7 @@ func onCreateDeckCardUI(DeckCard: CardGD, DeckSlotUI: Control) -> void:
 			ToolIcon.setDraggable(true)
 			CardUI.drag_begin.connect(onCardDraggedBegin.bind(false))
 			CardUI.drag_end.connect(onCardDraggedEnd.bind(false))
+			CardUI.setDeckCardUICollisionLayer()
 	DeckSlotUI.setCardUI(CardUI)
 	
 func onToolDragBegin(ToolIcon: TbcUI, CardUI: Control) -> void:
@@ -343,18 +344,7 @@ func _input(event: InputEvent) -> void:
 		onScroll(-1)
 	elif Input.is_action_just_pressed("ScrollDown"):
 		onScroll(1)
-		
-	if ActiveToolIcon != null:
-		if Input.is_action_just_pressed("MainInput") and is_start_finished:
-			onActiveToolIconReleased()
-		if event is InputEventMouseMotion and !is_exit_start:
-			ActiveToolIcon.global_position += event.relative
-			ActiveToolIcon.rotation_degrees += event.relative.x / RELATIVE_SIDE_FORCE_DIV
-		
-func _process(delta: float) -> void:
-	if ActiveToolIcon != null and !is_exit_start:
-		ActiveToolIcon.rotation = lerp_angle(ActiveToolIcon.rotation, 0, ROTATION_SPEED_TO_MIDDLE * delta)
-		
+
 const SCROLL_STRENGTH: int = 200
 const SCROLL_SPEED: float = 0.1
 
@@ -363,19 +353,20 @@ func onScroll(direction: int) -> void:
 	var tween := create_tween()
 	tween.tween_property(scroll_cont, "scroll_vertical", SCROLL_STRENGTH * direction, SCROLL_SPEED).as_relative().set_trans(Tween.TRANS_SINE)
 
-func onActiveToolIconReleased() -> void:
-	CardUIRaycast.global_position = ActiveToolIcon.global_position + (ActiveToolIcon.size / 2)
-	CardUIRaycast.target_position = Vector2.ZERO
-	CardUIRaycast.force_raycast_update()
-	ActiveToolIcon.setMouseFilter(Control.MOUSE_FILTER_STOP)
-	ActiveToolIcon.rotation_degrees = 0
+func onToolIconDragEnd(ToolIcon: TbcUI) -> void:
+	DeckCardUIRaycast.global_position = ToolIcon.global_position + (ToolIcon.size / 2)
+	DeckCardUIRaycast.target_position = Vector2.ZERO
+	DeckCardUIRaycast.force_raycast_update()
 	
-	var area: Area2D = CardUIRaycast.get_collider()
+	ToolIcon.setDraggable(false)
+	ToolIcon.setEndDragOnRelease(true)
+	
+	var area: Area2D = DeckCardUIRaycast.get_collider()
 	if area == null: onExitButtonPressed(); return
 	
 	var CardUI: Control = area.get_parent()
 	var Card: CardGD = CardUI.Card
-	var Tool: ToolGD = ActiveToolIcon.Tool
+	var Tool: ToolGD = ToolIcon.Tool
 	var DupeTool: ToolGD = SavedData.onLoadModel(Tool.getDuplicateData(), Game.getSaveFile())
 	
 	Card.onForceAction(AddToolAction.new(Card, DupeTool, true))
@@ -608,6 +599,8 @@ func onHideSellZone() -> void:
 func onItemSold(ItemUI: Control, item: FofGD) -> void:
 	if !sellable: return
 	if item.getRarity() not in sellable_rarities: return
+	ItemUI.setDisableTooltip(true)
+	Game.onEmptyTooltip(false)
 	ItemUI.setIgnoreDragPositionReset(true)
 	var price: int = int(float(Game.getPriceForItem(item)) * Game.SELL_MULT)
 	await onItemSoldVisual(ItemUI, item, price)

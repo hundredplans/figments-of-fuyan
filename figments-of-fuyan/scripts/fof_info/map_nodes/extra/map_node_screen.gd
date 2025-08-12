@@ -1,6 +1,8 @@
 class_name MapNodeScreen extends Control
 
 @warning_ignore("Unused_signal")
+
+signal minimap_mode
 signal finished
 
 var World: Node3D

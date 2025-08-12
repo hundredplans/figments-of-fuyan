@@ -43,6 +43,7 @@ func _process(_delta: float) -> void:
 		screen_created.emit()
 
 func setInfo(_save_file: SaveFileGD) -> void:
+	Game.update_stash_screen.connect(onUpdateStashScreen)
 	save_file = _save_file
 	onUpdateShillings()
 	
@@ -106,6 +107,7 @@ func onUpdateShillings() -> void:
 func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
 	add_child(ActiveScreen)
 	ActiveScreen.setInfo(save_file, area, World, self, map_node)
+	ActiveScreen.minimap_mode.connect(onMinimapMode)
 	
 	if ActiveScreen.onFadeBackground():
 		FadeBackground.color = Color(1, 1, 1, 0)
@@ -121,7 +123,7 @@ func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Variant = null) -> void:
 	if HoverUI != null: Game.onEmptyTooltip(state, HoverUI, self)
 	if state and HoverUI != null:
-		HoverUI.setInfo(map_node.onSave())
+		HoverUI.setInfo(map_node)
 #endregion
 
 #region Legend
@@ -154,24 +156,20 @@ func onDeckButtonPressed() -> void:
 func onCreateStashScreen() -> void:
 	StashScreen = Game.onCreateStashScreen(self)
 	StashScreen.mouse_in_ui.connect(onMouseInUI)
-	screen_created.emit()
-	StashScreen.tree_exited.connect(onStashExited)
-	StashScreen.exit_start.connect(onStashExitStart)
 	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
 	
 	var EnteredMapNode: MapNodeGD = Game.getArea().getEnteredMapNode()
 	if !EnteredMapNode.is_finished and EnteredMapNode.info.is_shop:
 		StashScreen.onStashIsSellable()
 	
-	var tween := create_tween()
-	tween.tween_property(BoonBox, "modulate:a", 0.0, FADE_BOON_BOX_TIME)
-	
-func onStashExited() -> void:
-	screen_finished.emit()
-	
-func onStashExitStart() -> void:
-	var tween := create_tween()
-	tween.tween_property(BoonBox, "modulate:a", 1.0, FADE_BOON_BOX_TIME)
+func onUpdateStashScreen(created: bool) -> void:
+	var end_value: float = 0.0 if created else 1.0
+	if created: screen_created.emit()
+	else: screen_finished.emit()
+		
+	for node: Control in [BoonBox, LegendBox, DeckPanel]:
+		var tween := create_tween()
+		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)
 #endregion
 
 #region Deck Card Amount
@@ -185,3 +183,12 @@ func onUpdateDeckCardAmountLabel() -> void:
 func onMouseInUI(state: bool) -> void:
 	Game.onMouseInUI(state)
 #endregion
+
+func onMinimapMode(is_start: bool) -> void:
+	if !is_start: FadeBackground.visible = true
+		
+	FadeBackground.onFade(!is_start)
+	World.onDisableCameraByUI(!is_start)
+	
+	await get_tree().create_timer(Game.FADE_TIME).timeout
+	if is_start: FadeBackground.visible = false

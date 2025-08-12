@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://c18ndxg8x7gs3"]
+[gd_scene load_steps=8 format=3 uid="uid://c18ndxg8x7gs3"]
 
+[ext_resource type="Theme" uid="uid://beb3asngnlka5" path="res://resources/ui/themes/tooltip_theme.tres" id="1_8puje"]
 [ext_resource type="Script" uid="uid://icorsaoa6ia" path="res://scenes/common/tooltip/tooltip_item.gd" id="1_xd4af"]
 [ext_resource type="PackedScene" uid="uid://ki8iuvgxw73y" path="res://scenes/common/tooltip/card_tooltip_extra.tscn" id="3_n0xql"]
 [ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="3_p4jm1"]
@@ -11,8 +12,17 @@
 custom_minimum_size = Vector2(500, 0)
 offset_right = 500.0
 offset_bottom = 77.0
+theme = ExtResource("1_8puje")
+theme_type_variation = &"OuterPanelContainer"
 script = ExtResource("1_xd4af")
 CardTooltipExtraPacked = ExtResource("3_n0xql")
+
+[node name="InnerPanelContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_8puje")
+theme_type_variation = &"InnerPanelContainer"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

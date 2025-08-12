@@ -6,6 +6,7 @@ extends TbcUI
 @onready var ArtPop: ButtonAutomask = %ArtPop
 @onready var NameLabel: Label = %NameLabel
 
+@onready var RaycastArea: Area2D = %RaycastArea
 @onready var AttackLabel: Label = %AttackLabel
 @onready var HealthLabel: Label = %HealthLabel
 @onready var SpeedLabel: Label = %SpeedLabel
@@ -191,3 +192,6 @@ func getItem() -> FofGD: return Card
 	
 func getToolIcon() -> TbcUI:
 	return ToolIcon
+
+func setDeckCardUICollisionLayer() -> void:
+	RaycastArea.collision_layer = 4 + 32

@@ -2,6 +2,7 @@ extends Control
 
 @export var CardTooltipExtraPacked: PackedScene
 
+@onready var InnerPanelContainer: PanelContainer = %InnerPanelContainer
 @onready var NameLabel: Label = %NameLabel
 @onready var TopIcon: TextureRect = %TopIcon
 @onready var TextLabel: FancyTextLabel = %TextLabel
@@ -38,9 +39,13 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		Topside.add_child(CardTooltipExtra)
 		CardTooltipExtra.setInfo(info, tier)
 	
-	var theme_variation: String = "YellowPanelContainer"
+	if info is BoonInfo or info is ToolInfo or info is CardInfo:
+		self_modulate = Game.getTierColor(tier)
+		InnerPanelContainer.self_modulate = Game.getRarityColor(info.rarity)
+	else:
+		theme_type_variation = "YellowPanelContainer"
+		InnerPanelContainer.visible = false
 	
-	theme_type_variation = theme_variation
 	mouse_filter = Control.MOUSE_FILTER_STOP if stop_mouse else Control.MOUSE_FILTER_IGNORE
 	
 func setInfoDirect(title: String, icon: Texture2D, text: String) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ca067vx7dy1b"]
+[gd_scene load_steps=13 format=3 uid="uid://ca067vx7dy1b"]
 
 [ext_resource type="Script" uid="uid://bujwxaar1n04b" path="res://scenes/game/map_nodes/screens/shop_screen/shop_screen.gd" id="1_wcyr3"]
 [ext_resource type="PackedScene" uid="uid://bwch12ke7ea65" path="res://scenes/game/map/extra/purchasable_card.tscn" id="3_nsqt1"]
@@ -7,9 +7,47 @@
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="8_w8www"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="9_o4he1"]
 [ext_resource type="Texture2D" uid="uid://d203lqs8t7rqv" path="res://assets/sprites/ui/icons/minimap.png" id="10_oit0k"]
-[ext_resource type="Texture2D" uid="uid://cdtgandyuulnq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/general_shop_bg_icon.png" id="10_rk0v1"]
 [ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="13_r6pve"]
 [ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="14_rk0v1"]
+
+[sub_resource type="Animation" id="Animation_rxebg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackgroundIconContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -171)]
+}
+
+[sub_resource type="Animation" id="Animation_5mpcf"]
+resource_name = "LoopBackgroundIcons"
+length = 4.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackgroundIconContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4, 4.0001),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -171), Vector2(-32, -120), Vector2(0, -171), Vector2(-56, 9)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fifuk"]
+_data = {
+&"LoopBackgroundIcons": SubResource("Animation_5mpcf"),
+&"RESET": SubResource("Animation_rxebg")
+}
 
 [node name="ShopScreen" type="Control"]
 layout_mode = 3
@@ -20,209 +58,33 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_wcyr3")
+ROWS = 5
+COLUMNS = 8
+H_SEPERATION = 200
 PurchasableCardPacked = ExtResource("3_nsqt1")
 PurchasableBoonPacked = ExtResource("5_wgmd6")
 PurchasableToolPacked = ExtResource("6_afqjs")
 
-[node name="LoopingBG" type="GridContainer" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0.501961)
+[node name="BackgroundIconContainer" type="GridContainer" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.25098)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -171.0
-offset_right = -940.0
-offset_bottom = -521.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(2, 2)
 mouse_filter = 2
 theme_override_constants/h_separation = 100
-theme_override_constants/v_separation = 50
+theme_override_constants/v_separation = 30
 columns = 6
 
-[node name="TextureRect" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect2" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect17" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect18" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect19" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect20" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect21" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect22" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect23" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect24" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect25" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect26" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect27" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect28" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect29" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect30" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect31" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect32" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect33" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect34" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect35" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect36" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect3" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect4" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect5" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect6" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect7" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect8" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect9" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect10" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect11" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect12" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect13" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect14" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect15" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
-[node name="TextureRect16" type="TextureRect" parent="LoopingBG"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("10_rk0v1")
-
 [node name="ShopMerchantUI" type="Control" parent="."]
+unique_name_in_owner = true
 texture_filter = 1
 anchors_preset = 0
 offset_left = 1394.0
@@ -243,6 +105,7 @@ texture = ExtResource("14_rk0v1")
 centered = false
 
 [node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("8_w8www")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -282,6 +145,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_fifuk")
+}
 
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="MapPanel/MarginContainer/MinimapButton" to="." method="_on_minimap_button_pressed"]

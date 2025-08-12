@@ -3,6 +3,7 @@ class_name TbcUI extends Control
 const ROTATION_SPEED_TO_MIDDLE: float = 15.0
 const RELATIVE_SIDE_FORCE_DIV: float = 2.5
 
+var end_drag_on_release: bool = true
 var current_mouse_filter: Control.MouseFilter
 
 var is_mouse_in_ui: bool
@@ -45,9 +46,11 @@ func onRemovePriceLabel() -> void:
 #endregion
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
+	if Input.is_action_just_pressed("MainInput") and is_dragging and !end_drag_on_release:
+		onDragEnd()
+	elif Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
 		onPressed()
-	elif Input.is_action_just_released("MainInput") and is_dragging:
+	elif Input.is_action_just_released("MainInput") and is_dragging and end_drag_on_release:
 		onDragEnd()
 		
 	if is_dragging:
@@ -72,6 +75,9 @@ func onUpdateModulate() -> void:
 	else: color = Color.WHITE
 	ModulateMain.modulate = color
 
+func setDisableTooltip(_disable_tooltip: bool) -> void:
+	disable_tooltip = _disable_tooltip
+
 func setDraggable(_draggable: bool) -> void:
 	draggable = _draggable
 
@@ -92,7 +98,6 @@ func onDragBegin() -> void:
 	
 	get_viewport().call_deferred("update_mouse_cursor_state")
 	onUpdateModulate()
-	#call_deferred("set_as_top_level", true)
 	
 	await get_tree().process_frame
 	var original_global_position: Vector2 = global_position
@@ -100,11 +105,11 @@ func onDragBegin() -> void:
 	global_position = original_global_position
 	
 func onDragEnd() -> void:
-	drag_end.emit(self)
 	is_dragging = false
 	
 	setMouseFilter(original_mouse_filter)
 	disable_tooltip = original_tooltip_state
+	drag_end.emit(self)
 	
 	if !ignore_drag_position_reset:
 		top_level = false
@@ -127,3 +132,5 @@ func onPressed() -> void:
 func onDisableDraggable() -> void:
 	draggable = false
 	
+func setEndDragOnRelease(_end_drag_on_release: bool) -> void:
+	end_drag_on_release = _end_drag_on_release

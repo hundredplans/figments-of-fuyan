@@ -14,14 +14,15 @@ func setInfo(_Boon: BoonGD, _hoverable: bool = false, _draggable: bool = false) 
 	draggable = _draggable
 	
 	onUpdateCharges(Boon.getCharges())
+	setMouseFilter(mouse_filter)
 	
 func onDisplayCharges(state: bool) -> void:
 	ChargesLabel.visible = state
 	
 func onMouseInUI(state: bool) -> void:
 	super(state)
-	#if !disable_tooltip:
-		#Game.onMouseInUITooltip(state, Boon, self, true)
+	if !disable_tooltip:
+		Game.onMouseInUITooltip(state, Boon, self, true)
 		
 func onUpdateCharges(charges: int) -> void:
 	if !Boon.info.use_charges: return

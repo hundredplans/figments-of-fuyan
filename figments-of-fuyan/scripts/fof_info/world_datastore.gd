@@ -36,7 +36,7 @@ const TOOL_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/sho
 
 @export_group("Constants across Worlds")
 @export var MIN_ELITE_FIGHTS: int = 2
-@export_range(0, 100, 1) var foreign_card_base_price_increase: int = 4
+@export_range(0, 100, 1) var foreigner_mult: float = 1.5
 @export_range(0, 10, 1) var default_shop_variance: int = 3
 @export_range(0, 1, 0.005) var card_with_tool_odds: float = 0.1
 @export_group("")
@@ -102,3 +102,6 @@ func getCardWithToolTierUpOdds() -> float:
 
 func getBaseTierUpOdds() -> float:
 	return base_tier_up_rate
+
+func getForeignerMult() -> float:
+	return foreigner_mult

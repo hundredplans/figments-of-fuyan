@@ -5,6 +5,7 @@
 
 [node name="Tooltip" type="Control"]
 top_level = true
+z_index = 99
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 3
 anchors_preset = 0
@@ -25,5 +26,5 @@ offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 30
 alignment = 1

@@ -51,16 +51,22 @@ func setBoughtVisual(instant: bool) -> void:
 	setDisabled(true)
 	var SoldLabel: Label = load(SOLD_LABEL_PATH).instantiate()
 	add_child(SoldLabel)
-	SoldLabel.position = -(SoldLabel.size / 2.0) + (DisplayedUI.pivot_offset)
+	SoldLabel.position = getSoldLabelPosition(SoldLabel)
+	onScaleIconUISize(true, instant)
 
 var ScaleIconUITween: Tween
-func onScaleIconUISize(state: bool) -> void:
+func onScaleIconUISize(state: bool, instant: bool = false) -> void:
 	var target_value: float = (SCALE_MAX if state else SCALE_MIN) - scale.x
 	if ScaleIconUITween: ScaleIconUITween.kill()
-	ScaleIconUITween = create_tween()
-	ScaleIconUITween.tween_property(self, "scale", Vector2(target_value, target_value), SCALE_SPEED)\
-		.as_relative().set_trans(Tween.TRANS_SINE)
+	
+	if !instant:
+		ScaleIconUITween = create_tween()
+		ScaleIconUITween.tween_property(self, "scale", Vector2(target_value, target_value), SCALE_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
+	else: scale += Vector2(target_value, target_value)
 
 func onUpdateModulate() -> void:
 	PriceLabel.modulate = Color(1, 1, 1) if !disabled else Color(0.2, 0.2, 0.2)
 	
+func getSoldLabelPosition(SoldLabel: Label) -> Vector2:
+	return -(SoldLabel.size / 2.0) + (DisplayedUI.pivot_offset)

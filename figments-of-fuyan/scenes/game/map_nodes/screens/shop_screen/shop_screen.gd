@@ -3,6 +3,16 @@ class_name ShopScreen extends MapNodeScreen
 const TRANSFORM_WAIT_PRESSED_TIME: float = 1.5
 const CARD_FLIP_TIME: float = 0.25
 
+@export var ROWS: int = 6
+@export var COLUMNS: int = 6
+@export var H_SEPERATION: int = 100
+@export var V_SEPERATION: int = 100
+
+@onready var BackgroundIconContainer: Container = %BackgroundIconContainer
+@onready var AniPlayer: AnimationPlayer = %AniPlayer
+@onready var ShopMerchantUI: Control = %ShopMerchantUI
+@onready var MapPanel: Control = %MapPanel
+@onready var ExitButton: Control = %ExitButton
 @onready var PurchasableManager: Control = %PurchasableManager
 @onready var FrameMerchantBase: Sprite2D = %FrameMerchantBase
 @onready var FrameMerchantSprite: Sprite2D = %FrameMerchantSprite
@@ -18,92 +28,20 @@ func getPurchasableFromType(type: GDScript) -> PackedScene:
 	elif type == ToolInfo: return PurchasableToolPacked
 	return null
 
-func onFirstEntered() -> void:
-	pass
-
 func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control, shop: MapNodeGD) -> void:
 	super(_save_file, _area, _World, _UI, shop)
+	Game.update_stash_screen.connect(onUpdateStashScreen)
 	for price_datastore: PriceDatastore in shop.getItems():
 		var data: SavedData = price_datastore.getData()
 		var PurchasableScene: Control = getPurchasableFromType(data.getInfoType()).instantiate()
 		PurchasableManager.add_child(PurchasableScene)
 		PurchasableScene.setInfo(price_datastore)
+		PurchasableScene.pressed.connect(onItemPressed)
 	onFrameSprite()
-	
-	#for price_datastore: PriceDatastore in items:
-		#var item: SavedData = price_datastore.data
-		#var purchasable_packed: PackedScene
-		#var parent: Control
-		#
-		#match item.getInfoType().getFofName():
-			#"Card":
-				#purchasable_packed = PurchasableCardPacked
-				#parent = Cards
-			#"ActionWrapper":
-				#if item.hasType(RemoveFromDeckAction):
-					#purchasable_packed = PurchasableRemovePacked
-					#parent = RemoveCardPosition
-				#elif item.hasType(TransformCardAction):
-					#purchasable_packed = PurchasableTransformPacked
-					#parent = TransformPosition
-			#"Boon":
-				#boon_ids.append(item.id)
-					#
-				#if item != null:
-					#purchasable_packed = PurchasableBoonPacked
-					#parent = Boons
-			#"Tool":
-				#purchasable_packed = PurchasableToolPacked
-				#parent = Tools
+	onCreateBackgroundIcons()
 		
-		#var fof: FofGD = SavedData.onLoadModel(price_datastore.data, World.ActiveWorld)
-		#if purchasable_packed == null: continue
-		
-		#var purchasable: Control = purchasable_packed.instantiate()
-		#parent.add_child(purchasable)
-		#purchasable.setInfo(fof, price_datastore, save_file)
-		#
-		#purchasable.create_screen.connect(onCreateScreen)
-		#purchasable.pressed.connect(onItemPressed.bind(shop))
-		
-func onItemPressed(item: FofGD, price_datastore: PriceDatastore, DisplayedUI: Control, shop: MapNodeGD) -> void:
-	price_datastore.bought = true
-	shop.onPushAction(ChangeShillingsAction.new(-price_datastore.price))
-	
-	if item is CardGD:
-		shop.onPushAction(AddToDeckAction.new(item))
-		Game.onFlyToUI(DisplayedUI, UI.getDeckPanel())
-		
-	elif item is ToolGD:
-		DisplayedUI.queue_free()
-		
-	elif item is BoonGD:
-		shop.onForceAction(AddBoonAction.new(item.info.id, item.tier))
-		Game.onFlyToUI(DisplayedUI, UI.BoonBox.onFindBoonIcon(item.info.id))
-		
-	World.ActiveWorld.onBuy()
-	if item is ActionWrapper and !item.hasType(RemoveFromDeckAction): # Not remove card
-		var NewCard: CardGD
-		NewCard = item.getType(TransformCardAction)[0].NewCard
-		DisplayedUI = await onFlipCardAnimation(DisplayedUI, NewCard)
-		await get_tree().create_timer(TRANSFORM_WAIT_PRESSED_TIME).timeout
-		Game.onFlyToUI(DisplayedUI, UI.DeckPanel)
-		
-func onFlipCardAnimation(CardUI: Control, NewCard: CardGD) -> Control:
-	var NewCardUI: Control = NewCard.onCreateCardUI(self, false)
-	
-	NewCardUI.global_position = CardUI.global_position
-	NewCardUI.scale.x = 0
-	
-	var flip_tween := create_tween()
-	flip_tween.tween_property(CardUI, "scale:x", 0, CARD_FLIP_TIME)
-	await flip_tween.finished
-	
-	CardUI.queue_free()
-	flip_tween = create_tween()
-	flip_tween.tween_property(NewCardUI, "scale:x", 1, CARD_FLIP_TIME)
-	await flip_tween.finished
-	return NewCardUI
+func onItemPressed(price_datastore: PriceDatastore) -> void:
+	map_node.onItemBought(price_datastore)
 
 func _on_exit_button_pressed() -> void:
 	finished.emit()
@@ -117,12 +55,49 @@ func getFadeBackgroundColor() -> Color:
 func onCreateScreen(screen: Control) -> void:
 	add_child(screen)
 	
+var is_minimap_visible: bool
 func _on_minimap_button_pressed() -> void:
-	pass
+	is_minimap_visible = !is_minimap_visible
+	var nodes: Array = [ShopMerchantUI, PurchasableManager]
+	if !is_minimap_visible:
+		for node: Control in nodes:
+			node.visible = true
 
-const timer_time: float = 1.0
+	var desired: float = int(!is_minimap_visible)
+	var val: float = desired - ShopMerchantUI.modulate.a
+	for node: Control in nodes:
+		var tween := create_tween()
+		tween.tween_property(node, "modulate:a", val, Game.FADE_TIME).as_relative()
+	minimap_mode.emit(is_minimap_visible)
+	
+	await get_tree().create_timer(Game.FADE_TIME).timeout
+	if is_minimap_visible:
+		for node: Control in nodes:
+			node.visible = false
+
+const SWAP_FRAME_TIME: float = 1.0
 func onFrameSprite(start: int = 1) -> void:
 	FrameMerchantSprite.texture = map_node.getShopDatastore().getMerchantFrames()[start - 1]
-	await get_tree().create_timer(timer_time).timeout
+	await get_tree().create_timer(SWAP_FRAME_TIME).timeout
 	onFrameSprite(1 if start == 2 else 2)
 	
+func onUpdateStashScreen(created: bool) -> void:
+	var end_value: float = 0.0 if created else 1.0
+	for node: Control in [ExitButton, MapPanel, PurchasableManager, ShopMerchantUI]:
+		var tween := create_tween()
+		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)
+		
+func onCreateBackgroundIcons() -> void:
+	AniPlayer.play("LoopBackgroundIcons")
+	BackgroundIconContainer.columns = COLUMNS
+	BackgroundIconContainer.add_theme_constant_override("h_separation", H_SEPERATION)
+	BackgroundIconContainer.add_theme_constant_override("v_separation", V_SEPERATION)
+	var icon: Texture2D = map_node.getShopDatastore().getBackgroundIcon()
+	for __: int in range(COLUMNS * ROWS):
+		var TxRect := TextureRect.new()
+		TxRect.texture = icon
+		BackgroundIconContainer.add_child(TxRect)
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("AddToGroup1"):
+		onCreateBackgroundIcons()

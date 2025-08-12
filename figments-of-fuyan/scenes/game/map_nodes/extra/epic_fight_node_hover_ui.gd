@@ -1,17 +1,17 @@
-extends Control
+extends HoverUI
 
 @export var FofUIBoxPacked: PackedScene
 @onready var FofUIControl: Control = %FofUIControl
 @onready var BossNameLabel: Label = %BossNameLabel
 
-func setInfo(map_node_data: SavedDataEpicFight) -> void:
+func setInfo(map_node: MapNodeGD) -> void:
 	var FofUIBox: Control = FofUIBoxPacked.instantiate()
 	FofUIBox.disable_tooltip = true
 	FofUIControl.add_child(FofUIBox)
 	
-	if Game.getArea().getProgress() < 5 and map_node_data.map_location.progress > 5: queue_free(); return
+	if Game.getArea().getProgress() < 5 and map_node.map_location.progress > 5: queue_free(); return
 	
-	var boss_data := SavedDataEpicCard.new(map_node_data.boss_id)
+	var boss_data := SavedDataEpicCard.new(map_node.boss_id)
 	FofUIBox.setInfo(boss_data)
 	FofUIBox.scale = Vector2(2, 2)
 	
@@ -19,24 +19,14 @@ func setInfo(map_node_data: SavedDataEpicFight) -> void:
 	BossNameLabel.text = boss_info.name
 	
 	var theme_path: String = ""
-	if map_node_data is SavedDataMiniBossFight:
+	if map_node is MinibossFightNodeGD:
 		theme_path = "PurplePanelContainer"
 		BossNameLabel.modulate = Game.getRarityColor(Game.Rarities.MINIBOSS)
-	elif map_node_data is SavedDataBossFight:
+	elif map_node is BossFightNodeGD:
 		theme_path = "RedPanelContainer"
 		BossNameLabel.modulate = Game.getRarityColor(Game.Rarities.BOSS)
 	
 	theme_type_variation = theme_path
 	setMouseCenter(get_viewport().get_mouse_position())
-
-func _process(_delta: float) -> void:
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED: queue_free()
-
-func setMouseCenter(mouse_position: Vector2) -> void:
-	global_position = mouse_position - (size / 2) - Vector2(0, 120)
-	global_position.x = clamp(global_position.x, 0, get_viewport().size.x - size.x - 10)
-	global_position.y = clamp(global_position.y, 0, get_viewport().size.y - size.y - 10)
 	
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		setMouseCenter(get_viewport().get_mouse_position())
+	

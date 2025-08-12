@@ -32,9 +32,6 @@ func onLoadData(data: SavedData) -> void:
 #endregion
 
 #region Hovering
-func onMouseHovered(state: bool) -> void:
-	super(state)
-	
 func onUpdateHovered() -> void:
 	if is_queued_for_deletion(): return
 	var state: bool = getHoveredState()

@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://csvrxjr43b64p"]
+
+[ext_resource type="Script" uid="uid://buamyn42nbk7h" path="res://scenes/game/map_nodes/extra/shop_hover_ui.gd" id="1_mvpta"]
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_bj4do"]
+[ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="3_xplyp"]
+[ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="4_hytq6"]
+
+[node name="ShopHoverUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 588.0
+offset_bottom = 89.0
+mouse_filter = 2
+script = ExtResource("1_mvpta")
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 38.0
+text = "General Shop"
+label_settings = ExtResource("2_bj4do")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(472, 51)
+
+[node name="MerchantBaseSprite" type="Sprite2D" parent="Node2D"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-12, -7)
+texture = ExtResource("3_xplyp")
+metadata/_edit_lock_ = true
+
+[node name="MerchantFrameSprite" type="Sprite2D" parent="Node2D"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-12, -7)
+texture = ExtResource("4_hytq6")
+metadata/_edit_lock_ = true

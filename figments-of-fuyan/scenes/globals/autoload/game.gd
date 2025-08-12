@@ -1,5 +1,6 @@
 extends Node
 
+signal update_stash_screen
 signal mouse_in_ui
 var is_mouse_in_ui: bool
 var save_file: SaveFileGD
@@ -577,8 +578,9 @@ func onCreateStashScreen(parent: Control, ActiveToolIcon: Control = null) -> Con
 	parent.add_child(StashScreen)
 	StashScreen.setInfo()
 	if ActiveToolIcon != null:
-		StashScreen.setActiveToolIcon(ActiveToolIcon)
+		StashScreen.setToolIcon(ActiveToolIcon)
 	
+	update_stash_screen.emit(true)
 	return StashScreen
 
 const CHAMPION_UPGRADE_UI_PATH: String = "res://scenes/common/champion_upgrade_ui/champion_upgrade_ui.tscn"
@@ -679,3 +681,14 @@ func getPriceForItemData(data: SavedData) -> int:
 		var tool_info: ToolInfo = Helper.getFofInfoID(ToolInfo, tool_data.id)
 		sh += int(float(rarity_prices.getByRarity(tool_info.rarity)) * Game.getTierShillingsMultiplier(tool_data.tier))
 	return sh
+	
+func getPriceForCardData(data: SavedData, is_foreign: bool) -> int:
+	if is_foreign:
+		var tool_data: SavedDataTool = data.tool_data
+		data.tool_data = null
+		var card_price: int = getPriceForItemData(data)
+		card_price *= Game.getArea().getWorld().getForeignerMult()
+		var tool_price: int = 0 if tool_data == null else getPriceForItemData(tool_data)
+		data.tool_data = tool_data
+		return card_price + tool_price
+	return getPriceForItemData(data)

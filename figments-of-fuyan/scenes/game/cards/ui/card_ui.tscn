@@ -481,30 +481,20 @@ offset_bottom = 39.0
 rotation = -0.0427386
 text = "+"
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="RaycastArea" type="Area2D" parent="."]
+unique_name_in_owner = true
 collision_layer = 4
 collision_mask = 0
 
-[node name="ToolCollisionShape" type="CollisionPolygon2D" parent="Area2D"]
+[node name="ToolCollisionShape" type="CollisionPolygon2D" parent="RaycastArea"]
 position = Vector2(44, 78)
 polygon = PackedVector2Array(-15, -15, 29, -52, 60, -63, 112, -62, 156, -46, 184, -16, 205, 31, 205, 75, 193, 108, 177, 131, 191, 149, 189, 174, 171, 188, 172, 229, 174, 262, 190, 267, 184, 307, 173, 315, 140, 311, 106, 316, 75, 311, 43, 317, 10, 312, -21, 317, -29, 279, 3, 269, -6, 207, -2, 151, -33, 131, -22, 93, -33, 44)
 
-<<<<<<< HEAD
 [connection signal="mouse_entered" from="ModulateMain/Art/AreaBackground" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="ModulateMain/Art/AreaBackground" to="." method="onMouseInUI" binds= [false]]
 [connection signal="mouse_entered" from="ModulateMain/Art/Background" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="ModulateMain/Art/Background" to="." method="onMouseInUI" binds= [false]]
 [connection signal="mouse_entered" from="ModulateMain/Art/ArtPop" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="ModulateMain/Art/ArtPop" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
 [connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInUI"]
-=======
-[connection signal="mouse_entered" from="Art/AreaBackground" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Art/AreaBackground" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="Art/Background" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Art/Background" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="Art/ArtPop" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Art/ArtPop" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInUI"]
-[connection signal="mouse_in_ui" from="Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
->>>>>>> d4388f68640e15b7edfd047e2ab8098d68c221a8
+[connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
