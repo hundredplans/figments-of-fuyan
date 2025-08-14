@@ -2,6 +2,7 @@ extends MapNodeGD
 
 #region Globals
 const GENERAL_SHOP_DATASTORE_PATH: String = "res://resources/datastore/shops/shop_datastore/general_shop_datastore.tres"
+const OZHARS_BAZAAR_DATASTORE_PATH: String = "res://resources/datastore/shops/shop_datastore/ozhars_bazaar_datastore.tres"
 var shop_datastore: ShopDatastore
 
 const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop.mp3"
@@ -101,6 +102,7 @@ func onLoadShopDatastore() -> void:
 	if shop_datastore != null: return
 	var path: String
 	match info.id:
+		5: path = OZHARS_BAZAAR_DATASTORE_PATH
 		6: path = GENERAL_SHOP_DATASTORE_PATH
 		_: path = GENERAL_SHOP_DATASTORE_PATH
 	shop_datastore = load(path)

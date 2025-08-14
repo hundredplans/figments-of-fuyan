@@ -13,7 +13,8 @@ extends Node3D
 @onready var Numbers: Node3D = %Numbers
 @onready var IconsManager: Node3D = %IconsManager
 
-@onready var ToolIcon: Sprite3D = %ToolIcon
+@onready var ToolIconDisplay: MeshInstance3D = %ToolIconDisplay
+@onready var ToolIcon: Control = %ToolIcon
 
 @onready var NumbersParticleManager: Node3D = %NumbersParticleManager
 #endregion
@@ -103,7 +104,7 @@ func onResetDepthTest() -> void:
 
 func setDepthTest(state: bool) -> void:
 	var mat: Material = null if !state else top_base_material
-	ToolIcon.no_depth_test = state
+	#ToolIconDisplay.no_depth_test = state
 	var meshes: Array = Helper.getNodeTypeRecursive(AttackFloatingStatSpot, MeshInstance3D) +\
 		Helper.getNodeTypeRecursive(HealthFloatingStatSpot, MeshInstance3D)
 	for mesh: MeshInstance3D in meshes:
@@ -314,10 +315,7 @@ func onResetNullIcons() -> void:
 		if child.FofObject == null: child.queue_free()
 
 func onToolUpdated(Tool: ToolGD) -> void:
-	if Tool == null:
-		ToolIcon.texture = null
-	else:
-		ToolIcon.texture = Tool.getIcon()
+	ToolIcon.setInfo(Tool, false)
 #endregion
 
 const PASSED_MAX_GREY: float = 0.2

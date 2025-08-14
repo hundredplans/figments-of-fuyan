@@ -63,7 +63,7 @@ func onFinished() -> void:
 
 #region Level Gen
 func getBudget() -> int:
-	return Game.area.getBudget(map_location.progress, level_info.enemy_budget_offset)
+	return Game.area.getBudget(map_location.progress, 0)
 	
 func setLevelInfo() -> void:
 	if Helper.admin_datastore.force_level_spawn_id > 0 and map_location.progress == 1:
@@ -75,10 +75,10 @@ func setLevelInfo() -> void:
 			.map(func(y: MapNodeGD): return y.level_info.id if y.level_info != null else 0)\
 			.filter(func(z: int): return z != 0)
 			
+		var budget: int = Game.getArea().getBudget(map_location.progress, 0)
 		var levels: Array = Helper.getFofInfoArray(LevelInfo)
-		levels = levels.filter(func(x: LevelInfo): \
-			return x.gdscript == level_script and\
-				map_location.progress >= x.progress_min and map_location.progress <= x.progress_max)
+		levels = levels.filter(func(x: LevelInfo): return x.gdscript == level_script)
+		levels = levels.filter(func(x: LevelInfo): return budget >= x.budget_min and budget <= x.budget_max)
 		
 		if levels.size() > existing_level_ids.size():
 			levels = levels.filter(func(x: LevelInfo): return x.id not in existing_level_ids)

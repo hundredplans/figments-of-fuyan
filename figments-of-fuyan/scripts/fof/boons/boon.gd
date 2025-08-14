@@ -1,5 +1,7 @@
 class_name BoonGD extends FofGD
 
+signal update_tier
+
 var ability_save: Dictionary
 var charges: int
 var tier: int
@@ -77,6 +79,7 @@ func onLevelStarted() -> void: # Called when the level literally starts
 		
 func onRetiered(_tier: int) -> void:
 	tier = _tier
+	update_tier.emit(tier)
 		
 func onAdvanceTurn(_team: int) -> void: pass
 func onCardTurnPassed(_Card: CardGD) -> void: pass

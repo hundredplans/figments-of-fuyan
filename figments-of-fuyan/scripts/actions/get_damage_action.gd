@@ -46,3 +46,6 @@ func onMult(value: int) -> void:
 	
 func setIgnoreArmorShield(value: bool) -> void:
 	ignore_armor_shield = value
+	
+func getDamage() -> int:
+	return damage

@@ -65,7 +65,7 @@ signal awakened_in_combat
 @warning_ignore("unused_signal")
 signal update_stats
 signal card_turn_passed
-signal tier_updated
+signal update_tier
 #endregion
 		
 #region Setters
@@ -619,7 +619,6 @@ func onAwaken() -> void:
 
 #region Vision
 var VisionRay: RayCast3D
-const BASE_VISION_RANGE: int = 5
 const EXTRA_RAY_LENGTH: float = 1.05
 
 func getRevealVisibleGroup() -> Array:
@@ -637,7 +636,7 @@ func onAddUnitVisibleParticle() -> void:
 	UnitVisibleParticle.emitting = true
 
 func getVisionRange() -> int:
-	return BASE_VISION_RANGE if !isBlind() else 1
+	return vision_datastore.getVisionRange() if !isBlind() else 1
 
 func onUpdateVision() -> void: # Returns the new visibles
 	if card_place != Game.CardPlaces.FIELD: return
@@ -1060,6 +1059,8 @@ func onAdvanceTurn(turn_team: int) -> void:
 	onPushAction(actions)
 		
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
+	if Tool != null:
+		Tool.onAdvanceTurn()
 #endregion
 
 #region Delayed Stats
@@ -1265,7 +1266,8 @@ func onRetiered(_tier: int) -> void: # This doesn't account for tiering down as 
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return RemoveActiveEffectAction.new(self, x))
 	actions += new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x))
 	onPushAction(actions)
-	tier_updated.emit(tier)
+	update_tier.emit(tier)
+	if Tile != null: Tile.onUpdateTier(tier)
 
 #region Temp Card
 	
@@ -1694,6 +1696,9 @@ func getHealth() -> int:
 func getMaxHealth() -> int:
 	return max_health
 	
+func getMaxSpeed() -> int:
+	return max_speed
+	
 func getSpeed() -> int:
 	return speed
 	
@@ -1711,3 +1716,6 @@ func getTurnState() -> Game.TurnStates:
 
 func getRarity() -> Game.Rarities:
 	return info.rarity
+
+func onUpdateVisionRange(delta: int) -> void:
+	vision_datastore.onUpdateVisionRange(delta)

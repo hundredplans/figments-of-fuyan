@@ -16,7 +16,7 @@ extends Node
 @onready var World: Node3D = %World
 @onready var Camera: Camera3D = %Camera3D
 
-@onready var ProgressEdit: LineEdit = %ProgressEdit
+@onready var BudgetEdit: LineEdit = %BudgetEdit
 @onready var LevelNameEdit: LineEdit = %LevelNameEdit
 @onready var SearchResultsPanel: PanelContainer = %SearchResultsPanel
 
@@ -26,8 +26,8 @@ extends Node
 @onready var SettingsContainer: MarginContainer = %SettingsContainer
 @onready var EnemyMinSpawnLineEdit: LineEdit = %EnemyMinSpawnLineEdit
 @onready var EnemyMaxSpawnLineEdit: LineEdit = %EnemyMaxSpawnLineEdit
-@onready var DifficultyLineEdit: LineEdit = %DifficultyLineEdit
-@onready var BudgetOffsetLineEdit: LineEdit = %BudgetOffsetLineEdit
+@onready var BudgetMinLineEdit: LineEdit = %BudgetMinLineEdit
+@onready var BudgetMaxLineEdit: LineEdit = %BudgetMaxLineEdit
 
 @onready var AreaEnv: WorldEnvironment = %AreaEnv
 #endregion
@@ -542,8 +542,8 @@ func onSaveLevel() -> void:
 
 		loaded.enemy_min_spawn_amount = int(EnemyMinSpawnLineEdit.text)
 		loaded.enemy_max_spawn_amount = int(EnemyMaxSpawnLineEdit.text)
-		loaded.difficulty = int(DifficultyLineEdit.text)
-		loaded.enemy_budget_offset = int(BudgetOffsetLineEdit.text)
+		loaded.budget_min = int(BudgetMinLineEdit.text)
+		loaded.budget_max = int(BudgetMaxLineEdit.text)
 		
 		if level_name == loaded.name:
 			ResourceSaver.save(loaded)
@@ -634,10 +634,7 @@ func onCreateSetSpawnIdUI(Spawn: SpawnGD) -> void:
 #endregion
 
 #region Level Filters
-func _on_progress_edit_text_changed(new_text: String) -> void:
-	onApplyLevelFilters()
-	
-func _on_level_name_edit_text_changed(new_text: String) -> void:
+func _on_level_name_edit_text_changed(_new_text: String) -> void:
 	onApplyLevelFilters()
 	
 # Set prog to 0 for decorations only and -1 for overworld only
@@ -646,22 +643,22 @@ func onApplyLevelFilters() -> void:
 		LoadLevelContainer.remove_child(child)
 		child.queue_free()
 		
-	var progress: int = int(ProgressEdit.text) if ProgressEdit.text != "-" else -1
 	var decorations: Array = []
-	if !ProgressEdit.text.is_empty() and progress <= 0:
+	var budget: int = int(BudgetEdit.text)
+	if !BudgetEdit.text.is_empty() and int(BudgetEdit.text) <= 0:
 		decorations = Array(DirAccess.get_files_at(DECORATION_PATH))\
 			.map(func(x: String): return load(DECORATION_PATH + x))
 			
-		if progress == -1:
+		if budget == -1:
 			decorations = decorations.filter(func(x: DecorationDatastore): return x.name.ends_with("Overworld"))
 		
 	var levels: Array = []
 	
-	if ProgressEdit.text.is_empty() or progress > 0:
+	if BudgetEdit.text.is_empty() or budget > 0:
 		levels = Helper.getFofInfoArray(LevelInfo)
 	
-	if !ProgressEdit.text.is_empty():
-		levels = levels.filter(func(x: LevelInfo): return progress >= x.progress_min and progress <= x.progress_max)
+	if !BudgetEdit.text.is_empty():
+		levels = levels.filter(func(x: LevelInfo): return budget >= x.budget_min and budget <= x.budget_max)
 		
 	var areas: Array = Helper.getFofInfoArray(AreaInfo)
 	
@@ -673,15 +670,28 @@ func onApplyLevelFilters() -> void:
 	levels = levels.filter(func(x: Variant):\
 		return x.name.to_lower().begins_with(name_text))
 	
-	for type in levels:
+	var sorted_levels: Array = levels.filter(func(x: Variant): return x is LevelInfo)
+	sorted_levels.sort_custom(onSortLevelsCustom)
+	sorted_levels += levels.filter(func(x: Variant): return x is not LevelInfo)
+	
+	for type in sorted_levels:
 		var button := onCreateLoadLevelButton(type.name, type)
 		if type is DecorationDatastore:
 			button.theme_type_variation = "YellowPanelContainer"
 			
+func onSortLevelsCustom(x: LevelInfo, y: LevelInfo) -> bool:
+	if x.budget_min != y.budget_min: return x.budget_min < y.budget_min
+	return x.id < y.id
+			
 func onCreateLoadLevelButton(button_name: String, pressed_info: Variant) -> PanelContainer:
 	var panel_button: PanelContainer = PanelButtonPacked.instantiate()
 	LoadLevelContainer.add_child(panel_button)
-	panel_button.setText(button_name)
+	
+	var budget_text: String = ""
+	if pressed_info is LevelInfo:
+		budget_text = "  |  %s - %s" % [pressed_info.budget_min, pressed_info.budget_max]
+		
+	panel_button.setText(button_name + budget_text)
 	panel_button.mouse_in_ui.connect(onMouseInUI)
 	panel_button.pressed.connect(onLoadLevelButtonPressed.bind(pressed_info))
 	return panel_button
@@ -717,13 +727,13 @@ func setSettings(loaded: Variant) -> void:
 	if loaded is DecorationDatastore:
 		EnemyMinSpawnLineEdit.text = ""
 		EnemyMaxSpawnLineEdit.text = ""
-		DifficultyLineEdit.text = ""
-		BudgetOffsetLineEdit.text = ""
+		BudgetMinLineEdit.text = ""
+		BudgetMaxLineEdit.text = ""
 	elif loaded is LevelInfo:
 		EnemyMinSpawnLineEdit.text = str(loaded.enemy_min_spawn_amount)
 		EnemyMaxSpawnLineEdit.text = str(loaded.enemy_max_spawn_amount)
-		DifficultyLineEdit.text = str(loaded.difficulty)
-		BudgetOffsetLineEdit.text = str(loaded.enemy_budget_offset)
+		BudgetMinLineEdit.text = str(loaded.budget_min)
+		BudgetMaxLineEdit.text = str(loaded.budget_max)
 #endregion
 
 var show_group: int
@@ -737,3 +747,7 @@ func onShowGroup(num: int) -> void:
 	for Obj: ObjectGD in get_tree().get_nodes_in_group("ObjectsGD"):
 		Obj.visible = is_show or (num in Obj.groups or Obj.groups.is_empty())
 		
+
+
+func onBudgetEditTextChanged(_new_text: String) -> void:
+	onApplyLevelFilters()

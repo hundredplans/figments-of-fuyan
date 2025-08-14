@@ -23,8 +23,9 @@ var DragIconUI: TbcUI
 var sellable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.Rarities.EXALT,\
 	Game.Rarities.MINIBOSS, Game.Rarities.BOSS]
 
+@export var ozhar_bazaar_hands: Array[Texture2D]
 @export var general_shop_hands: Array[Texture2D]
-@export var junk_man_hands: Array[Texture2D]
+#@export var junk_man_hands: Array[Texture2D]
 
 @onready var SellZoneArea: Area2D = %SellZoneArea
 @onready var SellZoneHand: Sprite2D = %SellZoneHand
@@ -684,7 +685,7 @@ func getHandUpdatedPosition() -> Vector2:
 func getHandTexture(is_closed: bool = false) -> Texture2D:
 	var arr: Array[Texture2D] = []
 	match Game.getArea().getEnteredMapNode().info.id:
+		5: arr = ozhar_bazaar_hands
 		6: arr = general_shop_hands
-		12: arr = junk_man_hands
 	if arr.is_empty(): return null
 	return arr[int(is_closed)]

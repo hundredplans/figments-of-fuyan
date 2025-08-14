@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=16 format=3 uid="uid://bjn8eopm3tg5w"]
+
+[ext_resource type="Script" uid="uid://dprbr24fpa26f" path="res://scripts/fof/tools/monocle.gd" id="1_am8be"]
+[ext_resource type="Texture2D" uid="uid://c1ecabp7qsutk" path="res://assets/sprites/game/tools/monocle.png" id="1_ust46"]
+[ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="2_am8be"]
+[ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_s3wq7"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="3_x1omw"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="6_rphg8"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="7_db8ri"]
+
+[sub_resource type="Resource" id="Resource_alkk8"]
+script = ExtResource("7_db8ri")
+description = "This has +1 VISION"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_n58u3"]
+script = ExtResource("3_x1omw")
+active_abilities = Array[ExtResource("6_rphg8")]([])
+description_datastore = SubResource("Resource_alkk8")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_s3wq7"]
+script = ExtResource("7_db8ri")
+description = "This has +2 VISION"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_rphg8"]
+script = ExtResource("3_x1omw")
+active_abilities = Array[ExtResource("6_rphg8")]([])
+description_datastore = SubResource("Resource_s3wq7")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_db8ri"]
+script = ExtResource("7_db8ri")
+description = "This has +3 VISION"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_mb4my"]
+script = ExtResource("3_x1omw")
+active_abilities = Array[ExtResource("6_rphg8")]([])
+description_datastore = SubResource("Resource_db8ri")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_r2mh3"]
+script = ExtResource("7_db8ri")
+description = "This has +4 VISION"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_jua8o"]
+script = ExtResource("3_x1omw")
+active_abilities = Array[ExtResource("6_rphg8")]([])
+description_datastore = SubResource("Resource_r2mh3")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[resource]
+script = ExtResource("2_am8be")
+tiers = Array[ExtResource("3_x1omw")]([SubResource("Resource_n58u3"), SubResource("Resource_rphg8"), SubResource("Resource_mb4my"), SubResource("Resource_jua8o")])
+icon = ExtResource("1_ust46")
+rarity = 5
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 20
+name = "Monocle"
+gdscript = ExtResource("1_am8be")
+saved_data = ExtResource("3_s3wq7")
+metadata/_custom_type_script = "uid://dq4qxtx6lyc2u"

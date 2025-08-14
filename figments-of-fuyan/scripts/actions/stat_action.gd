@@ -1,5 +1,6 @@
 class_name StatAction extends Action
 
+const MAX_MAX_SPEED: int = 5
 var stat_infos: Array
 func _init(_stat_infos: Variant = null) -> void:
 	super()
@@ -63,7 +64,7 @@ func onProcessTypes(stat_info: StatInfo, types: Array, values: Array, turns: int
 				if absolute: Card.max_speed = value
 				else: Card.max_speed += value
 				
-				Card.max_speed = clamp(Card.max_speed, 1, 9)
+				Card.max_speed = clamp(Card.max_speed, 1, MAX_MAX_SPEED)
 				difference = Card.max_speed - old_speed
 				
 				stat_info.types.append(Game.Stats.SPEED)

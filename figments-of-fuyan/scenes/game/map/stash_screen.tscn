@@ -1,15 +1,16 @@
-[gd_scene load_steps=29 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=30 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
+[ext_resource type="Texture2D" uid="uid://cf4mbvss5ptnk" path="res://assets/sprites/ui/scene_specific/stash_screen/ozhars_bazaar/ozhars_hand_open.png" id="2_61rum"]
 [ext_resource type="PackedScene" uid="uid://chlcllps1hfda" path="res://scenes/game/map_nodes/screens/shop_screen/price_label.tscn" id="2_cajyl"]
 [ext_resource type="PackedScene" uid="uid://c4feu28rxx6ev" path="res://scenes/game/map/deck_slot_ui.tscn" id="2_dd1xv"]
-[ext_resource type="Texture2D" uid="uid://d0ckaebv8qia0" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_closed.png" id="2_iniqv"]
 [ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_open.png" id="2_k3tv2"]
 [ext_resource type="PackedScene" uid="uid://cjlqbuh73ripg" path="res://scenes/game/map_nodes/screens/shop_screen/shillings_effect.tscn" id="2_l4vsq"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_sli05"]
 [ext_resource type="Texture2D" uid="uid://bodfwk4s5uaqu" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_closed.png" id="3_61rum"]
 [ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="3_jpe4s"]
+[ext_resource type="Texture2D" uid="uid://ci8ew2fr14vid" path="res://assets/sprites/ui/scene_specific/stash_screen/ozhars_bazaar/ozhars_hand_closed.png" id="3_kej8p"]
 [ext_resource type="Texture2D" uid="uid://cgwubb4ahkk6w" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_open.png" id="3_ma1bm"]
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_sli05"]
@@ -212,8 +213,8 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 script = ExtResource("1_vh71u")
+ozhar_bazaar_hands = Array[Texture2D]([ExtResource("2_61rum"), ExtResource("3_kej8p")])
 general_shop_hands = Array[Texture2D]([ExtResource("2_k3tv2"), ExtResource("3_61rum")])
-junk_man_hands = Array[Texture2D]([ExtResource("3_ma1bm"), ExtResource("2_iniqv")])
 ShillingsEffectPacked = ExtResource("2_l4vsq")
 PriceLabelPacked = ExtResource("2_cajyl")
 DeckSlotPacked = ExtResource("2_dd1xv")

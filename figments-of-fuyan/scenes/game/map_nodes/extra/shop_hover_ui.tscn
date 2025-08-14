@@ -13,25 +13,36 @@ offset_bottom = 89.0
 mouse_filter = 2
 script = ExtResource("1_mvpta")
 
-[node name="NameLabel" type="Label" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="NameLabel" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 38.0
+layout_mode = 2
 text = "General Shop"
 label_settings = ExtResource("2_bj4do")
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2(472, 51)
+[node name="Control" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
 
-[node name="MerchantBaseSprite" type="Sprite2D" parent="Node2D"]
+[node name="Node2D" type="Node2D" parent="HBoxContainer/Control"]
+position = Vector2(106, 51)
+
+[node name="MerchantBaseSprite" type="Sprite2D" parent="HBoxContainer/Control/Node2D"]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(-12, -7)
 texture = ExtResource("3_xplyp")
 metadata/_edit_lock_ = true
 
-[node name="MerchantFrameSprite" type="Sprite2D" parent="Node2D"]
+[node name="MerchantFrameSprite" type="Sprite2D" parent="HBoxContainer/Control/Node2D"]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(-12, -7)

@@ -15,7 +15,7 @@ const TIER_FOUR_TURNS: int = 3
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
-		if Card != null and Card.isValidRevenge(action) and charges > 0:
+		if Card != null and Card.isValidRevenge(action) and charges != 0:
 			onPushAction(ToolActivatedAction.new(self, action))
 	
 func onToolAction(_action: StatAction) -> void:

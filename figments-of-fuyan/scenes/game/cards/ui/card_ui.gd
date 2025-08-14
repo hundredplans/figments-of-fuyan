@@ -36,6 +36,7 @@ extends TbcUI
 
 #endregion
 #region Exports
+@export var TIER_OUTLINE_MATERIAL: Material
 @export var ring_to_rarity: Array[Texture2D]
 @export var white_outline_canvas: ShaderMaterial
 @export_group("Admin")
@@ -55,6 +56,8 @@ var is_held_moving: bool
 var offset_to_center: Vector2
 var original_parent: Control
 #endregion
+
+const OUTLINE_PIXEL_SIZE: int = 3
 
 func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true, _draggable: bool = false) -> void:
 	hoverable = _hoverable
@@ -80,13 +83,18 @@ func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true,
 	Card.tool_updated.connect(onToolUpdated)
 	Card.is_temporary_updated.connect(onUpdateTemporaryCardMarker)
 	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
-	Card.tier_updated.connect(onTierUpdated)
-	onTierUpdated(Card.getTier())
+	Card.update_tier.connect(onUpdateTier)
 	
-func onTierUpdated(tier: int) -> void:
+	OutlineMask.material = TIER_OUTLINE_MATERIAL
+	OutlineMask.set_instance_shader_parameter("border_size", OUTLINE_PIXEL_SIZE)
+	
+	onUpdateTier(Card.getTier())
+	
+func onUpdateTier(tier: int) -> void:
 	onUpdateStats()
 	TextLabel.setText(Card.getDescription(true))
 	Ring.modulate = Game.getTierColor(tier)
+	OutlineMask.set_instance_shader_parameter("outline_color", Game.getTierColor(tier))
 	
 func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.base_stats.attack)

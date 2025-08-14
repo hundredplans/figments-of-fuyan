@@ -8,6 +8,7 @@ var tier: int
 
 @warning_ignore("unused_signal")
 signal update_active_effect_description
+signal update_tier
 
 func onFofInit() -> void:
 	onRegularReset()
@@ -27,6 +28,11 @@ func getDuplicateData() -> SavedDataTool:
 	var dupe_data: SavedDataTool = data.duplicate()
 	dupe_data.public_id = 0
 	return dupe_data
+	
+func onAdvanceTurn() -> void:
+	var actions: Array = []
+	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
+	onPushAction(actions)
 	
 func onSave() -> SavedDataTool:
 	return SavedDataTool.new(info.id, false, public_id, active_effects, charges, ability_save, tier)
@@ -136,10 +142,12 @@ func onResetCharges() -> void:
 	if !info.use_charges: return
 	
 	var delta: int = -charges if !info.reset_to_default else (getDefaultCharges() - charges)
-	onForceAction(ChangeToolChargesAction.new(self, delta))
+	var infinite: bool = info.reset_to_default and getDefaultCharges() == -1
+	onForceAction(ChangeToolChargesAction.new(self, delta, infinite))
 	
-func onChangeCharges(delta: int) -> void:
-	charges = max(charges + delta, 0) 
+func onChangeCharges(delta: int, infinite: bool) -> void:
+	if !infinite: charges = max(charges + delta, 0) 
+	else: charges = -1
 #endregion
 
 func onRetiered(_tier: int) -> void:
@@ -150,6 +158,7 @@ func onRetiered(_tier: int) -> void:
 	actions += active_effects.map(func(x: ActiveEffectDatastore): return RemoveActiveEffectAction.new(self, x))
 	actions += new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x))
 	onPushAction(actions)
+	update_tier.emit(tier)
 	
 func onRemoveActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 	active_effects.erase(active_effect)

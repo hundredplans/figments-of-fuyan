@@ -37,11 +37,16 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 		PurchasableManager.add_child(PurchasableScene)
 		PurchasableScene.setInfo(price_datastore)
 		PurchasableScene.pressed.connect(onItemPressed)
+	
+	FrameMerchantBase.texture = shop.getShopDatastore().getMerchantIconBase()
 	onFrameSprite()
 	onCreateBackgroundIcons()
 		
 func onItemPressed(price_datastore: PriceDatastore) -> void:
 	map_node.onItemBought(price_datastore)
+	is_buy = true
+	onFrameSprite(1, map_node.getShopDatastore().getBuyFrame())
+	
 
 func _on_exit_button_pressed() -> void:
 	finished.emit()
@@ -58,7 +63,7 @@ func onCreateScreen(screen: Control) -> void:
 var is_minimap_visible: bool
 func _on_minimap_button_pressed() -> void:
 	is_minimap_visible = !is_minimap_visible
-	var nodes: Array = [ShopMerchantUI, PurchasableManager]
+	var nodes: Array = [ShopMerchantUI, PurchasableManager, BackgroundIconContainer]
 	if !is_minimap_visible:
 		for node: Control in nodes:
 			node.visible = true
@@ -75,10 +80,14 @@ func _on_minimap_button_pressed() -> void:
 		for node: Control in nodes:
 			node.visible = false
 
+var is_buy: bool
 const SWAP_FRAME_TIME: float = 1.0
-func onFrameSprite(start: int = 1) -> void:
-	FrameMerchantSprite.texture = map_node.getShopDatastore().getMerchantFrames()[start - 1]
+func onFrameSprite(start: int = 1, tx: Texture = map_node.getShopDatastore().getMerchantFrames()[start - 1]) -> void:
+	FrameMerchantSprite.texture = tx
 	await get_tree().create_timer(SWAP_FRAME_TIME).timeout
+	if is_buy:
+		is_buy = false
+		return
 	onFrameSprite(1 if start == 2 else 2)
 	
 func onUpdateStashScreen(created: bool) -> void:

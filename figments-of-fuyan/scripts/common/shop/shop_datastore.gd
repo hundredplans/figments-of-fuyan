@@ -5,6 +5,7 @@ class_name ShopDatastore extends Resource
 @export var background_icon: Texture2D
 @export var merchant_icon_base: Texture2D
 @export var merchant_frames: Array[Texture2D]
+@export var merchant_buy_frame: Texture2D
 @export var background_main_color: Color
 
 func getItems() -> Array[ShopItemDatastore]:
@@ -21,3 +22,6 @@ func getMerchantFrames() -> Array[Texture2D]:
 
 func getBackgroundIcon() -> Texture2D:
 	return background_icon
+
+func getBuyFrame() -> Texture2D:
+	return merchant_buy_frame

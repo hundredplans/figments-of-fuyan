@@ -123,7 +123,7 @@ func onRetiered(_tier: int) -> void:
 	var current_value: int = getStatBuff()
 	var old_value: int = getStatBuff(old_tier)
 	var new_value: int = current_value - old_value
-	onPushAction(getStatAction(new_value))
+	onPushAction(ToolActivatedAction.new(self, getStatAction(new_value)))
 	
 func onToolHolderDeath() -> void:
 	super()

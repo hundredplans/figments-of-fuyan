@@ -2,6 +2,7 @@ class_name TileGD
 extends TileObjectGD
 
 #region Global
+var tier: int
 enum OccupyStates {NULL, ALLY, ENEMY, NEUTRAL, ATTACKABLE_IOBJECT}
 var occupied_objects: Array = []
 var is_hovered: bool = false
@@ -20,6 +21,7 @@ var explored: ExploredGD
 signal change_hover_card_state
 const SHOW_CARD_AT_HOVER_DELAY: float = 1
 
+var TierOutlineMesh: MeshInstance3D
 var OutlineMesh: MeshInstance3D
 var BottomMesh: MeshInstance3D
 var TopMesh: MeshInstance3D
@@ -111,8 +113,12 @@ func setRegularMaterial() -> void:
 const UV_SCALE: float = 1.2
 func setTileMaterial(is_greyscale: bool = false) -> void:
 	BottomMesh.set_surface_override_material(0, info.getTileBottomMaterial() if !is_greyscale else info.getTileBottomGreyscaleMaterial())
-	TopMesh.set_surface_override_material(0, info.getTileTopMaterial() if !is_greyscale else info.getTileTopGreyscaleMaterial())
+	TopMesh.set_surface_override_material(0, getTopMaterial(is_greyscale))
 	setTileFillMaterial()
+	onUpdateTier(tier, is_greyscale)
+	
+func getTopMaterial(is_greyscale: bool) -> Material:
+	return info.getTileTopMaterial() if !is_greyscale else info.getTileTopGreyscaleMaterial()
 		
 func setTileFillMaterial(is_greyscale: bool = false) -> void:
 	if TileFill != null:
@@ -159,7 +165,7 @@ func setOutlineMaterial() -> void:
 	elif !level_visible: mat = load(info.GREYSCALE_OUTLINE_MATERIAL)
 	
 	if mat == null: mat = load(info.REGULAR_OUTLINE_MATERIAL)
-			
+	
 	OutlineMesh.set_surface_override_material(0, mat)
 #endregion
 #region Collision Layers
@@ -210,6 +216,7 @@ func onLoadModel() -> void:
 	if Model != null: Model.queue_free()
 	
 	Model = info.getModel(self, is_decoration)
+	TierOutlineMesh = Model.get_node("TierOutlineMeshInstance3D")
 	OutlineMesh = Model.get_node("OutlineMeshInstance3D")
 	BottomMesh = Model.get_node("BottomMeshInstance3D")
 	TopMesh = Model.get_node("TopMeshInstance3D")
@@ -279,6 +286,7 @@ func onOccupy(Card: CardGD, instant: bool) -> void:
 	
 	if instant: setOutlineMaterial()
 	
+	onUpdateTier(Card.getTier() if Card != null else 0, !isLevelVisible())
 	for Obj in occupied_objects:
 		Obj.onOccupy(occupy_state != OccupyStates.NULL)
 #endregion
@@ -431,3 +439,25 @@ func onCreateAdjustedPoints() -> void:
 func isAdjacentCoordsNotCoverPoints(x: Vector4i) -> bool:
 	var Tile: TileGD = Game.getTile(x)
 	return Tile == null or Tile.getHeight() < getHeight()
+
+
+const TIER_ONE_PATH: String = "res://resources/materials/colors/unshaded/brown.tres"
+const TIER_TWO_PATH: String = "res://resources/materials/colors/unshaded/light_grey.tres"
+const TIER_THREE_PATH: String = "res://resources/materials/colors/unshaded/orange.tres"
+const TIER_FOUR_PATH: String = "res://resources/materials/colors/unshaded/red.tres"
+
+func onUpdateTier(_tier: int, is_greyscale: bool = false) -> void:
+	tier = _tier
+	var mat: Material = getTopMaterial(is_greyscale)
+	if tier > 0:
+		mat = getTierMaterial()
+	TierOutlineMesh.set_surface_override_material(0, mat)
+	
+func getTierMaterial() -> Material:
+	var mat: Material = null
+	match tier:
+		1: mat = load(TIER_ONE_PATH)
+		2: mat = load(TIER_TWO_PATH)
+		3: mat = load(TIER_THREE_PATH)
+		4: mat = load(TIER_FOUR_PATH)
+	return mat

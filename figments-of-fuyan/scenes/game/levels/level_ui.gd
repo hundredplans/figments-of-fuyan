@@ -54,8 +54,8 @@ signal vision_mode_changed
 signal active_effect_box_pressed
 signal create_movement_range
 
-signal dragged_begin
-signal dragged_end
+signal drag_begin
+signal drag_end
 
 const BOTTOM_SCREEN_OFFSET: int = 5
 const SHIELD_ID: int = 3
@@ -182,11 +182,10 @@ func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = fal
 #region Hand
 @onready var HandBox: Container = %HandBox
 func onDrawCardUI(Card: CardGD) -> void:
-	var CardUI: Control = Card.onCreateCardUI(HandBox, true, true)
+	var CardUI: Control = Card.onCreateCardUI(HandBox, true, true, true)
 	Card.setInspectable(true, self)
-	CardUI.dragged_begin.connect(onCardDraggedBegin)
-	CardUI.dragged_finished.connect(onCardDraggedFinished)
-	CardUI.dragged_end.connect(onCardDraggedEnd)
+	CardUI.drag_begin.connect(onCardDraggedBegin)
+	CardUI.drag_end.connect(onCardDraggedEnd)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
 	HandBox.onDrawCardUI(Card, CardUI)
@@ -197,21 +196,19 @@ func onRemoveCardUI(Card: CardGD) -> void:
 #endregion
 
 #region Card Dragged
-func onCardDraggedEnd(CardUI: Control, dragged_position: Vector2) -> void:
-	dragged_end.emit(CardUI.Card, dragged_position, CardUI)
+func onCardDraggedEnd(CardUI: Control) -> void:
+	drag_end.emit(CardUI)
 	
 	if level.getPhase() in [Game.Phases.HAND, Game.Phases.START]:
 		HandBox.onPin(false)
 		
+	CardUI.setMouseFilter(Control.MOUSE_FILTER_STOP)
 	HandPanel.mouse_filter = Control.MOUSE_FILTER_STOP
 	
-func onCardDraggedFinished(_CardUI: Control) -> void: # When card comes back to it's orignial position
-	HandBox.setDraggedCardUI(null)
-	
 func onCardDraggedBegin(CardUI: Control) -> void:
-	dragged_begin.emit(CardUI)
+	drag_begin.emit(CardUI)
+	CardUI.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
 	HandBox.onUnpin(false)
-	HandBox.setDraggedCardUI(CardUI)
 	HandPanel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 #endregion
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cewvw3vx3mjcm"]
+[gd_scene load_steps=3 format=3 uid="uid://cewvw3vx3mjcm"]
 
 [ext_resource type="Script" uid="uid://ds26xp551jusu" path="res://scenes/game/tools/tool_icon.gd" id="1_dviwd"]
+[ext_resource type="Material" uid="uid://b5tmlarb3uay1" path="res://resources/materials/ui/tier_outline_canvas.tres" id="2_mrunk"]
 
 [node name="ToolIcon" type="Control"]
 custom_minimum_size = Vector2(40, 40)
@@ -9,6 +10,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_dviwd")
+TIER_OUTLINE_MATERIAL = ExtResource("2_mrunk")
 
 [node name="ModulateMain" type="Control" parent="."]
 unique_name_in_owner = true
@@ -20,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ToolIcon" type="TextureRect" parent="ModulateMain"]
+[node name="ToolTextureRect" type="TextureRect" parent="ModulateMain"]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 1

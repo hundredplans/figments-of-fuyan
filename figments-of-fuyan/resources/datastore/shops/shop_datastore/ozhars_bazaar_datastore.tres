@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ShopDatastore" load_steps=17 format=3 uid="uid://dt4a8jwhjbskt"]
+[gd_resource type="Resource" script_class="ShopDatastore" load_steps=18 format=3 uid="uid://dt4a8jwhjbskt"]
 
-[ext_resource type="Texture2D" uid="uid://cdtgandyuulnq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/general_shop_bg_icon.png" id="1_ltueb"]
+[ext_resource type="Texture2D" uid="uid://canijmxoovnfm" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar_dollar.png" id="1_cl11m"]
 [ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="2_cl11m"]
 [ext_resource type="Script" uid="uid://b4u5t7a8bjufi" path="res://scripts/common/rewards/rarity_odds_datastore.gd" id="3_5kcwc"]
-[ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="3_ogb0s"]
-[ext_resource type="Texture2D" uid="uid://btvht0n6tmf46" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab2.png" id="4_5kcwc"]
 [ext_resource type="Script" uid="uid://c4e0un8luq87o" path="res://scripts/common/shop/shop_card_datastore.gd" id="4_cgpyq"]
-[ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="5_cgpyq"]
+[ext_resource type="Texture2D" uid="uid://741luctwphd5" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar_buy.png" id="5_5kcwc"]
+[ext_resource type="Texture2D" uid="uid://b6ek5kc11ff" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar1.png" id="5_ogb0s"]
+[ext_resource type="Texture2D" uid="uid://bywdm0a5y1sxy" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar_base.png" id="6_5kcwc"]
+[ext_resource type="Texture2D" uid="uid://b0x37xa33pdyt" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar2.png" id="6_ogb0s"]
 [ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="6_s4y2n"]
 
 [sub_resource type="Resource" id="Resource_s4y2n"]
@@ -56,7 +57,7 @@ metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
 script = ExtResource("2_cl11m")
 item_type = 1
 rarity_odds_datastore = SubResource("Resource_cgpyq")
-position = Vector2(800, 250)
+position = Vector2(800, 350)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_0vqtg"]
@@ -72,15 +73,16 @@ metadata/_custom_type_script = "uid://b4u5t7a8bjufi"
 script = ExtResource("2_cl11m")
 item_type = 2
 rarity_odds_datastore = SubResource("Resource_0vqtg")
-position = Vector2(1150, 250)
+position = Vector2(1150, 350)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [resource]
 script = ExtResource("6_s4y2n")
 id = 5
 items = Array[ExtResource("2_cl11m")]([SubResource("Resource_pr8pb"), SubResource("Resource_5kcwc"), SubResource("Resource_wpja5"), SubResource("Resource_48x4g")])
-background_icon = ExtResource("1_ltueb")
-merchant_icon_base = ExtResource("5_cgpyq")
-merchant_frames = Array[Texture2D]([ExtResource("3_ogb0s"), ExtResource("4_5kcwc")])
+background_icon = ExtResource("1_cl11m")
+merchant_icon_base = ExtResource("6_5kcwc")
+merchant_frames = Array[Texture2D]([ExtResource("5_ogb0s"), ExtResource("6_ogb0s")])
+merchant_buy_frame = ExtResource("5_5kcwc")
 background_main_color = Color(0.964706, 0.603922, 0.266667, 1)
 metadata/_custom_type_script = "uid://doid1bi8h7kwu"

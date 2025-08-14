@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=58 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" uid="uid://bsrlt8ui5oxuq" path="res://scenes/game/cards/world/field_info/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -52,8 +52,20 @@
 [ext_resource type="Resource" uid="uid://024pkvrpmwgy" path="res://resources/datastore/traits/resist_armor.tres" id="44_bxsc6"]
 [ext_resource type="Texture2D" uid="uid://bavmaqth0o8k4" path="res://assets/sprites/game/common/shine/default_shine.png" id="45_myci6"]
 [ext_resource type="Material" uid="uid://b08hwp8ifl8v5" path="res://resources/materials/unique/speed_field_info_material.tres" id="50_sbbn5"]
-[ext_resource type="Texture2D" uid="uid://cnh6sqy8os61w" path="res://assets/sprites/game/cards/field_info/icon_box.png" id="50_ubgm4"]
 [ext_resource type="Script" uid="uid://cqeu1p4km0fp6" path="res://scenes/game/cards/world/field_info/speed_model_script.gd" id="52_h4ovu"]
+[ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="54_h4ovu"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_la30j"]
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mr5mo"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2pyvq"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_mr5mo")
 
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
@@ -140,17 +152,23 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7325, 0)
 script = ExtResource("38_bc6s6")
 
-[node name="ToolIcon" type="Sprite3D" parent="."]
+[node name="ToolIconDisplay" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.880701, 0.509992, 0)
-pixel_size = 0.015
-texture_filter = 0
+transform = Transform3D(1, 8.74228e-08, 8.74228e-08, -8.74228e-08, 1, -8.74228e-08, -8.74228e-08, 8.74228e-08, 1, 0.906218, 0.504175, 0)
+mesh = SubResource("QuadMesh_la30j")
+surface_material_override/0 = SubResource("StandardMaterial3D_2pyvq")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.84322, 0)
-visible = false
-texture = ExtResource("50_ubgm4")
-region_rect = Rect2(2.115, 0, 0, 0)
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(160, 160)
+render_target_update_mode = 4
+
+[node name="ToolIcon" parent="SubViewport" instance=ExtResource("54_h4ovu")]
+unique_name_in_owner = true
+offset_right = 160.0
+offset_bottom = 160.0
 
 [connection signal="child_entered_tree" from="IconsManager" to="IconsManager" method="_on_child_entered_tree"]
 [connection signal="child_exiting_tree" from="IconsManager" to="IconsManager" method="_on_child_exiting_tree"]

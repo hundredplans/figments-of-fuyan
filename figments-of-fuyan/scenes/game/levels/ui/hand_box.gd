@@ -15,8 +15,6 @@ var is_mouse_in_ui: bool
 var temp_up: bool
 var temp_down: bool
 
-var DraggedCardUI: Control
-
 func onMouseInUI(state: bool) -> void:
 	if get_viewport().get_mouse_position().y >= get_viewport().size.y - BOTTOM_SCREEN_OFFSET: return
 	is_mouse_in_ui = state
@@ -85,17 +83,12 @@ func onPlayTween(down: bool, instant: bool) -> void:
 		
 		if !instant:
 			tween.tween_property(BottomBox, "position:y", offset, TWEEN_SPEED).as_relative()
-			if DraggedCardUI != null:
-				var cardui_tween := get_tree().create_tween()
-				cardui_tween.tween_method(onTweenDraggedCardUI, DraggedCardUI.original_position.y, DraggedCardUI.original_position.y - offset, TWEEN_SPEED)
 			
 			is_tweening = true
 			await tween.finished
 			is_tweening = false
 		else:
 			BottomBox.position.y += offset
-			if DraggedCardUI != null:
-				DraggedCardUI.original_position.y -= offset
 			is_tweening = true
 			await get_tree().process_frame
 			is_tweening = false
@@ -121,10 +114,3 @@ func _process(_delta: float) -> void:
 	elif temp_down:
 		temp_down = false
 		onDown()
-		
-func onTweenDraggedCardUI(value: float) -> void:
-	if DraggedCardUI != null:
-		DraggedCardUI.original_position.y = value
-		
-func setDraggedCardUI(CardUI: Control) -> void:
-	DraggedCardUI = CardUI

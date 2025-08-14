@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=16 format=3 uid="uid://co732gtajpma1"]
+
+[ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_2xu1j"]
+[ext_resource type="Script" uid="uid://ivkomkywlu8g" path="res://scripts/fof/tools/pearl_bangle.gd" id="1_4hf5g"]
+[ext_resource type="Texture2D" uid="uid://b481dgoymb780" path="res://assets/sprites/game/tools/pearl_bangle.png" id="2_dm41d"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="2_ll1mk"]
+[ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_24j4y"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="6_24j4y"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="7_8qkjg"]
+
+[sub_resource type="Resource" id="Resource_o3ame"]
+script = ExtResource("7_8qkjg")
+description = "TRAUMA [[X]]: Heal [1] HP"
+default_values = Array[int]([2])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_mkl0a"]
+script = ExtResource("2_ll1mk")
+active_abilities = Array[ExtResource("6_24j4y")]([])
+description_datastore = SubResource("Resource_o3ame")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_24j4y"]
+script = ExtResource("7_8qkjg")
+description = "TRAUMA: Heal [1] HP"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_8qkjg"]
+script = ExtResource("2_ll1mk")
+active_abilities = Array[ExtResource("6_24j4y")]([])
+description_datastore = SubResource("Resource_24j4y")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_ygri2"]
+script = ExtResource("7_8qkjg")
+description = "When an ally dies: Heal [1] HP"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_ylbi2"]
+script = ExtResource("2_ll1mk")
+active_abilities = Array[ExtResource("6_24j4y")]([])
+description_datastore = SubResource("Resource_ygri2")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_kdspc"]
+script = ExtResource("7_8qkjg")
+description = "When a unit dies: Heal [1] HP"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_l4xqh"]
+script = ExtResource("2_ll1mk")
+active_abilities = Array[ExtResource("6_24j4y")]([])
+description_datastore = SubResource("Resource_kdspc")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[resource]
+script = ExtResource("1_2xu1j")
+tiers = Array[ExtResource("2_ll1mk")]([SubResource("Resource_mkl0a"), SubResource("Resource_8qkjg"), SubResource("Resource_ylbi2"), SubResource("Resource_l4xqh")])
+icon = ExtResource("2_dm41d")
+rarity = 3
+use_charges = true
+auto_reset_charges = true
+reset_to_default = true
+id = 18
+name = "Pearl Bangle"
+gdscript = ExtResource("1_4hf5g")
+saved_data = ExtResource("3_24j4y")
+metadata/_custom_type_script = "uid://dq4qxtx6lyc2u"

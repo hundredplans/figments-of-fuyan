@@ -412,10 +412,10 @@ func onCardDraggedBegin(_CardUI: Control) -> void:
 	if level.getSpectateObject() is not SpawnGD:
 		CameraManager.onSpectateSpawn(level.getAllySpectateObject())
 		
-func onCardDraggedEnd(Card: CardGD, _dragged_position: Vector2, CardUI: Control) -> void:
+func onCardDraggedEnd(CardUI: Control) -> void:
 	var Tile: TileGD = getMouseHoverTile()
-	if Tile != null and Tile.isAllySpawnTile() and !Tile.isOccupied() and !getMouseInUI():
-		level.onAppendAction(PlayCardAction.new(Card, Tile))
+	if Tile != null and Tile.isAllySpawnTile() and !Tile.isOccupied():
+		level.onAppendAction(PlayCardAction.new(CardUI.Card, Tile))
 		CardUI.queue_free()
 #endregion
 

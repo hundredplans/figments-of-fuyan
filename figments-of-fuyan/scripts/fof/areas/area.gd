@@ -696,7 +696,7 @@ func getRandomEnergyCombination(budget: int, enemy_spawn_amount: int, lowest_cos
 	else: energy_combination = original_energy_combinations.pick_random(); print("USED ILLEGAL COMBINATION!")
 	return energy_combination
 	
-func getBudget(progress: int, offset: int) -> int:
+func getBudget(progress: int, offset: int = 0) -> int:
 	return getWorld().budget_for_fights[min(progress, 10)] + offset
 	
 func sum(accum: int, number: int) -> int:

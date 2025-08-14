@@ -190,7 +190,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ProgressEdit" type="LineEdit" parent="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="BudgetEdit" type="LineEdit" parent="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Prog"
@@ -260,7 +260,6 @@ label_settings = ExtResource("10_0pcn1")
 
 [node name="SettingsContainer" type="MarginContainer" parent="UI"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
 offset_left = 1444.0
 offset_top = 88.0
@@ -312,22 +311,22 @@ layout_mode = 2
 [node name="Label" type="Label" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Difficulty:"
+text = "Budget Min:"
 
-[node name="DifficultyLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+[node name="BudgetMinLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Budget Offset:"
+text = "Budget Max:"
 
-[node name="BudgetOffsetLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+[node name="BudgetMaxLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
@@ -379,9 +378,9 @@ unique_name_in_owner = true
 [connection signal="item_selected" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/AreaOptionButton" to="." method="onAreaOptionButtonSelected"]
 [connection signal="mouse_entered" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/AreaOptionButton" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/AreaOptionButton" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_entered" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/ProgressEdit" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/ProgressEdit" to="." method="onMouseInUI" binds= [false]]
-[connection signal="text_changed" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/ProgressEdit" to="." method="_on_progress_edit_text_changed"]
+[connection signal="mouse_entered" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/BudgetEdit" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/BudgetEdit" to="." method="onMouseInUI" binds= [false]]
+[connection signal="text_changed" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/BudgetEdit" to="." method="onBudgetEditTextChanged"]
 [connection signal="mouse_entered" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/LevelNameEdit" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/LevelNameEdit" to="." method="onMouseInUI" binds= [false]]
 [connection signal="text_changed" from="UI/LoadLevels/MarginContainer/VBoxContainer/HBoxContainer2/LevelNameEdit" to="." method="_on_level_name_edit_text_changed"]
@@ -396,6 +395,6 @@ unique_name_in_owner = true
 [connection signal="mouse_in_ui" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="camera_changed_speed" from="World/Camera3D" to="." method="_on_camera_3d_camera_changed_speed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="timeout" from="MouseWheelDelayTimer" to="." method="_on_mouse_wheel_delay_timer_timeout"]

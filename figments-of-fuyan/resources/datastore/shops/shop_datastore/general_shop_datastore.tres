@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ShopDatastore" load_steps=19 format=3 uid="uid://bhoaiduu3j7vx"]
+[gd_resource type="Resource" script_class="ShopDatastore" load_steps=20 format=3 uid="uid://bhoaiduu3j7vx"]
 
 [ext_resource type="Texture2D" uid="uid://cdtgandyuulnq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/general_shop_bg_icon.png" id="1_2jueg"]
 [ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="1_ye3vs"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="6_dg6sx"]
 [ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="6_qulre"]
 [ext_resource type="Texture2D" uid="uid://btvht0n6tmf46" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab2.png" id="7_2jueg"]
+[ext_resource type="Texture2D" uid="uid://b4kkkr8r2ttuc" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_buy.png" id="7_4naeq"]
 [ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="7_xr5r0"]
 
 [sub_resource type="Resource" id="Resource_r6pve"]
@@ -78,5 +79,6 @@ items = Array[ExtResource("1_ye3vs")]([SubResource("Resource_r6pve"), SubResourc
 background_icon = ExtResource("1_2jueg")
 merchant_icon_base = ExtResource("6_dg6sx")
 merchant_frames = Array[Texture2D]([ExtResource("6_qulre"), ExtResource("7_2jueg")])
+merchant_buy_frame = ExtResource("7_4naeq")
 background_main_color = Color(0.826088, 1, 0.80839, 1)
 metadata/_custom_type_script = "uid://doid1bi8h7kwu"

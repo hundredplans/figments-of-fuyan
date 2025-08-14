@@ -12,16 +12,16 @@ class_name FightRewardsDatastore extends Resource
 @export_range(0, 1, 0.005) var card_tool_tier_up_rate: float
 
 func getCardRarityOdds() -> RarityOddsDatastore:
-	return Game.getWorld().getBaseRarityOdds()
+	return Game.getArea().getWorld().getBaseRarityOdds()
 
 func getCardToolRarityOdds() -> RarityOddsDatastore:
-	return Game.getWorld().getBaseRarityOdds()
+	return Game.getArea().getWorld().getBaseRarityOdds()
 
 func getToolRarityOdds() -> RarityOddsDatastore:
-	return Game.getWorld().getBaseRarityOdds()
+	return Game.getArea().getWorld().getBaseRarityOdds()
 	
 func getBoonRarityOdds() -> RarityOddsDatastore:
-	return Game.getWorld().getBaseRarityOdds()
+	return Game.getArea().getWorld().getBaseRarityOdds()
 
 func getToolOdds() -> float:
 	return tool_odds
