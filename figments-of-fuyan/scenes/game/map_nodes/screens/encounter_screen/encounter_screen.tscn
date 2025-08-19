@@ -1,0 +1,113 @@
+[gd_scene load_steps=8 format=3 uid="uid://4ffhqjbja8lj"]
+
+[ext_resource type="Script" uid="uid://ctsxv53bvd1yc" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_screen.gd" id="1_3jm3p"]
+[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_1pd3x"]
+[ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="3_uht57"]
+[ext_resource type="Texture2D" uid="uid://d203lqs8t7rqv" path="res://assets/sprites/ui/icons/minimap.png" id="4_145is"]
+
+[sub_resource type="Animation" id="Animation_5mpcf"]
+resource_name = "LoopBackgroundIcons"
+length = 4.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackgroundIconContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4, 4.0001),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -171), Vector2(-32, -120), Vector2(0, -171), Vector2(-56, 9)]
+}
+
+[sub_resource type="Animation" id="Animation_rxebg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackgroundIconContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -171)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fifuk"]
+_data = {
+&"LoopBackgroundIcons": SubResource("Animation_5mpcf"),
+&"RESET": SubResource("Animation_rxebg")
+}
+
+[node name="EncounterScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_3jm3p")
+
+[node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("2_1pd3x")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -110.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 110.0
+grow_horizontal = 0
+exit_screen = NodePath("..")
+
+[node name="MapPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1673.0
+offset_top = 10.0
+offset_right = 1793.0
+offset_bottom = 130.0
+mouse_filter = 1
+theme_type_variation = &"WhitePanelContainer"
+
+[node name="MarginContainer" type="MarginContainer" parent="MapPanel"]
+layout_mode = 2
+
+[node name="MinimapButton" parent="MapPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("3_uht57")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("4_145is")
+
+[node name="BackgroundIconContainer" type="GridContainer" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -171.0
+offset_right = 200.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 30
+columns = 6
+
+[node name="AniPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_fifuk")
+}
+
+[connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="MapPanel/MarginContainer/MinimapButton" to="." method="onMinimapButtonPressed"]

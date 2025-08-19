@@ -3,11 +3,14 @@ class_name SavedDataBoon extends SavedData
 @export var tier: int
 @export var charges: int
 @export var ability_save: Dictionary
+@export var disabled: bool
 
-func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _charges: int = 0, _ability_save: Dictionary = {}, _tier: int = 1) -> void:
+func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _charges: int = 0, _ability_save: Dictionary = {},\
+	_tier: int = 1, _disabled: bool = false) -> void:
 	super(_id, _first_init, _public_id)
 	charges = _charges
 	ability_save = _ability_save
 	tier = _tier
+	disabled = _disabled
 
 func getInfoType() -> GDScript: return BoonInfo

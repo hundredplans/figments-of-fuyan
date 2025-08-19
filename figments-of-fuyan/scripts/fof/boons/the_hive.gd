@@ -26,6 +26,3 @@ func onBoon(_action: DeathAction):
 			
 func onBoonAdded():
 	pass
-
-func getDisabled():
-	return super()

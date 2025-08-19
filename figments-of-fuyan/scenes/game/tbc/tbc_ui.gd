@@ -106,10 +106,9 @@ func onDragBegin() -> void:
 	
 func onDragEnd() -> void:
 	is_dragging = false
-	
-	setMouseFilter(original_mouse_filter)
 	disable_tooltip = original_tooltip_state
 	drag_end.emit(self)
+	setMouseFilter(original_mouse_filter)
 	
 	if !ignore_drag_position_reset:
 		top_level = false

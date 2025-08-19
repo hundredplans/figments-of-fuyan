@@ -1,16 +1,12 @@
-[gd_scene load_steps=30 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=26 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
-[ext_resource type="Texture2D" uid="uid://cf4mbvss5ptnk" path="res://assets/sprites/ui/scene_specific/stash_screen/ozhars_bazaar/ozhars_hand_open.png" id="2_61rum"]
-[ext_resource type="PackedScene" uid="uid://chlcllps1hfda" path="res://scenes/game/map_nodes/screens/shop_screen/price_label.tscn" id="2_cajyl"]
+[ext_resource type="PackedScene" uid="uid://chlcllps1hfda" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/price_label.tscn" id="2_cajyl"]
 [ext_resource type="PackedScene" uid="uid://c4feu28rxx6ev" path="res://scenes/game/map/deck_slot_ui.tscn" id="2_dd1xv"]
-[ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_open.png" id="2_k3tv2"]
-[ext_resource type="PackedScene" uid="uid://cjlqbuh73ripg" path="res://scenes/game/map_nodes/screens/shop_screen/shillings_effect.tscn" id="2_l4vsq"]
+[ext_resource type="PackedScene" uid="uid://cjlqbuh73ripg" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/shillings_effect.tscn" id="2_l4vsq"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_sli05"]
-[ext_resource type="Texture2D" uid="uid://bodfwk4s5uaqu" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_closed.png" id="3_61rum"]
 [ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="3_jpe4s"]
-[ext_resource type="Texture2D" uid="uid://ci8ew2fr14vid" path="res://assets/sprites/ui/scene_specific/stash_screen/ozhars_bazaar/ozhars_hand_closed.png" id="3_kej8p"]
 [ext_resource type="Texture2D" uid="uid://cgwubb4ahkk6w" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_open.png" id="3_ma1bm"]
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_sli05"]
@@ -23,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://daf1o5n16hkbe" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_area.png" id="14_504a2"]
 [ext_resource type="Texture2D" uid="uid://by2sd6erbaes8" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_energy.png" id="15_cajyl"]
 [ext_resource type="Texture2D" uid="uid://b6u27mcqxdyc5" path="res://assets/sprites/ui/scene_specific/stash_screen/sort_rarity.png" id="16_l4vsq"]
-[ext_resource type="Material" uid="uid://dfy3xmbj23xht" path="res://resources/materials/ui/sell_zone.tres" id="17_y0ya4"]
+[ext_resource type="PackedScene" uid="uid://c3jcbtvv7xv6v" path="res://scenes/common/fill_bar/fill_bar.tscn" id="23_kej8p"]
 
 [sub_resource type="Animation" id="Animation_jpe4s"]
 resource_name = "EnergyLimitReached"
@@ -132,7 +128,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("SellZone:modulate")
+tracks/4/path = NodePath("DragZone:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -144,7 +140,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("SellZoneHand:visible")
+tracks/5/path = NodePath("DragZoneHand:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -156,7 +152,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("SellZoneHand:modulate")
+tracks/6/path = NodePath("DragZoneHand:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -185,7 +181,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SellZoneHand:modulate")
+tracks/1/path = NodePath("DragZoneHand:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -213,8 +209,6 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 script = ExtResource("1_vh71u")
-ozhar_bazaar_hands = Array[Texture2D]([ExtResource("2_61rum"), ExtResource("3_kej8p")])
-general_shop_hands = Array[Texture2D]([ExtResource("2_k3tv2"), ExtResource("3_61rum")])
 ShillingsEffectPacked = ExtResource("2_l4vsq")
 PriceLabelPacked = ExtResource("2_cajyl")
 DeckSlotPacked = ExtResource("2_dd1xv")
@@ -457,7 +451,7 @@ hit_from_inside = true
 collide_with_areas = true
 collide_with_bodies = false
 
-[node name="SellZoneRaycast" type="RayCast2D" parent="."]
+[node name="DragZoneRaycast" type="RayCast2D" parent="."]
 unique_name_in_owner = true
 target_position = Vector2(0, 0)
 collision_mask = 16
@@ -465,7 +459,7 @@ hit_from_inside = true
 collide_with_areas = true
 collide_with_bodies = false
 
-[node name="SellZone" type="Control" parent="."]
+[node name="DragZone" type="Control" parent="."]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 0
@@ -474,8 +468,21 @@ offset_top = 147.0
 offset_right = 1920.0
 offset_bottom = 1047.0
 
-[node name="ColorRect" type="ColorRect" parent="SellZone"]
-material = ExtResource("17_y0ya4")
+[node name="DragZoneFillBar" parent="DragZone" instance=ExtResource("23_kej8p")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 180.0
+offset_right = 900.0
+offset_bottom = -720.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.57079
+
+[node name="DragZoneRect" type="ColorRect" parent="DragZone"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -484,7 +491,8 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.638955, 1.34766e-06, 1)
 
-[node name="Label" type="Label" parent="SellZone"]
+[node name="DragZoneLabel" type="Label" parent="DragZone"]
+unique_name_in_owner = true
 modulate = Color(0, 1, 0, 1)
 layout_mode = 1
 anchors_preset = -1
@@ -500,16 +508,16 @@ horizontal_alignment = 1
 vertical_alignment = 1
 justification_flags = 162
 
-[node name="SellZoneArea" type="Area2D" parent="SellZone"]
+[node name="DragZoneArea" type="Area2D" parent="DragZone"]
 unique_name_in_owner = true
 collision_layer = 16
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SellZone/SellZoneArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DragZone/DragZoneArea"]
 position = Vector2(90.5, 450)
 shape = SubResource("RectangleShape2D_cajyl")
 
-[node name="SellZoneHand" type="Sprite2D" parent="."]
+[node name="DragZoneHand" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 visible = false
 modulate = Color(1, 1, 1, 0)
@@ -519,6 +527,7 @@ texture = ExtResource("3_ma1bm")
 
 [connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onExitButtonPressed"]
+[connection signal="scroll_ended" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer" to="." method="_on_main_scroll_container_scroll_ended"]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onSortByTool"]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByTierButton" to="." method="onMouseInUI"]

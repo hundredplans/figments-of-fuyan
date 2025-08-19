@@ -45,5 +45,5 @@ func onBoon(action: Action) -> void:
 			stat_info.values[i] *= 2
 	
 func getDisabled() -> bool:
-	return charges == 0
+	return super() or charges == 0
 	

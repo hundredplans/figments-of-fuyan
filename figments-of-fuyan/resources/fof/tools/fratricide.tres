@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=16 format=3 uid="uid://dta2jbexonsk7"]
+
+[ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_aksfv"]
+[ext_resource type="Script" uid="uid://cl48upgkk3shi" path="res://scripts/fof/tools/fratricide.gd" id="1_hh15n"]
+[ext_resource type="Texture2D" uid="uid://dv1r7lhbvk8pd" path="res://assets/sprites/game/tools/fratricide.png" id="2_hh15n"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="2_u2k8w"]
+[ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_ouolv"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="6_xkt5a"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="7_ludlr"]
+
+[sub_resource type="Resource" id="Resource_5disa"]
+script = ExtResource("7_ludlr")
+description = "Your attacks also hit adjacent enemies"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_mti7f"]
+script = ExtResource("2_u2k8w")
+active_abilities = Array[ExtResource("6_xkt5a")]([])
+description_datastore = SubResource("Resource_5disa")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_txuwr"]
+script = ExtResource("7_ludlr")
+description = "This has +1 ATT
+Your attacks also hit adjacent enemies"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_pgamk"]
+script = ExtResource("2_u2k8w")
+active_abilities = Array[ExtResource("6_xkt5a")]([])
+description_datastore = SubResource("Resource_txuwr")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_71x0g"]
+script = ExtResource("7_ludlr")
+description = "This has +2 ATT
+Your attacks also hit adjacent enemies"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_qicv5"]
+script = ExtResource("2_u2k8w")
+active_abilities = Array[ExtResource("6_xkt5a")]([])
+description_datastore = SubResource("Resource_71x0g")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_on7fj"]
+script = ExtResource("7_ludlr")
+description = "This has +3 ATT
+Your attacks also hit adjacent enemies"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_tj4ef"]
+script = ExtResource("2_u2k8w")
+active_abilities = Array[ExtResource("6_xkt5a")]([])
+description_datastore = SubResource("Resource_on7fj")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[resource]
+script = ExtResource("1_aksfv")
+tiers = Array[ExtResource("2_u2k8w")]([SubResource("Resource_mti7f"), SubResource("Resource_pgamk"), SubResource("Resource_qicv5"), SubResource("Resource_tj4ef")])
+icon = ExtResource("2_hh15n")
+rarity = 7
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 22
+name = "Fratricide"
+gdscript = ExtResource("1_hh15n")
+saved_data = ExtResource("3_ouolv")
+metadata/_custom_type_script = "uid://dq4qxtx6lyc2u"

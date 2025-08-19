@@ -1,0 +1,88 @@
+[gd_scene load_steps=6 format=3 uid="uid://d2t3yiwy43u7u"]
+
+[ext_resource type="Script" uid="uid://m5sdl8qo5e7j" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/junk_man/junk_man_screen.gd" id="1_1cjxk"]
+[ext_resource type="Texture2D" uid="uid://b3iapn601dtu2" path="res://assets/sprites/ui/scene_specific/encounter_screen/junk_man/junk_man_milestone.png" id="2_1jjpj"]
+[ext_resource type="PackedScene" uid="uid://bvwvxtul7dpd8" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.tscn" id="2_5c2my"]
+[ext_resource type="PackedScene" uid="uid://c3jcbtvv7xv6v" path="res://scenes/common/fill_bar/fill_bar.tscn" id="2_5nr5d"]
+[ext_resource type="Texture2D" uid="uid://cb87xcd46qm50" path="res://assets/sprites/ui/scene_specific/encounter_screen/junk_man/junkbar.png" id="2_ehqak"]
+
+[node name="JunkManScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1cjxk")
+JUNK_MAN_MILESTONE_TX = ExtResource("2_1jjpj")
+metadata/_custom_type_script = "uid://bjtqsfwsp561b"
+
+[node name="JunkManBase" type="Control" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -128.0
+offset_right = 512.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FillBar" parent="JunkManBase" instance=ExtResource("2_5nr5d")]
+unique_name_in_owner = true
+offset_left = 6.0
+offset_top = 198.0
+offset_right = 1022.0
+offset_bottom = 254.0
+mouse_filter = 2
+bg_color = Color(0.677724, 0.461052, 0.00114436, 1)
+fg_color = Color(0.39, 0.2665, 0, 1)
+max_value = 50
+
+[node name="FillBarOutline" type="TextureRect" parent="JunkManBase"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.75
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -190.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_ehqak")
+
+[node name="EncounterMainUI" parent="JunkManBase" instance=ExtResource("2_5c2my")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 1026.0
+offset_bottom = 258.0
+texture = ExtResource("2_1jjpj")
+global_mouse_filter = 2
+
+[node name="RewardParent" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="JunkManCollisionArea" type="Area2D" parent="."]
+position = Vector2(806, 512)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="JunkManCollisionArea"]
+polygon = PackedVector2Array(42, -33, 60, -45, 85, -47, 125, -60, 165, -58, 198, -53, 224, -32, 228, -17, 274, -14, 311, 14, 318, 34, 311, 70, 329, 80, 346, 83, 356, 95, 291, 96, 255, 107, 209, 109, 178, 102, 163, 94, -45, 95, -36, 78, 8, 79, 34, 64, 28, 33, 22, 11, 36, -8)
+
+[connection signal="pressed" from="JunkManBase/EncounterMainUI" to="." method="_on_encounter_main_ui_pressed"]
+[connection signal="mouse_entered" from="JunkManCollisionArea" to="." method="onMouseInJunkMan" binds= [true]]
+[connection signal="mouse_exited" from="JunkManCollisionArea" to="." method="onMouseInJunkMan" binds= [false]]

@@ -4,7 +4,7 @@ signal pressed
 @warning_ignore("unused_signal")
 signal create_screen
 
-const SOLD_LABEL_PATH: String = "res://scenes/game/map_nodes/screens/shop_screen/sold_label.tscn"
+const SOLD_LABEL_PATH: String = "res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/sold_label.tscn"
 const SCALE_SPEED: float = 0.25
 const SCALE_MAX: float = 1.1
 const SCALE_MIN: float = 0.9

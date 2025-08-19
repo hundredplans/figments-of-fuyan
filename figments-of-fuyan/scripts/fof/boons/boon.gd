@@ -1,10 +1,12 @@
 class_name BoonGD extends FofGD
 
 signal update_tier
+signal update_disabled
 
 var ability_save: Dictionary
 var charges: int
 var tier: int
+var disabled: bool
 
 func onFofInit() -> void:
 	onResetCharges()
@@ -15,12 +17,13 @@ func onLoadData(data: SavedData) -> void:
 	ability_save = data.ability_save
 	charges = data.charges
 	tier = data.tier
+	disabled = data.disabled
 	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
 	
 func onSave() -> SavedDataBoon:
-	return SavedDataBoon.new(info.id, false, public_id, charges, ability_save, tier)
+	return SavedDataBoon.new(info.id, false, public_id, charges, ability_save, tier, disabled)
 
 func getIcon() -> Texture2D:
 	return info.icon
@@ -37,7 +40,7 @@ func onBoonAdded() -> void:
 		onLevelStarted()
 
 func getDisabled() -> bool:
-	return false
+	return disabled
 	
 func getCharges() -> int:
 	return charges
@@ -90,3 +93,14 @@ func onChangeCharges(delta: int) -> void:
 
 func getRarity() -> Game.Rarities:
 	return info.rarity
+
+func setDisabled(state: bool) -> void:
+	disabled = state
+	update_disabled.emit(state)
+
+func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false) -> TbcUI:
+	var tbc: TbcUI = load(info.BOON_ICON_PATH).instantiate()
+	parent.add_child(tbc)
+	tbc.setInfo(self, hoverable)
+	tbc.setDraggable(draggable)
+	return tbc

@@ -16,6 +16,10 @@ func _init(_cards: Variant = null, _ExplorerCard: CardGD = null, _ignore_exit_le
 	ignore_exit_level_visible_delay = _ignore_exit_level_visible_delay
 	
 func onPreAction() -> void:
+	if !Game.isLevel():
+		onFailAction()
+		return
+		
 	old_team_vision = Game.getLevel().old_player_vision.duplicate()
 	for Card in cards:
 		old_visible_game_objects[Card] = Card.getVisibleGameObjects()

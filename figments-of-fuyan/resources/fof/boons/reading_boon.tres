@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://d0d6lmxdidyq6"]
+
+[ext_resource type="Script" uid="uid://43fggll2byln" path="res://scripts/templates/node/reading_boon.gd" id="1_lk2e7"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_plgkj"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_03cj7"]
+[ext_resource type="Texture2D" uid="uid://d1ymisp0u3mf1" path="res://assets/sprites/game/boons/reading_boon.png" id="2_ki6v5"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_4b3in"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_ba8uq"]
+
+[sub_resource type="Resource" id="Resource_wd51q"]
+script = ExtResource("6_ba8uq")
+description = "Default Hand Size +1"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_bcrjt"]
+script = ExtResource("2_03cj7")
+description_datastore = SubResource("Resource_wd51q")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_jo3b0"]
+script = ExtResource("6_ba8uq")
+description = "Default Hand Size +2"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_50k7h"]
+script = ExtResource("2_03cj7")
+description_datastore = SubResource("Resource_jo3b0")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_hgc25"]
+script = ExtResource("6_ba8uq")
+description = "Default Hand Size +2
+End of Turn Card Draw +1"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_esnkm"]
+script = ExtResource("2_03cj7")
+description_datastore = SubResource("Resource_hgc25")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_kc0rl"]
+script = ExtResource("6_ba8uq")
+description = "Default Hand Size +2
+End of Turn Card Draw +4"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_kf1j5"]
+script = ExtResource("2_03cj7")
+description_datastore = SubResource("Resource_kc0rl")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_plgkj")
+tiers = Array[ExtResource("2_03cj7")]([SubResource("Resource_bcrjt"), SubResource("Resource_50k7h"), SubResource("Resource_esnkm"), SubResource("Resource_kf1j5")])
+icon = ExtResource("2_ki6v5")
+rarity = 3
+curse = false
+elite_fight_curse = false
+display_trigger = true
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 21
+name = "Reading Boon"
+gdscript = ExtResource("1_lk2e7")
+saved_data = ExtResource("3_4b3in")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

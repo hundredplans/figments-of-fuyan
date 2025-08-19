@@ -1,9 +1,7 @@
 class_name LevelGD extends FofGD
 
-const START_HAND_SIZE: int = 3
 const AI_TURNS_UNTIL_ADVENTURER: int = 10
 const CARD_PLACED_SPECTATE_DELAY: float = 1.0
-const DRAW_BELOW_HAND_SIZE: int = 3
 
 var energy: int
 var max_energy: int
@@ -219,8 +217,12 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false, reload: bool = fa
 		Game.Phases.START:
 			onForceAction(InsertAction.new(Game.getSaveFile().getChampionCard()))
 		Game.Phases.HAND:
-			if get_tree().get_node_count_in_group("HandCardsGD") < DRAW_BELOW_HAND_SIZE:
-				onForceAction(DrawAction.new())
+			var default_hand_size: int = Game.getSaveFile().getDefaultHandSize()
+			var hand_count: int = get_tree().get_node_count_in_group("HandCardsGD")
+			if hand_count < default_hand_size:
+				var draw_amount: int = min(default_hand_size - hand_count, Game.getSaveFile().getEndOfTurnCardDraw())
+				for __: int in range(draw_amount):
+					onForceAction(DrawAction.new())
 			if isEpic() and old_phase != Game.Phases.START: # Gain energy per turn for bosses
 				onForceAction(EnergyAction.new(Game.getArea().getWorldDifficulty()))
 			onCheckSkipHandPhase()
@@ -318,8 +320,7 @@ func onProcessAction(action: Action) -> void:
 
 #region Hand
 func onDrawStarterHand() -> void:
-	var draw_count: int = START_HAND_SIZE
-	
+	var draw_count: int = Game.getSaveFile().getDefaultHandSize()
 	for __ in range(draw_count):
 		onForceAction(DrawAction.new())
 		

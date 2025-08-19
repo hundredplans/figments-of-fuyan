@@ -1,8 +1,10 @@
 extends Control
 
 #region Globals
+signal stash_screen_exit_start
 signal screen_created
 signal screen_finished
+signal active_tool_added
 
 var World: Node3D
 var save_file: SaveFileGD
@@ -108,6 +110,9 @@ func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
 	add_child(ActiveScreen)
 	ActiveScreen.setInfo(save_file, area, World, self, map_node)
 	ActiveScreen.minimap_mode.connect(onMinimapMode)
+	ActiveScreen.create_stash_screen.connect(onCreateStashScreen)
+	stash_screen_exit_start.connect(ActiveScreen.onStashScreenExitStart)
+	active_tool_added.connect(ActiveScreen.onActiveToolAdded)
 	
 	if ActiveScreen.onFadeBackground():
 		FadeBackground.color = Color(1, 1, 1, 0)
@@ -153,14 +158,16 @@ var StashScreen: Control
 func onDeckButtonPressed() -> void:
 	onCreateStashScreen()
 	
-func onCreateStashScreen() -> void:
-	StashScreen = Game.onCreateStashScreen(self)
+func onCreateStashScreen(ToolIcon: TbcUI = null) -> void:
+	StashScreen = Game.onCreateStashScreen(self, ToolIcon)
 	StashScreen.mouse_in_ui.connect(onMouseInUI)
 	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
+	StashScreen.exit_start.connect(func(): stash_screen_exit_start.emit())
+	StashScreen.active_tool_added.connect(func(x: TbcUI): active_tool_added.emit(x))
 	
 	var EnteredMapNode: MapNodeGD = Game.getArea().getEnteredMapNode()
-	if !EnteredMapNode.is_finished and EnteredMapNode.info.is_shop:
-		StashScreen.onStashIsSellable()
+	if !EnteredMapNode.is_finished and EnteredMapNode.info.is_encounter and EnteredMapNode.isDragZone():
+		StashScreen.onActivateDragZone(EnteredMapNode)
 	
 func onUpdateStashScreen(created: bool) -> void:
 	var end_value: float = 0.0 if created else 1.0

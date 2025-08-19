@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://djqhgmls2tlau"]
+
+[ext_resource type="Shader" uid="uid://d0k75b73kjti5" path="res://resources/shaders/wavy_lines_ui.gdshader" id="1_hulpi"]
+
+[resource]
+shader = ExtResource("1_hulpi")
+shader_parameter/lowest_color = Color(0.6, 0.278431, 0, 1)
+shader_parameter/highest_color = Color(0.3, 0.14, 0, 1)
+shader_parameter/line_width = 16.0
+shader_parameter/spacing = 32.0
+shader_parameter/color_speed = 2.5
+shader_parameter/speed = 40.0
+shader_parameter/rect_size = Vector2(180, 900)

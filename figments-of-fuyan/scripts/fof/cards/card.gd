@@ -220,6 +220,9 @@ func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspec
 	parent.add_child(CardUI)
 	CardUI.setInfo(self, highlight_on_hover, ui_inspectable, draggable)
 	return CardUI
+	
+func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false) -> TbcUI:
+	return onCreateCardUI(parent, hoverable, false, draggable)
 #endregion
 
 #region Save/Load/Clear
@@ -893,7 +896,7 @@ func getAttackDistanceFromEnemy(EnemyTile: TileGD, StartingTile: TileGD = Tile, 
 #endregion
 
 #region Damage
-func onTakeDamage(Damager: GameObjectGD, damage: int, lock_action_delay: bool) -> int: # Returns damage dealt
+func onTakeDamage(Damager: FofGD, damage: int, lock_action_delay: bool) -> int: # Returns damage dealt
 	var old_health: int = health
 	health = max(health - damage, 0)
 	

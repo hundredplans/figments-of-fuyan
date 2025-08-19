@@ -2,16 +2,16 @@
 
 [ext_resource type="Script" uid="uid://bcts7wfokwd51" path="res://scripts/fof/map_nodes/shop.gd" id="1_mdo4h"]
 [ext_resource type="Texture2D" uid="uid://kcitn6i05q53" path="res://assets/sprites/game/map/shop.png" id="2_i5mmu"]
-[ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop.glb" id="3_vkl44"]
+[ext_resource type="PackedScene" uid="uid://23n6qgt1pt4c" path="res://assets/models/fof/map_nodes/ozhars_bazaar.glb" id="3_mdo4h"]
 [ext_resource type="Script" uid="uid://dnnn75byduf57" path="res://scripts/saved_data/map_nodes/saved_data_shop.gd" id="4_5tj2i"]
-[ext_resource type="PackedScene" uid="uid://ca067vx7dy1b" path="res://scenes/game/map_nodes/screens/shop_screen/shop_screen.tscn" id="5_2euus"]
+[ext_resource type="PackedScene" uid="uid://ca067vx7dy1b" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/shop_screen.tscn" id="5_2euus"]
 [ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="6_qn1hj"]
 
 [resource]
 script = ExtResource("6_qn1hj")
 screen = ExtResource("5_2euus")
 icon = ExtResource("2_i5mmu")
-model = ExtResource("3_vkl44")
+model = ExtResource("3_mdo4h")
 is_encounter = true
 is_shop = true
 is_unique = false

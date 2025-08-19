@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=16 format=3 uid="uid://p1uxnvwnyglj"]
+
+[ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_iikfk"]
+[ext_resource type="Script" uid="uid://jhhx723xdvdl" path="res://scripts/fof/tools/princes_chair.gd" id="1_rli6v"]
+[ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="2_8ohax"]
+[ext_resource type="Texture2D" uid="uid://syvohaaenrn8" path="res://assets/sprites/princes_chair.png" id="2_rsaae"]
+[ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_rsaae"]
+[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="6_rsaae"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="7_bn22c"]
+
+[sub_resource type="Resource" id="Resource_mtwos"]
+script = ExtResource("7_bn22c")
+description = "Your SPD is set to [1] and can't be changed
+BLOODTHIRST: Gain +1 ATT"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_8avpa"]
+script = ExtResource("2_8ohax")
+active_abilities = Array[ExtResource("6_rsaae")]([])
+description_datastore = SubResource("Resource_mtwos")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_tuoid"]
+script = ExtResource("7_bn22c")
+description = "Your SPD is set to [1]
+BLOODTHIRST: Gain +1 ATT"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_00cgy"]
+script = ExtResource("2_8ohax")
+active_abilities = Array[ExtResource("6_rsaae")]([])
+description_datastore = SubResource("Resource_tuoid")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_20arq"]
+script = ExtResource("7_bn22c")
+description = "Your SPD is set to [1]
+BLOODTHIRST & TRAUMA: Gain +1 ATT"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_mfhlc"]
+script = ExtResource("2_8ohax")
+active_abilities = Array[ExtResource("6_rsaae")]([])
+description_datastore = SubResource("Resource_20arq")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[sub_resource type="Resource" id="Resource_hao40"]
+script = ExtResource("7_bn22c")
+description = "Your SPD is set to [2]
+BLOODTHIRST & TRAUMA: Gain +1 ATT"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_y16g7"]
+script = ExtResource("2_8ohax")
+active_abilities = Array[ExtResource("6_rsaae")]([])
+description_datastore = SubResource("Resource_hao40")
+metadata/_custom_type_script = "uid://bigyry2ykda2l"
+
+[resource]
+script = ExtResource("1_iikfk")
+tiers = Array[ExtResource("2_8ohax")]([SubResource("Resource_8avpa"), SubResource("Resource_00cgy"), SubResource("Resource_mfhlc"), SubResource("Resource_y16g7")])
+icon = ExtResource("2_rsaae")
+rarity = 6
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 23
+name = "Prince's Chair"
+gdscript = ExtResource("1_rli6v")
+saved_data = ExtResource("3_rsaae")
+metadata/_custom_type_script = "uid://dq4qxtx6lyc2u"

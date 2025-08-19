@@ -18,6 +18,9 @@ func onPreAction() -> void:
 	setActionDelay(Game.ATTACK_DELAY if Attacker.isLevelVisible() or Defenders.any(func(x: GameObjectGD): return x.isLevelVisible()) else 0.0)
 	onForceAction(ChangeAttacksAction.new(Attacker, Attacker.attacks - 1))
 	
+func setDefenders(arr: Array) -> void:
+	Defenders = arr
+	
 func onPostAction() -> void:
 	var DefenderTile: TileGD = Defenders[0].getAttackableTile()
 	

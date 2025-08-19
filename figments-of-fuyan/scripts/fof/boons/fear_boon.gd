@@ -33,7 +33,7 @@ func getDefaultCharges() -> int:
 	return getTurns()
 
 func getDisabled() -> bool:
-	return charges == 0
+	return super() or charges == 0
 	
 func getTurns() -> int:
 	match tier:

@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://c4dbt8sudhkes"]
+
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_gjlvb"]
+[ext_resource type="Script" uid="uid://6yqvoq43s8jb" path="res://scripts/fof/boons/selfish_boon.gd" id="1_jxjy8"]
+[ext_resource type="Texture2D" uid="uid://dkvnkxkqmtj43" path="res://assets/sprites/game/cards/art_mini/silas_iii.png" id="2_5gwdp"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_fq12k"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_034c6"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_yqne1"]
+
+[sub_resource type="Resource" id="Resource_ee4et"]
+script = ExtResource("6_yqne1")
+description = "Your Champion when hit redirects [1] DMG away to a random ally in vision"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_nkayi"]
+script = ExtResource("2_fq12k")
+description_datastore = SubResource("Resource_ee4et")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_j22iu"]
+script = ExtResource("6_yqne1")
+description = "Your Champion has +1 HP and when hit redirects [1] DMG away to a random ally in vision"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_pf7my"]
+script = ExtResource("2_fq12k")
+description_datastore = SubResource("Resource_j22iu")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_2vmpj"]
+script = ExtResource("6_yqne1")
+description = "Your Champion has +2 HP and when hit redirects [1] DMG away to a random ally in vision"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_22dra"]
+script = ExtResource("2_fq12k")
+description_datastore = SubResource("Resource_2vmpj")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_jpbsd"]
+script = ExtResource("6_yqne1")
+description = "Your Champion has +3 HP and when hit redirects [1] DMG away to a random ally in vision"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_y64ir"]
+script = ExtResource("2_fq12k")
+description_datastore = SubResource("Resource_jpbsd")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_gjlvb")
+tiers = Array[ExtResource("2_fq12k")]([SubResource("Resource_nkayi"), SubResource("Resource_pf7my"), SubResource("Resource_22dra"), SubResource("Resource_y64ir")])
+icon = ExtResource("2_5gwdp")
+rarity = 7
+curse = false
+elite_fight_curse = false
+display_trigger = true
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 27
+name = "Selfish Boon"
+gdscript = ExtResource("1_jxjy8")
+saved_data = ExtResource("3_034c6")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

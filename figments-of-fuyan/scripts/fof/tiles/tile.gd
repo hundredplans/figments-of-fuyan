@@ -461,3 +461,6 @@ func getTierMaterial() -> Material:
 		3: mat = load(TIER_THREE_PATH)
 		4: mat = load(TIER_FOUR_PATH)
 	return mat
+
+func setInfoSprite(tx: Texture2D) -> void:
+	Model.get_node("InfoSprite").texture = tx

@@ -1,17 +1,15 @@
-[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=7 format=3 uid="uid://bdfmrvuyic4j1"]
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=6 format=3 uid="uid://bdfmrvuyic4j1"]
 
 [ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_3t3g6"]
-[ext_resource type="Script" uid="uid://ckx1ajnixc5mo" path="res://scripts/fof/map_nodes/map_node.gd" id="1_ihri2"]
+[ext_resource type="Script" uid="uid://bw3n8ijfwo2sn" path="res://scripts/fof/map_nodes/encounter.gd" id="1_ihri2"]
 [ext_resource type="Texture2D" uid="uid://kcitn6i05q53" path="res://assets/sprites/game/map/shop.png" id="2_x37mx"]
-[ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop.glb" id="3_5vivs"]
-[ext_resource type="Script" uid="uid://1nhagdcu8nfi" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_elxpn"]
-[ext_resource type="PackedScene" uid="uid://bwsnvtjsr4omo" path="res://scenes/game/map_nodes/encounters/smith_screen.tscn" id="5_5mfxg"]
+[ext_resource type="PackedScene" uid="uid://qjuf3qg1t6ya" path="res://assets/models/fof/map_nodes/smith.glb" id="3_ihri2"]
+[ext_resource type="Script" uid="uid://butdhdy23uj8v" path="res://scripts/saved_data/encounters/saved_data_encounter.gd" id="4_x37mx"]
 
 [resource]
 script = ExtResource("1_3t3g6")
-screen = ExtResource("5_5mfxg")
 icon = ExtResource("2_x37mx")
-model = ExtResource("3_5vivs")
+model = ExtResource("3_ihri2")
 is_encounter = true
 is_shop = false
 is_unique = false
@@ -20,5 +18,5 @@ legend_order = 0
 id = 11
 name = "Smith"
 gdscript = ExtResource("1_ihri2")
-saved_data = ExtResource("4_elxpn")
+saved_data = ExtResource("4_x37mx")
 metadata/_custom_type_script = "uid://bsrlnsfamr6p"

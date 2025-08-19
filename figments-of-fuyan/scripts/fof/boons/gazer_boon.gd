@@ -22,7 +22,7 @@ func onLevelStarted() -> void:
 	super()
 
 func getDisabled() -> bool:
-	return charges == 0
+	return super() or charges == 0
 
 func getCharges() -> int:
 	return super()

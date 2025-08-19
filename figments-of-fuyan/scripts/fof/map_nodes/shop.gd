@@ -1,10 +1,6 @@
-extends MapNodeGD
+extends EncounterGD
 
 #region Globals
-const GENERAL_SHOP_DATASTORE_PATH: String = "res://resources/datastore/shops/shop_datastore/general_shop_datastore.tres"
-const OZHARS_BAZAAR_DATASTORE_PATH: String = "res://resources/datastore/shops/shop_datastore/ozhars_bazaar_datastore.tres"
-var shop_datastore: ShopDatastore
-
 const SHOP_MUSIC_PATH: String = "res://assets/sounds/music/shop.mp3"
 #endregion
 
@@ -13,17 +9,12 @@ var items: Array # [PriceDatastore]
 #endregion
 
 #region Load / Save
-func onFofInit() -> void:
-	super()
-	onLoadShopDatastore()
-		
 func onSave() -> SavedDataMapNode:
 	return SavedDataShop.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, items)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	items = data.items
-	onLoadShopDatastore()
 #endregion
 
 #region Setting Prices
@@ -33,7 +24,7 @@ func onCreateItems() -> void:
 	var existing_card_ids: Array = []
 	var non_foreign_ids: Array = Game.getArea().getBasicCardIds()
 	
-	for shop_item: ShopItemDatastore in shop_datastore.getItems():
+	for shop_item: ShopItemDatastore in getShopDatastore().getItems():
 		var data: SavedData
 		var odds_datastore := shop_item.getRarityOddsDatastore()
 		var base_tier: int = Game.getArea().getWorldDifficulty()
@@ -91,36 +82,17 @@ func onEntered() -> void:
 	if !is_entered: # First time enter
 		onCreateItems()
 	super()
-	onCreateScreen()
 	onPushAction(PlayMusicAction.new(Audio.SHOP))
 	
 func onFinished() -> void:
 	super()
 	onPushAction(PlayMusicAction.new(Audio.BACKGROUND))
-	
-func onLoadShopDatastore() -> void:
-	if shop_datastore != null: return
-	var path: String
-	match info.id:
-		5: path = OZHARS_BAZAAR_DATASTORE_PATH
-		6: path = GENERAL_SHOP_DATASTORE_PATH
-		_: path = GENERAL_SHOP_DATASTORE_PATH
-	shop_datastore = load(path)
 
 func getShopDatastore() -> ShopDatastore:
-	return shop_datastore
+	return encounter_datastore
 
 func getItems() -> Array:
 	return items
-
-func onUpdateHovered() -> void:
-	if is_queued_for_deletion(): return
-	var state: bool = getHoveredState()
-	if state:
-		if HoverUI != null: HoverUI.queue_free()
-		HoverUI = load(getHoverUIPath()).instantiate()
-	super()
-	
-func getHoverUIPath() -> String:
-	return info.SHOP_HOVER_UI
 #endregion
+
+func isDragZone() -> bool: return true

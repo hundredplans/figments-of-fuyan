@@ -129,9 +129,7 @@ func onToolPressed(Tool: ToolGD, OriginalToolIcon: Control) -> void:
 	var _ToolIcon: Control = ToolIconPacked.instantiate()
 	add_child(_ToolIcon)
 	_ToolIcon.setInfo(Tool, false)
-	_ToolIcon.setDisableTooltip(true)
 	_ToolIcon.setSizeScale(3)
-	_ToolIcon.top_level = true
 	
 	StashScreen = Game.onCreateStashScreen(self, _ToolIcon)
 	stash_screen_fade_in.emit()

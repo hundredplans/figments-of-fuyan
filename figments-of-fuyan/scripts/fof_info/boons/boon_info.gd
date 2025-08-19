@@ -13,6 +13,8 @@ class_name BoonInfo extends FofInfo
 @export var reset_to_default: bool # Otherwise resets to 0
 @export_group("")
 
+const BOON_ICON_PATH: String = "res://scenes/game/boons/boon_icon.tscn"
+
 static func getFofName() -> String: return "Boon"
 
 static func getInfoPath() -> String: return "res://resources/fof/boons"

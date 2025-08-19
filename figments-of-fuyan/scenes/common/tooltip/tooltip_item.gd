@@ -28,10 +28,9 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		tier = info_or_fof.getTier()
 		info = Helper.getFofInfoID(info_or_fof.getInfoType(), info_or_fof.id)
 		info_or_fof = info
-		
-	NameLabel.text = "%s  |  %s" % [info.name, Game.getTierString(tier)]
-	TopIcon.texture = info.getIcon()
 	
+	
+	TopIcon.texture = info.getIcon()
 	var description: String = info_or_fof.getDescription()
 	TextLabel.setText(description)
 	if info is CardInfo:
@@ -40,9 +39,11 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		CardTooltipExtra.setInfo(info, tier)
 	
 	if info is BoonInfo or info is ToolInfo or info is CardInfo:
+		NameLabel.text = "%s  |  %s" % [info.name, Game.getTierString(tier)]
 		self_modulate = Game.getTierColor(tier)
 		InnerPanelContainer.self_modulate = Game.getRarityColor(info.rarity)
 	else:
+		NameLabel.text = "%s" % info.name
 		theme_type_variation = "YellowPanelContainer"
 		InnerPanelContainer.visible = false
 	

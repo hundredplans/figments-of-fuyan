@@ -1,8 +1,8 @@
 class_name WorldDatastore extends Resource
 
-const CARD_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/shops/rarity_prices/card_rarity_prices.tres"
-const BOON_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/shops/rarity_prices/boon_rarity_prices.tres"
-const TOOL_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/shops/rarity_prices/tool_rarity_prices.tres"
+const CARD_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/encounters/rarity_prices/card_rarity_prices.tres"
+const BOON_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/encounters/rarity_prices/boon_rarity_prices.tres"
+const TOOL_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/encounters/rarity_prices/tool_rarity_prices.tres"
 
 @export var world: int
 

@@ -21,4 +21,4 @@ func getDefaultCharges() -> int:
 	return 1
 	
 func getDisabled() -> bool:
-	return charges == 0
+	return super() or charges == 0

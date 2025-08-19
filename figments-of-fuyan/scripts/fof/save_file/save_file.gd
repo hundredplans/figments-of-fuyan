@@ -20,6 +20,8 @@ var deck_slots: Array # [DeckSlot]
 var energy_limit: int
 var timer: Timer
 var stash_sort_type: int
+var default_hand_size: int
+var end_of_turn_card_draw: int
 
 #region Helper
 func getChampionCard() -> CardGD:
@@ -43,7 +45,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
 	ally_cards, saved_boons, highest_public_id, world_difficulty,\
-	max_energy, energy_limit, deck_slots, stash_sort_type)
+	max_energy, energy_limit, deck_slots, stash_sort_type, default_hand_size, end_of_turn_card_draw)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -56,6 +58,8 @@ func onLoadData(data: SavedData) -> void:
 	energy_limit = data.energy_limit
 	deck_slots = data.deck_slots
 	stash_sort_type = data.stash_sort_type
+	default_hand_size = data.default_hand_size
+	end_of_turn_card_draw = data.end_of_turn_card_draw
 	
 	for card_data: SavedDataCard in data.ally_cards:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
@@ -245,3 +249,15 @@ func getMaxEnergy() -> int:
 
 func getWorldDifficulty() -> int:
 	return world_difficulty
+
+func setDefaultHandSize(_default_hand_size: int) -> void:
+	default_hand_size = max(_default_hand_size, 1)
+	
+func getDefaultHandSize() -> int:
+	return default_hand_size
+	
+func setEndOfTurnCardDraw(_end_of_turn_card_draw: int) -> void:
+	end_of_turn_card_draw = max(_end_of_turn_card_draw, 1)
+	
+func getEndOfTurnCardDraw() -> int:
+	return end_of_turn_card_draw

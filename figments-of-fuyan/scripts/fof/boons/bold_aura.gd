@@ -47,7 +47,7 @@ func onBoonAdded() -> void:
 	super()
 	
 func getDisabled() -> bool:
-	return charges == 0
+	return super() or charges == 0
 	
 func getDefaultCharges() -> int:
 	return max_kills

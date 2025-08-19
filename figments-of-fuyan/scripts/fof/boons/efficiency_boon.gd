@@ -30,9 +30,6 @@ func onBoon(_action: Action = null) -> void:
 	for __: int in range(getDrawAmount()):
 		onPushAction(DrawAction.new())
 	
-func getDisabled() -> bool:
-	return false
-	
 func onChangeCharges(delta: int) -> void:
 	super(delta)
 	if charges != 0 and charges % getCardRequirement() == 0:

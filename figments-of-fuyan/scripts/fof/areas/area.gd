@@ -444,7 +444,7 @@ func getAddBoonAddTool(fight_rewards_datastore: FightRewardsDatastore, is_elite:
 	
 func onAddToolReward() -> ToolGD:
 	var is_elite: bool = active_level.isEliteOrEpic()
-	var tool_data: SavedDataTool = Random.getRandomToolData(getWorld().getToolRewardRarityOdds(is_elite), getWorld().getToolTierUpOdds(is_elite))
+	var tool_data: SavedDataTool = Random.getRandomToolData(getWorld().getToolRewardRarityOdds(is_elite), getWorld().getToolRewardTierUpOdds(is_elite))
 	var Tool: ToolGD = SavedData.onLoadModel(tool_data, active_level)
 	return Tool
 	

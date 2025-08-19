@@ -58,6 +58,12 @@ base_tier: int, tier_up_odds: float, tool_odds: float, tool_tier_up_odds: float,
 		return card_data
 	return null
 	
+static func getRandomLocalCardData(odds_datastore: RarityOddsDatastore, tool_odds_datastore: RarityOddsDatastore,\
+base_tier: int, tier_up_odds: float, tool_odds: float, tool_tier_up_odds: float, used_ids: Array = []) -> SavedDataCard:
+	var keep_ids: Array = Game.getArea().getBasicCardIds()
+	return getRandomCardData(keep_ids, odds_datastore, tool_odds_datastore, base_tier, tier_up_odds, tool_odds, tool_tier_up_odds, used_ids)
+	
+	
 static func getRandomToolData(odds_datastore: RarityOddsDatastore, tier_up_odds: float,\
 base_tier: int = Game.getArea().getWorldDifficulty(), used_ids: Array = []) -> SavedDataTool:
 	var odds: Dictionary = odds_datastore.getDictionary()

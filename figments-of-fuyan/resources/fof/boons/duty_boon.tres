@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://c81wh4bq16tgc"]
+
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_amh8b"]
+[ext_resource type="Script" uid="uid://d8hu7afwl363" path="res://scripts/fof/boons/duty_boon.gd" id="1_o2key"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_f2scx"]
+[ext_resource type="Texture2D" uid="uid://bcc0aiaovd4s5" path="res://assets/sprites/game/boons/duty_boon.png" id="2_o2key"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_oh1j2"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_xnu7f"]
+
+[sub_resource type="Resource" id="Resource_hp0pt"]
+script = ExtResource("6_xnu7f")
+description = "The first ally that dies each level is inserted into your hand"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_0025i"]
+script = ExtResource("2_f2scx")
+description_datastore = SubResource("Resource_hp0pt")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_xu6hr"]
+script = ExtResource("6_xnu7f")
+description = "The first ally that dies each level is inserted into your hand and costs [1] less"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_0dege"]
+script = ExtResource("2_f2scx")
+description_datastore = SubResource("Resource_xu6hr")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_rp8h2"]
+script = ExtResource("6_xnu7f")
+description = "The first ally that dies each level is inserted into your hand and costs [2] less"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_02h0u"]
+script = ExtResource("2_f2scx")
+description_datastore = SubResource("Resource_rp8h2")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_dg81o"]
+script = ExtResource("6_xnu7f")
+description = "The first ally that dies each level is inserted into your hand and costs [0]"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_ff2sb"]
+script = ExtResource("2_f2scx")
+description_datastore = SubResource("Resource_dg81o")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_amh8b")
+tiers = Array[ExtResource("2_f2scx")]([SubResource("Resource_0025i"), SubResource("Resource_0dege"), SubResource("Resource_02h0u"), SubResource("Resource_ff2sb")])
+icon = ExtResource("2_o2key")
+rarity = 6
+curse = false
+elite_fight_curse = false
+display_trigger = true
+use_charges = true
+auto_reset_charges = true
+reset_to_default = true
+id = 26
+name = "Duty Boon"
+gdscript = ExtResource("1_o2key")
+saved_data = ExtResource("3_oh1j2")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://dr8eeqvju6s5k"]
+
+[ext_resource type="Script" uid="uid://cg3xvhsg3wk03" path="res://scripts/templates/node/medal_boon.gd" id="1_5k20c"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_ew8ji"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_8i2ss"]
+[ext_resource type="Texture2D" uid="uid://6y77k4lm56bd" path="res://assets/sprites/game/boons/medal_boon.png" id="2_hsddg"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_bdw4d"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_jax76"]
+
+[sub_resource type="Resource" id="Resource_4itdw"]
+script = ExtResource("6_jax76")
+description = "Last ally alive gains +1 ATT +1 HP"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_l2nbf"]
+script = ExtResource("2_8i2ss")
+description_datastore = SubResource("Resource_4itdw")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_c3xqn"]
+script = ExtResource("6_jax76")
+description = "Last ally alive gains +1 ATT +1 HP + 1 SPD"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_f3f0q"]
+script = ExtResource("2_8i2ss")
+description_datastore = SubResource("Resource_c3xqn")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_o5yma"]
+script = ExtResource("6_jax76")
+description = "Last ally alive gains +2 ATT +1 HP +1 SPD"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_43qeg"]
+script = ExtResource("2_8i2ss")
+description_datastore = SubResource("Resource_o5yma")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_06cci"]
+script = ExtResource("6_jax76")
+description = "Last ally alive gains +2 ATT +2 HP +1 SPD"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_hmgmx"]
+script = ExtResource("2_8i2ss")
+description_datastore = SubResource("Resource_06cci")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_ew8ji")
+tiers = Array[ExtResource("2_8i2ss")]([SubResource("Resource_l2nbf"), SubResource("Resource_f3f0q"), SubResource("Resource_43qeg"), SubResource("Resource_hmgmx")])
+icon = ExtResource("2_hsddg")
+rarity = 3
+curse = false
+elite_fight_curse = false
+display_trigger = true
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 23
+name = "Medal Boon"
+gdscript = ExtResource("1_5k20c")
+saved_data = ExtResource("3_bdw4d")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

@@ -1,24 +1,24 @@
 [gd_resource type="Resource" script_class="MapNodeInfo" load_steps=7 format=3 uid="uid://dcrxxdlpw75fb"]
 
-[ext_resource type="Script" uid="uid://ckx1ajnixc5mo" path="res://scripts/fof/map_nodes/map_node.gd" id="1_kf7ud"]
+[ext_resource type="Script" uid="uid://b088sohkliobt" path="res://scripts/fof/map_nodes/junk_man.gd" id="1_roco2"]
 [ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_uo6gk"]
-[ext_resource type="Script" uid="uid://1nhagdcu8nfi" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="2_c6s2g"]
 [ext_resource type="Texture2D" uid="uid://kcitn6i05q53" path="res://assets/sprites/game/map/shop.png" id="2_roco2"]
-[ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop.glb" id="3_qnm74"]
-[ext_resource type="PackedScene" uid="uid://yjkcm8emkquo" path="res://scenes/game/map_nodes/encounters/junk_man_screen.tscn" id="5_mvg6k"]
+[ext_resource type="PackedScene" uid="uid://f2l18qvc7ar6" path="res://assets/models/fof/map_nodes/junk_man.glb" id="3_roco2"]
+[ext_resource type="Script" uid="uid://butdhdy23uj8v" path="res://scripts/saved_data/encounters/saved_data_encounter.gd" id="4_qnm74"]
+[ext_resource type="PackedScene" uid="uid://d2t3yiwy43u7u" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/junk_man/junk_man_screen.tscn" id="5_roco2"]
 
 [resource]
 script = ExtResource("1_uo6gk")
-screen = ExtResource("5_mvg6k")
+screen = ExtResource("5_roco2")
 icon = ExtResource("2_roco2")
-model = ExtResource("3_qnm74")
+model = ExtResource("3_roco2")
 is_encounter = true
 is_shop = false
 is_unique = false
-float_y = 0.0
+float_y = 1.0
 legend_order = 0
 id = 12
 name = "Junk Man"
-gdscript = ExtResource("1_kf7ud")
-saved_data = ExtResource("2_c6s2g")
+gdscript = ExtResource("1_roco2")
+saved_data = ExtResource("4_qnm74")
 metadata/_custom_type_script = "uid://bsrlnsfamr6p"

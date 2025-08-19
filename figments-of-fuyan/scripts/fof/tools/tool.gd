@@ -173,3 +173,10 @@ func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
 
 func getCard() -> CardGD:
 	return Card
+
+func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false) -> TbcUI:
+	var tbc: TbcUI = load(info.TOOL_ICON_PATH).instantiate()
+	parent.add_child(tbc)
+	tbc.setInfo(self, hoverable)
+	tbc.setDraggable(draggable)
+	return tbc

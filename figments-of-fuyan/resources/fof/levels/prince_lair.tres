@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=223 format=3 uid="uid://bfnsxgbibitqc"]
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=223 format=3]
 
-[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_y5h4m"]
-[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_2bnem"]
-[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_4ief3"]
-[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_07jik"]
-[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_2ghbg"]
-[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_2bnem"]
-[ext_resource type="Script" uid="uid://d3nlf4kn1ucxr" path="res://scripts/fof/levels/varoma_level.gd" id="6_ek6ax"]
-[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="7_7eox4"]
-[ext_resource type="Script" uid="uid://bml6vtchj31b0" path="res://scripts/fof_info/levels/level_info.gd" id="8_oaftu"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_y5h4m"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_2bnem"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_4ief3"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_07jik"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_2ghbg"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_2bnem"]
+[ext_resource type="Script" path="res://scripts/fof/levels/varoma_level.gd" id="6_ek6ax"]
+[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="7_7eox4"]
+[ext_resource type="Script" path="res://scripts/fof_info/levels/level_info.gd" id="8_oaftu"]
 
 [sub_resource type="Resource" id="Resource_kuppv"]
 script = ExtResource("3_4ief3")
@@ -2777,10 +2777,8 @@ data = [SubResource("Resource_2bnem"), SubResource("Resource_4ief3"), SubResourc
 lights = Array[PackedScene]([])
 enemy_min_spawn_amount = 0
 enemy_max_spawn_amount = 0
-progress_min = 10
-progress_max = 10
-enemy_budget_offset = 0
-difficulty = 0
+budget_min = 0
+budget_max = 0
 id = 25
 name = "Prince Lair"
 gdscript = ExtResource("6_ek6ax")

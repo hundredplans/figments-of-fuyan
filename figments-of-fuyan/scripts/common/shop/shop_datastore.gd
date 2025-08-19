@@ -1,27 +1,21 @@
-class_name ShopDatastore extends Resource
+class_name ShopDatastore extends EncounterDatastore
 
-@export var id: int
 @export var items: Array[ShopItemDatastore]
-@export var background_icon: Texture2D
-@export var merchant_icon_base: Texture2D
-@export var merchant_frames: Array[Texture2D]
 @export var merchant_buy_frame: Texture2D
-@export var background_main_color: Color
+
+const SHOP_DRAG_ZONE_MATERIAL_PATH: String = "res://resources/materials/ui/shop_drag_zone.tres"
 
 func getItems() -> Array[ShopItemDatastore]:
 	return items
 
-func getBackgroundMainColor() -> Color:
-	return background_main_color
-
-func getMerchantIconBase() -> Texture2D:
-	return merchant_icon_base
-	
-func getMerchantFrames() -> Array[Texture2D]:
-	return merchant_frames
-
-func getBackgroundIcon() -> Texture2D:
-	return background_icon
-
 func getBuyFrame() -> Texture2D:
 	return merchant_buy_frame
+
+func getDragZoneName() -> String:
+	return "Sell  Zone"
+	
+func getDragZoneMaterial() -> ShaderMaterial:
+	return load(SHOP_DRAG_ZONE_MATERIAL_PATH)
+
+func getDragZoneLabelColor() -> Color:
+	return Color("#00ff00")

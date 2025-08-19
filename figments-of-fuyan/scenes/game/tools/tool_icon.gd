@@ -1,11 +1,8 @@
 extends TbcUI
 
-const OUTLINE_PIXEL_SIZE: int = 1
 const SPIN_SPEED: float = 10
 
-@export var TIER_OUTLINE_MATERIAL: Material
 @onready var ToolTxRect: TextureRect = %ToolTextureRect
-
 var Tool: ToolGD
 
 func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
@@ -15,8 +12,6 @@ func setInfo(_Tool: ToolGD, _hoverable: bool = false) -> void:
 	setInfoDirect(Tool.getIcon() if Tool != null else null, _hoverable)
 	setMouseFilter(mouse_filter)
 	
-	ToolTxRect.material = TIER_OUTLINE_MATERIAL
-	ToolTxRect.set_instance_shader_parameter("border_size", OUTLINE_PIXEL_SIZE)
 	onUpdateTier(Tool.getTier() if Tool != null else 0)
 	
 func setTool(_Tool: ToolGD) -> void:
@@ -55,4 +50,4 @@ func onMouseInUI(state: bool) -> void:
 
 func onUpdateTier(tier: int) -> void:
 	if tier == 0: return
-	ToolTxRect.set_instance_shader_parameter("outline_color", Game.getTierColor(tier))
+	ToolTxRect.modulate = Game.getTierColor(tier)

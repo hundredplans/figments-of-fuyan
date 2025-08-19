@@ -25,6 +25,7 @@ var saved_rotation_y: float = 0
 const PROGRESS_OFFSET: float = 3
 const LANE_OFFSET: float = 3
 const CENTER_PROGRESS_OFFSET: float = -15
+const ENCOUNTER_SCREEN_PATH: String = "res://scenes/game/map_nodes/screens/encounter_screen/encounter_screen.tscn"
 #endregion
 
 #region Helper
@@ -204,7 +205,9 @@ func onOtherMapNodeFinished(map_node: MapNodeGD) -> void:
 		link.setIsFinished(true)
 		
 func onCreateScreen() -> void:
-	screen = info.screen.instantiate()
+	if info.is_encounter: screen = load(ENCOUNTER_SCREEN_PATH).instantiate()
+	else: screen = info.screen.instantiate()
+		
 	screen.finished.connect(onFinished)
 	create_screen.emit(self, screen)
 	

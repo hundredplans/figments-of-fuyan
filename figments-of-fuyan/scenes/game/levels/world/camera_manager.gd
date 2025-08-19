@@ -192,7 +192,7 @@ func onSpectateSpawn(ClosestCard: CardGD = null) -> void:
 			if ClosestCard != null:
 				spawns.sort_custom(func(x: SpawnGD, y: SpawnGD):\
 				return Game.getCoordsDistance(x.getCoords()[0], ClosestCard.getCoords()) < Game.getCoordsDistance(y.getCoords()[0], ClosestCard.getCoords()))
-			_SpectateObject = spawns[0]
+			_SpectateObject = spawns.pick_random()
 	
 	if _SpectateObject == null: return # If no spawns found to spectate
 	onCreateCameraChangeAction(_SpectateObject)

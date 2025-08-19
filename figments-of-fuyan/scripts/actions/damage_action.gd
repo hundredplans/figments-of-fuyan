@@ -1,6 +1,6 @@
 class_name DamageAction extends Action
 
-var Damager: GameObjectGD
+var Damager: FofGD
 var Defenders: Array
 var damage: int
 var damage_type: Game.DamageTypes
@@ -8,9 +8,10 @@ var ignore_armor_shield: bool
 var ignore_armor_shield_success: bool
 var armor: int
 
+const SELFISH_BOON_ID: int = 27
 const SHIELD_ID: int = 3
 
-func _init(_Damager: GameObjectGD = null, _Defenders: Variant = null, _damage: int = 0, _damage_type := Game.DamageTypes.ATTACK) -> void:
+func _init(_Damager: FofGD = null, _Defenders: Variant = null, _damage: int = 0, _damage_type := Game.DamageTypes.ATTACK) -> void:
 	super()
 	Damager = _Damager
 	
@@ -33,6 +34,7 @@ func onPostAction() -> void:
 	var actions: Array = []
 	var stat_infos: Array = []
 	
+	var selfish_boon_action: BoonActivatedAction
 	for Card: CardGD in Defenders:
 		var ShieldFieldEffect: FieldEffectGD = Card.getFirstFieldEffect(SHIELD_ID)
 		var new_damage: int = max(0, damage)
@@ -44,12 +46,20 @@ func onPostAction() -> void:
 					actions.append(RemoveFieldEffectAction.new(ShieldFieldEffect))
 		elif ShieldFieldEffect != null or armor > 0:
 			setIgnoreArmorShieldSuccess(true)
+			
+		var SelfishBoon: BoonGD = Game.getSaveFile().getBoon(SELFISH_BOON_ID)
+		if SelfishBoon != null and Card.isAlly(0) and Card.getRarity() == Game.Rarities.CHAMPION and new_damage > 0 and Card.getVisibleFieldCardsAllies().size() > 0:
+			new_damage = max(new_damage - 1, 0)
+			selfish_boon_action = BoonActivatedAction.new(SelfishBoon, self)
+			
 		new_damage *= -1
 		stat_infos.append(StatInfo.new(Card, Game.Stats.HEALTH, new_damage))
 	
 	var stat_action := StatAction.new(stat_infos)
 	stat_action.setLockActionDelay(lock_action_delay)
-	actions.push_front(stat_action)
+	actions.append(stat_action)
+	if selfish_boon_action != null:
+		actions.append(selfish_boon_action)
 	onPushAction(actions)
 	
 func isIgnoreArmorShieldSuccess() -> bool:

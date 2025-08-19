@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://ct1cn5tc1ofmb"]
+[gd_scene load_steps=3 format=3 uid="uid://ct1cn5tc1ofmb"]
 
 [ext_resource type="Script" uid="uid://dnwbg2etx5qyr" path="res://scenes/game/boons/boon_icon.gd" id="1_k0ec6"]
-[ext_resource type="Material" uid="uid://b5tmlarb3uay1" path="res://resources/materials/ui/tier_outline_canvas.tres" id="2_f66tr"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="4_fbu1m"]
 
 [node name="BoonIcon" type="Control"]
@@ -13,7 +12,6 @@ offset_right = 80.0
 offset_bottom = 80.0
 pivot_offset = Vector2(40, 40)
 script = ExtResource("1_k0ec6")
-TIER_OUTLINE_MATERIAL = ExtResource("2_f66tr")
 
 [node name="ModulateMain" type="Control" parent="."]
 unique_name_in_owner = true

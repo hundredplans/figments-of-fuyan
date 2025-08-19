@@ -1,6 +1,6 @@
 class_name DeathAction extends Action
 
-var Damager: GameObjectGD
+var Damager: FofGD
 var Defender: GameObjectGD
 var damage: int
 var health_damage: int
@@ -9,7 +9,7 @@ var Tile: TileGD # Where the Defender died
 var game_objects_in_vision: Array # When the defender died saved
 var card_to_visible_defender: Dictionary # CardGD: bool, if the card saw this unit before death
 
-func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damage: int = 0, _health_damage: int = 0) -> void:
+func _init(_Damager: FofGD = null, _Defender: GameObjectGD = null, _damage: int = 0, _health_damage: int = 0) -> void:
 	super()
 	Damager = _Damager
 	Defender = _Defender

@@ -12,8 +12,5 @@ func onBoon(action: EnergyAction):
 func onBoonAdded():
 	pass
 
-func getDisabled():
-	return super()
-
 func isAddRequirementMet() -> bool:
 	return get_tree().get_nodes_in_group("DeckCardsGD").any(func(x: CardGD): return x.Tool != null)

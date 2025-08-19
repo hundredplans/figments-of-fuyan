@@ -96,6 +96,10 @@ func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name]
 
 func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic, allies: Array, enemies: Array) -> void:
+	if Game.brain:
+		var tx: Texture2D = load("res://assets/sprites/game/cards/common/stats/tool_inside.png")
+		Tile.setInfoSprite(tx)
+	
 	var path: Array = Tile.getMovementPathTiles()
 	path = DFL.onTileChosenGetUpdatedAttackablePath(path)
 	DFL.setPath(path)
@@ -111,6 +115,14 @@ func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic, allies: Array, enemies: 
 	onPushAction(actions)
 	
 func onKillPathChosen(kill_path: Array, DFL: DefaultFightLogic, allies: Array, enemies: Array) -> void:
+	if Game.brain:
+		if kill_path.is_empty():
+			var tx: Texture2D = load("res://assets/sprites/game/epic_cards/intents/misc.png")
+			Card.getTile().setInfoSprite(tx)
+		else:
+			var tx: Texture2D = load("res://assets/sprites/game/epic_cards/intents/attack.png")
+			var LastTile: TileGD = kill_path[kill_path.size() - 1]
+			LastTile.setInfoSprite(tx)
 	DFL.setPath(kill_path)
 	
 	if Card.onAICheckActiveEffects(DFL, allies, enemies):

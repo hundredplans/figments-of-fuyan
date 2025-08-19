@@ -140,7 +140,7 @@ func getRarityColor(rarity: Rarities) -> Color:
 		Rarities.NEUTRAL: return Color("7f3300")
 		Rarities.COMMON: return Color("cf9e80")
 		Rarities.RARE: return Color("00c48f")
-		Rarities.EXALT: return Color("dbdbdb")
+		Rarities.EXALT: return Color("ffd800")
 		Rarities.MINIBOSS: return Color("79299e")
 		Rarities.BOSS: return Color("a53030")
 		Rarities.CHAMPION: return Color("168ce0")
@@ -148,12 +148,13 @@ func getRarityColor(rarity: Rarities) -> Color:
 	
 func getTierColor(tier: int) -> Color:
 	match tier:
-		1: return Color("9c7760")
-		2: return Color("00916b")
-		3: return Color("a8a8a8")
-		4: return Color("521c6b")
-		5: return Color("732121")
-		6: return Color("116cad")
+		1: return Color("dba788")
+		2: return Color("c4c4c4")
+		3: return Color("ffffb0")
+		4: return Color("c386fc")
+		5: return Color("c386fc")
+		6: return Color("c386fc")
+		7: return Color("c386fc")
 	return Color.WHITE
 
 func getShopType(shop_type: ShopTypes) -> String:
@@ -380,6 +381,7 @@ func setPublicID(fof: FofGD) -> void:
 	public_id_objects[fof.public_id] = fof
 	
 func onFindPublicIDObject(public_id: int) -> FofGD:
+	if public_id == 0: return null
 	if public_id_objects.has(public_id):
 		if !is_instance_valid(public_id_objects[public_id]): return null
 		return public_id_objects[public_id]

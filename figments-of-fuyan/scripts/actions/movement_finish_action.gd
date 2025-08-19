@@ -28,12 +28,15 @@ func onPostAction() -> void:
 		Tile.is_card_moving = false
 		Tile.setOutlineMaterial()
 		
-	if Card.isWalking(): Card.onIdle()
+	if Game.brain and !tiles.is_empty():
+		tiles[tiles.size() - 1].setInfoSprite(null)
 		
+	if Card.isWalking(): Card.onIdle()
 	if !(Card.isEnemy(0) and Card.turn_state == Game.TurnStates.ACTIVE): return
 	
 	var actions: Array = []
 	var is_enemy_phase: bool = phase in [Game.Phases.AI, Game.Phases.NEUTRAL]
+	
 	if is_enemy_phase:
 		var is_alive: bool = Card.isAlive()
 		var retry: bool = retry_ai_turn and is_alive

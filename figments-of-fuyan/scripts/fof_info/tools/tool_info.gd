@@ -10,6 +10,8 @@ class_name ToolInfo extends FofInfo
 @export var reset_to_default: bool # Otherwise resets to 0
 @export_group("")
 
+const TOOL_ICON_PATH: String = "res://scenes/game/tools/tool_icon.tscn"
+
 static func getFofName() -> String: return "Tool"
 
 static func getInfoPath() -> String: return "res://resources/fof/tools"

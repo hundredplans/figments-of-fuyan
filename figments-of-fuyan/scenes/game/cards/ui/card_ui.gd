@@ -1,6 +1,8 @@
 extends TbcUI
 
 #region Onready
+@onready var TierLabel: Label = %TierLabel
+
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
 @onready var Background: ButtonAutomask = %Background
 @onready var ArtPop: ButtonAutomask = %ArtPop
@@ -16,7 +18,6 @@ extends TbcUI
 @onready var ToolIcon: TbcUI = %ToolIcon
 @onready var ToolInside: Sprite2D = %ToolInside
 @onready var ToolOutside: Sprite2D = %ToolOutside
-@onready var OutlineMask: TextureRect = %OutlineMask
 
 @onready var BuffControlAttack: Control = %BuffControlAttack
 @onready var BuffLabelAttack: Label = %BuffLabelAttack
@@ -34,16 +35,8 @@ extends TbcUI
 @onready var AwakenedInCombatMarker: TextureRect = %AwakenedInCombatMarker
 @onready var Ring: Sprite2D = %Ring
 
-#endregion
-#region Exports
-@export var TIER_OUTLINE_MATERIAL: Material
-@export var ring_to_rarity: Array[Texture2D]
-@export var white_outline_canvas: ShaderMaterial
-@export_group("Admin")
 @export var rarities: Array[Image]
-@export var masks: Array[Texture2D]
-@export var REGULAR_TOOL_ICON_BACKGROUND: Texture2D
-#endregion
+
 #region Globals
 var Card: CardGD
 var ignore_mouse: bool
@@ -67,9 +60,7 @@ func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true,
 	Card = _Card
 	
 	Background.setTexture(rarities[Card.info.rarity])
-	OutlineMask.texture = masks[Card.info.rarity]
 	ArtPop.setTexture(Card.info.art_pop)
-	Ring.texture = ring_to_rarity[Card.info.rarity]
 	TextLabel.setText(Card.getDescription())
 	AreaBackground.setTexture(Card.getArea().card_background)
 	NameLabel.text = Card.info.name
@@ -85,16 +76,13 @@ func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true,
 	Card.awakened_in_combat.connect(onUpdateAwakenedInCombat)
 	Card.update_tier.connect(onUpdateTier)
 	
-	OutlineMask.material = TIER_OUTLINE_MATERIAL
-	OutlineMask.set_instance_shader_parameter("border_size", OUTLINE_PIXEL_SIZE)
-	
 	onUpdateTier(Card.getTier())
 	
 func onUpdateTier(tier: int) -> void:
 	onUpdateStats()
 	TextLabel.setText(Card.getDescription(true))
-	Ring.modulate = Game.getTierColor(tier)
-	OutlineMask.set_instance_shader_parameter("outline_color", Game.getTierColor(tier))
+	TierLabel.text = str(Game.getTierString(tier))
+	ArtPop.modulate = Game.getTierColor(tier)
 	
 func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.base_stats.attack)

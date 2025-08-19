@@ -12,6 +12,3 @@ func onBoon(_action: Action = null) -> void:
 
 func onBoonAdded() -> void:
 	pass
-
-func getDisabled() -> bool:
-	return super()

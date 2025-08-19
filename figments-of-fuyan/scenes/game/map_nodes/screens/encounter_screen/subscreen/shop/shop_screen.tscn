@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://ca067vx7dy1b"]
+
+[ext_resource type="Script" uid="uid://bujwxaar1n04b" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/shop_screen.gd" id="1_wcyr3"]
+[ext_resource type="PackedScene" uid="uid://bwch12ke7ea65" path="res://scenes/game/map/extra/purchasable_card.tscn" id="3_nsqt1"]
+[ext_resource type="PackedScene" uid="uid://bvwvxtul7dpd8" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.tscn" id="5_tw8sj"]
+[ext_resource type="PackedScene" uid="uid://nr8qdav842ar" path="res://scenes/game/map/extra/purchasable_boon.tscn" id="5_wgmd6"]
+[ext_resource type="PackedScene" uid="uid://c1uy4uqnnkrrv" path="res://scenes/game/map/extra/purchasable_tool.tscn" id="6_afqjs"]
+
+[node name="ShopScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_wcyr3")
+PurchasableCardPacked = ExtResource("3_nsqt1")
+PurchasableBoonPacked = ExtResource("5_wgmd6")
+PurchasableToolPacked = ExtResource("6_afqjs")
+
+[node name="EncounterMainUI" parent="." instance=ExtResource("5_tw8sj")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1394.0
+offset_top = 148.0
+offset_right = 1650.0
+offset_bottom = 404.0
+scale = Vector2(2, 2)
+
+[node name="PurchasableManager" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

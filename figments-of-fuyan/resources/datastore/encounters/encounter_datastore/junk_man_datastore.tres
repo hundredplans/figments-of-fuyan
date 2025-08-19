@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EncounterDatastore" load_steps=9 format=3 uid="uid://djhbq3xurrukw"]
+
+[ext_resource type="Script" uid="uid://c1rls3bjyqx0r" path="res://scripts/common/encounter/encounter_datastore.gd" id="1_37ecj"]
+[ext_resource type="Texture2D" uid="uid://5ubsb0d6i32n" path="res://assets/sprites/ui/scene_specific/encounter_screen/junk_man/junk_man_bg_icon.png" id="1_b1ca3"]
+[ext_resource type="Texture2D" uid="uid://dh1m6a7kq4661" path="res://assets/sprites/ui/scene_specific/encounter_screen/junk_man/junk_man_base.png" id="2_rs54h"]
+[ext_resource type="Texture2D" uid="uid://bfghtannp8q0d" path="res://assets/sprites/ui/scene_specific/encounter_screen/junk_man/junk_man1.png" id="3_1eao2"]
+[ext_resource type="Material" uid="uid://djqhgmls2tlau" path="res://resources/materials/ui/junk_man_drag_zone.tres" id="3_uyvjl"]
+[ext_resource type="Texture2D" uid="uid://c7rftvv5yx6ee" path="res://assets/sprites/ui/scene_specific/encounter_screen/junk_man/junk_man2.png" id="4_mwd1a"]
+[ext_resource type="Texture2D" uid="uid://cgwubb4ahkk6w" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_open.png" id="5_mwd1a"]
+[ext_resource type="Texture2D" uid="uid://d0ckaebv8qia0" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_closed.png" id="6_uyvjl"]
+
+[resource]
+script = ExtResource("1_37ecj")
+id = 12
+background_icon = ExtResource("1_b1ca3")
+background_main_color = Color(0.279097, 0.184511, 0.121336, 1)
+base_sprite = ExtResource("2_rs54h")
+frames = Array[Texture2D]([ExtResource("3_1eao2"), ExtResource("4_mwd1a")])
+hands = Array[Texture2D]([ExtResource("5_mwd1a"), ExtResource("6_uyvjl")])
+drag_zone_material = ExtResource("3_uyvjl")
+drag_zone_name = "Sell  Zone"
+drag_zone_label_color = Color(0.48, 0.224, 0, 1)
+metadata/_custom_type_script = "uid://c1rls3bjyqx0r"

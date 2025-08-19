@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvwvxtul7dpd8"]
+
+[ext_resource type="Script" uid="uid://bp28cmigdmu2u" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.gd" id="1_xbe60"]
+
+[node name="EncounterMainUI" type="TextureRect"]
+texture_filter = 1
+offset_right = 256.0
+offset_bottom = 256.0
+mouse_filter = 2
+script = ExtResource("1_xbe60")
+
+[node name="FrameSprite" type="TextureRect" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+mouse_filter = 2
+
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

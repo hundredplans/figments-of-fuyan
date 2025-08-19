@@ -2,12 +2,12 @@ class_name HurtAction extends Action
 
 const HURT_DEFAULT_DELAY: float = 1.8
 
-var Damager: GameObjectGD
+var Damager: FofGD
 var Defender: GameObjectGD
 var damage: int
 var health_damage: int
 
-func _init(_Damager: GameObjectGD = null, _Defender: GameObjectGD = null, _damage: int = 0, _health_damage: int = 0) -> void:
+func _init(_Damager: FofGD = null, _Defender: GameObjectGD = null, _damage: int = 0, _health_damage: int = 0) -> void:
 	super()
 	Damager = _Damager
 	Defender = _Defender

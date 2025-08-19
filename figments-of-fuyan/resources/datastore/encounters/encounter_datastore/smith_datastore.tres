@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EncounterDatastore" load_steps=3 format=3 uid="uid://njwq1gsp5vbe"]
+
+[ext_resource type="Script" uid="uid://c1rls3bjyqx0r" path="res://scripts/common/encounter/encounter_datastore.gd" id="1_pxku2"]
+[ext_resource type="Texture2D" uid="uid://fiisvj2q0asc" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_bg_icon.png" id="1_vawmb"]
+
+[resource]
+script = ExtResource("1_pxku2")
+id = 11
+background_icon = ExtResource("1_vawmb")
+background_main_color = Color(0.568973, 0.568973, 0.568973, 1)
+frames = Array[Texture2D]([])
+drag_zone_name = "Smith  Zone"
+metadata/_custom_type_script = "uid://c1rls3bjyqx0r"
