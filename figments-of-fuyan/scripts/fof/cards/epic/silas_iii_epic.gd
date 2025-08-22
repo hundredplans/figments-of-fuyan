@@ -15,7 +15,6 @@ const GRAND_SLASH_ACTION_DELAY: float = 2.1
 const SPINNING_SWORD_VFX_ID: int = 2
 const JUMP_ATTACK_DISTANCE: int = 4
 const ARMOR_TRAIT_ID: int = 1
-const FIRST_PHASE_CHANGE_HEALTH: int = 14
 const SPINNING_SWORD_ACTION_DELAY: float = 2.4
 const JUMP_ATTACK_LAND_DELAY: float = 0.6
 
@@ -37,8 +36,8 @@ func onProcessAction(action: Action) -> void:
 		elif action is VisionNewUnitAction and action.Discoverer == self and\
 		action.Discovered.isEnemy(team) and boss_intent != null and boss_intent.name == "SilasStare":
 			onVisionNewUnitUpdateSilasStare(action.Discovered, action.enter_vision)
-		elif action is StatAction and action.hasCard(self) and\
-			(health <= FIRST_PHASE_CHANGE_HEALTH and getPhase() == 1):
+		if action is StatAction and action.hasCard(self) and health <= int(max_health / 2.0) and health > 0\
+		and getPhase() == 1 and Game.ActionManagerReference.onFindFirstAction(ChangeBossPhaseAction) == null:
 				onPushAction(ChangeBossPhaseAction.new())
 		elif action is AddFieldEffectAction and action.getCard() == self and action.getFieldEffectId() == SHIELD_ID:
 			onPushAction(AnimationModifierAction.new(self, "Hurt", "Parry"))

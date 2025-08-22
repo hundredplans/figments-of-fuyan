@@ -12,6 +12,7 @@ func setInfo(_price_datastore: PriceDatastore) -> void:
 	
 	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getArea().getEnteredMapNode())
 	DisplayedUI = Card.onCreateCardUI(self, true)
+	DisplayedUI.onShowTierLabel()
 	DisplayedUI.pressed.connect(func(__: Control): onPressed())
 	
 	super(_price_datastore)

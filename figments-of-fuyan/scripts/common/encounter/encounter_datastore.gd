@@ -6,6 +6,7 @@ class_name EncounterDatastore extends Resource
 
 @export var base_sprite: Texture2D
 @export var frames: Array[Texture2D]
+@export var bitmap_frames: Array[BitMap]
 
 @export var hands: Array[Texture2D]
 
@@ -36,3 +37,6 @@ func getDragZoneMaterial() -> ShaderMaterial:
 
 func getDragZoneLabelColor() -> Color:
 	return drag_zone_label_color
+
+func getBitmapFrames() -> Array[BitMap]:
+	return bitmap_frames

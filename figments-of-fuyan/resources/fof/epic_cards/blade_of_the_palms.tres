@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=27 format=3 uid="uid://b7lnksd1egi7b"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=32 format=3 uid="uid://b7lnksd1egi7b"]
 
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_d1qqb"]
 [ext_resource type="Script" uid="uid://baum84o21f7jw" path="res://scripts/fof/cards/epic/blade_of_the_palms_epic.gd" id="1_wc1av"]
@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://1r4iw08l5lwa" path="res://resources/datastore/boss_intents/blade_of_the_palms/teleport_attack.tres" id="10_5epeo"]
 [ext_resource type="Resource" uid="uid://bblllwxqnvljx" path="res://resources/datastore/boss_intents/blade_of_the_palms/petal_attack.tres" id="11_lofdk"]
 [ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="12_e0d1a"]
+[ext_resource type="Script" uid="uid://cj8tn3dc0epr7" path="res://scripts/fof_info/cards/extra/epic_card_tier_datastore.gd" id="12_xetlm"]
 [ext_resource type="Resource" uid="uid://cxcmjs0iae406" path="res://resources/datastore/boss_intents/blade_of_the_palms/double_teleport_attack.tres" id="13_8g5ul"]
 [ext_resource type="Resource" uid="uid://ddns60xv08b60" path="res://resources/datastore/boss_intents/blade_of_the_palms/mist_attack.tres" id="14_hhvwj"]
 [ext_resource type="Resource" uid="uid://b02t6qh4ymrvy" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_phase_change.tres" id="15_hhvwj"]
@@ -38,10 +39,27 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_aqvff"]
+script = ExtResource("12_xetlm")
+attack = 3
+health = 22
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
+[sub_resource type="Resource" id="Resource_7g4r6"]
+script = ExtResource("12_xetlm")
+attack = 4
+health = 30
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
 [sub_resource type="Resource" id="Resource_xetlm"]
 script = ExtResource("1_d1qqb")
 name = "Blade of the Palms"
 archetype = ExtResource("4_4ow0h")
+tiers = Array[ExtResource("12_xetlm")]([SubResource("Resource_aqvff"), SubResource("Resource_7g4r6")])
 attack = 3
 health = 21
 speed = 3
@@ -56,10 +74,27 @@ change_delay = 2.4
 boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("6_8g5ul"), ExtResource("7_hhvwj"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("10_5epeo"), ExtResource("11_lofdk")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
+[sub_resource type="Resource" id="Resource_7u0jp"]
+script = ExtResource("12_xetlm")
+attack = 3
+health = 0
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
+[sub_resource type="Resource" id="Resource_5no4y"]
+script = ExtResource("12_xetlm")
+attack = 4
+health = 0
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
 [sub_resource type="Resource" id="Resource_4ow0h"]
 script = ExtResource("1_d1qqb")
 name = "Blade of the Palms"
 archetype = ExtResource("4_4ow0h")
+tiers = Array[ExtResource("12_xetlm")]([SubResource("Resource_7u0jp"), SubResource("Resource_5no4y")])
 attack = 3
 health = 0
 speed = 3
@@ -79,6 +114,7 @@ metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 script = ExtResource("1_d1qqb")
 name = "Blade of the Palms"
 archetype = ExtResource("4_4ow0h")
+tiers = Array[ExtResource("12_xetlm")]([])
 attack = 3
 health = 0
 speed = 3

@@ -215,14 +215,14 @@ func onPauseAnimationWithDelay(delay: float) -> void:
 #endregion
 
 #region Card
-func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspectable: bool = true, draggable: bool = false) -> Control:
+func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspectable: bool = true, draggable: bool = false, autoscale: bool = false) -> Control:
 	var CardUI: Control = load(info.CARD_UI_SCENE_PATH).instantiate()
 	parent.add_child(CardUI)
-	CardUI.setInfo(self, highlight_on_hover, ui_inspectable, draggable)
+	CardUI.setInfo(self, highlight_on_hover, ui_inspectable, draggable, autoscale)
 	return CardUI
 	
-func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false) -> TbcUI:
-	return onCreateCardUI(parent, hoverable, false, draggable)
+func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false, autoscale: bool = false) -> TbcUI:
+	return onCreateCardUI(parent, hoverable, false, draggable, autoscale)
 #endregion
 
 #region Save/Load/Clear

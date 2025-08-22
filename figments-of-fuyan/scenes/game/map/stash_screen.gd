@@ -23,8 +23,9 @@ const ROTATION_SPEED_TO_MIDDLE: float = 10.0
 const RELATIVE_SIDE_FORCE_DIV: float = 15.0
 const HAND_X_OFFSET: int = 150
 
+var map_node: MapNodeGD
 var DragIconUI: TbcUI
-var sellable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.Rarities.EXALT,\
+var draggable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.Rarities.EXALT,\
 	Game.Rarities.MINIBOSS, Game.Rarities.BOSS]
 
 @onready var DragZoneRect: ColorRect = %DragZoneRect
@@ -265,7 +266,7 @@ func onCreateDeckCardUI(DeckCard: CardGD, DeckSlotUI: Control) -> void:
 	DeckSlotUI.setCardUI(CardUI)
 	
 func onToolDragBegin(ToolIcon: TbcUI, CardUI: Control) -> void:
-	if ToolIcon.getItem().getRarity() in sellable_rarities and is_drag_zone:
+	if ToolIcon.getItem().getRarity() in draggable_rarities and is_drag_zone:
 		DragIconUI = ToolIcon
 		onShowDragZone()
 		onCreatePriceLabel(ToolIcon, ToolIcon.getItem())
@@ -273,7 +274,7 @@ func onToolDragBegin(ToolIcon: TbcUI, CardUI: Control) -> void:
 	CardUI.onChangeBackgroundMouseFilter(false)
 	
 func onToolDragEnd(ToolIcon: TbcUI, CardUI: Control) -> void:
-	if ToolIcon.getItem().getRarity() in sellable_rarities and is_drag_zone:
+	if ToolIcon.getItem().getRarity() in draggable_rarities and is_drag_zone:
 		DragIconUI = null
 		onHideDragZone()
 		ToolIcon.onRemovePriceLabel()
@@ -290,7 +291,7 @@ func onToolDragEnd(ToolIcon: TbcUI, CardUI: Control) -> void:
 		CardUIRaycast.force_raycast_update()
 		var area: Area2D = CardUIRaycast.get_collider()
 		if area == DragZoneArea:
-			onItemSold(CardUI.ToolIcon, CardUI.getTool())
+			onItemDragged(CardUI.ToolIcon, CardUI.getTool())
 		get_viewport().update_mouse_cursor_state()
 		return
 		
@@ -327,13 +328,13 @@ func onToolDragEnd(ToolIcon: TbcUI, CardUI: Control) -> void:
 		CardUI.onToolUpdated(FirstTool)
 		
 func onBoonDragBegin(BoonIcon: Control) -> void:
-	if BoonIcon.Boon.getRarity() in sellable_rarities and is_drag_zone:
+	if BoonIcon.Boon.getRarity() in draggable_rarities and is_drag_zone:
 		DragIconUI = BoonIcon
 		onShowDragZone()
 		onCreatePriceLabel(BoonIcon, BoonIcon.Boon)
 	
 func onBoonDragEnd(BoonIcon: Control) -> void:
-	if BoonIcon.Boon.getRarity() in sellable_rarities and is_drag_zone:
+	if BoonIcon.Boon.getRarity() in draggable_rarities and is_drag_zone:
 		DragIconUI = null
 		onHideDragZone()
 		BoonIcon.onRemovePriceLabel()
@@ -344,12 +345,12 @@ func onBoonDragEnd(BoonIcon: Control) -> void:
 	var area: Area2D = DragZoneRaycast.get_collider()
 	if area == null: return
 	if area == DragZoneArea and is_drag_zone:
-		onItemSold(BoonIcon, BoonIcon.getItem())
+		onItemDragged(BoonIcon, BoonIcon.getItem())
 
 func onCreatePriceLabel(IconUI: Control, item: FofGD) -> void:
 	var PriceLabel: Control = PriceLabelPacked.instantiate()
 	IconUI.onAddPriceLabel(PriceLabel)
-	var sh: int = int(float(Game.getPriceForItem(item)) * Game.SELL_MULT)
+	var sh: int = map_node.getStashItemPrice(item)
 	PriceLabel.setShillings(sh)
 
 func _input(event: InputEvent) -> void:
@@ -504,7 +505,7 @@ func onSortStashCards(new_children: Array) -> void:
 
 func onCardDraggedBegin(CardUI: Control, is_stash_card: bool) -> void:
 	StashContainer.queue_sort()
-	if CardUI.Card.getRarity() in sellable_rarities and is_drag_zone:
+	if CardUI.Card.getRarity() in draggable_rarities and is_drag_zone:
 		DragIconUI = CardUI
 		onShowDragZone()
 		onCreatePriceLabel(CardUI, CardUI.Card)
@@ -525,7 +526,7 @@ func onCardDraggedBegin(CardUI: Control, is_stash_card: bool) -> void:
 	setDragZoneHandPosition()
 
 func onCardDraggedEnd(CardUI: Control, is_stash_card: bool) -> void:
-	if CardUI.Card.getRarity() in sellable_rarities and is_drag_zone:
+	if CardUI.Card.getRarity() in draggable_rarities and is_drag_zone:
 		DragIconUI = null
 		onHideDragZone()
 		CardUI.onRemovePriceLabel()
@@ -554,7 +555,7 @@ func onCardDraggedEnd(CardUI: Control, is_stash_card: bool) -> void:
 			return x.card_public_id == Card.public_id)[0]
 		onRemoveDeckCard(CardUI, deck_slot)
 	elif area == DragZoneArea:
-		onItemSold(CardUI, CardUI.Card)
+		onItemDragged(CardUI, CardUI.Card)
 	else: # Hovered inside another deck slot
 		var deck_slot: DeckSlot = area.get_parent().deck_slot
 		if deck_slot.is_locked: return
@@ -586,7 +587,8 @@ func getDeckSlotUIFromCardUI(CardUI: Control) -> Control:
 func getStashCardsUI() -> Array:
 	return StashContainer.get_children()
 
-func onActivateDragZone(map_node: MapNodeGD) -> void:
+func onActivateDragZone(_map_node: MapNodeGD) -> void:
+	map_node = _map_node
 	if map_node.info.id == JUNK_MAN_ID:
 		DragZoneFillBar.setMaxValue(map_node.getMaxValue())
 		DragZoneFillBar.setValue(map_node.getJunkManValue())
@@ -595,6 +597,7 @@ func onActivateDragZone(map_node: MapNodeGD) -> void:
 		is_junk_man = true
 	
 	var enc_datastore: EncounterDatastore = map_node.getEncounterDatastore()
+	DragZoneLabel.text = enc_datastore.getDragZoneName()
 	DragZoneLabel.modulate = enc_datastore.getDragZoneLabelColor()
 	DragZoneRect.material = enc_datastore.getDragZoneMaterial()
 	DragZoneFillBar.visible = is_junk_man
@@ -623,39 +626,54 @@ func onHideDragZone() -> void:
 	DragZoneTween = create_tween()
 	DragZoneTween.tween_property(DragZone, "modulate:a", 0.0, DRAG_ZONE_FADE_TIME)
 
-func onItemSold(ItemUI: Control, item: FofGD) -> void:
+func onItemDragged(ItemUI: Control, item: FofGD) -> void:
 	if !is_drag_zone: return
-	if item.getRarity() not in sellable_rarities: return
+	if item.getRarity() not in draggable_rarities: return
+	
+	var price: int = map_node.getStashItemPrice(item)
+	if map_node.info.id == SMITH_ID:
+		if abs(price) > Game.getSaveFile().getShillings()\
+		or item.getTier() > (Game.getArea().getWorldDifficulty()):
+			onSmithFailed()
+			return
+		
 	ItemUI.setDisableTooltip(true)
 	Game.onEmptyTooltip(false)
 	ItemUI.setIgnoreDragPositionReset(true)
-	var price: int = int(float(Game.getPriceForItem(item)) * Game.SELL_MULT)
 
 	var is_exit: bool
 	if is_junk_man:
 		is_exit = onJunkManSell(price)
 	
-	await onItemSoldVisual(ItemUI, item, price)
+	await onItemDraggedVisual(ItemUI, item, price)
 	if is_exit: onExitButtonPressed()
 	
 	Game.getSaveFile().onPushAction(ChangeShillingsAction.new(price))
 			
-	if item is CardGD:
-		var deck_slot: DeckSlot = getDeckSlotFromCardUI(ItemUI)
-		if deck_slot == null: return # Stash card sold
-		onRemoveDeckCard(ItemUI, deck_slot, false)
-	elif item is BoonGD:
-		Game.getSaveFile().onPushAction(RemoveBoonAction.new(item.info.id))
-	elif item is ToolGD:
-		var Card: CardGD = item.getCard()
-		Game.getSaveFile().onPushAction(RemoveToolAction.new(Card))
-		var card_uis: Array = (getStashCardsUI() + getDeckContainerCardUI())\
-			.filter(func(x: TbcUI): return x != null)
-		var CardUI: TbcUI = card_uis.filter(func(x: TbcUI): return x.getCard() == Card)[0]
-		CardUI.onToolUpdated(null)
+	if map_node.isStashDragItem():
+		if item is CardGD:
+			var deck_slot: DeckSlot = getDeckSlotFromCardUI(ItemUI)
+			if deck_slot == null: return # Stash card sold
+			onRemoveDeckCard(ItemUI, deck_slot, false)
+		elif item is BoonGD:
+			Game.getSaveFile().onPushAction(RemoveBoonAction.new(item.info.id))
+		elif item is ToolGD:
+			var Card: CardGD = item.getCard()
+			Game.getSaveFile().onPushAction(RemoveToolAction.new(Card))
+			var card_uis: Array = (getStashCardsUI() + getDeckContainerCardUI())\
+				.filter(func(x: TbcUI): return x != null)
+			var CardUI: TbcUI = card_uis.filter(func(x: TbcUI): return x.getCard() == Card)[0]
+			CardUI.onToolUpdated(null)
+	elif map_node.info.id == SMITH_ID:
+		ItemUI.setIgnoreDragPositionReset(false)
+		ItemUI.onDragPositionReset()
+	ItemUI.setDisableTooltip(false)
+	ItemUI.setDraggable(true)
+	ItemUI.setHoverable(true)
 
-func onItemSoldVisual(ItemUI: Control, item: FofGD, price: int) -> void:
-	ItemUI.onDisableDraggable()
+func onItemDraggedVisual(ItemUI: Control, item: FofGD, price: int) -> void:
+	ItemUI.setHoverable(false)
+	ItemUI.setDraggable(false)
 	ItemUI.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
 	
 	var initial_hand_position: Vector2 = DragZoneHand.global_position
@@ -670,10 +688,12 @@ func onItemSoldVisual(ItemUI: Control, item: FofGD, price: int) -> void:
 	
 	HandPositionTween.tween_property(DragZoneHand, "global_position", first_position, DRAG_ZONE_HAND_SPEED)\
 		.as_relative().set_trans(Tween.TRANS_SINE)
-	HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(500, 0), DRAG_ZONE_HAND_SPEED)\
-		.as_relative().set_trans(Tween.TRANS_SINE)
-	HandPositionTween.tween_property(DragZoneHand, "global_position", third_position, DRAG_ZONE_HAND_SPEED)\
-		.as_relative().set_trans(Tween.TRANS_SINE)
+		
+	if map_node.isStashDragItem():
+		HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(500, 0), DRAG_ZONE_HAND_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
+		HandPositionTween.tween_property(DragZoneHand, "global_position", third_position, DRAG_ZONE_HAND_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
 		
 	await get_tree().create_timer(DRAG_ZONE_HAND_SPEED).timeout
 	DragZoneHand.texture = getHandTexture(true)
@@ -682,16 +702,25 @@ func onItemSoldVisual(ItemUI: Control, item: FofGD, price: int) -> void:
 	add_child(ShillingsEffect)
 	ShillingsEffect.setInfo(price, item_center)
 		
-	var tween := create_tween()
-	tween.tween_property(ItemUI, "global_position", Vector2(500, 0), DRAG_ZONE_HAND_SPEED)\
-		.as_relative().set_trans(Tween.TRANS_SINE)
+	if map_node.isStashDragItem():
+		var tween := create_tween()
+		tween.tween_property(ItemUI, "global_position", Vector2(500, 0), DRAG_ZONE_HAND_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
+			
+		await get_tree().create_timer(DRAG_ZONE_HAND_SPEED).timeout
+		DragZoneHand.texture = getHandTexture(false)
+		if item is BoonGD or item is CardGD: # Tool don't get queue'd
+			ItemUI.queue_free()
+	elif map_node.info.id == SMITH_ID:
+		item.onRetiered(item.getTier() + 1)
+		await onSmithSuccess(ItemUI)
+		if HandPositionTween: HandPositionTween.kill()
+		HandPositionTween = create_tween()
+		HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(500, 0), DRAG_ZONE_HAND_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
+		HandPositionTween.tween_property(DragZoneHand, "global_position", third_position, DRAG_ZONE_HAND_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
 	
-	await get_tree().create_timer(DRAG_ZONE_HAND_SPEED).timeout
-	DragZoneHand.texture = getHandTexture(false)
-	
-	if item is BoonGD or item is CardGD: # Tool don't get queue'd
-		ItemUI.queue_free()
-
 var HandPositionTween: Tween
 func setDragZoneHandPosition(is_first: bool = true) -> void:
 	if DragIconUI == null: return
@@ -733,3 +762,43 @@ func onJunkManSell(price: int) -> bool:
 		return true
 	else: JunkMan.setJunkManValue(junk_man_value)
 	return false
+
+#region Smith
+const SMITH_SWISH_TIME: float = 0.35
+const SMITH_SCALE_OFFSET: float = 0.6
+const SMITH_INITAL_SCALE_TIME: float = 0.2
+const SMITH_RECOVERY_SCALE_TIME: float = 0.8
+const SMITH_SPIN_TIME: float = 0.3
+const SMITH_SPIN_TOTAL_ROTATION: float = (PI / 4)
+const SMITH_ID: int = 11
+
+func onSmithFailed() -> void:
+	if HandPositionTween: HandPositionTween.kill()
+	HandPositionTween = create_tween()
+	
+	HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(0, 100), SMITH_SWISH_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(0, -100), SMITH_SWISH_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	#HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(0, 50), SMITH_SWISH_TIME)\
+		#.as_relative().set_trans(Tween.TRANS_SINE)
+		
+func onSmithSuccess(ItemUI: TbcUI) -> void:
+	var tween := create_tween()
+	tween.tween_property(ItemUI, "rotation", SMITH_SPIN_TOTAL_ROTATION, SMITH_SPIN_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	tween.tween_property(ItemUI, "rotation", -SMITH_SPIN_TOTAL_ROTATION * 2, SMITH_SPIN_TIME * 2)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	tween.tween_property(ItemUI, "rotation", SMITH_SPIN_TOTAL_ROTATION, SMITH_SPIN_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+		
+	var stween := create_tween()
+	stween.tween_property(ItemUI, "scale", Vector2(-SMITH_SCALE_OFFSET, -SMITH_SCALE_OFFSET), SMITH_INITAL_SCALE_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	stween.tween_property(ItemUI, "scale", Vector2(SMITH_SCALE_OFFSET, SMITH_SCALE_OFFSET), SMITH_RECOVERY_SCALE_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+
+	await get_tree().create_timer(DRAG_ZONE_HAND_SPEED).timeout
+	DragZoneHand.texture = getHandTexture(false)
+	await tween.finished
+#endregion

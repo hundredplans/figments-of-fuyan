@@ -8,6 +8,7 @@ func setInfo(map_node: MapNodeGD) -> void:
 	var FofUIBox: Control = FofUIBoxPacked.instantiate()
 	FofUIBox.disable_tooltip = true
 	FofUIControl.add_child(FofUIBox)
+	FofUIBox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	if Game.getArea().getProgress() < 5 and map_node.map_location.progress > 5: queue_free(); return
 	

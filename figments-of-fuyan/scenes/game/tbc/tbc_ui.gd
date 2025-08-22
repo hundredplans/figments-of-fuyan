@@ -1,5 +1,12 @@
 class_name TbcUI extends Control
 
+const SPICYRICE_TINY_PATH: String = "res://resources/ui/label_settings/spicyrice_tiny.tres"
+const SPICYRICE_MINOR_PATH: String = "res://resources/ui/label_settings/spicyrice_minor.tres"
+const SPICYRICE_SMALL_PATH: String = "res://resources/ui/label_settings/spicyrice_small.tres"
+const SPICYRICE_LARGE_PATH: String = "res://resources/ui/label_settings/spicyrice_large.tres"
+const SPICYRICE_HUGE_PATH: String = "res://resources/ui/label_settings/spicyrice_huge.tres"
+const SPICYRICE_MASSIVE_PATH: String = "res://resources/ui/label_settings/spicyrice_massive.tres"
+
 const ROTATION_SPEED_TO_MIDDLE: float = 15.0
 const RELATIVE_SIDE_FORCE_DIV: float = 2.5
 
@@ -10,6 +17,7 @@ var is_mouse_in_ui: bool
 var disabled: bool
 var disable_tooltip: bool
 
+var autoscale: bool
 var draggable: bool
 var is_dragging: bool
 var hoverable: bool
@@ -17,6 +25,10 @@ var hoverable: bool
 var original_tooltip_state: bool
 var original_icon_position: Vector2
 var original_mouse_filter: Control.MouseFilter
+
+const SCALE_SPEED: float = 0.25
+const SCALE_MAX: float = 1.1
+const SCALE_MIN: float = 1.0
 
 signal pressed
 signal mouse_in_ui
@@ -67,6 +79,9 @@ func onMouseInUI(state: bool) -> void:
 	if is_dragging: return
 	mouse_in_ui.emit(state)
 	onUpdateModulate()
+	
+	if !autoscale: return
+	onScaleIconUISize(is_mouse_in_ui, false)
 
 func onUpdateModulate() -> void:
 	var color: Color
@@ -83,6 +98,7 @@ func setDraggable(_draggable: bool) -> void:
 
 func setHoverable(state: bool) -> void:
 	hoverable = state
+	get_viewport().update_mouse_cursor_state()
 	onUpdateModulate()
 	
 func onDragBegin() -> void:
@@ -110,10 +126,7 @@ func onDragEnd() -> void:
 	drag_end.emit(self)
 	setMouseFilter(original_mouse_filter)
 	
-	if !ignore_drag_position_reset:
-		top_level = false
-		position = original_icon_position
-		rotation_degrees = 0
+	onDragPositionReset()
 	
 	get_viewport().call_deferred("update_mouse_cursor_state")
 	onUpdateModulate()
@@ -121,6 +134,12 @@ func onDragEnd() -> void:
 var ignore_drag_position_reset: bool
 func setIgnoreDragPositionReset(_ignore_drag_position_reset: bool) -> void:
 	ignore_drag_position_reset = _ignore_drag_position_reset
+	
+func onDragPositionReset() -> void:
+	if ignore_drag_position_reset: return
+	top_level = false
+	position = original_icon_position
+	rotation_degrees = 0
 	
 func onPressed() -> void:
 	if disabled: return
@@ -133,3 +152,23 @@ func onDisableDraggable() -> void:
 	
 func setEndDragOnRelease(_end_drag_on_release: bool) -> void:
 	end_drag_on_release = _end_drag_on_release
+
+var ScaleIconUITween: Tween
+func onScaleIconUISize(state: bool, instant: bool = false) -> void:
+	var target_value: float = (SCALE_MAX if state else SCALE_MIN) - scale.x
+	if ScaleIconUITween: ScaleIconUITween.kill()
+	
+	if !instant:
+		ScaleIconUITween = create_tween()
+		ScaleIconUITween.tween_property(self, "scale", Vector2(target_value, target_value), SCALE_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
+	else: scale += Vector2(target_value, target_value)
+
+func getToolBoonLabelSettings(label_offset: int = 0) -> LabelSettings:
+	var label_paths: Array[String] = [SPICYRICE_TINY_PATH, SPICYRICE_SMALL_PATH,\
+		SPICYRICE_LARGE_PATH, SPICYRICE_HUGE_PATH, SPICYRICE_HUGE_PATH]
+	var nums: Array = [40, 80, 160, 320, 480]
+	for i in range(nums.size()): # 40, 80, 160
+		if custom_minimum_size.x <= nums[i]:
+			return load(label_paths[max(i + label_offset, 0)])
+	return null

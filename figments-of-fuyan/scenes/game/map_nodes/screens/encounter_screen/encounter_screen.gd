@@ -5,6 +5,7 @@ class_name EncounterScreen extends MapNodeScreen
 @export var H_SEPERATION: int = 200
 @export var V_SEPERATION: int = 100
 
+@onready var NameLabel: Label = %NameLabel
 @onready var BackgroundIconContainer: Container = %BackgroundIconContainer
 @onready var AniPlayer: AnimationPlayer = %AniPlayer
 @onready var MapPanel: Control = %MapPanel
@@ -22,6 +23,8 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	add_child(Subscreen)
 	Subscreen.setInfo(map_node)
 	Subscreen.create_stash_screen.connect(func(x: TbcUI): create_stash_screen.emit(x))
+	NameLabel.text = map_node.info.name
+	NameLabel.modulate = map_node.getEncounterDatastore().getBackgroundMainColor()
 	
 func _on_exit_button_pressed() -> void:
 	finished.emit()
@@ -39,17 +42,18 @@ func onCreateBackgroundIcons() -> void:
 	for __: int in range(COLUMNS * ROWS):
 		var TxRect := TextureRect.new()
 		TxRect.texture = icon
+		TxRect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		BackgroundIconContainer.add_child(TxRect)
 		
 func onUpdateStashScreen(created: bool) -> void:
 	var end_value: float = 0.0 if created else 1.0
-	for node: Control in [ExitButton, MapPanel] + Subscreen.getStashFadeNodes():
+	for node: Control in [ExitButton, MapPanel, NameLabel] + Subscreen.getStashFadeNodes():
 		var tween := create_tween()
 		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)
 
 func onMinimapButtonPressed() -> void:
 	is_minimap_visible = !is_minimap_visible
-	var nodes: Array = [BackgroundIconContainer] + Subscreen.getMinimapFadeNodes()
+	var nodes: Array = [BackgroundIconContainer, NameLabel] + Subscreen.getMinimapFadeNodes()
 	if !is_minimap_visible:
 		for node: Control in nodes:
 			node.visible = true
@@ -68,4 +72,5 @@ func onMinimapButtonPressed() -> void:
 
 func getFadeBackgroundColor() -> Color: return Subscreen.getFadeBackgroundColor()
 func onStashScreenExitStart() -> void: Subscreen.onStashScreenExitStart()
+func onStashScreenStart() -> void: Subscreen.onStashScreenStart()
 func onActiveToolAdded(CardUI: TbcUI) -> void: Subscreen.onActiveToolAdded(CardUI)

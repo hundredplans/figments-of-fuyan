@@ -7,7 +7,7 @@ signal create_screen
 const SOLD_LABEL_PATH: String = "res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/sold_label.tscn"
 const SCALE_SPEED: float = 0.25
 const SCALE_MAX: float = 1.1
-const SCALE_MIN: float = 0.9
+const SCALE_MIN: float = 1.0
 var DisplayedUI: Control
 var price_datastore: PriceDatastore
 var disabled: bool

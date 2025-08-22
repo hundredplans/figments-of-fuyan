@@ -19,6 +19,7 @@ JUNK_MAN_MILESTONE_TX = ExtResource("2_1jjpj")
 metadata/_custom_type_script = "uid://bjtqsfwsp561b"
 
 [node name="JunkManBase" type="Control" parent="."]
+unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -70,19 +71,26 @@ offset_top = 2.0
 offset_right = 1026.0
 offset_bottom = 258.0
 texture = ExtResource("2_1jjpj")
-global_mouse_filter = 2
 
 [node name="RewardParent" type="Control" parent="."]
 unique_name_in_owner = true
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="JunkManCollisionArea" type="Area2D" parent="."]
-position = Vector2(806, 512)
+[node name="InfoLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 693.0
+offset_right = 1920.0
+offset_bottom = 731.0
+text = "Sell items to fill up the bar and gain a reward: %s/%s"
+horizontal_alignment = 1
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="JunkManCollisionArea"]
-polygon = PackedVector2Array(42, -33, 60, -45, 85, -47, 125, -60, 165, -58, 198, -53, 224, -32, 228, -17, 274, -14, 311, 14, 318, 34, 311, 70, 329, 80, 346, 83, 356, 95, 291, 96, 255, 107, 209, 109, 178, 102, 163, 94, -45, 95, -36, 78, 8, 79, 34, 64, 28, 33, 22, 11, 36, -8)
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 832.0
+offset_top = 452.0
+offset_right = 872.0
+offset_bottom = 492.0
 
 [connection signal="pressed" from="JunkManBase/EncounterMainUI" to="." method="_on_encounter_main_ui_pressed"]
-[connection signal="mouse_entered" from="JunkManCollisionArea" to="." method="onMouseInJunkMan" binds= [true]]
-[connection signal="mouse_exited" from="JunkManCollisionArea" to="." method="onMouseInJunkMan" binds= [false]]

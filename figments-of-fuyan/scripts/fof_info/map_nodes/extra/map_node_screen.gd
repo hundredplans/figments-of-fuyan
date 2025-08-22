@@ -18,5 +18,6 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	map_node = _map_node
 
 func onFadeBackground() -> bool: return false
+func onStashScreenStart() -> void: pass
 func onStashScreenExitStart() -> void: pass
 func onActiveToolAdded(_CardUI: TbcUI) -> void: pass

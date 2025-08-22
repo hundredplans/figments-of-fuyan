@@ -2,6 +2,8 @@ extends Control
 
 @export var CardTooltipExtraPacked: PackedScene
 
+@onready var RarityLabel: Label = %RarityLabel
+@onready var TierLabel: Label = %TierLabel
 @onready var InnerPanelContainer: PanelContainer = %InnerPanelContainer
 @onready var NameLabel: Label = %NameLabel
 @onready var TopIcon: TextureRect = %TopIcon
@@ -29,7 +31,6 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		info = Helper.getFofInfoID(info_or_fof.getInfoType(), info_or_fof.id)
 		info_or_fof = info
 	
-	
 	TopIcon.texture = info.getIcon()
 	var description: String = info_or_fof.getDescription()
 	TextLabel.setText(description)
@@ -39,9 +40,16 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		CardTooltipExtra.setInfo(info, tier)
 	
 	if info is BoonInfo or info is ToolInfo or info is CardInfo:
-		NameLabel.text = "%s  |  %s" % [info.name, Game.getTierString(tier)]
-		self_modulate = Game.getTierColor(tier)
-		InnerPanelContainer.self_modulate = Game.getRarityColor(info.rarity)
+		RarityLabel.text = Game.getRarityString(info.rarity)
+		RarityLabel.modulate = Game.getRarityColor(info.rarity)
+		
+		TierLabel.text = "Tier  " + Game.getTierString(tier)
+		TierLabel.modulate = Game.getTierColor(tier)
+		
+		NameLabel.text = info.name
+		NameLabel.modulate = Game.getRarityColor(info.rarity)
+		#self_modulate = Game.getTierColor(tier)
+		#InnerPanelContainer.self_modulate = Game.getRarityColor(info.rarity)
 	else:
 		NameLabel.text = "%s" % info.name
 		theme_type_variation = "YellowPanelContainer"

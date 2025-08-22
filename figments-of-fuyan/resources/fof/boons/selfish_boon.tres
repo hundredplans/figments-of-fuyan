@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_gjlvb"]
 [ext_resource type="Script" uid="uid://6yqvoq43s8jb" path="res://scripts/fof/boons/selfish_boon.gd" id="1_jxjy8"]
-[ext_resource type="Texture2D" uid="uid://dkvnkxkqmtj43" path="res://assets/sprites/game/cards/art_mini/silas_iii.png" id="2_5gwdp"]
 [ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_fq12k"]
+[ext_resource type="Texture2D" uid="uid://ncg85xrd6p11" path="res://assets/sprites/game/boons/selfish_boon.png" id="2_jxjy8"]
 [ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_034c6"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_yqne1"]
 
@@ -54,7 +54,7 @@ metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
 [resource]
 script = ExtResource("1_gjlvb")
 tiers = Array[ExtResource("2_fq12k")]([SubResource("Resource_nkayi"), SubResource("Resource_pf7my"), SubResource("Resource_22dra"), SubResource("Resource_y64ir")])
-icon = ExtResource("2_5gwdp")
+icon = ExtResource("2_jxjy8")
 rarity = 7
 curse = false
 elite_fight_curse = false

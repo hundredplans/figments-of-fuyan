@@ -21,7 +21,10 @@ extends Node3D
 
 @export var number_to_model: Array[PackedScene]
 @export_group("Materials")
-
+@export var tier_one_material: Material
+@export var tier_two_material: Material
+@export var tier_three_material: Material
+@export var tier_four_material: Material
 @export var dark_green_with_outline_material: Material
 @export var green_with_outline_material: Material
 @export var red_with_outline_material: Material
@@ -84,12 +87,16 @@ var Card: CardGD
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
 	Card.tool_updated.connect(onToolUpdated)
+	Card.update_tier.connect(onUpdateTier)
 	position.y = Card.info.stat
 	NumbersParticleManager.global_position.y = Card.position.y + (Card.info.top / 2.0)
 	
 	onResetStats()
 	onUpdateTraits()
 	onUpdateDelayedStats()
+	onUpdateTier(Card.getTier())
+	
+	ToolIcon.setSizeScale(4)
 	onToolUpdated(Card.Tool)
 	
 	if Game.getLevel() != null:
@@ -103,13 +110,13 @@ func onResetDepthTest() -> void:
 	setDepthTest(is_spectated)
 
 func setDepthTest(state: bool) -> void:
-	var mat: Material = null if !state else top_base_material
+	#var mat: Material = null if !state else top_base_material
 	#ToolIconDisplay.no_depth_test = state
-	var meshes: Array = Helper.getNodeTypeRecursive(AttackFloatingStatSpot, MeshInstance3D) +\
-		Helper.getNodeTypeRecursive(HealthFloatingStatSpot, MeshInstance3D)
-	for mesh: MeshInstance3D in meshes:
-		mesh.set_surface_override_material(0, mat)
-		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	#var meshes: Array = Helper.getNodeTypeRecursive(AttackFloatingStatSpot, MeshInstance3D) +\
+		#Helper.getNodeTypeRecursive(HealthFloatingStatSpot, MeshInstance3D)
+	#for mesh: MeshInstance3D in meshes:
+		#mesh.set_surface_override_material(0, mat)
+		#mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	IconsManager.setDepthTest(state)
 	
 func setWhiteNumbersDepthTest(state: bool) -> void:
@@ -316,6 +323,7 @@ func onResetNullIcons() -> void:
 
 func onToolUpdated(Tool: ToolGD) -> void:
 	ToolIcon.setInfo(Tool, false)
+	ToolIcon.onShowTierLabel()
 #endregion
 
 const PASSED_MAX_GREY: float = 0.2
@@ -491,3 +499,16 @@ func getSpeedModelBrightness() -> float:
 	
 func isSpeedUsed(index: int) -> bool:
 	return Card.speed < (index + 1)
+	
+func onUpdateTier(tier: int) -> void:
+	var mat: Material
+	match tier:
+		1: mat = tier_one_material
+		2: mat = tier_two_material
+		3: mat = tier_three_material
+		_: mat = tier_four_material
+		
+	var meshes: Array = Helper.getNodeTypeRecursive(AttackFloatingStatSpot, MeshInstance3D) +\
+		Helper.getNodeTypeRecursive(HealthFloatingStatSpot, MeshInstance3D)
+	for mesh: MeshInstance3D in meshes:
+		mesh.set_surface_override_material(0, mat)

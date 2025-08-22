@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cewvw3vx3mjcm"]
+[gd_scene load_steps=2 format=3 uid="uid://cewvw3vx3mjcm"]
 
 [ext_resource type="Script" uid="uid://ds26xp551jusu" path="res://scenes/game/tools/tool_icon.gd" id="1_dviwd"]
-[ext_resource type="Material" uid="uid://b5tmlarb3uay1" path="res://resources/materials/ui/tier_outline_canvas.tres" id="2_mrunk"]
 
 [node name="ToolIcon" type="Control"]
 custom_minimum_size = Vector2(40, 40)
@@ -10,7 +9,6 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_dviwd")
-TIER_OUTLINE_MATERIAL = ExtResource("2_mrunk")
 
 [node name="ModulateMain" type="Control" parent="."]
 unique_name_in_owner = true
@@ -22,9 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ToolTextureRect" type="TextureRect" parent="ModulateMain"]
-unique_name_in_owner = true
-texture_filter = 1
+[node name="VBoxContainer" type="VBoxContainer" parent="ModulateMain"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,7 +28,51 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="LabelManagerTop" type="Control" parent="ModulateMain/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="ModulateMain/VBoxContainer/LabelManagerTop"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -38.0
+offset_right = 160.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ToolTextureRect" type="TextureRect" parent="ModulateMain/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
 expand_mode = 2
+
+[node name="LabelManagerBottom" type="Control" parent="ModulateMain/VBoxContainer"]
+layout_mode = 2
+
+[node name="TierLabel" type="Label" parent="ModulateMain/VBoxContainer/LabelManagerBottom"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_right = 160.0
+offset_bottom = 38.0
+grow_horizontal = 2
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

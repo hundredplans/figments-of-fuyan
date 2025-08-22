@@ -98,9 +98,8 @@ func setDisabled(state: bool) -> void:
 	disabled = state
 	update_disabled.emit(state)
 
-func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false) -> TbcUI:
+func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false, autoscale: bool = false) -> TbcUI:
 	var tbc: TbcUI = load(info.BOON_ICON_PATH).instantiate()
 	parent.add_child(tbc)
-	tbc.setInfo(self, hoverable)
-	tbc.setDraggable(draggable)
+	tbc.setInfo(self, hoverable, draggable, autoscale)
 	return tbc

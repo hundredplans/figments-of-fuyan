@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EncounterDatastore" load_steps=9 format=3 uid="uid://2ucs56fwu8pv"]
+
+[ext_resource type="Script" uid="uid://c1rls3bjyqx0r" path="res://scripts/common/encounter/encounter_datastore.gd" id="1_5cygy"]
+[ext_resource type="Texture2D" uid="uid://crtmr60f4iqqw" path="res://assets/sprites/game/cards/art_mini/oswald_sweyn.png" id="1_d6j11"]
+[ext_resource type="Texture2D" uid="uid://bywdm0a5y1sxy" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar_base.png" id="2_ra0hn"]
+[ext_resource type="Texture2D" uid="uid://b6ek5kc11ff" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar1.png" id="3_egxap"]
+[ext_resource type="Material" uid="uid://dohedntn8e0xc" path="res://resources/materials/ui/crypt_drag_zone.tres" id="3_ra0hn"]
+[ext_resource type="Texture2D" uid="uid://b0x37xa33pdyt" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhar2.png" id="4_paqat"]
+[ext_resource type="Texture2D" uid="uid://cf4mbvss5ptnk" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhars_hand_open.png" id="5_a0pnr"]
+[ext_resource type="Texture2D" uid="uid://ci8ew2fr14vid" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/ozhars_hand_closed.png" id="6_m20ge"]
+
+[resource]
+script = ExtResource("1_5cygy")
+id = 13
+background_icon = ExtResource("1_d6j11")
+background_main_color = Color(0.635294, 0.368627, 0.72549, 1)
+base_sprite = ExtResource("2_ra0hn")
+frames = Array[Texture2D]([ExtResource("3_egxap"), ExtResource("4_paqat")])
+hands = Array[Texture2D]([ExtResource("5_a0pnr"), ExtResource("6_m20ge")])
+drag_zone_material = ExtResource("3_ra0hn")
+drag_zone_name = "Transform  Zone"
+drag_zone_label_color = Color(0.635294, 0.368627, 0.72549, 1)
+metadata/_custom_type_script = "uid://c1rls3bjyqx0r"

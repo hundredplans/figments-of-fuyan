@@ -8,6 +8,9 @@ func setInfo(_price_datastore: PriceDatastore) -> void:
 	
 	var Tool: ToolGD = SavedData.onLoadModel(data, Game.getArea().getEnteredMapNode()) 
 	ToolIcon.setInfo(Tool, true)
+	ToolIcon.setSizeScale(4)
+	ToolIcon.onShowNameLabel(-1)
+	ToolIcon.onShowTierLabel(-1)
 	ToolIcon.pressed.connect(onToolSelected)
 	DisplayedUI = ToolIcon
 	super(_price_datastore)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ct1cn5tc1ofmb"]
+[gd_scene load_steps=4 format=3 uid="uid://ct1cn5tc1ofmb"]
 
 [ext_resource type="Script" uid="uid://dnwbg2etx5qyr" path="res://scenes/game/boons/boon_icon.gd" id="1_k0ec6"]
+[ext_resource type="Texture2D" uid="uid://dk3ju6uholjmv" path="res://assets/sprites/game/boons/skeleton_boon.png" id="3_tlack"]
 [ext_resource type="LabelSettings" uid="uid://cyodc3xq62xbg" path="res://resources/ui/label_settings/jacquard_large.tres" id="4_fbu1m"]
 
 [node name="BoonIcon" type="Control"]
@@ -23,24 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ChargesLabel" type="Label" parent="ModulateMain"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.027
-anchor_top = 1.003
-anchor_right = 1.027
-anchor_bottom = 1.003
-offset_left = -6.16
-offset_top = -36.24
-offset_right = 12.84
-offset_bottom = 12.76
-rotation = 0.0920866
-label_settings = ExtResource("4_fbu1m")
-
-[node name="BoonTextureRect" type="TextureRect" parent="ModulateMain"]
-unique_name_in_owner = true
-texture_filter = 1
+[node name="VBoxContainer" type="VBoxContainer" parent="ModulateMain"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +32,68 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="LabelManagerTop" type="Control" parent="ModulateMain/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="ModulateMain/VBoxContainer/LabelManagerTop"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -38.0
+offset_right = 160.0
+grow_horizontal = 2
+grow_vertical = 0
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="BoonTextureRect" type="TextureRect" parent="ModulateMain/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("3_tlack")
 expand_mode = 2
+
+[node name="ChargesLabel" type="Label" parent="ModulateMain/VBoxContainer/BoonTextureRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -19.0
+offset_top = -49.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = 0.0920866
+label_settings = ExtResource("4_fbu1m")
+
+[node name="LabelManagerBottom" type="Control" parent="ModulateMain/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TierLabel" type="Label" parent="ModulateMain/VBoxContainer/LabelManagerBottom"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_right = 160.0
+offset_bottom = 38.0
+grow_horizontal = 2
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

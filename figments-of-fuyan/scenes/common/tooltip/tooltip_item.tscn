@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c18ndxg8x7gs3"]
+[gd_scene load_steps=9 format=3 uid="uid://c18ndxg8x7gs3"]
 
 [ext_resource type="Theme" uid="uid://beb3asngnlka5" path="res://resources/ui/themes/tooltip_theme.tres" id="1_8puje"]
 [ext_resource type="Script" uid="uid://icorsaoa6ia" path="res://scenes/common/tooltip/tooltip_item.gd" id="1_xd4af"]
@@ -7,11 +7,14 @@
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="3_p6trs"]
 [ext_resource type="Resource" uid="uid://82i526nehndy" path="res://resources/ui/fancy_text/fancy_text_label_settings_small.tres" id="4_nifbc"]
 [ext_resource type="LabelSettings" uid="uid://dkjl7vfshajei" path="res://resources/ui/label_settings/spicyrice_small.tres" id="4_s3p4v"]
+[ext_resource type="LabelSettings" uid="uid://cuykwjnblsktt" path="res://resources/ui/label_settings/spicyrice_minor.tres" id="9_r1kj6"]
 
 [node name="TooltipItem" type="PanelContainer"]
+self_modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(500, 0)
 offset_right = 500.0
 offset_bottom = 77.0
+mouse_filter = 2
 theme = ExtResource("1_8puje")
 theme_type_variation = &"OuterPanelContainer"
 script = ExtResource("1_xd4af")
@@ -19,6 +22,7 @@ CardTooltipExtraPacked = ExtResource("3_n0xql")
 
 [node name="InnerPanelContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
+modulate = Color(1, 0.843137, 0.478431, 1)
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("1_8puje")
@@ -52,11 +56,33 @@ layout_mode = 2
 text = "Frederic the Fearless"
 label_settings = ExtResource("4_s3p4v")
 
-[node name="TextLabel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_p6trs")]
+[node name="RarityLabel" type="Label" parent="MarginContainer/VBoxContainer/TopSide"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+label_settings = ExtResource("4_s3p4v")
+horizontal_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="TextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_p6trs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 settings = ExtResource("4_nifbc")
 center = false
+
+[node name="TierLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+label_settings = ExtResource("9_r1kj6")
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

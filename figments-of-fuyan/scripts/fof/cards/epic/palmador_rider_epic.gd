@@ -15,10 +15,10 @@ func onProcessAction(action: Action) -> void:
 		if action is FallDamageAction and action.Card == self:
 			action.onFailAction()
 	elif action.post:
-		if action is StatAction and action.hasCard(self) and health <= int(max_health / 2.0) and health > 0\
-		and Game.ActionManagerReference.onFindFirstAction(ChangeBossPhaseAction) == null and getPhase() == 1:
-			onPushAction(ChangeBossPhaseAction.new())
-		elif action is VisionNewUnitAction and action.Discoverer == self and action.Discovered.isAlly(0):
+		#if action is StatAction and action.hasCard(self) and health <= int(max_health / 2.0) and health > 0\
+		#and Game.ActionManagerReference.onFindFirstAction(ChangeBossPhaseAction) == null and getPhase() == 1:
+			#onPushAction(ChangeBossPhaseAction.new())
+		if action is VisionNewUnitAction and action.Discoverer == self and action.Discovered.isAlly(0):
 			turns_enemies_unseen = -1
 		elif action is MoveToTileAction and action.Card == self:
 			active_speed = max(active_speed - 1, 0)

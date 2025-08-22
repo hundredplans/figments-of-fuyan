@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=17 format=3 uid="uid://cr8dbqmm5s3xr"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=20 format=3 uid="uid://cr8dbqmm5s3xr"]
 
 [ext_resource type="Script" uid="uid://c2rnur1cxt6ls" path="res://scripts/fof/cards/epic/prince_aelis_epic.gd" id="1_gajfs"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_umepe"]
@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://dth6h6cob5x11" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/solo_spawn.tres" id="7_ctdho"]
 [ext_resource type="Resource" uid="uid://dw86mlnvsxyef" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/strong_duo_spawn.tres" id="8_hehlh"]
 [ext_resource type="Resource" uid="uid://b30nralfchtow" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/royal_boon.tres" id="9_lunae"]
+[ext_resource type="Script" uid="uid://cj8tn3dc0epr7" path="res://scripts/fof_info/cards/extra/epic_card_tier_datastore.gd" id="12_ctdho"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.960953, 2.01422, 0.775299)
@@ -30,13 +31,27 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_hehlh"]
+script = ExtResource("12_ctdho")
+attack = 0
+health = 8
+speed = 1
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
+[sub_resource type="Resource" id="Resource_3aifa"]
+script = ExtResource("12_ctdho")
+attack = 0
+health = 12
+speed = 1
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
 [sub_resource type="Resource" id="Resource_kpsji"]
 script = ExtResource("1_umepe")
 name = "Prince Aelis"
 archetype = ExtResource("3_kpsji")
-attack = 0
-health = 8
-speed = 1
+tiers = Array[ExtResource("12_ctdho")]([SubResource("Resource_hehlh"), SubResource("Resource_3aifa")])
 model = ExtResource("5_r0jrx")
 collision = SubResource("PackedScene_l8njr")
 points = Array[Vector3]([Vector3(-0.236214, 0.191085, 0.483124), Vector3(0.249187, 0.173123, 0.483124), Vector3(-0.479355, 0.11973, 0.218401), Vector3(-0.479355, 0.0925198, -0.168848), Vector3(-0.262125, 0.178666, -0.292175), Vector3(0.311343, 0.191021, -0.292175), Vector3(0.481598, 0.179319, -0.0541988), Vector3(0.481598, 0.182575, 0.23788), Vector3(0.481598, 0.768006, -0.0122101), Vector3(0.481598, 1.18234, -0.0322137), Vector3(0.481598, 1.52297, -0.00332701), Vector3(0.481598, 1.89292, 0.000387639), Vector3(0.324393, 0.942594, -0.292175), Vector3(-0.259495, 0.894309, -0.292175), Vector3(0.316237, 1.28945, -0.292175), Vector3(-0.262573, 1.26973, -0.292175), Vector3(0.304217, 1.59559, -0.292175), Vector3(-0.223198, 1.59906, -0.292175), Vector3(0.206671, 1.93322, -0.292175), Vector3(-0.251443, 1.91604, -0.292175), Vector3(0.10718, 2.01531, -0.0353482), Vector3(-0.268907, 2.01531, -0.0407307), Vector3(-0.479355, 1.71393, -0.0650098), Vector3(-0.479355, 1.32021, -0.0637226), Vector3(-0.479355, 0.991838, -0.0626489), Vector3(-0.479355, 0.46589, -0.0609294), Vector3(-0.222235, 0.899175, 0.483124), Vector3(0.147646, 0.909649, 0.483124), Vector3(-0.155739, 1.38642, 0.483124), Vector3(0.104005, 1.41033, 0.483124), Vector3(-0.151735, 1.77838, 0.483124), Vector3(0.13508, 1.8069, 0.483124)])

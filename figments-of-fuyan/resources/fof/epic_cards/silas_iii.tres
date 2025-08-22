@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=22 format=3 uid="uid://d3duncxplw5xv"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=27 format=3 uid="uid://d3duncxplw5xv"]
 
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_buo5k"]
 [ext_resource type="Script" uid="uid://qiu76aj546ie" path="res://scripts/fof/cards/epic/silas_iii_epic.gd" id="1_ixhyo"]
@@ -17,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://bn7v7iisd1fbn" path="res://resources/datastore/boss_intents/silas_iii/spin_attack.tres" id="13_7slm4"]
 [ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="14_5chws"]
 [ext_resource type="PackedScene" uid="uid://f1l6qi13fpy8" path="res://assets/models/fof/cards/silas_iii.glb" id="15_ixhyo"]
+[ext_resource type="Script" uid="uid://cj8tn3dc0epr7" path="res://scripts/fof_info/cards/extra/epic_card_tier_datastore.gd" id="16_jrady"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
 size = Vector3(0.633057, 1.99645, 0.406677)
@@ -34,10 +35,27 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_8i8jn"]
+script = ExtResource("16_jrady")
+attack = 2
+health = 28
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
+[sub_resource type="Resource" id="Resource_cctem"]
+script = ExtResource("16_jrady")
+attack = 3
+health = 36
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
 [sub_resource type="Resource" id="Resource_41odn"]
 script = ExtResource("1_buo5k")
 name = "Silas III"
 archetype = ExtResource("3_ixhyo")
+tiers = Array[ExtResource("16_jrady")]([SubResource("Resource_8i8jn"), SubResource("Resource_cctem")])
 attack = 2
 health = 28
 speed = 3
@@ -53,10 +71,27 @@ change_delay = 3.0
 boss_intents = Array[ExtResource("3_6wcet")]([ExtResource("5_jrady"), ExtResource("6_8i8jn"), ExtResource("7_cctem"), ExtResource("8_abah4"), ExtResource("9_15u8k"), ExtResource("10_nni4h"), ExtResource("11_asn4c"), ExtResource("12_pmv8q"), ExtResource("13_7slm4")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
 
+[sub_resource type="Resource" id="Resource_abah4"]
+script = ExtResource("16_jrady")
+attack = 3
+health = 0
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
+[sub_resource type="Resource" id="Resource_15u8k"]
+script = ExtResource("16_jrady")
+attack = 4
+health = 0
+speed = 3
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
 [sub_resource type="Resource" id="Resource_i13if"]
 script = ExtResource("1_buo5k")
 name = "Silas III"
 archetype = ExtResource("3_ixhyo")
+tiers = Array[ExtResource("16_jrady")]([SubResource("Resource_abah4"), SubResource("Resource_15u8k")])
 attack = 3
 health = 0
 speed = 3

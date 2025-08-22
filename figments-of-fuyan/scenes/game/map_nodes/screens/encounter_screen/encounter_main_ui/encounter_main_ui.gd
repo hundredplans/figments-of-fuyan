@@ -7,13 +7,16 @@ signal pressed
 var is_mouse_in_ui: bool
 var is_extra_frame: bool
 var frames: Array[Texture2D]
+var bitmap_frames: Array[BitMap]
 
+@onready var BitmapButton: TextureButton = %BitmapButton
 @onready var FrameSprite: TextureRect = %FrameSprite
 const SWAP_FRAME_TIME: float = 1.0
 
-func setInfo(base: Texture2D, _frames: Array[Texture2D]) -> void:
+func setInfo(base: Texture2D, _frames: Array[Texture2D], _bitmap_frames: Array[BitMap] = []) -> void:
 	texture = base
 	frames = _frames
+	bitmap_frames = _bitmap_frames
 	
 	onUpdateGlobalMouseFilter()
 	onUpdateFrames()
@@ -21,9 +24,13 @@ func setInfo(base: Texture2D, _frames: Array[Texture2D]) -> void:
 func onUpdateFrames(extra_tx: Texture2D = null) -> void:
 	var tx: Texture2D = extra_tx
 	if extra_tx == null:
-		if FrameSprite.texture == null or frames.find(FrameSprite.texture) == -1:
-			tx = frames[0]
-		else: tx = frames[(frames.find(FrameSprite.texture) + 1) % frames.size()]
+		var index: int = 0
+		if !(FrameSprite.texture == null or frames.find(FrameSprite.texture) == -1):
+			index = (frames.find(FrameSprite.texture) + 1) % frames.size()
+		tx = frames[index]
+		
+		if !bitmap_frames.is_empty():
+			BitmapButton.texture_click_mask = bitmap_frames[min(index, bitmap_frames.size() - 1)]
 	else: is_extra_frame = true
 		
 	FrameSprite.texture = tx
@@ -38,13 +45,12 @@ func setExtraFrame(extra_tx: Texture2D) -> void:
 func setBaseSprite(base_sprite: Texture2D) -> void:
 	texture = base_sprite
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
-		pressed.emit()
-
 func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	modulate = Color(0.5, 0.5, 0.5) if state else Color.WHITE
 
 func onUpdateGlobalMouseFilter() -> void:
-	mouse_filter = global_mouse_filter
+	BitmapButton.mouse_filter = global_mouse_filter
+
+func onButtonPressed() -> void:
+	pressed.emit()

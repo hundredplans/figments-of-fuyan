@@ -244,7 +244,7 @@ func _on_camera_button_pressed() -> void:
 	
 func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> void:
 	if !World.CameraManager.isCycle():
-		setHeroNameLabel(SpectateObject.getNameFromInfo() if (SpectateObject != null and SpectateObject is CardGD) else "")
+		setHeroNameLabel(SpectateObject)
 		PassButton.setAllySpectating(SpectateObject)
 		
 		onUpdateActiveEffects(SpectateObject)
@@ -276,8 +276,14 @@ func onTurnStateChanging(Card: CardGD, _action: ChangeTurnStateAction) -> void:
 #endregion
 
 #region Hero + Ability Labels
-func setHeroNameLabel(text: String = "") -> void:
+func setHeroNameLabel(SpectateObject: GameObjectGD = null) -> void:
+	var text: String = ""
+	var color := Color.WHITE
+	if SpectateObject != null and SpectateObject is CardGD:
+		text = SpectateObject.info.name
+		color = Game.getRarityColor(SpectateObject.getRarity())
 	HeroNameLabel.text = text
+	HeroNameLabel.modulate = color
 	
 func setActiveEffectLabel(text: String = "") -> void:
 	ActiveEffectLabel.text = text

@@ -51,14 +51,14 @@ func getStat(phase: int = 1) -> float:
 func getArchetype(phase: int = 1) -> ArchetypeInfo:
 	return phases[phase - 1].getArchetype()
 	
-func getAttack(phase: int = 1) -> int:
-	return phases[phase - 1].getAttack()
+func getAttack(phase: int = 1, tier: int = 1) -> int:
+	return phases[phase - 1].getAttack(tier)
 	
-func getHealth(phase: int = 1) -> int:
-	return phases[phase - 1].getHealth()
+func getHealth(phase: int = 1, tier: int = 1) -> int:
+	return phases[phase - 1].getHealth(tier)
 	
-func getSpeed(phase: int = 1) -> int:
-	return phases[phase - 1].getSpeed()
+func getSpeed(phase: int = 1, tier: int = 1) -> int:
+	return phases[phase - 1].getSpeed(tier)
 	
 func getBossIntents(phase: int = 1) -> Array[BossIntent]:
 	return phases[phase - 1].getBossIntents()

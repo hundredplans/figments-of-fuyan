@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=62 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" uid="uid://bsrlt8ui5oxuq" path="res://scenes/game/cards/world/field_info/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -14,11 +14,15 @@
 [ext_resource type="PackedScene" uid="uid://bvrgvidl2c7y4" path="res://assets/models/general/numbers/stat_numbers/seven.glb" id="9_a1tgo"]
 [ext_resource type="PackedScene" uid="uid://sglmcojlk1je" path="res://assets/models/general/numbers/stat_numbers/eight.glb" id="10_dhlus"]
 [ext_resource type="PackedScene" uid="uid://dq5ux8j1jjffc" path="res://assets/models/general/numbers/stat_numbers/nine.glb" id="11_apcfk"]
+[ext_resource type="Material" uid="uid://dv5744pg67jkq" path="res://resources/materials/colors/shaded_metal/bronze.tres" id="12_2pyvq"]
 [ext_resource type="Material" uid="uid://df4q3a4a8f7e6" path="res://resources/materials/colors/unshaded_with_outline/green.tres" id="12_mr5mo"]
 [ext_resource type="Material" uid="uid://b6pgnfoao15rq" path="res://resources/materials/colors/unshaded_with_outline/dark_green.tres" id="12_muixq"]
 [ext_resource type="Material" uid="uid://b27c0ipvylqtd" path="res://resources/materials/colors/unshaded_with_outline/red.tres" id="13_2pyvq"]
+[ext_resource type="Material" uid="uid://bmx2rdyhxu27w" path="res://resources/materials/colors/shaded_metal/silver.tres" id="13_g7m10"]
 [ext_resource type="Material" uid="uid://db1do0f5gd0ll" path="res://resources/materials/colors/unshaded_with_outline/white.tres" id="14_g7m10"]
+[ext_resource type="Material" uid="uid://dvdgwhmmfy3gg" path="res://resources/materials/colors/shaded_metal/gold.tres" id="14_wu8we"]
 [ext_resource type="Material" uid="uid://b4m1xyv608rvw" path="res://resources/materials/colors/unshaded_with_outline/pink.tres" id="15_h4ovu"]
+[ext_resource type="Material" uid="uid://bem6mhlmdw1t4" path="res://resources/materials/colors/shaded_metal/amethyst.tres" id="15_odgpr"]
 [ext_resource type="Material" uid="uid://bspucvlfjlvc" path="res://resources/materials/colors/unshaded_with_outline/orange.tres" id="16_wqo68"]
 [ext_resource type="Material" uid="uid://cs44x6eyyv8fk" path="res://resources/materials/game/base_material_top.tres" id="18_xbibn"]
 [ext_resource type="ArrayMesh" uid="uid://dg7uxtqjwekn5" path="res://assets/models/general/numbers/particle_numbers/one.tres" id="19_g58ma"]
@@ -56,7 +60,6 @@
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="54_h4ovu"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_la30j"]
-size = Vector2(0.5, 0.5)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_mr5mo"]
 viewport_path = NodePath("SubViewport")
@@ -70,6 +73,10 @@ albedo_texture = SubResource("ViewportTexture_mr5mo")
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
 number_to_model = Array[PackedScene]([ExtResource("2_emwqa"), ExtResource("6_hhji0"), ExtResource("7_rtn5l"), ExtResource("5_sdyep"), ExtResource("6_1r07y"), ExtResource("7_5ijq8"), ExtResource("8_7cvsh"), ExtResource("9_a1tgo"), ExtResource("10_dhlus"), ExtResource("11_apcfk")])
+tier_one_material = ExtResource("12_2pyvq")
+tier_two_material = ExtResource("13_g7m10")
+tier_three_material = ExtResource("14_wu8we")
+tier_four_material = ExtResource("15_odgpr")
 dark_green_with_outline_material = ExtResource("12_muixq")
 green_with_outline_material = ExtResource("12_mr5mo")
 red_with_outline_material = ExtResource("13_2pyvq")
@@ -154,7 +161,7 @@ script = ExtResource("38_bc6s6")
 
 [node name="ToolIconDisplay" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 8.74228e-08, 8.74228e-08, -8.74228e-08, 1, -8.74228e-08, -8.74228e-08, 8.74228e-08, 1, 0.906218, 0.504175, 0)
+transform = Transform3D(1, 8.74228e-08, 8.74228e-08, -8.74228e-08, 1, -8.74228e-08, -8.74228e-08, 8.74228e-08, 1, 1.0691, 0.457638, 0)
 mesh = SubResource("QuadMesh_la30j")
 surface_material_override/0 = SubResource("StandardMaterial3D_2pyvq")
 
@@ -162,7 +169,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_2pyvq")
 disable_3d = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(160, 160)
+size = Vector2i(320, 320)
 render_target_update_mode = 4
 
 [node name="ToolIcon" parent="SubViewport" instance=ExtResource("54_h4ovu")]

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cjlqbuh73ripg" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/shillings_effect.tscn" id="2_l4vsq"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_sli05"]
 [ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="3_jpe4s"]
-[ext_resource type="Texture2D" uid="uid://cgwubb4ahkk6w" path="res://assets/sprites/ui/scene_specific/stash_screen/junk_man/hand_open.png" id="3_ma1bm"]
+[ext_resource type="Texture2D" uid="uid://cgwubb4ahkk6w" path="res://assets/sprites/ui/scene_specific/encounter_screen/junk_man/junk_man_hand_open.png" id="3_ma1bm"]
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_sli05"]
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="5_jpe4s"]
@@ -374,7 +374,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
+theme_override_constants/v_separation = 40
 columns = 2
 script = ExtResource("9_jpe4s")
 BoonIconPacked = ExtResource("9_2jssj")

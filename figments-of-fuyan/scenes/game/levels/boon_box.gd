@@ -6,7 +6,8 @@ signal mouse_in_ui
 func onAddBoon(Boon: BoonGD) -> void:
 	var BoonIcon: Control = BoonIconPacked.instantiate()
 	add_child(BoonIcon)
-	BoonIcon.setInfo(Boon)
+	BoonIcon.setInfo(Boon, false, false, true)
+	BoonIcon.onShowTierLabel()
 	BoonIcon.setDisabled(Boon.getDisabled())
 
 func onUpdate() -> void:

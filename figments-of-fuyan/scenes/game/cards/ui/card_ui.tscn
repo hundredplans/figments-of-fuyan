@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cqwfvh83nko7x"]
+[gd_scene load_steps=31 format=3 uid="uid://cqwfvh83nko7x"]
 
 [ext_resource type="Script" uid="uid://dupousrsi54yw" path="res://scenes/game/cards/ui/card_ui.gd" id="1_q53ix"]
 [ext_resource type="Image" uid="uid://ckxnjmhktgr8q" path="res://assets/sprites/game/cards/common/rarity/scrap.png" id="2_6wo8e"]
@@ -19,6 +19,7 @@
 [ext_resource type="LabelSettings" uid="uid://b44saayykrffg" path="res://resources/ui/label_settings/roboto_medium.tres" id="16_jx4jy"]
 [ext_resource type="PackedScene" uid="uid://6nf3mir2i2rk" path="res://scenes/common/fancy_text/fancy_text_label.tscn" id="19_hlg43"]
 [ext_resource type="Resource" uid="uid://bw0qo7tuhyhqm" path="res://resources/ui/fancy_text/fancy_text_label_settings_tiny.tres" id="20_rm1pc"]
+[ext_resource type="LabelSettings" uid="uid://dkjl7vfshajei" path="res://resources/ui/label_settings/spicyrice_small.tres" id="24_n8ber"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="25_rre5o"]
 [ext_resource type="Texture2D" uid="uid://dmjh1xeukbour" path="res://assets/sprites/game/cards/common/stats/tool_inside.png" id="26_481gw"]
 [ext_resource type="FontFile" uid="uid://m1wf62pwj0gt" path="res://assets/fonts/spicyrice.ttf" id="26_hjlrh"]
@@ -253,6 +254,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(20, 20)
 
 [node name="Energy" type="Control" parent="ModulateMain/Stats"]
 layout_mode = 1
@@ -332,6 +334,15 @@ offset_bottom = 353.0
 text = "I"
 label_settings = SubResource("LabelSettings_6v2th")
 horizontal_alignment = 2
+
+[node name="BigTierLabel" type="Label" parent="ModulateMain/Text"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 393.0
+offset_right = 260.0
+offset_bottom = 427.0
+label_settings = ExtResource("24_n8ber")
+horizontal_alignment = 1
 
 [node name="ArtAboveText" type="Control" parent="ModulateMain"]
 layout_mode = 1

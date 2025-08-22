@@ -3,9 +3,7 @@ class_name BossPhaseDatastore extends Resource
 @export var name: String
 @export var archetype: ArchetypeInfo
 
-@export var attack: int
-@export var health: int
-@export var speed: int
+@export var tiers: Array[EpicCardTierDatastore]
 
 @export var model: PackedScene
 @export var collision: PackedScene
@@ -27,14 +25,14 @@ func getName() -> String:
 func getArchetype() -> ArchetypeInfo:
 	return archetype
 	
-func getAttack() -> int:
-	return attack
+func getAttack(tier: int) -> int:
+	return tiers[tier - 1].getAttack()
 
-func getHealth() -> int:
-	return health
+func getHealth(tier: int) -> int:
+	return tiers[tier - 1].getHealth()
 	
-func getSpeed() -> int:
-	return speed
+func getSpeed(tier: int) -> int:
+	return tiers[tier - 1].getSpeed()
 	
 func getModel() -> PackedScene:
 	return model

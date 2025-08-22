@@ -6,10 +6,10 @@
 [ext_resource type="Script" uid="uid://c4e0un8luq87o" path="res://scripts/common/shop/shop_card_datastore.gd" id="3_qulre"]
 [ext_resource type="Resource" uid="uid://dypcxce3yrfoe" path="res://resources/datastore/encounters/rarity_prices/tool_rarity_prices.tres" id="4_2jueg"]
 [ext_resource type="Resource" uid="uid://ckgqhorrni7il" path="res://resources/datastore/encounters/rarity_prices/boon_rarity_prices.tres" id="5_4naeq"]
-[ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_open.png" id="5_orrb8"]
+[ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_hand_open.png" id="5_orrb8"]
 [ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="6_dg6sx"]
 [ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="6_qulre"]
-[ext_resource type="Texture2D" uid="uid://bodfwk4s5uaqu" path="res://assets/sprites/ui/scene_specific/stash_screen/general_shop/crab_hand_closed.png" id="6_xolar"]
+[ext_resource type="Texture2D" uid="uid://bodfwk4s5uaqu" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_hand_closed.png" id="6_xolar"]
 [ext_resource type="Texture2D" uid="uid://btvht0n6tmf46" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab2.png" id="7_2jueg"]
 [ext_resource type="Texture2D" uid="uid://b4kkkr8r2ttuc" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_buy.png" id="7_4naeq"]
 [ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="7_xr5r0"]
@@ -50,28 +50,28 @@ metadata/_custom_type_script = "uid://c4e0un8luq87o"
 script = ExtResource("1_ye3vs")
 item_type = 1
 rarity_price_datastore = ExtResource("4_2jueg")
-position = Vector2(150, 750)
+position = Vector2(150, 800)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_rdrdv"]
 script = ExtResource("1_ye3vs")
 item_type = 1
 rarity_price_datastore = ExtResource("4_2jueg")
-position = Vector2(500, 750)
+position = Vector2(500, 800)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_yc8xn"]
 script = ExtResource("1_ye3vs")
 item_type = 2
 rarity_price_datastore = ExtResource("5_4naeq")
-position = Vector2(850, 750)
+position = Vector2(850, 800)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_wqfsb"]
 script = ExtResource("1_ye3vs")
 item_type = 2
 rarity_price_datastore = ExtResource("5_4naeq")
-position = Vector2(1200, 750)
+position = Vector2(1200, 800)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [resource]
@@ -85,4 +85,5 @@ base_sprite = ExtResource("6_dg6sx")
 frames = Array[Texture2D]([ExtResource("6_qulre"), ExtResource("7_2jueg")])
 hands = Array[Texture2D]([ExtResource("5_orrb8"), ExtResource("6_xolar")])
 drag_zone_name = ""
+drag_zone_label_color = Color(0, 0, 0, 1)
 metadata/_custom_type_script = "uid://doid1bi8h7kwu"

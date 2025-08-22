@@ -10,6 +10,7 @@ var StashScreen: Control
 @export var BoonIconPacked: PackedScene
 @export var ToolIconPacked: PackedScene
 
+@onready var RewardTextManager: Control = %RewardTextManager
 @onready var AniPlayer: AnimationPlayer = %AniPlayer
 @onready var Main: Control = %Main
 @onready var ClaimedLabel: Label = %ClaimedLabel
@@ -17,6 +18,7 @@ var StashScreen: Control
 @onready var RewardTitle: FancyTextLabel = %RewardTitle
 @onready var TextureControl: Control = %TextureControl
 
+const TOOL_BOON_REWARD_TEXT_Y_OFFSET: int = 85
 const CLAIMED_COLOR := Color(0.5, 0.5, 0.5, 1.0)
 const TextureDisplaySize := Vector2(480, 480)
 var reward: Reward
@@ -50,13 +52,18 @@ func setInfo(_reward: Reward) -> void:
 	
 	if item is BoonGD:
 		TextureDisplay.onDisplayCharges(false)
+		TextureDisplay.setSizeScale(6)
+	elif item is ToolGD:
+		TextureDisplay.setSizeScale(12)
 	
 	AniPlayer.play("Idle")
 	
 	if item is BoonGD or item is ToolGD:
+		RewardTextManager.position.y += TOOL_BOON_REWARD_TEXT_Y_OFFSET
 		TextureDisplay.setInfo(item, true)
+		TextureDisplay.onShowTierLabel()
 		@warning_ignore("static_called_on_instance")
-		var text: String = "[%s%s=%s] | %s" % [item.tier, item.info.getFofName().to_lower(), item.info.id, Game.NUMBER_TO_ROMAN_NUMERAL[item.tier]]
+		var text: String = "[%s%s=%s]" % [item.tier, item.info.getFofName().to_lower(), item.info.id]
 		RewardDescription.setText(item.getDescription())
 		RewardTitle.setText(text)
 		TextureDisplay.setMouseFilter(Control.MOUSE_FILTER_IGNORE)

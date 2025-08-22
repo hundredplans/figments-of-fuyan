@@ -15,5 +15,15 @@ texture_filter = 1
 layout_mode = 0
 mouse_filter = 2
 
-[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]
+[node name="BitmapButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="mouse_entered" from="BitmapButton" to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="BitmapButton" to="." method="onMouseInUI" binds= [false]]
+[connection signal="pressed" from="BitmapButton" to="." method="onButtonPressed"]

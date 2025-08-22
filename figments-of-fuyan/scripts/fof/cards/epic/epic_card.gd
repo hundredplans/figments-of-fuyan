@@ -41,13 +41,13 @@ func onProcessAction(action: Action) -> void:
 	
 #region Info Getters
 func getAttackFromInfo() -> int:
-	return info.getAttack(boss_datastore.phase)
+	return info.getAttack(boss_datastore.phase, Game.getArea().getWorldDifficulty())
 	
 func getHealthFromInfo() -> int:
-	return info.getHealth(boss_datastore.phase)
+	return info.getHealth(boss_datastore.phase, Game.getArea().getWorldDifficulty())
 	
 func getSpeedFromInfo() -> int:
-	return info.getSpeed(boss_datastore.phase)
+	return info.getSpeed(boss_datastore.phase, Game.getArea().getWorldDifficulty())
 
 func getTopFromInfo() -> float:
 	return info.getTop(boss_datastore.phase)

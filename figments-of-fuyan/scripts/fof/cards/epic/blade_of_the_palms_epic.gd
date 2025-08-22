@@ -1,8 +1,6 @@
 extends EpicCardGD
 
 const TELEPORT_ENTER_ACTION_DELAY: float = 1.2
-const FIRST_PHASE_CHANGE_HEALTH: int = 14
-const SECOND_PHASE_CHANGE_HEALTH: int = 7
 
 const BLIND_ID: int = 1
 const REVEALED_ID: int = 6
@@ -17,8 +15,9 @@ func onSave() -> SavedDataEpicCard:
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
-		if action is StatAction and action.hasCard(self) and\
-			((health <= SECOND_PHASE_CHANGE_HEALTH and getPhase() < 3) or (health <= FIRST_PHASE_CHANGE_HEALTH and getPhase() < 2)):
+		if action is StatAction and action.hasCard(self) and health <= int(max_health / 2.0) and health > 0\
+		and getPhase() == 1 and Game.ActionManagerReference.onFindFirstAction(ChangeBossPhaseAction) == null:
+			#((health <= SECOND_PHASE_CHANGE_HEALTH and getPhase() < 3) or (health <= FIRST_PHASE_CHANGE_HEALTH and getPhase() < 2)):
 			onPushAction(ChangeBossPhaseAction.new())
 		elif action is HurtAction and getPhase() == 3 and action.Defender.isEnemy(team) and action.Damager is CardGD and (action.Damager == self or action.Damager.info.id == CLONE_ID):
 			onPushAction(HealAction.new(HealDatastore.new(self, 1)))

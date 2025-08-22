@@ -1,6 +1,7 @@
 extends Control
 
 #region Globals
+signal stash_screen_start
 signal stash_screen_exit_start
 signal screen_created
 signal screen_finished
@@ -111,6 +112,8 @@ func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
 	ActiveScreen.setInfo(save_file, area, World, self, map_node)
 	ActiveScreen.minimap_mode.connect(onMinimapMode)
 	ActiveScreen.create_stash_screen.connect(onCreateStashScreen)
+	
+	stash_screen_start.connect(ActiveScreen.onStashScreenStart)
 	stash_screen_exit_start.connect(ActiveScreen.onStashScreenExitStart)
 	active_tool_added.connect(ActiveScreen.onActiveToolAdded)
 	
@@ -164,6 +167,7 @@ func onCreateStashScreen(ToolIcon: TbcUI = null) -> void:
 	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
 	StashScreen.exit_start.connect(func(): stash_screen_exit_start.emit())
 	StashScreen.active_tool_added.connect(func(x: TbcUI): active_tool_added.emit(x))
+	stash_screen_start.emit()
 	
 	var EnteredMapNode: MapNodeGD = Game.getArea().getEnteredMapNode()
 	if !EnteredMapNode.is_finished and EnteredMapNode.info.is_encounter and EnteredMapNode.isDragZone():

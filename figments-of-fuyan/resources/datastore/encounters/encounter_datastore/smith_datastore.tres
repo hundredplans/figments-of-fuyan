@@ -1,13 +1,26 @@
-[gd_resource type="Resource" script_class="EncounterDatastore" load_steps=3 format=3 uid="uid://njwq1gsp5vbe"]
+[gd_resource type="Resource" script_class="EncounterDatastore" load_steps=11 format=3 uid="uid://njwq1gsp5vbe"]
 
 [ext_resource type="Script" uid="uid://c1rls3bjyqx0r" path="res://scripts/common/encounter/encounter_datastore.gd" id="1_pxku2"]
 [ext_resource type="Texture2D" uid="uid://fiisvj2q0asc" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_bg_icon.png" id="1_vawmb"]
+[ext_resource type="Texture2D" uid="uid://b4u0oc0ql2d1v" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_base.png" id="2_342iu"]
+[ext_resource type="Material" uid="uid://d2v11r5goxexj" path="res://resources/materials/ui/smith_drag_zone.tres" id="3_kmv4w"]
+[ext_resource type="BitMap" uid="uid://blmn3namx6gj" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_bitmap1.png" id="3_v0uwn"]
+[ext_resource type="Texture2D" uid="uid://ccqbak28a37xw" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith1.png" id="4_kmv4w"]
+[ext_resource type="BitMap" uid="uid://76lgyr7subx6" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_bitmap2.png" id="4_skaxd"]
+[ext_resource type="Texture2D" uid="uid://bk7fnqlkjhws3" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith2.png" id="5_v0uwn"]
+[ext_resource type="Texture2D" uid="uid://dty45wf6wle42" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_hand_open.png" id="6_skaxd"]
+[ext_resource type="Texture2D" uid="uid://cf7bfdye44v2i" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_hand_closed.png" id="7_o64v5"]
 
 [resource]
 script = ExtResource("1_pxku2")
 id = 11
 background_icon = ExtResource("1_vawmb")
-background_main_color = Color(0.568973, 0.568973, 0.568973, 1)
-frames = Array[Texture2D]([])
+background_main_color = Color(0.815686, 0.815686, 0.815686, 1)
+base_sprite = ExtResource("2_342iu")
+frames = Array[Texture2D]([ExtResource("4_kmv4w"), ExtResource("5_v0uwn")])
+bitmap_frames = Array[BitMap]([ExtResource("3_v0uwn"), ExtResource("4_skaxd")])
+hands = Array[Texture2D]([ExtResource("6_skaxd"), ExtResource("7_o64v5")])
+drag_zone_material = ExtResource("3_kmv4w")
 drag_zone_name = "Smith  Zone"
+drag_zone_label_color = Color(0.817521, 0.817521, 0.817521, 1)
 metadata/_custom_type_script = "uid://c1rls3bjyqx0r"

@@ -2,22 +2,25 @@ extends ToolGD
 
 const TIER_ONE_SPEED: int = 1
 const TIER_TWO_SPEED: int = 1
-const TIER_THREE_SPEED: int = 1
-const TIER_FOUR_SPEED: int = 2
+const TIER_THREE_SPEED: int = 2
+const TIER_FOUR_SPEED: int = 3
 
-const MINIMUM_TIER_TRAUMA: int = 3
+const MINIMUM_TIER_TRAUMA: int = 2
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if Card != null and (Card.isValidBloodthirst(action)\
-		or (tier >= MINIMUM_TIER_TRAUMA and Card.isValidTrauma(action))):
-		onPushAction(ToolActivatedAction.new(self, action))
+	if action.post:
+		if Card != null and (Card.isValidBloodthirst(action)\
+			or (tier >= MINIMUM_TIER_TRAUMA and Card.isValidTrauma(action))):
+			onPushAction(ToolActivatedAction.new(self, action))
+		elif Card != null and Card.isValidArrive(action):
+			onPushAction(ToolActivatedAction.new(self, action))
 	
 func onToolAction(action: Action) -> void:
 	if action is not AwakenAction:
 		onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, 1)))
 	else:
-		pass
+		onPushAction(StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, getTierSpeed(), 0, true)))
 	
 func onToolEquipped() -> void:
 	super()

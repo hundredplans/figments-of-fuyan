@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://4ffhqjbja8lj"]
+[gd_scene load_steps=9 format=3 uid="uid://4ffhqjbja8lj"]
 
 [ext_resource type="Script" uid="uid://ctsxv53bvd1yc" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_screen.gd" id="1_3jm3p"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_1pd3x"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="3_uht57"]
 [ext_resource type="Texture2D" uid="uid://d203lqs8t7rqv" path="res://assets/sprites/ui/icons/minimap.png" id="4_145is"]
+[ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="5_uht57"]
 
 [sub_resource type="Animation" id="Animation_5mpcf"]
 resource_name = "LoopBackgroundIcons"
@@ -108,6 +109,17 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_fifuk")
 }
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.4, 0.18, 0, 1)
+layout_mode = 0
+offset_top = 6.0
+offset_right = 1920.0
+offset_bottom = 110.0
+text = "Junk Man"
+label_settings = ExtResource("5_uht57")
+horizontal_alignment = 1
 
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="MapPanel/MarginContainer/MinimapButton" to="." method="onMinimapButtonPressed"]

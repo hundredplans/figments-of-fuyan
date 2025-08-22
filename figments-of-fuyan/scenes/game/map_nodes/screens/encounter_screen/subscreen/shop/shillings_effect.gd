@@ -8,6 +8,7 @@ const ADD_SCALE: float = 1.0
 @onready var PriceDisplay: Label = %PriceDisplay
 func setShillings(shillings: int) -> void:
 	PriceDisplay.text = ("+" if shillings > 0 else "") + str(shillings)
+	PriceDisplay.modulate = Color.WHITE if shillings >= 0 else Color.RED
 
 func setInfo(shillings: int, start_position: Vector2) -> void:
 	position = start_position - pivot_offset

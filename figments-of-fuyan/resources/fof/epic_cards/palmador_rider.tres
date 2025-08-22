@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=28 format=3 uid="uid://c744mxgw7ka51"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=31 format=3 uid="uid://c744mxgw7ka51"]
 
 [ext_resource type="Script" uid="uid://dlinaoe5arpsp" path="res://scripts/fof/cards/epic/palmador_rider_epic.gd" id="2_liiu8"]
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="3_gsunb"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://cdtliwmeg75lj" path="res://resources/datastore/boss_intents/palmador_rider/phase_one/spin_attack.tres" id="9_c12ey"]
 [ext_resource type="Resource" uid="uid://ddv2rlfws581s" path="res://resources/datastore/boss_intents/palmador_rider/phase_one/charge_attack.tres" id="10_wfe68"]
 [ext_resource type="Resource" uid="uid://cewlgqdq1q84b" path="res://resources/datastore/boss_intents/palmador_rider/phase_one/jump_attack.tres" id="11_dy2x3"]
+[ext_resource type="Script" uid="uid://cj8tn3dc0epr7" path="res://scripts/fof_info/cards/extra/epic_card_tier_datastore.gd" id="12_al2wo"]
 [ext_resource type="PackedScene" uid="uid://d33beirjwt2p7" path="res://assets/models/fof/cards/palmador_rider.glb" id="12_pd84b"]
 [ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="13_eroth"]
 [ext_resource type="Resource" uid="uid://du24tgmqhry4y" path="res://resources/datastore/boss_intents/palmador_rider/phase_two/autoattack.tres" id="14_njfvy"]
@@ -38,10 +39,27 @@ _bundled = {
 "version": 3
 }
 
+[sub_resource type="Resource" id="Resource_liiu8"]
+script = ExtResource("12_al2wo")
+attack = 2
+health = 16
+speed = 4
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
+[sub_resource type="Resource" id="Resource_gsunb"]
+script = ExtResource("12_al2wo")
+attack = 3
+health = 26
+speed = 4
+energy = -1
+metadata/_custom_type_script = "uid://cj8tn3dc0epr7"
+
 [sub_resource type="Resource" id="Resource_mlfll"]
 script = ExtResource("3_gsunb")
 name = "Palmador Rider"
 archetype = ExtResource("4_fjbyj")
+tiers = Array[ExtResource("12_al2wo")]([SubResource("Resource_liiu8"), SubResource("Resource_gsunb")])
 attack = 2
 health = 16
 speed = 4
@@ -76,6 +94,7 @@ _bundled = {
 script = ExtResource("3_gsunb")
 name = "Palmador Rider"
 archetype = ExtResource("13_eroth")
+tiers = Array[ExtResource("12_al2wo")]([])
 attack = 2
 health = 0
 speed = 2

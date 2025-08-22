@@ -174,9 +174,9 @@ func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
 func getCard() -> CardGD:
 	return Card
 
-func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false) -> TbcUI:
+func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false, autoscale: bool = false) -> TbcUI:
 	var tbc: TbcUI = load(info.TOOL_ICON_PATH).instantiate()
 	parent.add_child(tbc)
-	tbc.setInfo(self, hoverable)
+	tbc.setInfo(self, hoverable, autoscale)
 	tbc.setDraggable(draggable)
 	return tbc

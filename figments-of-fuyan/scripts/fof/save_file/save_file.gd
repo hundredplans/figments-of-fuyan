@@ -180,6 +180,7 @@ func getBoon(boon_id: int) -> BoonGD:
 func onGameLost() -> void:
 	DirAccess.remove_absolute(SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres")
 	load_main_menu.emit()
+	Game.public_id_objects = {}
 #endregion
 
 func onProcessAction(action: Action) -> void:

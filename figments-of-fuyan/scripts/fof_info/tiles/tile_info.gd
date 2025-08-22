@@ -52,8 +52,7 @@ static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
 func getModel(parent: Node3D, is_decoration: bool = false) -> Node3D:
 	var TileModel: Node3D = load(TILE_MODEL_SCENE_PATH).instantiate()
 	parent.add_child(TileModel)
-	
-	var tier_outline_mesh: MeshInstance3D = TileModel.get_node("TierOutlineMeshInstance3D")
+
 	var outline_mesh: MeshInstance3D = TileModel.get_node("OutlineMeshInstance3D")
 	var bottom_mesh: MeshInstance3D = TileModel.get_node("BottomMeshInstance3D")
 	var top_mesh: MeshInstance3D = TileModel.get_node("TopMeshInstance3D")
@@ -64,7 +63,6 @@ func getModel(parent: Node3D, is_decoration: bool = false) -> Node3D:
 	bottom_mesh.position.y = 0.15 if !is_short else 0.1
 	top_mesh.mesh = load(REGULAR_TOP_CYLINDER if !is_decoration else DECORATION_TOP_CYLINDER)
 	top_mesh.position.y = 0.3002 if !is_short else 0.2002
-	tier_outline_mesh.position.y = 0.3001 if !is_short else 0.2001
 	outline_mesh.position.y = 0.3 if !is_short else 0.2
 	collision_shape.shape = load(REGULAR_TILE_CONVEX_SHAPE_PATH if !is_short else SHORT_TILE_CONVEX_SHAPE_PATH)
 	return TileModel

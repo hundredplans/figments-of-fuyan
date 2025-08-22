@@ -21,7 +21,6 @@ var explored: ExploredGD
 signal change_hover_card_state
 const SHOW_CARD_AT_HOVER_DELAY: float = 1
 
-var TierOutlineMesh: MeshInstance3D
 var OutlineMesh: MeshInstance3D
 var BottomMesh: MeshInstance3D
 var TopMesh: MeshInstance3D
@@ -216,7 +215,6 @@ func onLoadModel() -> void:
 	if Model != null: Model.queue_free()
 	
 	Model = info.getModel(self, is_decoration)
-	TierOutlineMesh = Model.get_node("TierOutlineMeshInstance3D")
 	OutlineMesh = Model.get_node("OutlineMeshInstance3D")
 	BottomMesh = Model.get_node("BottomMeshInstance3D")
 	TopMesh = Model.get_node("TopMeshInstance3D")
@@ -440,27 +438,8 @@ func isAdjacentCoordsNotCoverPoints(x: Vector4i) -> bool:
 	var Tile: TileGD = Game.getTile(x)
 	return Tile == null or Tile.getHeight() < getHeight()
 
-
-const TIER_ONE_PATH: String = "res://resources/materials/colors/unshaded/brown.tres"
-const TIER_TWO_PATH: String = "res://resources/materials/colors/unshaded/light_grey.tres"
-const TIER_THREE_PATH: String = "res://resources/materials/colors/unshaded/orange.tres"
-const TIER_FOUR_PATH: String = "res://resources/materials/colors/unshaded/red.tres"
-
 func onUpdateTier(_tier: int, is_greyscale: bool = false) -> void:
 	tier = _tier
-	var mat: Material = getTopMaterial(is_greyscale)
-	if tier > 0:
-		mat = getTierMaterial()
-	TierOutlineMesh.set_surface_override_material(0, mat)
-	
-func getTierMaterial() -> Material:
-	var mat: Material = null
-	match tier:
-		1: mat = load(TIER_ONE_PATH)
-		2: mat = load(TIER_TWO_PATH)
-		3: mat = load(TIER_THREE_PATH)
-		4: mat = load(TIER_FOUR_PATH)
-	return mat
 
 func setInfoSprite(tx: Texture2D) -> void:
 	Model.get_node("InfoSprite").texture = tx

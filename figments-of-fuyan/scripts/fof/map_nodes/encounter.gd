@@ -47,3 +47,9 @@ func getHoverUIPath() -> String:
 	return info.ENCOUNTER_HOVER_UI
 
 func isDragZone() -> bool: return true
+
+func getStashItemPrice(item: FofGD) -> int:
+	return int(float(Game.getPriceForItem(item)) * Game.SELL_MULT)
+
+func isStashDragItem() -> bool:
+	return true

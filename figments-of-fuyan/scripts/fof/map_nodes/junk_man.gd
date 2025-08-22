@@ -5,10 +5,14 @@ const CARD_ODDS: float = 0.33
 const BOON_ODDS: float = 0.33
 const FOREIGN_ODDS: float = 0.25
 
-const JUNK_MAN_MAX_VALUE: int = 50
-
 var reward_data: SavedData
 var junk_man_value: int
+
+const WORLD_DIFFICULTY_TO_MAX_VALUE: Dictionary[int, int] = {
+	1: 40,
+	2: 60,
+	3: 80
+}
 
 func onSave() -> SavedDataEncounter:
 	ability_save['junk_man_value'] = junk_man_value
@@ -43,7 +47,7 @@ func getFillBarBackgroundColor() -> Color: return Color("#ad7600")
 
 func isDragZone() -> bool: return true
 func getMaxValue() -> int:
-	return JUNK_MAN_MAX_VALUE
+	return WORLD_DIFFICULTY_TO_MAX_VALUE[Game.getArea().getWorldDifficulty()]
 
 func onRewardCollected(item: FofGD) -> void:
 	if reward_data == null: return

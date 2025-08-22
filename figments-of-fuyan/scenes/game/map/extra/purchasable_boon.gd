@@ -9,6 +9,9 @@ func setInfo(_price_datastore: PriceDatastore) -> void:
 	var Boon: BoonGD = SavedData.onLoadModel(data, Game.getArea().getEnteredMapNode()) 
 	
 	BoonIcon.setInfo(Boon, true)
+	BoonIcon.setSizeScale(2)
+	BoonIcon.onShowNameLabel(-1)
+	BoonIcon.onShowTierLabel(-1)
 	BoonIcon.onDisplayCharges(false)
 	BoonIcon.pressed.connect(func(_x: TbcUI): onPressed())
 	DisplayedUI = BoonIcon

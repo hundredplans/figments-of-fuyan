@@ -1,6 +1,7 @@
 extends TbcUI
 
 #region Onready
+@onready var BigTierLabel: Label = %BigTierLabel
 @onready var TierLabel: Label = %TierLabel
 
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
@@ -52,10 +53,11 @@ var original_parent: Control
 
 const OUTLINE_PIXEL_SIZE: int = 3
 
-func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true, _draggable: bool = false) -> void:
+func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true, _draggable: bool = false, _autoscale: bool = false) -> void:
 	hoverable = _hoverable
 	inspectable = _inspectable
 	draggable = _draggable
+	autoscale = _autoscale
 	
 	Card = _Card
 	
@@ -82,7 +84,7 @@ func onUpdateTier(tier: int) -> void:
 	onUpdateStats()
 	TextLabel.setText(Card.getDescription(true))
 	TierLabel.text = str(Game.getTierString(tier))
-	ArtPop.modulate = Game.getTierColor(tier)
+	NameLabel.modulate = Game.getTierColor(tier)
 	
 func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.base_stats.attack)
@@ -102,7 +104,11 @@ func onToolUpdated(Tool: ToolGD) -> void:
 	
 	if Tool != null:
 		ToolInside.modulate = Game.getRarityColor(Tool.getRarity())
-		ToolOutside.modulate = Game.getTierColor(Tool.getTier())
+		onToolUpdateTier(Tool.getTier())
+		Tool.update_tier.connect(onToolUpdateTier)
+
+func onToolUpdateTier(tier: int) -> void:
+	ToolOutside.modulate = Game.getTierColor(tier)
 
 func setDisabled(_disabled: bool) -> void:
 	disabled = _disabled
@@ -191,3 +197,7 @@ func getToolIcon() -> TbcUI:
 
 func setDeckCardUICollisionLayer() -> void:
 	RaycastArea.collision_layer = 4 + 32
+
+func onShowTierLabel() -> void:
+	BigTierLabel.modulate = Game.getTierColor(Card.getTier())
+	BigTierLabel.text = "Tier " + Game.getTierString(Card.getTier())

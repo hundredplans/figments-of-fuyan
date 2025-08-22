@@ -89,7 +89,15 @@ grow_vertical = 2
 pivot_offset = Vector2(240, 240)
 mouse_filter = 2
 
-[node name="RewardTitle" parent="Main" instance=ExtResource("3_koqrq")]
+[node name="RewardTextManager" type="Control" parent="Main"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_top = 716.0
+offset_right = 1920.0
+offset_bottom = 1002.0
+mouse_filter = 2
+
+[node name="RewardTitle" parent="Main/RewardTextManager" instance=ExtResource("3_koqrq")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
@@ -99,9 +107,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -960.0
-offset_top = 176.0
+offset_top = -143.0
 offset_right = 960.0
-offset_bottom = 252.0
+offset_bottom = -67.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Shillings 12x"
@@ -109,7 +117,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 settings = ExtResource("7_4fcub")
 
-[node name="RewardDescription" parent="Main" instance=ExtResource("3_koqrq")]
+[node name="RewardDescription" parent="Main/RewardTextManager" instance=ExtResource("3_koqrq")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -118,9 +126,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -645.5
-offset_top = 266.0
+offset_top = -53.0
 offset_right = 645.5
-offset_bottom = 462.0
+offset_bottom = 143.0
 grow_horizontal = 2
 grow_vertical = 2
 
