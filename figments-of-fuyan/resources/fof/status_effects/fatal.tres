@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="StatusEffectInfo" load_steps=5 format=3 uid="uid://cew5nwfy8noq8"]
+
+[ext_resource type="Script" uid="uid://dxj8ygycxgoc" path="res://scripts/fof/status_effects/fatal.gd" id="1_1duk3"]
+[ext_resource type="Script" uid="uid://w4sxwyg6djo3" path="res://scripts/fof_info/status_effects/status_effect_info.gd" id="1_x2hom"]
+[ext_resource type="Texture2D" uid="uid://cvmcra30orwfh" path="res://assets/sprites/game/fof_object_icons/status_effects/fatal.png" id="2_1duk3"]
+[ext_resource type="Script" uid="uid://cw7dcq86bkve0" path="res://scripts/saved_data/status_effects/saved_data_status_effect.gd" id="3_3rdbr"]
+
+[resource]
+script = ExtResource("1_x2hom")
+icon = ExtResource("2_1duk3")
+description = "Damaging enemies with attacks kills them unless SHIELDED"
+state = 2
+id = 7
+name = "Fatal"
+gdscript = ExtResource("1_1duk3")
+saved_data = ExtResource("3_3rdbr")
+metadata/_custom_type_script = "uid://w4sxwyg6djo3"

@@ -94,9 +94,9 @@ func onClaimButtonDown() -> void:
 		var ToolIcon: Control = ToolIconPacked.instantiate()
 		add_child(ToolIcon)
 		ToolIcon.setInfo(item, false)
-		ToolIcon.setDisableTooltip(true)
 		ToolIcon.setSizeScale(3)
-		ToolIcon.top_level = true
+		ToolIcon.setDisableTooltip(true)
+		ToolIcon.global_position = get_viewport().get_mouse_position() - ToolIcon.pivot_offset
 		
 		StashScreen = Game.onCreateStashScreen(self, ToolIcon)
 		stash_screen_fade_in.emit()

@@ -17,6 +17,8 @@ func setInfo(base: Texture2D, _frames: Array[Texture2D], _bitmap_frames: Array[B
 	texture = base
 	frames = _frames
 	bitmap_frames = _bitmap_frames
+	FrameSprite.expand_mode = expand_mode
+	FrameSprite.stretch_mode = stretch_mode
 	
 	onUpdateGlobalMouseFilter()
 	onUpdateFrames()

@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://dgllniydxp6bf"]
+
+[ext_resource type="Script" uid="uid://cbw5g22bskfqt" path="res://scripts/fof/boons/axels_curse.gd" id="1_lc68n"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_vrksy"]
+[ext_resource type="Texture2D" uid="uid://c1sfsveor5mw2" path="res://assets/sprites/game/cards/art_mini/axel_pearse.png" id="2_l5qlg"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="2_t0agb"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_xsro4"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_m8ro5"]
+
+[sub_resource type="Resource" id="Resource_iuena"]
+script = ExtResource("6_m8ro5")
+description = "When enemies trigger On Hit they gain FATAL for [1] Turn"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_7vkgm"]
+script = ExtResource("2_xsro4")
+description_datastore = SubResource("Resource_iuena")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_0xfba"]
+script = ExtResource("6_m8ro5")
+description = "When enemies trigger On Hit they gain FATAL for [2] Turns"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_cptx6"]
+script = ExtResource("2_xsro4")
+description_datastore = SubResource("Resource_0xfba")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_ecr4j"]
+script = ExtResource("6_m8ro5")
+description = "When enemies trigger On Hit they gain FATAL for [3] Turns"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_t4esl"]
+script = ExtResource("2_xsro4")
+description_datastore = SubResource("Resource_ecr4j")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_88g7w"]
+script = ExtResource("6_m8ro5")
+description = "When enemies trigger On Hit they gain FATAL for [4] Turns"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_sy87r"]
+script = ExtResource("2_xsro4")
+description_datastore = SubResource("Resource_88g7w")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_vrksy")
+tiers = Array[ExtResource("2_xsro4")]([SubResource("Resource_7vkgm"), SubResource("Resource_cptx6"), SubResource("Resource_t4esl"), SubResource("Resource_sy87r")])
+icon = ExtResource("2_l5qlg")
+rarity = 0
+curse = true
+display_trigger = true
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 28
+name = "Axel's Curse"
+gdscript = ExtResource("1_lc68n")
+saved_data = ExtResource("2_t0agb")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

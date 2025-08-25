@@ -38,7 +38,6 @@ base_tier: int, tier_up_odds: float, tool_odds: float, tool_tier_up_odds: float,
 		@warning_ignore("int_as_enum_without_cast")
 		var rarity: Game.Rarities = int(Random.getRandomKey(odds))
 		var card_infos: Array = Helper.getFofInfoArray(CardInfo)
-		var card_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_CARD_TIER)
 		
 		if !keep_ids.is_empty(): card_infos = card_infos.filter(func(x: CardInfo): return x.id in keep_ids)
 		card_infos = card_infos.filter(func(x: CardInfo): return x.rarity == rarity)
@@ -47,16 +46,19 @@ base_tier: int, tier_up_odds: float, tool_odds: float, tool_tier_up_odds: float,
 			card_infos = card_infos.filter(func(x: CardInfo): return x.id not in used_ids)
 		
 		if card_infos.is_empty(): return null
-		var card_info: CardInfo = card_infos.pick_random()
 		
-		var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
-		card_data.tier = card_tier
-		Game.setCardDataFromInfo(card_data, card_info)
-		
-		if Random.rollFloat(tool_odds):
-			card_data.tool_data = getRandomToolData(tool_odds_datastore, tool_tier_up_odds, base_tier)
-		return card_data
+		return getCardDataFromInfo(card_infos.pick_random(), base_tier, tier_up_odds, tool_odds_datastore, tool_odds, tool_tier_up_odds)
 	return null
+	
+static func getCardDataFromInfo(card_info: CardInfo, base_tier: int, tier_up_odds: float, tool_odds_datastore: RarityOddsDatastore, tool_odds: float, tool_tier_up_odds: float) -> SavedDataCard:
+	var card_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_CARD_TIER)
+	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	card_data.tier = card_tier
+	Game.setCardDataFromInfo(card_data, card_info)
+	
+	if Random.rollFloat(tool_odds):
+		card_data.tool_data = getRandomToolData(tool_odds_datastore, tool_tier_up_odds, base_tier)
+	return card_data
 	
 static func getRandomLocalCardData(odds_datastore: RarityOddsDatastore, tool_odds_datastore: RarityOddsDatastore,\
 base_tier: int, tier_up_odds: float, tool_odds: float, tool_tier_up_odds: float, used_ids: Array = []) -> SavedDataCard:

@@ -279,32 +279,6 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Enemy Min Spawn: "
-
-[node name="EnemyMinSpawnLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-alignment = 1
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Enemy Max Spawn: "
-
-[node name="EnemyMaxSpawnLineEdit" type="LineEdit" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-alignment = 1
-
 [node name="HBoxContainer3" type="HBoxContainer" parent="UI/SettingsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -395,6 +369,6 @@ unique_name_in_owner = true
 [connection signal="mouse_in_ui" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="camera_changed_speed" from="World/Camera3D" to="." method="_on_camera_3d_camera_changed_speed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="timeout" from="MouseWheelDelayTimer" to="." method="_on_mouse_wheel_delay_timer_timeout"]

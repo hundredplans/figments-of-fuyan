@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=7 format=3 uid="uid://c836gmasvt0kt"]
+
+[ext_resource type="Script" uid="uid://5824h66xh5rt" path="res://scripts/fof/map_nodes/colosseum.gd" id="1_01w6q"]
+[ext_resource type="Texture2D" uid="uid://ncg85xrd6p11" path="res://assets/sprites/game/boons/selfish_boon.png" id="2_cs83o"]
+[ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop.glb" id="3_buvi5"]
+[ext_resource type="Script" uid="uid://1nhagdcu8nfi" path="res://scripts/saved_data/map_nodes/saved_data_map_node.gd" id="4_qdwg3"]
+[ext_resource type="PackedScene" uid="uid://ctjl460n6nhg5" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/colosseum/colosseum_screen.tscn" id="5_wvwn3"]
+[ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="6_6i5rw"]
+
+[resource]
+script = ExtResource("6_6i5rw")
+screen = ExtResource("5_wvwn3")
+icon = ExtResource("2_cs83o")
+model = ExtResource("3_buvi5")
+is_encounter = true
+is_shop = false
+is_unique = false
+float_y = 0.0
+legend_order = 0
+id = 14
+name = "Colosseum"
+gdscript = ExtResource("1_01w6q")
+saved_data = ExtResource("4_qdwg3")
+metadata/_custom_type_script = "uid://bsrlnsfamr6p"

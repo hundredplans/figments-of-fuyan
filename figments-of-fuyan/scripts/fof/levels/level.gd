@@ -140,7 +140,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		onPushAction(PlayMusicAction.new(Audio.COCONUT_SPRINGS_BOSS))
 		
 	if is_init:
-		var actions: Array = [StartGameAction.new(), ChangePhaseAction.new(Game.Phases.START)]
+		var actions: Array = [StartLevelAction.new(), ChangePhaseAction.new(Game.Phases.START)]
 		speed_order = SpeedOrder.new()
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
 			GameObject.onLoadDataLevelFofInit()
@@ -299,7 +299,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is RevealAction:
 			if action.Revealed is CardGD and action.Revealed != null and action.Revealed.isAlly(0):
 				onPlayerCardSpottedByAI()
-		elif action is StartGameAction:
+		elif action is StartLevelAction:
 			if action.getDelay() == 0: return
 			game_started_post.emit()
 	elif !action.post:
@@ -313,7 +313,7 @@ func onProcessAction(action: Action) -> void:
 				camera_change_pre.emit(action.SpectateObject, getSpectateObject())
 		elif action is MovementFinishAction:
 			action.setPhaseByLevel(phase)
-		elif action is StartGameAction:
+		elif action is StartLevelAction:
 			if action.getDelay() == 0: return # Means admin is on
 			game_started.emit()
 #endregion
@@ -402,6 +402,9 @@ func setRewards(is_win: bool) -> void:
 func onGameEnded() -> void:
 	for FofObject in get_tree().get_nodes_in_group("FofGD"):
 		FofObject.onLevelEnded(rewards != null)
+	
+	if level_preview != null and level_preview.getCurseId() > 0:
+		onPushAction(RemoveBoonAction.new(level_preview.getCurseId()))
 	
 	game_ended.emit(rewards)
 	

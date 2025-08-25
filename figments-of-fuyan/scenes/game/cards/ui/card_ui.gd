@@ -194,9 +194,9 @@ func getItem() -> FofGD: return Card
 	
 func getToolIcon() -> TbcUI:
 	return ToolIcon
-
-func setDeckCardUICollisionLayer() -> void:
-	RaycastArea.collision_layer = 4 + 32
+	
+func setStashScreenCardUICollisionLayer() -> void:
+	RaycastArea.collision_layer = 4 + 128
 
 func onShowTierLabel() -> void:
 	BigTierLabel.modulate = Game.getTierColor(Card.getTier())

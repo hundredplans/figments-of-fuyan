@@ -77,6 +77,6 @@ func onLevelEnded(_win: bool) -> void:
 func getCharges() -> int:
 	return charges
 
-func onFieldEffectAdded() -> void: pass
-
 func getFofObject() -> FofGD: return FofObject
+func onForceUpdateDisplayNumber() -> void: pass
+func onFieldEffectAdded() -> void: pass

@@ -14,7 +14,6 @@ func setInfo(_Tool: ToolGD, _hoverable: bool = false, _autoscale: bool = false) 
 		Tool.update_tier.connect(onUpdateTier)
 	setInfoDirect(Tool.getIcon() if Tool != null else null, _hoverable, _autoscale)
 	setMouseFilter(mouse_filter)
-	
 	onUpdateTier(Tool.getTier() if Tool != null else 0)
 	
 func onShowTierLabel(label_offset: int = 0) -> void:

@@ -4,6 +4,10 @@ const OZHARS_BAZAAR_DATASTORE_PATH: String = "res://resources/datastore/encounte
 const GENERAL_SHOP_DATASTORE_PATH: String = "res://resources/datastore/encounters/encounter_datastore/general_shop_datastore.tres"
 const JUNK_MAN_DATASTORE_PATH: String = "res://resources/datastore/encounters/encounter_datastore/junk_man_datastore.tres"
 const SMITH_DATASTORE_PATH: String = "res://resources/datastore/encounters/encounter_datastore/smith_datastore.tres"
+const CRYPT_DATASTORE_PATH: String = "res://resources/datastore/encounters/encounter_datastore/crypt_datastore.tres"
+const COLOSSEUM_DATASTORE_PATH: String = "res://resources/datastore/encounters/encounter_datastore/colosseum_datastore.tres"
+const KYLAS_SHACK_DATASTORE_PATH: String = "res://resources/datastore/encounters/encounter_datastore/kylas_shack_datastore.tres"
+const SEERS_ABODE_DATASTORE_PATH: String = "res://resources/datastore/encounters/encounter_datastore/seers_abode_datastore.tres"
 
 func onSave() -> SavedDataMapNode:
 	return SavedDataEncounter.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save)
@@ -28,6 +32,10 @@ func onLoadEncounterDatastore() -> void:
 		6: path = GENERAL_SHOP_DATASTORE_PATH
 		11: path = SMITH_DATASTORE_PATH
 		12: path = JUNK_MAN_DATASTORE_PATH
+		13: path = CRYPT_DATASTORE_PATH
+		14: path = COLOSSEUM_DATASTORE_PATH
+		15: path = KYLAS_SHACK_DATASTORE_PATH
+		16: path = SEERS_ABODE_DATASTORE_PATH
 		_: path = GENERAL_SHOP_DATASTORE_PATH
 	encounter_datastore = load(path)
 

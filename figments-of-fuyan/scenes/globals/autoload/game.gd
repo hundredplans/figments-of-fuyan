@@ -21,7 +21,7 @@ enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED, ENERGY}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER, MERCENARY}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
-enum FightTypes {NULL, REGULAR, ELITE, MINIBOSS, BOSS}
+enum FightTypes {NULL, REGULAR, ELITE, MINIBOSS, BOSS, COLOSSEUM}
 enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED, LIGHT_RED, YELLOW, LIGHTER_RED, BLACK}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
@@ -665,10 +665,10 @@ func getTierShillingsMultiplier(tier: int) -> float:
 	return TIER_TO_SHILLINGS_MULTIPLIER[tier]
 #endregion
 
-func getPriceForItem(item: FofGD) -> int:
-	return getPriceForItemData(item.onSave())
+func getPriceForItem(item: FofGD, include_card_tool: bool = true) -> int:
+	return getPriceForItemData(item.onSave(), include_card_tool)
 	
-func getPriceForItemData(data: SavedData) -> int:
+func getPriceForItemData(data: SavedData, include_card_tool: bool = true) -> int:
 	var world: WorldDatastore = Game.getArea().getWorld()
 	var rarity_prices: RarityPriceDatastore
 	var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
@@ -677,7 +677,7 @@ func getPriceForItemData(data: SavedData) -> int:
 	elif data is SavedDataCard: rarity_prices = world.getCardRarityPrices()
 	
 	var sh: int = int(float(rarity_prices.getByRarity(info.rarity)) * Game.getTierShillingsMultiplier(data.tier))
-	if data is SavedDataCard and data.tool_data != null:
+	if include_card_tool and data is SavedDataCard and data.tool_data != null:
 		rarity_prices = world.getToolRarityPrices()
 		var tool_data: SavedDataTool = data.tool_data
 		var tool_info: ToolInfo = Helper.getFofInfoID(ToolInfo, tool_data.id)
@@ -694,3 +694,10 @@ func getPriceForCardData(data: SavedData, is_foreign: bool) -> int:
 		data.tool_data = tool_data
 		return card_price + tool_price
 	return getPriceForItemData(data)
+	
+func getDuplicateCardData(_card_data: SavedDataCard) -> SavedDataCard:
+	var card_data: SavedDataCard = _card_data.duplicate()
+	card_data.public_id = 0
+	if card_data.tool_data != null:
+		card_data.tool_data.public_id = 0
+	return card_data

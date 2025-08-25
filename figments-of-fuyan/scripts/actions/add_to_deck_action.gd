@@ -1,19 +1,20 @@
 class_name AddToDeckAction extends Action
 
 var Card: CardGD
+var override_deck_slot: DeckSlot
 
-func _init(_Card: CardGD = null) -> void:
+func _init(_Card: CardGD = null, _override_deck_slot: DeckSlot = null) -> void:
 	super()
 	Card = _Card
+	override_deck_slot = _override_deck_slot
 
 func onPreAction() -> void:
 	pass
 
 func onPostAction() -> void:
-	var is_available: bool = Game.getSaveFile().isCardValidForDeck(Card)
-	
-	if is_available:
-		var deck_slot: DeckSlot = Game.getSaveFile().getFirstAvailableDeckSlot()
+	if Game.getSaveFile().isCardValidForDeck(Card) or override_deck_slot != null:
+		var deck_slot: DeckSlot = Game.getSaveFile().getFirstAvailableDeckSlot()\
+			if override_deck_slot == null else override_deck_slot
 		if deck_slot != null:
 			deck_slot.onAddCard(Card)
 	else:

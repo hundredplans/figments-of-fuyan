@@ -24,8 +24,6 @@ extends Node
 @onready var LevelNameLabel: Label = %LevelNameLabel
 
 @onready var SettingsContainer: MarginContainer = %SettingsContainer
-@onready var EnemyMinSpawnLineEdit: LineEdit = %EnemyMinSpawnLineEdit
-@onready var EnemyMaxSpawnLineEdit: LineEdit = %EnemyMaxSpawnLineEdit
 @onready var BudgetMinLineEdit: LineEdit = %BudgetMinLineEdit
 @onready var BudgetMaxLineEdit: LineEdit = %BudgetMaxLineEdit
 
@@ -540,8 +538,6 @@ func onSaveLevel() -> void:
 			data.public_id = 0
 			loaded.data.append(data)
 
-		loaded.enemy_min_spawn_amount = int(EnemyMinSpawnLineEdit.text)
-		loaded.enemy_max_spawn_amount = int(EnemyMaxSpawnLineEdit.text)
 		loaded.budget_min = int(BudgetMinLineEdit.text)
 		loaded.budget_max = int(BudgetMaxLineEdit.text)
 		
@@ -725,13 +721,9 @@ func _on_settings_button_pressed() -> void:
 
 func setSettings(loaded: Variant) -> void:
 	if loaded is DecorationDatastore:
-		EnemyMinSpawnLineEdit.text = ""
-		EnemyMaxSpawnLineEdit.text = ""
 		BudgetMinLineEdit.text = ""
 		BudgetMaxLineEdit.text = ""
 	elif loaded is LevelInfo:
-		EnemyMinSpawnLineEdit.text = str(loaded.enemy_min_spawn_amount)
-		EnemyMaxSpawnLineEdit.text = str(loaded.enemy_max_spawn_amount)
 		BudgetMinLineEdit.text = str(loaded.budget_min)
 		BudgetMaxLineEdit.text = str(loaded.budget_max)
 #endregion

@@ -10,8 +10,6 @@ func setInfo(map_node: MapNodeGD) -> void:
 	FofUIControl.add_child(FofUIBox)
 	FofUIBox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
-	if Game.getArea().getProgress() < 5 and map_node.map_location.progress > 5: queue_free(); return
-	
 	var boss_data := SavedDataEpicCard.new(map_node.boss_id)
 	FofUIBox.setInfo(boss_data)
 	FofUIBox.scale = Vector2(2, 2)

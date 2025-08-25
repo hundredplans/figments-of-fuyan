@@ -1,12 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://do6gjyjqomnx4"]
+[gd_scene load_steps=4 format=3 uid="uid://do6gjyjqomnx4"]
 
 [ext_resource type="Script" uid="uid://df3kcvxgr3y4o" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/crypt/crypt_screen.gd" id="1_pjvbe"]
+[ext_resource type="PackedScene" uid="uid://bvwvxtul7dpd8" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.tscn" id="2_2k6fo"]
+[ext_resource type="Texture2D" uid="uid://c5x8y5ddiotji" path="res://assets/sprites/ui/scene_specific/encounter_screen/crypt/crypt_base.png" id="3_e4hmu"]
 
-[node name="TransformerScreen" type="Control"]
+[node name="CryptScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_pjvbe")
+
+[node name="EncounterMainUI" parent="." instance=ExtResource("2_2k6fo")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 501.0
+offset_top = 230.0
+offset_right = 1013.0
+offset_bottom = 742.0
+scale = Vector2(2, 2)
+texture = ExtResource("3_e4hmu")
+
+[connection signal="pressed" from="EncounterMainUI" to="." method="_on_encounter_main_ui_pressed"]

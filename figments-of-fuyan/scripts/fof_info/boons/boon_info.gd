@@ -4,7 +4,6 @@ class_name BoonInfo extends FofInfo
 @export var icon: Texture2D
 @export var rarity: Game.Rarities
 @export var curse: bool
-@export var elite_fight_curse: bool
 @export var display_trigger: bool = true
 
 @export_group("Charges")

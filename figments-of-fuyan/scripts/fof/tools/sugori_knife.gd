@@ -58,6 +58,7 @@ func onToolHolderDeath() -> void:
 		onRemoveFieldEffects(getAdjacentOrCloserAllies())
 		
 func getAdjacentOrCloserAllies(StartTile: TileGD = Card.getTile()) -> Array:
+	if StartTile == null: return []
 	var allies: Array = Game.getAllyUnits(Card.getTeam())
 	var tiles: Array = Game.getAdjacentOrCloserTiles(StartTile, getTierRange())
 	return allies.filter(func(x: CardGD): return x.getTile() in tiles)

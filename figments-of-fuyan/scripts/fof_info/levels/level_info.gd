@@ -6,8 +6,6 @@ class_name LevelInfo extends FofInfo
 @export_group("")
 
 @export_group("Manual")
-@export var enemy_min_spawn_amount: int
-@export var enemy_max_spawn_amount: int
 @export var budget_min: int
 @export var budget_max: int
 @export_group("")

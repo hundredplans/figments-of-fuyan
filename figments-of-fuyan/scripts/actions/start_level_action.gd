@@ -1,4 +1,4 @@
-class_name StartGameAction extends Action
+class_name StartLevelAction extends Action
 
 const START_TIME: float = 6.5
 func _init() -> void:

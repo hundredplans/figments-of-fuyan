@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MapNodeInfo" load_steps=7 format=3 uid="uid://cyqq7a86btaaw"]
+
+[ext_resource type="Script" uid="uid://bcts7wfokwd51" path="res://scripts/fof/map_nodes/shop.gd" id="1_prqds"]
+[ext_resource type="Script" uid="uid://bsrlnsfamr6p" path="res://scripts/fof_info/map_nodes/map_node_info.gd" id="1_vyyxy"]
+[ext_resource type="Texture2D" uid="uid://kcitn6i05q53" path="res://assets/sprites/game/map/shop.png" id="2_g3qdq"]
+[ext_resource type="PackedScene" uid="uid://bbhu33eque7at" path="res://assets/models/fof/map_nodes/shop.glb" id="3_qw0qu"]
+[ext_resource type="Script" uid="uid://dnnn75byduf57" path="res://scripts/saved_data/map_nodes/saved_data_shop.gd" id="4_prqds"]
+[ext_resource type="PackedScene" uid="uid://ca067vx7dy1b" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/shop_screen.tscn" id="5_x4k5p"]
+
+[resource]
+script = ExtResource("1_vyyxy")
+screen = ExtResource("5_x4k5p")
+icon = ExtResource("2_g3qdq")
+model = ExtResource("3_qw0qu")
+is_encounter = true
+is_shop = true
+is_unique = false
+float_y = 0.0
+legend_order = 0
+id = 15
+name = "Kyla's Shack"
+gdscript = ExtResource("1_prqds")
+saved_data = ExtResource("4_prqds")
+metadata/_custom_type_script = "uid://bsrlnsfamr6p"

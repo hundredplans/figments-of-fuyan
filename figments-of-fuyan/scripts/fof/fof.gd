@@ -60,6 +60,7 @@ func onAppendAction(actions: Variant, action_owner: Variant = self) -> void:
 		
 func onForceAction(action: Action) -> void:
 	action.owner = self
+	action.forced = true
 	force_action.emit(action)
 
 func onProcessAction(_action: Action) -> void: pass

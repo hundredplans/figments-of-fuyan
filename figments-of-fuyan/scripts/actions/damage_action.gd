@@ -7,6 +7,7 @@ var damage_type: Game.DamageTypes
 var ignore_armor_shield: bool
 var ignore_armor_shield_success: bool
 var armor: int
+var fatal: bool
 
 const SELFISH_BOON_ID: int = 27
 const SHIELD_ID: int = 3
@@ -20,6 +21,9 @@ func _init(_Damager: FofGD = null, _Defenders: Variant = null, _damage: int = 0,
 	
 	damage = _damage
 	damage_type = _damage_type
+	
+func setFatal(state: bool) -> void:
+	fatal = state
 
 func setIgnoreArmorShield(state: bool) -> void:
 	ignore_armor_shield = state
@@ -37,7 +41,7 @@ func onPostAction() -> void:
 	var selfish_boon_action: BoonActivatedAction
 	for Card: CardGD in Defenders:
 		var ShieldFieldEffect: FieldEffectGD = Card.getFirstFieldEffect(SHIELD_ID)
-		var new_damage: int = max(0, damage)
+		var new_damage: int = max(0, damage) if (!fatal) else 99
 		if !ignore_armor_shield:
 			new_damage = max(0, new_damage - armor)
 			if ShieldFieldEffect != null:

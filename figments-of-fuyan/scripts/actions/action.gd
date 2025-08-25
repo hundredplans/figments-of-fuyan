@@ -7,6 +7,7 @@ signal force_action
 signal remove_move_and_attack_actions
 
 var owner: Variant # FofGD or another action always
+var forced: bool
 
 @export var lock_action_delay: bool
 @export var action_delay: float = 0
@@ -65,6 +66,7 @@ func onPushAfterAction(actions: Variant, action_or_script: Variant, action_owner
 		
 func onForceAction(action: Action) -> void:
 	action.owner = self
+	action.forced = true
 	force_action.emit(action)
 		
 func onRemoveMoveAndAttackActions(Card: CardGD) -> void:

@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://jti2uryp2btm"]
+
+[ext_resource type="Script" uid="uid://dtfrw6cqe4m1d" path="res://scripts/fof/boons/hocus_curse.gd" id="1_0npa7"]
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_fcdr6"]
+[ext_resource type="Texture2D" uid="uid://dorudq0txf7sh" path="res://assets/sprites/game/cards/art_mini/hocus_palmus.png" id="1_huryp"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_huryp"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_0qmrs"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="4_t0l61"]
+
+[sub_resource type="Resource" id="Resource_kt7u4"]
+script = ExtResource("4_t0l61")
+description = "Enemies Heal [2] HP on first REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_0npa7"]
+script = ExtResource("2_huryp")
+description_datastore = SubResource("Resource_kt7u4")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_0qmrs"]
+script = ExtResource("4_t0l61")
+description = "Enemies Heal [3] HP on first REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_d0i25"]
+script = ExtResource("2_huryp")
+description_datastore = SubResource("Resource_0qmrs")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_660yk"]
+script = ExtResource("4_t0l61")
+description = "Enemies Heal [4] HP on first REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_a8qc6"]
+script = ExtResource("2_huryp")
+description_datastore = SubResource("Resource_660yk")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_kuvuj"]
+script = ExtResource("4_t0l61")
+description = "Enemies Heal [5] HP on first REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_j86j4"]
+script = ExtResource("2_huryp")
+description_datastore = SubResource("Resource_kuvuj")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_fcdr6")
+tiers = Array[ExtResource("2_huryp")]([SubResource("Resource_0npa7"), SubResource("Resource_d0i25"), SubResource("Resource_a8qc6"), SubResource("Resource_j86j4")])
+icon = ExtResource("1_huryp")
+rarity = 0
+curse = true
+display_trigger = true
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 30
+name = "Hocus's Curse"
+gdscript = ExtResource("1_0npa7")
+saved_data = ExtResource("3_0qmrs")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

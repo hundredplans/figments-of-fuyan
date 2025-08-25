@@ -9,7 +9,9 @@ const SPICYRICE_MASSIVE_PATH: String = "res://resources/ui/label_settings/spicyr
 
 const ROTATION_SPEED_TO_MIDDLE: float = 15.0
 const RELATIVE_SIDE_FORCE_DIV: float = 2.5
+const TIME_TO_ENABLE_DRAGGING: float = 0.1
 
+var can_disable_dragging_pressed: bool
 var end_drag_on_release: bool = true
 var current_mouse_filter: Control.MouseFilter
 
@@ -58,7 +60,7 @@ func onRemovePriceLabel() -> void:
 #endregion
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("MainInput") and is_dragging and !end_drag_on_release:
+	if Input.is_action_just_pressed("MainInput") and is_dragging and !end_drag_on_release and can_disable_dragging_pressed:
 		onDragEnd()
 	elif Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
 		onPressed()
@@ -102,7 +104,6 @@ func setHoverable(state: bool) -> void:
 	onUpdateModulate()
 	
 func onDragBegin() -> void:
-	is_dragging = true
 	original_tooltip_state = disable_tooltip
 	original_icon_position = position
 	original_mouse_filter = current_mouse_filter
@@ -119,6 +120,10 @@ func onDragBegin() -> void:
 	var original_global_position: Vector2 = global_position
 	top_level = true
 	global_position = original_global_position
+	is_dragging = true
+	
+	await get_tree().create_timer(TIME_TO_ENABLE_DRAGGING).timeout
+	can_disable_dragging_pressed = true
 	
 func onDragEnd() -> void:
 	is_dragging = false
@@ -172,3 +177,7 @@ func getToolBoonLabelSettings(label_offset: int = 0) -> LabelSettings:
 		if custom_minimum_size.x <= nums[i]:
 			return load(label_paths[max(i + label_offset, 0)])
 	return null
+
+func getHoverable() -> bool: return hoverable
+func getAutoscale() -> bool: return autoscale
+func getDraggable() -> bool: return draggable

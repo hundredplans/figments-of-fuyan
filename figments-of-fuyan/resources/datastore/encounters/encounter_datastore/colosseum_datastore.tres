@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EncounterDatastore" load_steps=6 format=3 uid="uid://djjpiv3fmnyn7"]
+
+[ext_resource type="Texture2D" uid="uid://tk87cwrgrsn3" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum_bg_icon.png" id="1_ovddb"]
+[ext_resource type="Script" uid="uid://c1rls3bjyqx0r" path="res://scripts/common/encounter/encounter_datastore.gd" id="1_y8kwe"]
+[ext_resource type="Texture2D" uid="uid://jejfxlaad5og" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum_base.png" id="2_56di1"]
+[ext_resource type="Texture2D" uid="uid://dx76mo3xswjip" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum1.png" id="3_a3a0h"]
+[ext_resource type="Texture2D" uid="uid://dpb6xq7583rlc" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum2.png" id="4_f06sa"]
+
+[resource]
+script = ExtResource("1_y8kwe")
+id = 14
+background_icon = ExtResource("1_ovddb")
+background_main_color = Color(0.35, 0.254333, 0.2065, 1)
+base_sprite = ExtResource("2_56di1")
+frames = Array[Texture2D]([ExtResource("3_a3a0h"), ExtResource("4_f06sa")])
+hands = Array[Texture2D]([])
+bitmap_frames = Array[BitMap]([])
+drag_zone_name = ""
+drag_zone_label_color = Color(0, 0, 0, 1)
+metadata/_custom_type_script = "uid://c1rls3bjyqx0r"

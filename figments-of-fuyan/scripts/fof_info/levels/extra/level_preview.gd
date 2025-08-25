@@ -1,12 +1,15 @@
 class_name LevelPreview extends Resource
 
 @export var card_datas: Array
-@export var chief_data: SavedDataCard
+@export var elite_exalt_id: int
+@export var curse_id: int
 @export var total_amount: int
 
-func _init(_card_datas: Array = [], _chief_data: SavedDataCard = null) -> void:
+func _init(_card_datas: Array = [], _total_amount: int = 0, _elite_exalt_id: int = 0, _curse_id: int = 0) -> void:
 	card_datas = _card_datas
-	chief_data = _chief_data
+	total_amount = _total_amount
+	elite_exalt_id = _elite_exalt_id
+	curse_id = _curse_id
 
 func setCardDatas(_card_datas: Array = []) -> void:
 	card_datas = _card_datas
@@ -14,16 +17,26 @@ func setCardDatas(_card_datas: Array = []) -> void:
 func getCardDatas() -> Array:
 	return card_datas
 	
-func setChiefData(_chief_data: SavedDataCard, add_to_total_amount: bool = false) -> void:
-	chief_data = _chief_data
-	if add_to_total_amount:
-		setTotalAmount(total_amount + 1)
-	
-func getChiefData() -> SavedDataCard:
-	return chief_data
-
-func setTotalAmount(_total_amount: int) -> void:
-	total_amount = _total_amount
+func getPreviewCardDatas() -> Array:
+	if elite_exalt_id == 0: return getCardDatas()
+	var temp_card_datas: Array = card_datas.duplicate()
+	for card_data: SavedDataCard in card_datas:
+		if card_data.id == elite_exalt_id: # Only first is removed
+			temp_card_datas.erase(card_data)
+			break
+	return temp_card_datas
 
 func getTotalAmount() -> int:
 	return total_amount
+
+func getEliteExaltId() -> int:
+	return elite_exalt_id
+	
+func getCurseId() -> int:
+	return curse_id
+	
+func setEliteExaltId(_elite_exalt_id: int) -> void:
+	elite_exalt_id = _elite_exalt_id
+	
+func setCurseId(_curse_id: int) -> void:
+	curse_id = _curse_id

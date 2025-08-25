@@ -9,15 +9,20 @@ var level_info: LevelInfo
 func onFofInit() -> void:
 	super()
 	setLevelInfo()
+	setLevelExtraData(getBudget())
 	
+func setLevelExtraData(budget: int) -> void:
 	spawn_group = level_info.getRandomSpawnGroup()
 	var enemy_spawns: Array = level_info.getEnemySpawnsInGroup(spawn_group) # Array[SavedDataSpawn]
 	enemy_spawns.shuffle()
 	
-	var budget: int = getBudget()
+	enemy_cards = Game.getArea().setEnemySpawnsFromBudget(budget, enemy_spawns, map_location.progress, getEliteExaltId())
+	onCreateLevelPreview(enemy_cards)
 	
-	enemy_cards = Game.area.setEnemySpawnsFromBudget(budget, level_info.enemy_min_spawn_amount, level_info.enemy_max_spawn_amount, enemy_spawns, map_location.progress, false)
+func onCreateLevelPreview(enemy_cards: Array) -> void:
 	level_preview = Game.getArea().getLevelPreview(enemy_cards)
+	
+func getEliteExaltId() -> int: return 0
 	
 func onSave() -> SavedDataMapNode:
 	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group, enemy_cards, level_preview)
@@ -69,19 +74,5 @@ func setLevelInfo() -> void:
 	if Helper.admin_datastore.force_level_spawn_id > 0 and map_location.progress == 1:
 		level_info = Helper.getFofInfoID(LevelInfo, Helper.admin_datastore.force_level_spawn_id)
 	else:
-		var level_script: GDScript = Game.getArea().info.base_level_script
-		var existing_level_ids: Array = get_tree().get_nodes_in_group("FightMapNodesGD")\
-			.filter(func(x: MapNodeGD): return x.map_location.progress == map_location.progress and x != self)\
-			.map(func(y: MapNodeGD): return y.level_info.id if y.level_info != null else 0)\
-			.filter(func(z: int): return z != 0)
-			
-		var budget: int = Game.getArea().getBudget(map_location.progress, 0)
-		var levels: Array = Helper.getFofInfoArray(LevelInfo)
-		levels = levels.filter(func(x: LevelInfo): return x.gdscript == level_script)
-		levels = levels.filter(func(x: LevelInfo): return budget >= x.budget_min and budget <= x.budget_max)
-		
-		if levels.size() > existing_level_ids.size():
-			levels = levels.filter(func(x: LevelInfo): return x.id not in existing_level_ids)
-			
-		level_info = levels.pick_random()
+		level_info = Game.getArea().getLevelInfoForProgress(map_location.progress)
 #endregion

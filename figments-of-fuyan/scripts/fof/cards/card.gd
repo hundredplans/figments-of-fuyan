@@ -120,6 +120,9 @@ func setAwakenedInCombat(state: bool) -> void:
 	is_awakened_in_combat = state
 	awakened_in_combat.emit(state)
 	
+func getAwakenedInCombat() -> bool:
+	return is_awakened_in_combat
+	
 func setStats(stats: StatsDatastore) -> void:
 	attack = stats.attack
 	health = stats.health

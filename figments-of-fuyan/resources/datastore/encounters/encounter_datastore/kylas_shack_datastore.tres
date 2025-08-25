@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="ShopDatastore" load_steps=17 format=3 uid="uid://dcaj2ek3cysfg"]
+
+[ext_resource type="Texture2D" uid="uid://cdtgandyuulnq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/general_shop_bg_icon.png" id="1_07tl3"]
+[ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="1_femxc"]
+[ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="2_7m0r6"]
+[ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="2_s0vea"]
+[ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="3_e4cwg"]
+[ext_resource type="Texture2D" uid="uid://btvht0n6tmf46" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab2.png" id="4_jlglj"]
+[ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_hand_open.png" id="5_rmt7j"]
+[ext_resource type="Texture2D" uid="uid://bodfwk4s5uaqu" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_hand_closed.png" id="6_4dgt3"]
+[ext_resource type="Resource" uid="uid://dypcxce3yrfoe" path="res://resources/datastore/encounters/rarity_prices/tool_rarity_prices.tres" id="8_6lh6m"]
+[ext_resource type="Texture2D" uid="uid://b4kkkr8r2ttuc" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_buy.png" id="9_y8wcs"]
+
+[sub_resource type="Resource" id="Resource_5h2gg"]
+script = ExtResource("1_femxc")
+item_type = 1
+rarity_price_datastore = ExtResource("8_6lh6m")
+position = Vector2(100, 350)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_mo18o"]
+script = ExtResource("1_femxc")
+item_type = 1
+rarity_price_datastore = ExtResource("8_6lh6m")
+position = Vector2(450, 350)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_gosbg"]
+script = ExtResource("1_femxc")
+item_type = 1
+rarity_price_datastore = ExtResource("8_6lh6m")
+position = Vector2(800, 350)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_ddlpd"]
+script = ExtResource("1_femxc")
+item_type = 1
+rarity_price_datastore = ExtResource("8_6lh6m")
+position = Vector2(1150, 350)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_07tl3"]
+script = ExtResource("1_femxc")
+item_type = 1
+rarity_price_datastore = ExtResource("8_6lh6m")
+position = Vector2(450, 700)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[sub_resource type="Resource" id="Resource_s0vea"]
+script = ExtResource("1_femxc")
+item_type = 1
+rarity_price_datastore = ExtResource("8_6lh6m")
+position = Vector2(800, 700)
+metadata/_custom_type_script = "uid://b48etdqq4rha8"
+
+[resource]
+script = ExtResource("2_7m0r6")
+items = Array[ExtResource("1_femxc")]([SubResource("Resource_5h2gg"), SubResource("Resource_mo18o"), SubResource("Resource_gosbg"), SubResource("Resource_ddlpd"), SubResource("Resource_07tl3"), SubResource("Resource_s0vea")])
+merchant_buy_frame = ExtResource("9_y8wcs")
+id = 15
+background_icon = ExtResource("1_07tl3")
+background_main_color = Color(0.175183, 0.23, 0.1702, 1)
+base_sprite = ExtResource("2_s0vea")
+frames = Array[Texture2D]([ExtResource("3_e4cwg"), ExtResource("4_jlglj")])
+hands = Array[Texture2D]([ExtResource("5_rmt7j"), ExtResource("6_4dgt3")])
+bitmap_frames = Array[BitMap]([])
+drag_zone_name = ""
+drag_zone_label_color = Color(0, 0, 0, 1)
+metadata/_custom_type_script = "uid://doid1bi8h7kwu"

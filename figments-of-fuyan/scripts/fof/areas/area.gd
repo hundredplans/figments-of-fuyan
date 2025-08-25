@@ -144,6 +144,7 @@ func onCreateMapLinks(empty_spots_by_progress: Dictionary[int, Array]) -> void:
 	var section_one_batch: Dictionary[int, Array] = {}
 	var section_two_batch: Dictionary[int, Array] = {}
 	var is_divinus: bool = Game.isDivinus()
+	var autolinks: Array = [0, 1, 4, 5, 9] if getWorldDifficulty() == 1 else [0, 4, 5, 9]
 	for key: int in empty_spots_by_progress:
 		if (key == 11 and !is_divinus) or key == 12: continue
 		
@@ -155,7 +156,7 @@ func onCreateMapLinks(empty_spots_by_progress: Dictionary[int, Array]) -> void:
 		
 		for empty_spot: EmptyMapNode in batch:
 			for next_empty_spot: EmptyMapNode in next_batch:
-				if next_empty_spot.lane == empty_spot.lane or key in [0, 1, 4, 5, 9]:
+				if next_empty_spot.lane == empty_spot.lane or key in autolinks:
 					empty_spot.links.append(EmptyMapNodeLink.new(next_empty_spot))
 		
 	if !is_divinus:
@@ -263,6 +264,7 @@ func setRandomEncounterId(empty_spot: EmptyMapNode, used_ids: Array, unique_node
 		return
 	empty_spot.id = Helper.getFofInfoArray(MapNodeInfo).filter(func(x: MapNodeInfo):\
 		return x.is_encounter and !x.is_shop and !x.is_unique and x.id not in used_ids).pick_random().id
+	used_ids.append(empty_spot.id)
 #endregion
 
 #region Elites
@@ -399,7 +401,7 @@ func setRewards(is_win: bool) -> void:
 	if is_win:
 		var items: Array = []
 		var fight_type: Game.FightTypes = active_level.fight_type
-		var is_elite: bool = fight_type == Game.FightTypes.ELITE
+		var is_elite: bool = fight_type == Game.FightTypes.ELITE or fight_type == Game.FightTypes.COLOSSEUM
 		var is_epic: bool = fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]
 		var fight_rewards_datastore: FightRewardsDatastore = \
 			getWorld().elite_fight_rewards if is_epic or is_elite else getWorld().fight_rewards
@@ -458,10 +460,23 @@ func onAddBoonReward() -> BoonGD:
 	
 func onAddCardRewards(_active_level: LevelGD, is_epic: bool, is_elite: bool, level_preview: LevelPreview) -> ActionWrapper:
 	var enemy_cards: Array = _active_level.enemy_cards.duplicate()
-	if !is_epic: enemy_cards = onRollRegularCardRewards()
+	var elite_exalt_id: int = level_preview.getEliteExaltId() if level_preview != null else 0
+	
+	if !is_epic: enemy_cards = onRollRegularCardRewards(elite_exalt_id)
 	else: enemy_cards = onRollEpicCardRewards()
-	if is_elite:
-		enemy_cards.append(SavedData.onLoadModel(level_preview.getChiefData().duplicate(), _active_level))
+	if is_elite and elite_exalt_id > 0:
+		var fight_rewards_datastore: FightRewardsDatastore = getWorld().getEliteFightRewardsDatastore()
+		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, elite_exalt_id)
+		
+		var base_tier: int = getWorldDifficulty()
+		var card_tier_up_odds: float = fight_rewards_datastore.getCardTierUpOdds()
+		var tool_odds_datastore: RarityOddsDatastore = fight_rewards_datastore.getToolRarityOdds()
+		var tool_odds: float = fight_rewards_datastore.getToolOdds()
+		var tool_tier_up_odds: float = fight_rewards_datastore.getToolTierUpOdds()
+		
+		var card_data: SavedDataCard = Random.getCardDataFromInfo(card_info, base_tier, card_tier_up_odds, tool_odds_datastore, tool_odds, tool_tier_up_odds)
+		var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
+		enemy_cards.append(Card)
 	var rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), _active_level)
 	rewards_wrapper.setActions(ChooseRewardAction.new(enemy_cards, ChooseRewardAction.RewardType.CARDS))
 	return rewards_wrapper
@@ -472,9 +487,10 @@ func onAddShillingReward(fight_rewards_datastore: FightRewardsDatastore) -> Acti
 	change_shillings_wrapper.setActions(ChangeShillingsAction.new(shillings))
 	return change_shillings_wrapper
 	
-func onRollRegularCardRewards() -> Array:
+func onRollRegularCardRewards(elite_exalt_id: int = 0) -> Array:
 	var base_tier: int = getWorldDifficulty()
 	var card_ids: Array = basic_card_ids.duplicate()
+	card_ids.erase(elite_exalt_id)
 	var card_rewards: Array = []
 	var fight_rewards_datastore: FightRewardsDatastore = getWorld().getFightRewardsDatastore()
 	var card_rarity_odds: RarityOddsDatastore = fight_rewards_datastore.getCardRarityOdds()
@@ -541,21 +557,22 @@ func onCreateCardByEnergy(_cards: Array, energy: int, spawn: SavedDataSpawn, pro
 	var original_cards: Array = _cards.filter(func(x: CardInfo):\
 		return x.getTierDatastore(world_difficulty).getEnergy() == energy)
 	var cards: Array = getCardsByRarity(original_cards)
+	return onCreateEnemyCard(cards.pick_random(), tier, spawn.coords, progress, is_elite)
+
 	
-	var card_info: CardInfo = cards.pick_random()
+func onCreateEnemyCard(card_info: CardInfo, tier: int, coords: Vector4i, progress: int, is_elite: bool) -> SavedDataCard:
 	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
 	card_data.tier = tier
 	card_data.team = 1
-	card_data.coords = spawn.coords
+	card_data.coords = coords
 	
 	if progress < 3:
 		Game.setCardDataFromInfo(card_data, card_info)
 		return card_data
 		
-	if card_info.rarity != Game.Rarities.EXALT:
-		var tier_up_rate: float = getWorld().enemy_tier_up_rate if !is_elite else getWorld().elite_enemy_tier_up_rate
-		var tier_up_card: bool = Random.rollFloat(tier_up_rate)
-		if tier_up_card: card_data.onTierUp()
+	var tier_up_rate: float = getWorld().enemy_tier_up_rate if !is_elite else getWorld().elite_enemy_tier_up_rate
+	var tier_up_card: bool = Random.rollFloat(tier_up_rate)
+	if tier_up_card: card_data.onTierUp()
 	
 	var tool_spawn_rate: float = getWorld().tool_enemy_spawn_rate
 	var add_tool: bool = Random.rollFloat(tool_spawn_rate)
@@ -574,7 +591,11 @@ func getCardsByRarity(original_cards: Array) -> Array:
 	if cards.is_empty(): return getCardsByRarity(original_cards)
 	return cards
 	
-func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amount: int, spawns: Array, progress: int, is_elite: bool) -> Array:
+func setEnemySpawnsFromBudget(budget: int, spawns: Array, progress: int, elite_exalt_id: int = 0) -> Array:
+	var is_elite: bool = elite_exalt_id > 0
+	var min_spawn_amount: int = getMinSpawnAmount(budget)
+	var max_spawn_amount: int = getMaxSpawnAmount(budget, spawns.size())
+	
 	var cards: Array = Helper.getFofInfoArray(CardInfo).filter(func(x: CardInfo): return x.id in basic_card_ids)
 	
 	var world_difficulty: int = getWorldDifficulty()
@@ -582,8 +603,8 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 	var highest_cost: int = energies.max()
 	var lowest_cost: int = energies.min()
 	
-	max_spawn_amount = min(max_spawn_amount, spawns.size())
-	var energy_combination: Array = getRandomEnergyCombination(budget, randi_range(min_spawn_amount, max_spawn_amount), lowest_cost, highest_cost)\
+	var spawn_amount: int = randi_range(min_spawn_amount, max_spawn_amount)
+	var energy_combination: Array = getRandomEnergyCombination(budget, spawn_amount, lowest_cost, highest_cost)\
 		if budget > 6 else getEnergyCombinationFromBudget(budget, lowest_cost, highest_cost, min_spawn_amount, max_spawn_amount)
 		
 	var other_enemies_ids: Array = get_tree().get_nodes_in_group("FightMapNodesGD")\
@@ -591,8 +612,10 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 		.map(func(y: MapNodeGD): return y.enemy_cards.map(func(z: SavedDataCard): return z.id))
 		
 	while(true):
-		var enemies: Array = []
-		for i in range(energy_combination.size()):
+		var enemies: Array = [] if elite_exalt_id == 0\
+			else [onCreateEnemyCard(Helper.getFofInfoID(CardInfo, elite_exalt_id), getWorldDifficulty(), spawns[spawns.size() - 1].coords, progress, is_elite)]
+			
+		for i in range(energy_combination.size() - enemies.size()):
 			var card_data: SavedDataCard = onCreateCardByEnergy(cards, energy_combination[i], spawns[i], progress, is_elite, world_difficulty)
 			enemies.append(card_data)
 		
@@ -603,17 +626,33 @@ func setEnemySpawnsFromBudget(budget: int, min_spawn_amount: int, max_spawn_amou
 		return enemies
 	return []
 	
+func getSpawnAmount(budget: int, spawn_size: int) -> int:
+	var min_spawn_amount: int = getMinSpawnAmount(budget)
+	var max_spawn_amount: int = getMaxSpawnAmount(budget, spawn_size)
+	return randi_range(min_spawn_amount, max_spawn_amount)
+	
+func getMinSpawnAmount(budget: int) -> int:
+	return ceil(float(budget) / 4.0)
+	
+func getMaxSpawnAmount(budget: int, spawn_size: int) -> int:
+	return min(ceil(float(budget) / 2.0), spawn_size) if budget > 4 else 3
+	
 const PREVIEW_RARITY_VALUE: Dictionary[Game.Rarities, int] = {
 	Game.Rarities.COMMON: 1,
 	Game.Rarities.RARE: 2,
 	Game.Rarities.EXALT: 4
 }
 	
-func getLevelPreview(enemy_cards: Array) -> LevelPreview:
+func getLevelPreview(enemy_cards: Array, elite_exalt_id: int = 0, curse_id: int = 0) -> LevelPreview:
 	enemy_cards = enemy_cards.duplicate()
-	var level_preview := LevelPreview.new()
-	level_preview.setTotalAmount(enemy_cards.size())
+	var total_amount: int = enemy_cards.size()
 	var enemy_card_to_preview_value: Dictionary[SavedDataCard, float] = {}
+	
+	if elite_exalt_id > 0:
+		for card_data: SavedDataCard in enemy_cards:
+			if card_data.id == elite_exalt_id: # Only first is removed
+				enemy_cards.erase(card_data)
+				break
 	
 	for card_data: SavedDataCard in enemy_cards:
 		var card_info: CardInfo = Helper.getFofInfoID(CardInfo, card_data.id)
@@ -626,8 +665,7 @@ func getLevelPreview(enemy_cards: Array) -> LevelPreview:
 		return enemy_card_to_preview_value[x] > enemy_card_to_preview_value[y])
 	enemy_cards.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
 	enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return x != null)
-	level_preview.card_datas = enemy_cards
-	return level_preview
+	return LevelPreview.new(enemy_cards, total_amount, elite_exalt_id, curse_id)
 	
 const BUDGET_TO_COMBINATION_ODDS: Dictionary[int, Dictionary] = {
 	1: {
@@ -773,3 +811,18 @@ func onClearMapNodes() -> void:
 
 func getBasicCardIds() -> Array:
 	return basic_card_ids.duplicate()
+
+func getLevelInfoForProgress(progress: int) -> LevelInfo:
+	var level_script: GDScript = Game.getArea().info.base_level_script
+	var existing_level_ids: Array = get_tree().get_nodes_in_group("FightMapNodesGD")\
+		.filter(func(x: MapNodeGD): return x.map_location.progress == progress and x != self)\
+		.map(func(y: MapNodeGD): return y.level_info.id if y.level_info != null else 0)\
+		.filter(func(z: int): return z != 0)
+	var budget: int = Game.getArea().getBudget(progress, 0)
+	var levels: Array = Helper.getFofInfoArray(LevelInfo)
+	levels = levels.filter(func(x: LevelInfo): return x.gdscript == level_script)
+	levels = levels.filter(func(x: LevelInfo): return budget >= x.budget_min and budget <= x.budget_max)
+	
+	if levels.size() > existing_level_ids.size():
+		levels = levels.filter(func(x: LevelInfo): return x.id not in existing_level_ids)
+	return levels.pick_random()

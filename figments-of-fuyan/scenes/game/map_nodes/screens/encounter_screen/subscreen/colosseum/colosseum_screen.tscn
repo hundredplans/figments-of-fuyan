@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctjl460n6nhg5"]
+
+[ext_resource type="Script" uid="uid://csr4lhnfjrsx" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/colosseum/colosseum_screen.gd" id="1_ogf65"]
+[ext_resource type="PackedScene" uid="uid://bvwvxtul7dpd8" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.tscn" id="2_t65pb"]
+[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="3_yf8p1"]
+
+[node name="ColosseumScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ogf65")
+
+[node name="EncounterMainUI" parent="." instance=ExtResource("2_t65pb")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 687.0
+offset_top = 228.0
+offset_right = 943.0
+offset_bottom = 484.0
+scale = Vector2(2, 2)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 740.0
+offset_right = 1920.0
+offset_bottom = 917.0
+mouse_filter = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="RegularFightButton" parent="HBoxContainer" instance=ExtResource("3_yf8p1")]
+layout_mode = 2
+text = "Regular Fight"
+BASE_COLOR = Color(0.63, 0.462, 0.378, 1)
+HOVER_COLOR = Color(0.46, 0.337333, 0.276, 1)
+
+[node name="SpecialFightButton" parent="HBoxContainer" instance=ExtResource("3_yf8p1")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Regular Fight"
+BASE_COLOR = Color(0.63, 0.462, 0.378, 1)
+HOVER_COLOR = Color(0.46, 0.337333, 0.276, 1)
+
+[connection signal="pressed" from="HBoxContainer/RegularFightButton" to="." method="onRegularFightPressed"]
+[connection signal="pressed" from="HBoxContainer/SpecialFightButton" to="." method="onSpecialFightPressed"]

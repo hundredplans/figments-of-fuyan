@@ -49,6 +49,9 @@ func _input(_event: InputEvent) -> void:
 		
 func _process(delta: float) -> void:
 	if Model != null and !is_finished: Model.rotation_degrees.y += SPIN_SPEED * delta
+	
+func onProcessAction(action: Action) -> void:
+	super(action)
 #endregion
 
 #region Save / Load

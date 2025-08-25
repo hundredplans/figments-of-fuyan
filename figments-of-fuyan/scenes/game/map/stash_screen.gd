@@ -35,7 +35,7 @@ var draggable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.
 @onready var DragZoneHand: Sprite2D = %DragZoneHand
 @onready var DragZone: Control = %DragZone
 
-@onready var DeckCardUIRaycast: RayCast2D = %DeckCardUIRaycast
+@onready var StashScreenCardUIRaycast: RayCast2D = %StashScreenCardUIRaycast
 @onready var DragZoneRaycast: RayCast2D = %DragZoneRaycast
 @onready var DeckSlotUIRaycast: RayCast2D = %DeckSlotUIRaycast
 @onready var CardUIRaycast: RayCast2D = %CardUIRaycast
@@ -62,6 +62,7 @@ const DECK_SLOT_SIZE := Vector2(400, 500)
 const SCROLL_TIME: float = 0.5
 
 const DECK_CONTAINER_SPLIT_POINT: Dictionary[int, int] = { # Amount of slots to split point
+	4: 4,
 	5: 5,
 	6: 3,
 	7: 4,
@@ -120,7 +121,14 @@ func setToolIcon(ToolIcon: TbcUI) -> void:
 	ToolIcon.setDisableTooltip(true)
 	ToolIcon.setDraggable(true)
 	ToolIcon.setEndDragOnRelease(false)
+	ToolIcon.onDragBegin()
 	ToolIcon.drag_end.connect(onToolIconDragEnd)
+	
+	for CardUI: TbcUI in (getDeckContainerCardUI() + getStashCardsUI()).filter(func(x: Control): return x != null):
+		var _ToolIcon: TbcUI = CardUI.getToolIcon()
+		_ToolIcon.setHoverable(false)
+		_ToolIcon.setDraggable(false)
+		CardUI.setDraggable(false)
 	
 	for DeckSlotUI: Control in getDeckContainerDeckUI():
 		DeckSlotUI.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
@@ -248,6 +256,7 @@ func onCreateStashCardUI(StashCard: CardGD) -> void:
 	ToolIcon.setDraggable(true)
 	CardUI.drag_begin.connect(onCardDraggedBegin.bind(true))
 	CardUI.drag_end.connect(onCardDraggedEnd.bind(true))
+	CardUI.setStashScreenCardUICollisionLayer()
 	
 func onCreateDeckCardUI(DeckCard: CardGD, DeckSlotUI: Control) -> void:
 	var CardUI: Control
@@ -262,7 +271,7 @@ func onCreateDeckCardUI(DeckCard: CardGD, DeckSlotUI: Control) -> void:
 			ToolIcon.setDraggable(true)
 			CardUI.drag_begin.connect(onCardDraggedBegin.bind(false))
 			CardUI.drag_end.connect(onCardDraggedEnd.bind(false))
-			CardUI.setDeckCardUICollisionLayer()
+			CardUI.setStashScreenCardUICollisionLayer()
 	DeckSlotUI.setCardUI(CardUI)
 	
 func onToolDragBegin(ToolIcon: TbcUI, CardUI: Control) -> void:
@@ -370,15 +379,15 @@ func onScroll(direction: int) -> void:
 	get_viewport().update_mouse_cursor_state()
 
 func onToolIconDragEnd(ToolIcon: TbcUI) -> void:
-	DeckCardUIRaycast.global_position = ToolIcon.global_position + (ToolIcon.size / 2)
-	DeckCardUIRaycast.target_position = Vector2.ZERO
-	DeckCardUIRaycast.force_raycast_update()
+	StashScreenCardUIRaycast.global_position = ToolIcon.global_position + (ToolIcon.size / 2)
+	StashScreenCardUIRaycast.target_position = Vector2.ZERO
+	StashScreenCardUIRaycast.force_raycast_update()
 	
 	ToolIcon.setDisableTooltip(original_tool_icon_disable_tooltip)
 	ToolIcon.setDraggable(false)
 	ToolIcon.setEndDragOnRelease(true)
 	
-	var area: Area2D = DeckCardUIRaycast.get_collider()
+	var area: Area2D = StashScreenCardUIRaycast.get_collider()
 	if area == null: onExitButtonPressed(); return
 	
 	var CardUI: Control = area.get_parent()
@@ -389,6 +398,9 @@ func onToolIconDragEnd(ToolIcon: TbcUI) -> void:
 	Card.onForceAction(AddToolAction.new(Card, DupeTool, true))
 	CardUI.onToolUpdated(Card.Tool)
 	active_tool_added.emit(CardUI)
+	
+	for _CardUI: TbcUI in (getDeckContainerCardUI() + getStashCardsUI()).filter(func(x: Control): return x != null):
+		_CardUI.setHoverable(false)
 	
 	await get_tree().create_timer(TOOL_ADDED_EXIT_DELAY).timeout
 	onExitButtonPressed()
@@ -636,6 +648,10 @@ func onItemDragged(ItemUI: Control, item: FofGD) -> void:
 		or item.getTier() > (Game.getArea().getWorldDifficulty()):
 			onSmithFailed()
 			return
+	elif map_node.info.id == CRYPT_ID:
+		if abs(price) > Game.getSaveFile().getShillings() or isNoValidTransformBoonsCrypt(item):
+			onCryptFailed()
+			return
 		
 	ItemUI.setDisableTooltip(true)
 	Game.onEmptyTooltip(false)
@@ -667,6 +683,16 @@ func onItemDragged(ItemUI: Control, item: FofGD) -> void:
 	elif map_node.info.id == SMITH_ID:
 		ItemUI.setIgnoreDragPositionReset(false)
 		ItemUI.onDragPositionReset()
+	elif map_node.info.id == CRYPT_ID:
+		ItemUI.setIgnoreDragPositionReset(false)
+		ItemUI.onDragPositionReset()
+		var energy_limit: int = Game.getSaveFile().getEnergyLimit()
+		var used_energy_limit: int = Game.getSaveFile().getDecksTotalEnergy()
+		if used_energy_limit > energy_limit:
+			var deck_slot: DeckSlot = getDeckSlotFromCardUI(ItemUI)
+			onRemoveDeckCard(ItemUI, deck_slot, true)
+		setLimitLabels()
+		
 	ItemUI.setDisableTooltip(false)
 	ItemUI.setDraggable(true)
 	ItemUI.setHoverable(true)
@@ -720,6 +746,31 @@ func onItemDraggedVisual(ItemUI: Control, item: FofGD, price: int) -> void:
 			.as_relative().set_trans(Tween.TRANS_SINE)
 		HandPositionTween.tween_property(DragZoneHand, "global_position", third_position, DRAG_ZONE_HAND_SPEED)\
 			.as_relative().set_trans(Tween.TRANS_SINE)
+	elif map_node.info.id == CRYPT_ID:
+		await onCryptSuccessPartOne(ItemUI)
+		
+		var nitem: FofGD
+		if item is BoonGD:
+			var transform_boon_action := TransformBoonAction.new(item)
+			Game.getSaveFile().onForceAction(transform_boon_action)
+			nitem = transform_boon_action.getNewBoon()
+		elif item is ToolGD:
+			var transform_tool_action := TransformToolAction.new(item)
+			Game.getSaveFile().onForceAction(transform_tool_action)
+			nitem = transform_tool_action.getNewTool()
+		elif item is CardGD:
+			var transform_card_action := TransformCardAction.new(item, TransformCardAction.TransformType.RARITY)
+			Game.getSaveFile().onForceAction(transform_card_action)
+			nitem = transform_card_action.getNewCard()
+			
+		await onCryptSuccessPartTwo(ItemUI, nitem)
+		if HandPositionTween: HandPositionTween.kill()
+		HandPositionTween = create_tween()
+		HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(500, 0), DRAG_ZONE_HAND_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
+		HandPositionTween.tween_property(DragZoneHand, "global_position", third_position, DRAG_ZONE_HAND_SPEED)\
+			.as_relative().set_trans(Tween.TRANS_SINE)
+		DragZoneHand.texture = getHandTexture(false)
 	
 var HandPositionTween: Tween
 func setDragZoneHandPosition(is_first: bool = true) -> void:
@@ -780,8 +831,6 @@ func onSmithFailed() -> void:
 		.as_relative().set_trans(Tween.TRANS_SINE)
 	HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(0, -100), SMITH_SWISH_TIME)\
 		.as_relative().set_trans(Tween.TRANS_SINE)
-	#HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(0, 50), SMITH_SWISH_TIME)\
-		#.as_relative().set_trans(Tween.TRANS_SINE)
 		
 func onSmithSuccess(ItemUI: TbcUI) -> void:
 	var tween := create_tween()
@@ -801,4 +850,44 @@ func onSmithSuccess(ItemUI: TbcUI) -> void:
 	await get_tree().create_timer(DRAG_ZONE_HAND_SPEED).timeout
 	DragZoneHand.texture = getHandTexture(false)
 	await tween.finished
+#endregion
+
+#region Crypt
+const CRYPT_ID: int = 13
+const CRYPT_SWISH_TIME: float = 0.35
+const CRYPT_SCALE_TIME: float = 0.25
+
+func onCryptFailed() -> void:
+	if HandPositionTween: HandPositionTween.kill()
+	HandPositionTween = create_tween()
+	
+	HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(0, 100), CRYPT_SWISH_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	HandPositionTween.tween_property(DragZoneHand, "global_position", Vector2(0, -100), CRYPT_SWISH_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+		
+func onCryptSuccessPartOne(ItemUI: TbcUI) -> void:
+	var tween := create_tween()
+	tween.tween_property(ItemUI, "scale:x", 0.001 - ItemUI.scale.x, CRYPT_SCALE_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	await tween.finished
+		
+func onCryptSuccessPartTwo(ItemUI: TbcUI, nitem: FofGD) -> void:
+	if nitem is BoonGD: ItemUI.setInfo(nitem, ItemUI.getHoverable(), ItemUI.getDraggable(), ItemUI.getAutoscale())
+	elif nitem is ToolGD: ItemUI.setInfo(nitem, ItemUI.getHoverable(), ItemUI.getAutoscale())
+	elif nitem is CardGD: ItemUI.setInfo(nitem, ItemUI.getHoverable(), false, ItemUI.getDraggable(), ItemUI.getAutoscale())
+		
+	var tween := create_tween()
+	tween.tween_property(ItemUI, "scale:x", 1.0 - ItemUI.scale.x, CRYPT_SCALE_TIME)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+	await tween.finished
+	
+func isNoValidTransformBoonsCrypt(item: FofGD) -> bool:
+	if item is not BoonGD: return false
+	var Boon: BoonGD = item
+	var existing_boon_ids: Array = Game.getSaveFile().getBoons().map(func(x: BoonGD): return x.info.id)
+	var all: Array = Helper.getFofInfoArray(BoonInfo)
+	all = all.filter(func(x: FofInfo): return x != Boon.info and x.rarity == Boon.getRarity()\
+		and x.id not in existing_boon_ids)
+	return all.is_empty()
 #endregion

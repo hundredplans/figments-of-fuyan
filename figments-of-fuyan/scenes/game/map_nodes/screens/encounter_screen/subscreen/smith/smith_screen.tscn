@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ci0ie5fdekwp1"]
+[gd_scene load_steps=3 format=3 uid="uid://ci0ie5fdekwp1"]
 
 [ext_resource type="Script" uid="uid://bqy2008whyjc6" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/smith/smith_screen.gd" id="1_c2k2o"]
 [ext_resource type="PackedScene" uid="uid://bvwvxtul7dpd8" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.tscn" id="2_o6lnq"]
-[ext_resource type="Texture2D" uid="uid://b4u0oc0ql2d1v" path="res://assets/sprites/ui/scene_specific/encounter_screen/smith/smith_base.png" id="3_27afl"]
 
 [node name="SmithScreen" type="Control"]
 layout_mode = 3
@@ -16,12 +15,18 @@ script = ExtResource("1_c2k2o")
 
 [node name="EncounterMainUI" parent="." instance=ExtResource("2_o6lnq")]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 460.0
-offset_top = 189.0
-offset_right = 972.0
-offset_bottom = 701.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -427.0
+offset_top = -446.0
+offset_right = 85.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(2, 2)
-texture = ExtResource("3_27afl")
 
 [connection signal="pressed" from="EncounterMainUI" to="." method="_on_encounter_main_ui_pressed"]

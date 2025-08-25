@@ -50,27 +50,23 @@ func setInfo(_reward: Reward) -> void:
 		var IconUI: Control
 		if item is BoonGD:
 			IconUI = BoonIcon
-			BoonIcon.setInfo(item, !reward.isTaken())
+			BoonIcon.setInfo(item, !reward.isTaken(), false, true)
 			BoonIcon.setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE\
 				if reward.isTaken() else Control.MouseFilter.MOUSE_FILTER_STOP)
-			BoonIcon.mouse_in_ui.connect(onMouseInIconUI.bind(BoonIcon))
-			BoonIcon.pressed.connect(onBoonPressed.bind(BoonIcon))
+			BoonIcon.pressed.connect(onBoonPressed)
 		elif item is ToolGD:
 			IconUI = ToolIcon
-			ToolIcon.setInfo(item, !reward.isTaken())
+			ToolIcon.setInfo(item, !reward.isTaken(), true)
 			ToolIcon.setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE\
 				if reward.isTaken() else Control.MouseFilter.MOUSE_FILTER_STOP)
-			ToolIcon.mouse_in_ui.connect(onMouseInIconUI.bind(ToolIcon))
-			ToolIcon.pressed.connect(onToolPressed.bind(IconUI))
+			ToolIcon.pressed.connect(onToolPressed)
 		elif item is CardGD:
-			var CardUI: Control = item.onCreateCardUI(CardControl, !reward.isTaken())
+			var CardUI: Control = item.onCreateCardUI(CardControl, !reward.isTaken(), false, false, true)
 			if reward.isTaken():
 				CardUI.onChangeBackgroundMouseFilter(false)
 			IconUI = CardUI
 			EpicCardUI = CardUI
 			CardUI.position = Vector2(80, 0)
-			#CardUI.set_anchors_preset(Control.PRESET_CENTER_TOP)
-			CardUI.mouse_in_ui.connect(onMouseInIconUI.bind(CardUI))
 			CardUI.pressed.connect(onCardUIPressed)
 			
 		if reward.isTaken() and i == action.chosen_index:
@@ -82,24 +78,15 @@ func setInfo(_reward: Reward) -> void:
 	
 	if reward.isTaken(): Main.modulate = CLAIMED_COLOR
 
-func onMouseInIconUI(state: bool, IconUI: Control) -> void:
-	if reward.isTaken(): return
-	onScaleIconUISize(IconUI, state)
-
-func onScaleIconUISize(IconUI: Control, state: bool) -> void:
-	var tween: Tween = create_tween()
-	var target_value: float = MAX_SCALE_SIZE if state else 0.9
-	var value: float = target_value - IconUI.scale.x
-	tween.tween_property(IconUI, "scale", Vector2(value, value), 0.25).as_relative().set_trans(Tween.TRANS_SINE)
-
 func onCardUIPressed(CardUI: Control) -> void:
 	if reward.isTaken(): return
 	var DupeCard: CardGD = SavedData.onLoadModel(CardUI.Card.getDuplicateData(), Game.getSaveFile())
 	Game.getSaveFile().onPushAction(AddToDeckAction.new(DupeCard))
 	onRewardTaken(CardUI, CardUI.Card)
 	
-func onBoonPressed(Boon: BoonGD, BoonUI: Control) -> void:
+func onBoonPressed(BoonUI: Control) -> void:
 	if reward.isTaken(): return
+	var Boon: BoonGD = BoonUI.getItem()
 	Game.getSaveFile().onPushAction(AddBoonAction.new(Boon.info.id, Game.getArea().getWorldDifficulty()))
 	onRewardTaken(BoonUI, Boon)
 	
@@ -113,8 +100,6 @@ func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 		var tween := create_tween()
 		tween.tween_property(NewIconUI, "scale", Vector2.ONE, 0.25)
 		
-	onScaleIconUISize(IconUI, true)
-		
 	ToolIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
 	BoonIcon.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
 	EpicCardUI.onChangeBackgroundMouseFilter(false)
@@ -124,12 +109,14 @@ func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 	new_tween.tween_property(Main, "modulate", CLAIMED_COLOR, Game.FADE_TIME)
 	action.onItemChosen(item)
 	
-func onToolPressed(Tool: ToolGD, OriginalToolIcon: Control) -> void:
+func onToolPressed(OriginalToolIcon: Control) -> void:
 	if reward.isTaken() or StashScreen != null: return
+	var Tool: ToolGD = OriginalToolIcon.getItem()
 	var _ToolIcon: Control = ToolIconPacked.instantiate()
 	add_child(_ToolIcon)
 	_ToolIcon.setInfo(Tool, false)
 	_ToolIcon.setSizeScale(3)
+	_ToolIcon.global_position = get_viewport().get_mouse_position() - _ToolIcon.pivot_offset
 	
 	StashScreen = Game.onCreateStashScreen(self, _ToolIcon)
 	stash_screen_fade_in.emit()

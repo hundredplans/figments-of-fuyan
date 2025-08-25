@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://b07xu1ostxv8y"]
+
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_3r7ke"]
+[ext_resource type="Texture2D" uid="uid://0v2ajkdp844w" path="res://assets/sprites/game/cards/art_mini/palmfessor.png" id="1_85e67"]
+[ext_resource type="Script" uid="uid://dqj4ak5fsnmym" path="res://scripts/fof/boons/palmfessors_curse.gd" id="1_af8ap"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_hpyqk"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_jqmhs"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="4_74fs8"]
+
+[sub_resource type="Resource" id="Resource_af8ap"]
+script = ExtResource("4_74fs8")
+description = "When a non-summoned enemy dies AWAKEN a [1card=4]"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_jqmhs"]
+script = ExtResource("2_hpyqk")
+description_datastore = SubResource("Resource_af8ap")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_xqqr1"]
+script = ExtResource("4_74fs8")
+description = "When a non-summoned enemy dies AWAKEN a [1card=5]"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_suwqo"]
+script = ExtResource("2_hpyqk")
+description_datastore = SubResource("Resource_xqqr1")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_j4lha"]
+script = ExtResource("4_74fs8")
+description = "When a non-summoned enemy dies AWAKEN a [1card=15]"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_g44uy"]
+script = ExtResource("2_hpyqk")
+description_datastore = SubResource("Resource_j4lha")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_o7a8c"]
+script = ExtResource("4_74fs8")
+description = "When a non-summoned enemy dies AWAKEN a [1card=17]"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_an3wi"]
+script = ExtResource("2_hpyqk")
+description_datastore = SubResource("Resource_o7a8c")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_3r7ke")
+tiers = Array[ExtResource("2_hpyqk")]([SubResource("Resource_jqmhs"), SubResource("Resource_suwqo"), SubResource("Resource_g44uy"), SubResource("Resource_an3wi")])
+icon = ExtResource("1_85e67")
+rarity = 0
+curse = true
+display_trigger = true
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 29
+name = "Palmfessor's Curse"
+gdscript = ExtResource("1_af8ap")
+saved_data = ExtResource("3_jqmhs")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

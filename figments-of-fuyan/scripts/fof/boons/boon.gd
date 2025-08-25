@@ -58,7 +58,7 @@ func isAddRequirementMet() -> bool: # Whether you can add this to your boons
 	return true
 
 func onLevelEnded(_win: bool) -> void:
-	if info.elite_fight_curse or info.rarity == Game.Rarities.MINI:
+	if info.rarity == Game.Rarities.MINI:
 		onPushAction(RemoveBoonAction.new(info.id))
 		onClear()
 		return
@@ -68,7 +68,7 @@ func onLevelEnded(_win: bool) -> void:
 	
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is StartGameAction:
+		if action is StartLevelAction:
 			onLevelStarted()
 		elif action is ChangePhaseAction and action.phase in Game.ADVANCE_PHASES:
 			onAdvanceTurn(Game.ADVANCE_PHASES.find(action.phase))

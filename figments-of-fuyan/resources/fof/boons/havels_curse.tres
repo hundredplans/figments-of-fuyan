@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://bp6tg3wqfpulk"]
+
+[ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_6f638"]
+[ext_resource type="Script" uid="uid://bck30cwikxsr" path="res://scripts/fof/boons/havels_curse.gd" id="1_58m6m"]
+[ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_cw3s1"]
+[ext_resource type="Texture2D" uid="uid://cj1ihg5ofwain" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="2_ov1no"]
+[ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_opxm6"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_lfeoy"]
+
+[sub_resource type="Resource" id="Resource_y6vmv"]
+script = ExtResource("6_lfeoy")
+description = "Enemies gain +1 ATT on REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_wpmfx"]
+script = ExtResource("2_cw3s1")
+description_datastore = SubResource("Resource_y6vmv")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_rxc58"]
+script = ExtResource("6_lfeoy")
+description = "Enemies gain +1 ATT +1 HP on REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_v6dqu"]
+script = ExtResource("2_cw3s1")
+description_datastore = SubResource("Resource_rxc58")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_lq8oj"]
+script = ExtResource("6_lfeoy")
+description = "Enemies gain +2 ATT +1 HP on REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_eewu8"]
+script = ExtResource("2_cw3s1")
+description_datastore = SubResource("Resource_lq8oj")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[sub_resource type="Resource" id="Resource_wowxh"]
+script = ExtResource("6_lfeoy")
+description = "Enemies gain +2 ATT +2 HP on REVENGE"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_wmfb3"]
+script = ExtResource("2_cw3s1")
+description_datastore = SubResource("Resource_wowxh")
+metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
+
+[resource]
+script = ExtResource("1_6f638")
+tiers = Array[ExtResource("2_cw3s1")]([SubResource("Resource_wpmfx"), SubResource("Resource_v6dqu"), SubResource("Resource_eewu8"), SubResource("Resource_wmfb3")])
+icon = ExtResource("2_ov1no")
+rarity = 0
+curse = true
+display_trigger = true
+use_charges = false
+auto_reset_charges = false
+reset_to_default = false
+id = 33
+name = "Havel's Curse"
+gdscript = ExtResource("1_58m6m")
+saved_data = ExtResource("3_opxm6")
+metadata/_custom_type_script = "uid://cwaxy6m1b8n5m"

@@ -334,13 +334,13 @@ func onGameStarted() -> void:
 	FreelookCamera.disable_movement = true
 	
 	var pos_tween := create_tween()
-	pos_tween.tween_property(self, "position:y", -START_Y + START_UP_OFFSET, StartGameAction.START_TIME - MINUS_TRAVEL_TIME)\
+	pos_tween.tween_property(self, "position:y", -START_Y + START_UP_OFFSET, StartLevelAction.START_TIME - MINUS_TRAVEL_TIME)\
 		.as_relative().set_trans(Tween.TRANS_SINE)
 	
 	var rot_tween := create_tween()
-	rot_tween.tween_property(self, "rotation:y", TOTAL_ROTATION, StartGameAction.START_TIME - MINUS_TRAVEL_TIME).as_relative()
+	rot_tween.tween_property(self, "rotation:y", TOTAL_ROTATION, StartLevelAction.START_TIME - MINUS_TRAVEL_TIME).as_relative()
 	
-	await get_tree().create_timer(StartGameAction.START_TIME).timeout
+	await get_tree().create_timer(StartLevelAction.START_TIME).timeout
 	
 	is_camera_travelling = false
 	position.y -= START_UP_OFFSET
