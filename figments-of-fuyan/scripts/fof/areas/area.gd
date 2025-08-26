@@ -256,6 +256,7 @@ func setSegmentEncounterShopId(empty_spot: EmptyMapNode, segment_progress: int, 
 func setRandomShopId(empty_spot: EmptyMapNode, used_ids: Array) -> void:
 	empty_spot.id = Helper.getFofInfoArray(MapNodeInfo).filter(func(x: MapNodeInfo):\
 		return x.is_shop and !x.is_unique and x.id not in used_ids).pick_random().id
+	used_ids.append(empty_spot.id)
 	
 func setRandomEncounterId(empty_spot: EmptyMapNode, used_ids: Array, unique_nodes: Array) -> void:
 	if unique_nodes.any(func(x: int): return x == 9) and empty_spot.progress >= 8: # Bounty Board

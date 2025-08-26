@@ -66,3 +66,4 @@ func getDefaultCharges() -> int:
 func onRegularReset() -> void:
 	super()
 	revenge_triggers = getDefaultCharges()
+	black_rage_public_id = 0

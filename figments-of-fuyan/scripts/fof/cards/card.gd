@@ -44,6 +44,7 @@ var is_knockback: bool # Not saved
 var card_offset: CardOffset # Offset of ronotation and position
 var tier: int
 var death_ids: Array[int] # id's of every unit this killed, used for blade
+var vision_range: int
 #endregion
 
 #region Globals
@@ -244,7 +245,7 @@ func onSave() -> SavedDataCard:
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
 	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore, card_offset, tier, death_ids)
+	overworld_traits, bounty_kills, boss_datastore, card_offset, tier, death_ids, vision_range)
 
 func onPreSave() -> void:
 	for delayed: Variant in delayed_stats: delayed.onSave()
@@ -284,6 +285,7 @@ func onLoadData(data: SavedData) -> void:
 	card_offset = data.card_offset
 	tier = data.tier
 	death_ids = data.death_ids
+	vision_range = data.vision_range
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -642,7 +644,7 @@ func onAddUnitVisibleParticle() -> void:
 	UnitVisibleParticle.emitting = true
 
 func getVisionRange() -> int:
-	return vision_datastore.getVisionRange() if !isBlind() else 1
+	return vision_range if !isBlind() else 1
 
 func onUpdateVision() -> void: # Returns the new visibles
 	if card_place != Game.CardPlaces.FIELD: return
@@ -1724,4 +1726,4 @@ func getRarity() -> Game.Rarities:
 	return info.rarity
 
 func onUpdateVisionRange(delta: int) -> void:
-	vision_datastore.onUpdateVisionRange(delta)
+	vision_range = max(vision_range + delta, 1)

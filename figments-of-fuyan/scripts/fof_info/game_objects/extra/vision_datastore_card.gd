@@ -2,7 +2,6 @@ class_name VisionDatastoreCard extends VisionDatastore
 
 var visibles: Dictionary # Dictionary of {GameObject: VisibleByUnit}
 @export var visibles_public_ids: Dictionary
-@export var vision_range: int = 5
 
 #region Save / Load
 func setInfo() -> void:
@@ -60,9 +59,3 @@ func onRemoveVisibleGameObject(GameObject: GameObjectGD) -> void:
 			visibles[Tile].by_objects.erase(GameObject)
 	
 #endregion
-
-func getVisionRange() -> int:
-	return vision_range
-
-func onUpdateVisionRange(delta: int) -> void:
-	vision_range = max(vision_range + delta, 1)

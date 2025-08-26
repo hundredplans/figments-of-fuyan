@@ -669,7 +669,10 @@ func onItemDragged(ItemUI: Control, item: FofGD) -> void:
 	if map_node.isStashDragItem():
 		if item is CardGD:
 			var deck_slot: DeckSlot = getDeckSlotFromCardUI(ItemUI)
-			if deck_slot == null: return # Stash card sold
+			if deck_slot == null:
+				ItemUI.queue_free()
+				item.onClear()
+				return # Stash card sold
 			onRemoveDeckCard(ItemUI, deck_slot, false)
 		elif item is BoonGD:
 			Game.getSaveFile().onPushAction(RemoveBoonAction.new(item.info.id))
@@ -804,11 +807,11 @@ func _on_main_scroll_container_scroll_ended() -> void:
 func onJunkManSell(price: int) -> bool:
 	var JunkMan: MapNodeGD = Game.getArea().getEnteredMapNode()
 	var max_value: int = JunkMan.getMaxValue()
-	var junk_man_value: int = min(JunkMan.getJunkManValue() + price, max_value)
+	var junk_man_value: int = JunkMan.getJunkManValue() + price
 	
 	DragZoneFillBar.setValue(junk_man_value)
-	if max_value == junk_man_value:
-		JunkMan.setJunkManValue(0) # Resets
+	if junk_man_value >= max_value:
+		JunkMan.setJunkManValue(min(junk_man_value - max_value, max_value - 1)) # Resets
 		JunkMan.onCreateRewardData()
 		return true
 	else: JunkMan.setJunkManValue(junk_man_value)

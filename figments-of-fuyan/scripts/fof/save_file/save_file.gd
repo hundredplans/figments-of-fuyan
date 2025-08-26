@@ -51,6 +51,7 @@ func onLoadData(data: SavedData) -> void:
 	super(data)
 	get_tree().set_auto_accept_quit(false)
 	Game.save_file = self
+	
 	add_to_group("SaveFilesGD")
 	id = data.id
 	my_seed = data.my_seed
@@ -140,17 +141,18 @@ func onLoadGame() -> void:
 	
 func onAreaFinished(difficulty: int) -> void:
 	world_difficulty = difficulty
+	var current_area_id: int = area.info.id
 	area.queue_free()
 	
 	await get_tree().process_frame # Important for everything to despawn
-	onChooseArea(true)
+	onChooseArea(current_area_id)
 	onLoadMap()
 	area.init_load.emit()
 	
-func onChooseArea(is_area_finished: bool = false) -> void:
+func onChooseArea(current_area_id: int = 0) -> void:
 	var valid_areas: Array = [1, 3]
-	if area != null: valid_areas.erase(area.info.id)
-	if !is_area_finished and area == null and Helper.admin_datastore.starting_area_id > 0:
+	valid_areas.erase(current_area_id)
+	if current_area_id == 0 and Helper.admin_datastore.starting_area_id > 0:
 		valid_areas = valid_areas.filter(func(x: int):\
 			return x == Helper.admin_datastore.starting_area_id)
 			
@@ -180,7 +182,6 @@ func getBoon(boon_id: int) -> BoonGD:
 func onGameLost() -> void:
 	DirAccess.remove_absolute(SaveFileInfo.SAVE_DIRECTORY + str(id) + ".tres")
 	load_main_menu.emit()
-	Game.public_id_objects = {}
 #endregion
 
 func onProcessAction(action: Action) -> void:

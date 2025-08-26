@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1ibv5kwl8wqv"]
+[gd_scene load_steps=6 format=3 uid="uid://b1ibv5kwl8wqv"]
 
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="1_dq3lb"]
 [ext_resource type="Script" uid="uid://dybthfs88f636" path="res://scenes/common/rewards_screen/epic_reward_ui.gd" id="1_r6ufy"]
-[ext_resource type="Texture2D" uid="uid://brcmwcvusvyf3" path="res://assets/sprites/game/boons/dominance_boon.png" id="2_r6ufy"]
 [ext_resource type="PackedScene" uid="uid://c1a0nexo0ytc6" path="res://scenes/common/rewards_screen/claimed_label.tscn" id="2_v0iy0"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="3_rp5qf"]
 [ext_resource type="PackedScene" uid="uid://cewvw3vx3mjcm" path="res://scenes/game/tools/tool_icon.tscn" id="4_veje7"]
@@ -72,8 +71,6 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(240, 240)
 mouse_filter = 2
-texture = ExtResource("2_r6ufy")
-expand_mode = 4
 
 [node name="BoonLabel" type="Label" parent="Main/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true

@@ -208,11 +208,15 @@ func onOtherMapNodeFinished(map_node: MapNodeGD) -> void:
 		link.setIsFinished(true)
 		
 func onCreateScreen() -> void:
-	if info.is_encounter: screen = load(ENCOUNTER_SCREEN_PATH).instantiate()
-	else: screen = info.screen.instantiate()
-		
-	screen.finished.connect(onFinished)
-	create_screen.emit(self, screen)
+	if info.is_encounter:
+		screen = load(ENCOUNTER_SCREEN_PATH).instantiate()
+		screen.finished.connect(onFinished)
+		create_screen.emit(self, screen)
+	elif info.screen != null:
+		screen = info.screen.instantiate()
+		screen.finished.connect(onFinished)
+		create_screen.emit(self, screen)
+	else: onFinished()
 	
 func onCreateWorldScene() -> void:
 	var world: Node3D = info.world.instantiate()

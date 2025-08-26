@@ -85,6 +85,7 @@ func onStartGame(champion_info: ChampionCardInfo) -> void:
 	onLoadGame(save_file_data)
 	
 func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
+	Game.public_id_objects = {}
 	Game.highest_public_id = save_file_data.highest_public_id
 	ActionManager = ActionManagerPacked.instantiate()
 	add_child(ActionManager)

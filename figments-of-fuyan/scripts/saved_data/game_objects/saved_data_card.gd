@@ -30,6 +30,7 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var card_offset: CardOffset
 @export var tier: int
 @export var death_ids: Array[int]
+@export var vision_range: int
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords := Vector4i.ZERO,\
  _tile_rotation: int = 0, _vision_datastore := VisionDatastoreCard.new(), _team: int = 0, _attack: int = 0, _health: int = 0,\
@@ -41,7 +42,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	_is_awakened_in_combat: bool = false, _ai_datastore := AIDatastore.new(),\
 	_base_stats: StatsDatastore = null, _overworld_traits: Array[OverworldTrait] = [], _bounty_kills := BountyKills.new(),\
 	_boss_datastore: BossDatastore = null, _card_offset := CardOffset.new(), _tier: int = 1,\
-	_death_ids: Array[int] = []) -> void:
+	_death_ids: Array[int] = [], _vision_range: int = 5) -> void:
 		
 	super(_id, _first_init, _public_id, _coords, _tile_rotation, _vision_datastore)
 	
@@ -74,6 +75,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	card_offset = _card_offset
 	tier = _tier
 	death_ids = _death_ids
+	vision_range = _vision_range
 	
 func getInfoType() -> GDScript: return CardInfo
 func setBaseStats(stat_datastore: StatsDatastore) -> void:

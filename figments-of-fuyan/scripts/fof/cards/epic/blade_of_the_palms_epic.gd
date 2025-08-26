@@ -626,8 +626,6 @@ func onMistAttack(use_type: UseType) -> Array:
 #endregion
 	
 #region Phase Change
-const PHASE_TWO_BASE_HEALTH: int = 14
-const PHASE_THREE_BASE_HEALTH: int = 7
 const PHASE_CHANGE_DELAY_TIME: float = 3.0
 func onChangeBossPhase() -> void:
 	super()
@@ -635,7 +633,7 @@ func onChangeBossPhase() -> void:
 	onForceAction(ClearTileIntentsAction.new())
 	onForceAction(FieldInfoVisibleAction.new(self, false))
 	
-	var heal_to: int = PHASE_TWO_BASE_HEALTH if getPhase() == 2 else PHASE_THREE_BASE_HEALTH
+	var heal_to: int = ceil(max_health / 2.0)
 	onPushAction(HealAction.new(HealDatastore.new(self, max(heal_to - health, 0))))
 
 func onChangeBossPhasePostDelay() -> void:

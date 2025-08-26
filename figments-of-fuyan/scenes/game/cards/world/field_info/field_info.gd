@@ -256,7 +256,7 @@ func onUpdateTraits() -> void:
 		if replace_stat_spot == null: continue # Added for speed
 		for child in replace_stat_spot.get_children(): child.queue_free()
 		replace_stat_spot.add_child(stat_to_model[stat].instantiate())
-		
+	onUpdateTier(Card.getTier())
 	onResetDepthTest()
 #endregion
 

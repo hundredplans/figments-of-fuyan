@@ -127,3 +127,9 @@ func onRetiered(_tier: int) -> void:
 	
 func onToolHolderDeath() -> void:
 	super()
+
+func getDescription(use_default_values: bool = false) -> String:
+	var active_effect: ActiveEffectDatastore = getActiveEffectByName(info.name)
+	if !use_default_values and active_effect != null:
+		return Helper.getDescription(super(), [active_effect.charges])
+	return super(true)

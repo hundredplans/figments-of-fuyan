@@ -31,7 +31,6 @@ func onRemoveCard(send_to_stash: bool = true) -> void:
 	
 	if send_to_stash: Card.onChangeCardPlace(Game.CardPlaces.STASH)
 	else: Card.onClear()
-		
 	
 func getCard() -> CardGD:
 	if card_public_id == 0: return null
