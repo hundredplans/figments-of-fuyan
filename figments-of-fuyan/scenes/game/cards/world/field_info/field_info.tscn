@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=67 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" uid="uid://bsrlt8ui5oxuq" path="res://scenes/game/cards/world/field_info/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -23,9 +23,13 @@
 [ext_resource type="Material" uid="uid://dvdgwhmmfy3gg" path="res://resources/materials/colors/shaded_metal/gold.tres" id="14_wu8we"]
 [ext_resource type="Material" uid="uid://b4m1xyv608rvw" path="res://resources/materials/colors/unshaded_with_outline/pink.tres" id="15_h4ovu"]
 [ext_resource type="Material" uid="uid://bem6mhlmdw1t4" path="res://resources/materials/colors/shaded_metal/amethyst.tres" id="15_odgpr"]
+[ext_resource type="Material" uid="uid://bk8hqwb5ptnkc" path="res://resources/materials/colors/shaded_metal/bronze_no_dt.tres" id="16_2pdkp"]
 [ext_resource type="Material" uid="uid://bspucvlfjlvc" path="res://resources/materials/colors/unshaded_with_outline/orange.tres" id="16_wqo68"]
+[ext_resource type="Material" uid="uid://dx7hquch2iaw3" path="res://resources/materials/colors/shaded_metal/silver_no_dt.tres" id="17_xo3tm"]
+[ext_resource type="Material" uid="uid://c4rrnycq12gmu" path="res://resources/materials/colors/shaded_metal/gold_no_dt.tres" id="18_74pc6"]
 [ext_resource type="Material" uid="uid://cs44x6eyyv8fk" path="res://resources/materials/game/base_material_top.tres" id="18_xbibn"]
 [ext_resource type="ArrayMesh" uid="uid://dg7uxtqjwekn5" path="res://assets/models/general/numbers/particle_numbers/one.tres" id="19_g58ma"]
+[ext_resource type="Material" uid="uid://c4adsxwi718pi" path="res://resources/materials/colors/shaded_metal/amethyst_no_dt.tres" id="19_y41r5"]
 [ext_resource type="ArrayMesh" uid="uid://bod8ila0mcgh5" path="res://assets/models/general/numbers/particle_numbers/two.tres" id="20_hvbsd"]
 [ext_resource type="Material" uid="uid://bixkd4babe13l" path="res://resources/materials/colors/top_unshaded_with_outline/green.tres" id="20_mr5mo"]
 [ext_resource type="Material" uid="uid://di4v3rs63hs1v" path="res://resources/materials/colors/top_unshaded_with_outline/white.tres" id="21_2pyvq"]
@@ -33,7 +37,9 @@
 [ext_resource type="ArrayMesh" uid="uid://8lvyp0xo7m1o" path="res://assets/models/general/numbers/particle_numbers/four.tres" id="22_35x14"]
 [ext_resource type="Material" uid="uid://dwaphdapa3lof" path="res://resources/materials/colors/top_unshaded_with_outline/red.tres" id="22_g7m10"]
 [ext_resource type="PackedScene" uid="uid://nue6v6hd501f" path="res://scenes/particles/numbers_particle.tscn" id="22_tcac4"]
+[ext_resource type="Material" uid="uid://b8c07i0rxtf5g" path="res://resources/materials/game/card/field_info/tool_icon_material.tres" id="22_wu8we"]
 [ext_resource type="ArrayMesh" uid="uid://dtltd47qcc7ba" path="res://assets/models/general/numbers/particle_numbers/five.tres" id="23_n5v4e"]
+[ext_resource type="Material" uid="uid://d222qtfeabyka" path="res://resources/materials/game/card/field_info/tool_icon_material_no_dt.tres" id="23_odgpr"]
 [ext_resource type="ArrayMesh" uid="uid://55xffu81oa2l" path="res://assets/models/general/numbers/particle_numbers/six.tres" id="24_6p3qk"]
 [ext_resource type="ArrayMesh" uid="uid://0h0asltc81t4" path="res://assets/models/general/numbers/particle_numbers/seven.tres" id="25_y0a8l"]
 [ext_resource type="ArrayMesh" uid="uid://chfkufbvrar7i" path="res://assets/models/general/numbers/particle_numbers/eight.tres" id="26_4gsdx"]
@@ -43,6 +49,7 @@
 [ext_resource type="ArrayMesh" uid="uid://bw1sie25vkpxj" path="res://assets/models/general/numbers/particle_numbers/minus.tres" id="30_syjsk"]
 [ext_resource type="Texture2D" uid="uid://b2lh8txdjfbpi" path="res://assets/sprites/game/cards/field_info/turn_passed.png" id="33_7aext"]
 [ext_resource type="PackedScene" uid="uid://da2oicq7t4k61" path="res://scenes/game/cards/world/fof_object_icon.tscn" id="33_haxel"]
+[ext_resource type="Material" uid="uid://18fiptojg7qr" path="res://resources/materials/unique/speed_field_info_material_no_dt.tres" id="33_xo3tm"]
 [ext_resource type="Texture2D" uid="uid://bxorkkcsj7ba7" path="res://assets/sprites/game/cards/field_info/turn_active.png" id="34_t37ao"]
 [ext_resource type="Texture2D" uid="uid://c4vogckvyfita" path="res://assets/sprites/game/cards/field_info/enemy_in_range.png" id="35_aitxo"]
 [ext_resource type="Texture2D" uid="uid://6uvisuxpsm3b" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/down1.png" id="36_blhee"]
@@ -61,15 +68,6 @@
 
 [sub_resource type="QuadMesh" id="QuadMesh_la30j"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_mr5mo"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2pyvq"]
-resource_local_to_scene = true
-transparency = 1
-shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_mr5mo")
-
 [node name="FieldInfo" type="Node3D"]
 script = ExtResource("1_doj6w")
 number_to_model = Array[PackedScene]([ExtResource("2_emwqa"), ExtResource("6_hhji0"), ExtResource("7_rtn5l"), ExtResource("5_sdyep"), ExtResource("6_1r07y"), ExtResource("7_5ijq8"), ExtResource("8_7cvsh"), ExtResource("9_a1tgo"), ExtResource("10_dhlus"), ExtResource("11_apcfk")])
@@ -77,17 +75,22 @@ tier_one_material = ExtResource("12_2pyvq")
 tier_two_material = ExtResource("13_g7m10")
 tier_three_material = ExtResource("14_wu8we")
 tier_four_material = ExtResource("15_odgpr")
+tier_one_material_no_dt = ExtResource("16_2pdkp")
+tier_two_material_no_dt = ExtResource("17_xo3tm")
+tier_three_material_no_dt = ExtResource("18_74pc6")
+tier_four_material_no_dt = ExtResource("19_y41r5")
 dark_green_with_outline_material = ExtResource("12_muixq")
 green_with_outline_material = ExtResource("12_mr5mo")
 red_with_outline_material = ExtResource("13_2pyvq")
 white_with_outline_material = ExtResource("14_g7m10")
 pink_with_outline_material = ExtResource("15_h4ovu")
 orange_with_outline_material = ExtResource("16_wqo68")
+tool_icon_material = ExtResource("22_wu8we")
+tool_icon_material_no_dt = ExtResource("23_odgpr")
 green_top_material = ExtResource("20_mr5mo")
 white_top_material = ExtResource("21_2pyvq")
 red_top_material = ExtResource("22_g7m10")
 top_base_material = ExtResource("18_xbibn")
-speed_material = ExtResource("50_sbbn5")
 number_to_particle_mesh = Array[Mesh]([null, ExtResource("19_g58ma"), ExtResource("20_hvbsd"), ExtResource("21_dveln"), ExtResource("22_35x14"), ExtResource("23_n5v4e"), ExtResource("24_6p3qk"), ExtResource("25_y0a8l"), ExtResource("26_4gsdx"), ExtResource("27_eixty")])
 exclamation_particle_mesh = ExtResource("28_i4f0i")
 plus_mesh = ExtResource("29_3nsr3")
@@ -109,6 +112,8 @@ AttackDefaultPacked = ExtResource("2_v7j5s")
 HealthDefaultPacked = ExtResource("3_idggp")
 SpeedDefaultPacked = ExtResource("4_5w26i")
 speed_model_script = ExtResource("52_h4ovu")
+speed_material = ExtResource("50_sbbn5")
+speed_material_no_dt = ExtResource("33_xo3tm")
 
 [node name="FloatingStats" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -163,7 +168,7 @@ script = ExtResource("38_bc6s6")
 unique_name_in_owner = true
 transform = Transform3D(1, 8.74228e-08, 8.74228e-08, -8.74228e-08, 1, -8.74228e-08, -8.74228e-08, 8.74228e-08, 1, 1.0691, 0.457638, 0)
 mesh = SubResource("QuadMesh_la30j")
-surface_material_override/0 = SubResource("StandardMaterial3D_2pyvq")
+surface_material_override/0 = ExtResource("22_wu8we")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 disable_3d = true

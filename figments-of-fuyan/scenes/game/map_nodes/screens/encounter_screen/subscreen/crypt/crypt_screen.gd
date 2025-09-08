@@ -10,7 +10,12 @@ func setInfo(_map_node: MapNodeGD) -> void:
 	EncounterMainUI.setInfo(base_sprite, frames, bitmap_frames)
 	
 func _on_encounter_main_ui_pressed() -> void:
+	EncounterMainUI.setDisableUpdateModulate(true)
 	create_stash_screen.emit(null)
+	
+func onStashScreenExitStart() -> void:
+	super()
+	EncounterMainUI.setDisableUpdateModulate(false)
 	
 func getMinimapFadeNodes() -> Array: return [EncounterMainUI]
 func getStashFadeNodes() -> Array: return [EncounterMainUI]

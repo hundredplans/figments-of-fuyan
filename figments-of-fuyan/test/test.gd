@@ -76,7 +76,12 @@ func onBoons() -> void:
 		ResourceSaver.save(boon_info)
 
 func _ready() -> void:
-	pass
+	for i in range(17):
+		var button := Button.new()
+		$GridContainer.add_child(button)
+		button.custom_minimum_size = Vector2(50, 50)
+		button.mouse_default_cursor_shape = i
+	
 	#for card_info: CardInfo in Helper.getFofInfoArray(CardInfo):
 		#var datastores: Array[CardTierDatastore] = card_info.tiers
 		#for i in range(1, 4):

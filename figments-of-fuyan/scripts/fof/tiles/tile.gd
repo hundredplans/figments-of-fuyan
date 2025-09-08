@@ -18,6 +18,9 @@ var is_decoration: bool
 var movement_path: MovementPathGD
 var explored: ExploredGD
 
+var StaticBody: StaticBody3D
+var TileFillStaticBody: StaticBody3D
+
 signal change_hover_card_state
 const SHOW_CARD_AT_HOVER_DELAY: float = 1
 
@@ -125,7 +128,7 @@ func setTileFillMaterial(is_greyscale: bool = false) -> void:
 		var tile_fill_material: ShaderMaterial = info.getTileFillMaterial() if !is_greyscale else info.getTileFillGreyscaleMaterial()
 		if tile_fill_material == null:
 			var area: AreaGD = Game.getArea()
-			var area_info: AreaInfo = area.info if area != null else Helper.level_editor_area_info 
+			var area_info: AreaInfo = area.info if area != null else Helper.getFofInfoID(AreaInfo, info.area_ids[0])
 			tile_fill_material = area_info.tile_fill_material if !is_greyscale else area_info.tile_fill_greyscale_material
 		TileFillMesh.set_surface_override_material(0, tile_fill_material)
 		
@@ -181,7 +184,8 @@ func onCreateTileFill(state: bool) -> String:
 	if tile_fill:
 		TileFill = load(info.TILE_FILL_SCENE_PATH).instantiate()
 		add_child(TileFill)
-		TileFill.global_position.y = 0
+		TileFillStaticBody = TileFill.get_node("StaticBody3D")
+		TileFill.position.y -= position.y
 		TileFill.scale.y = getHeight()
 		setTileFillMaterial()
 		return "DESTROY"
@@ -218,6 +222,7 @@ func onLoadModel() -> void:
 	OutlineMesh = Model.get_node("OutlineMeshInstance3D")
 	BottomMesh = Model.get_node("BottomMeshInstance3D")
 	TopMesh = Model.get_node("TopMeshInstance3D")
+	StaticBody = Model.get_node("StaticBody3D")
 	
 	setCoords(coords)
 	setTileRotation(tile_rotation)
@@ -443,3 +448,7 @@ func onUpdateTier(_tier: int, is_greyscale: bool = false) -> void:
 
 func setInfoSprite(tx: Texture2D) -> void:
 	Model.get_node("InfoSprite").texture = tx
+	
+func getStaticBody() -> StaticBody3D: return StaticBody
+func getTileFillStaticBody() -> StaticBody3D: return TileFillStaticBody
+func getStaticBodies() -> Array: return [TileFillStaticBody, StaticBody] if TileFillStaticBody != null else [StaticBody]

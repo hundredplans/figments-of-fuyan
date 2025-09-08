@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctjl460n6nhg5"]
+[gd_scene load_steps=10 format=3 uid="uid://ctjl460n6nhg5"]
 
 [ext_resource type="Script" uid="uid://csr4lhnfjrsx" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/colosseum/colosseum_screen.gd" id="1_ogf65"]
 [ext_resource type="PackedScene" uid="uid://bvwvxtul7dpd8" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.tscn" id="2_t65pb"]
-[ext_resource type="PackedScene" uid="uid://djulw2ubmmu7t" path="res://scenes/common/new/large_text_button/large_text_button.tscn" id="3_yf8p1"]
+[ext_resource type="Texture2D" uid="uid://bakh86rqnxmfy" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum_curse.png" id="3_t34vf"]
+[ext_resource type="Texture2D" uid="uid://daaimlqkrnfnw" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum_foreign.png" id="3_ukmap"]
+[ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="3_xaoeo"]
+[ext_resource type="Texture2D" uid="uid://dfqa0o025qtrr" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum_upgrade.png" id="4_u3hml"]
+[ext_resource type="Texture2D" uid="uid://cjtm45kgvgvy0" path="res://assets/sprites/ui/scene_specific/encounter_screen/colosseum/colosseum_mirror.png" id="4_xaoeo"]
+[ext_resource type="LabelSettings" uid="uid://d1fxesog2wasm" path="res://resources/ui/label_settings/spicyrice_medium.tres" id="5_4hssc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t34vf"]
+size = Vector2(970, 1100)
 
 [node name="ColosseumScreen" type="Control"]
 layout_mode = 3
@@ -13,37 +21,174 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_ogf65")
+foreign_fight_icon = ExtResource("3_ukmap")
+curse_fight_icon = ExtResource("3_t34vf")
+advanced_fight_icon = ExtResource("4_u3hml")
+mirror_fight_icon = ExtResource("4_xaoeo")
+foreign_fight_description = "Fight against enemies from another Area"
+curse_fight_description = "Fight against a unique Curse"
+advanced_fight_description = "Fight against enemies of a higher Tier"
+mirror_fight_description = "Fight against your allies"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="LeftRect" type="ColorRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+z_index = -1
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/LeftRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="LeftTitleLabel" type="Label" parent="HBoxContainer/LeftRect/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Foreign Fight"
+label_settings = ExtResource("3_xaoeo")
+horizontal_alignment = 1
+
+[node name="LeftIcon" type="TextureRect" parent="HBoxContainer/LeftRect/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="HBoxContainer" parent="HBoxContainer/LeftRect/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Control" type="Control" parent="HBoxContainer/LeftRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="LeftDescriptionLabel" type="Label" parent="HBoxContainer/LeftRect/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fight enemies from another area"
+label_settings = ExtResource("5_4hssc")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control2" type="Control" parent="HBoxContainer/LeftRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="RightRect" type="ColorRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+z_index = -1
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/RightRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="RightTitleLabel" type="Label" parent="HBoxContainer/RightRect/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Foreign Fight"
+label_settings = ExtResource("3_xaoeo")
+horizontal_alignment = 1
+
+[node name="RightIcon" type="TextureRect" parent="HBoxContainer/RightRect/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="HBoxContainer" parent="HBoxContainer/RightRect/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Control" type="Control" parent="HBoxContainer/RightRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="RightDescriptionLabel" type="Label" parent="HBoxContainer/RightRect/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fight enemies from another area"
+label_settings = ExtResource("5_4hssc")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control2" type="Control" parent="HBoxContainer/RightRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="EncounterMainUI" parent="." instance=ExtResource("2_t65pb")]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 687.0
-offset_top = 228.0
-offset_right = 943.0
-offset_bottom = 484.0
-scale = Vector2(2, 2)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+global_mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_top = 740.0
-offset_right = 1920.0
-offset_bottom = 917.0
-mouse_filter = 2
-theme_override_constants/separation = 100
-alignment = 1
+[node name="LeftArea" type="Area2D" parent="."]
 
-[node name="RegularFightButton" parent="HBoxContainer" instance=ExtResource("3_yf8p1")]
-layout_mode = 2
-text = "Regular Fight"
-BASE_COLOR = Color(0.63, 0.462, 0.378, 1)
-HOVER_COLOR = Color(0.46, 0.337333, 0.276, 1)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftArea"]
+position = Vector2(475, 540)
+shape = SubResource("RectangleShape2D_t34vf")
 
-[node name="SpecialFightButton" parent="HBoxContainer" instance=ExtResource("3_yf8p1")]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Regular Fight"
-BASE_COLOR = Color(0.63, 0.462, 0.378, 1)
-HOVER_COLOR = Color(0.46, 0.337333, 0.276, 1)
+[node name="RightArea" type="Area2D" parent="."]
+position = Vector2(970, 0)
 
-[connection signal="pressed" from="HBoxContainer/RegularFightButton" to="." method="onRegularFightPressed"]
-[connection signal="pressed" from="HBoxContainer/SpecialFightButton" to="." method="onSpecialFightPressed"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightArea"]
+position = Vector2(475, 540)
+shape = SubResource("RectangleShape2D_t34vf")
+
+[connection signal="mouse_entered" from="LeftArea" to="." method="onLeftRectHovered"]
+[connection signal="mouse_entered" from="LeftArea" to="." method="onMouseInLeftRect" binds= [true]]
+[connection signal="mouse_exited" from="LeftArea" to="." method="onMouseInLeftRect" binds= [false]]
+[connection signal="mouse_entered" from="RightArea" to="." method="onRightRectHovered"]
+[connection signal="mouse_entered" from="RightArea" to="." method="onMouseInRightRect" binds= [true]]
+[connection signal="mouse_exited" from="RightArea" to="." method="onMouseInRightRect" binds= [false]]

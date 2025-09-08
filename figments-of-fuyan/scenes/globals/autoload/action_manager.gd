@@ -7,9 +7,10 @@ var active_action: Action
 var actions: Array = []
 var is_game_closing: bool
 @onready var DelayTimer: Timer = %DelayTimer
-
-func onPushAction(action: Action) -> void:
-	actions.push_front(action)
+	
+func onPushAction(push_actions: Array = []) -> void:
+	push_actions += actions
+	actions = push_actions
 	onActionChain()
 	
 func onPushAfterAction(new_actions: Array, after_action: Action) -> void:
@@ -47,6 +48,10 @@ func onActionChain() -> void:
 		DelayTimer.wait_time = active_action.getDelay()
 		DelayTimer.start()
 		await DelayTimer.timeout
+		
+	if active_action.getFrameDelay() > 0 and !is_game_closing:
+		for __: int in range(active_action.getFrameDelay()):
+			await get_tree().process_frame
 	
 	process_action.emit(active_action)
 

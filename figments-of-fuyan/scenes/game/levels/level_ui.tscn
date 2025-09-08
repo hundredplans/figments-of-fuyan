@@ -656,14 +656,10 @@ libraries = {
 }
 
 [connection signal="action_lock" from="." to="Main/ActiveEffects" method="onUpdateActionLock"]
-[connection signal="mouse_entered" from="Main/BottomBox/EpicFightControl/VBoxContainer/PanelContainer" to="." method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Main/BottomBox/EpicFightControl/VBoxContainer/PanelContainer" to="." method="onMouseInUI" binds= [false]]
 [connection signal="mouse_entered" from="Main/BottomBox/HandPanel" to="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="Main/BottomBox/HandPanel" to="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="onMouseInUI" binds= [false]]
 [connection signal="child_entered_tree" from="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" to="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" method="_on_child_entered_tree"]
 [connection signal="mouse_in_ui" from="Main/BottomBox/HandPanel/MarginContainer/ScrollContainer/HandBox" to="." method="onMouseInUI"]
-[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer/LeftCameraArrow" to="." method="onCameraDirectionChanged" binds= [-1]]
-[connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/HBoxContainer/RightCameraArrow" to="." method="onCameraDirectionChanged" binds= [1]]
 [connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Center/VBoxContainer/PassButton" to="." method="_on_pass_button_pressed"]
 [connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Right/DeckPanel/MarginContainer/DeckButton" to="." method="_on_deck_button_pressed"]
 [connection signal="pressed" from="Main/TopPanel/MarginContainer/HBoxContainer/Right/PanelContainer2/MarginContainer/GraveyardButton" to="." method="_on_graveyard_button_pressed"]

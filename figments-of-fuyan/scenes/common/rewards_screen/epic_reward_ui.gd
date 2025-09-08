@@ -28,8 +28,8 @@ const PRECALCULATED_CLAIMED_LABEL_CARD_UI_OFFSET := Vector2(-125, 120)
 @onready var ToolLabel: Label = %ToolLabel
 @onready var CardLabel: Label = %CardLabel
 
-@onready var BoonIcon: Control = %BoonIcon
-@onready var ToolIcon: Control = %ToolIcon
+@onready var BoonIcon: TbcUI = %BoonIcon
+@onready var ToolIcon: TbcUI = %ToolIcon
 var EpicCardUI: Control
 
 const MAX_SCALE_SIZE: float = 1.1
@@ -47,7 +47,7 @@ func setInfo(_reward: Reward) -> void:
 	
 	for i: int in range(items.size()):
 		var item: FofGD = items[i]
-		var IconUI: Control
+		var IconUI: TbcUI
 		if item is BoonGD:
 			IconUI = BoonIcon
 			BoonIcon.setInfo(item, !reward.isTaken(), false, true)
@@ -56,12 +56,12 @@ func setInfo(_reward: Reward) -> void:
 			BoonIcon.pressed.connect(onBoonPressed)
 		elif item is ToolGD:
 			IconUI = ToolIcon
-			ToolIcon.setInfo(item, !reward.isTaken(), true)
+			ToolIcon.setInfo(item, !reward.isTaken(), false, true)
 			ToolIcon.setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE\
 				if reward.isTaken() else Control.MouseFilter.MOUSE_FILTER_STOP)
 			ToolIcon.pressed.connect(onToolPressed)
 		elif item is CardGD:
-			var CardUI: Control = item.onCreateCardUI(CardControl, !reward.isTaken(), false, false, true)
+			var CardUI: Control = item.onCreateCardUI(CardControl, !reward.isTaken(), false, true, false)
 			if reward.isTaken():
 				CardUI.onChangeBackgroundMouseFilter(false)
 			IconUI = CardUI
@@ -112,13 +112,14 @@ func onRewardTaken(IconUI: Control, item: FofGD) -> void:
 func onToolPressed(OriginalToolIcon: Control) -> void:
 	if reward.isTaken() or StashScreen != null: return
 	var Tool: ToolGD = OriginalToolIcon.getItem()
-	var _ToolIcon: Control = ToolIconPacked.instantiate()
+	var _ToolIcon: TbcUI = ToolIconPacked.instantiate()
 	add_child(_ToolIcon)
-	_ToolIcon.setInfo(Tool, false)
+	_ToolIcon.setInfo(Tool)
 	_ToolIcon.setSizeScale(3)
 	_ToolIcon.global_position = get_viewport().get_mouse_position() - _ToolIcon.pivot_offset
 	
 	StashScreen = Game.onCreateStashScreen(self, _ToolIcon)
+	if StashScreen == null: return
 	stash_screen_fade_in.emit()
 	StashScreen.active_tool_added.connect(onToolClaimed.bind(_ToolIcon, OriginalToolIcon))
 	StashScreen.exit_start.connect(onActiveToolStashExitStart.bind(_ToolIcon))

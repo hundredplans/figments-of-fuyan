@@ -49,17 +49,14 @@ var original_position: Vector2
 var is_held_moving: bool
 var offset_to_center: Vector2
 var original_parent: Control
+var include_tool_for_hover: bool
 #endregion
 
 const OUTLINE_PIXEL_SIZE: int = 3
 
-func setInfo(_Card: CardGD, _hoverable: bool = false, _inspectable: bool = true, _draggable: bool = false, _autoscale: bool = false) -> void:
-	hoverable = _hoverable
-	inspectable = _inspectable
-	draggable = _draggable
-	autoscale = _autoscale
-	
-	Card = _Card
+func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false) -> void:
+	super(_item, _hoverable, _draggable, _autoscale)
+	Card = _item
 	
 	Background.setTexture(rarities[Card.info.rarity])
 	ArtPop.setTexture(Card.info.art_pop)
@@ -90,13 +87,13 @@ func onUpdateStats() -> void:
 	AttackLabel.text = str(Card.base_stats.attack)
 	HealthLabel.text = str(Card.base_stats.health)
 	SpeedLabel.text = str(Card.base_stats.speed)
-	EnergyLabel.text = str(Card.base_stats.energy)
-	#
-	#var energy_modulate: Color
-	#if Card.energy > Card.base_stats.energy: energy_modulate = Color.RED
-	#elif Card.energy == Card.base_stats.energy: energy_modulate = Color.WHITE
-	#else: energy_modulate = Color.GREEN
-	#EnergyLabel.modulate = energy_modulate
+	EnergyLabel.text = str(Card.energy)
+	
+	var energy_modulate: Color
+	if Card.energy > Card.base_stats.energy: energy_modulate = Color.RED
+	elif Card.energy == Card.base_stats.energy: energy_modulate = Color.WHITE
+	else: energy_modulate = Color.GREEN
+	EnergyLabel.modulate = energy_modulate
 	
 func onToolUpdated(Tool: ToolGD) -> void:
 	ToolControl.visible = Tool != null
@@ -201,3 +198,23 @@ func setStashScreenCardUICollisionLayer() -> void:
 func onShowTierLabel() -> void:
 	BigTierLabel.modulate = Game.getTierColor(Card.getTier())
 	BigTierLabel.text = "Tier " + Game.getTierString(Card.getTier())
+
+func setInspectable(state: bool) -> void:
+	inspectable = state
+	
+func setIncludeToolForHover(state: bool) -> void:
+	include_tool_for_hover = state
+	onUpdateModulate()
+
+func isHoveredColor() -> bool:
+	return super() or (include_tool_for_hover and ToolIcon.isMouseInUI())
+
+func onToolIconMouseInUI(_state: bool) -> void:
+	if !include_tool_for_hover: return
+	onUpdateModulate()
+
+func onUpdateCursorVisual(state: bool) -> void:
+	pass
+	#for node: Control in [Background, AreaBackground, ArtPop, TextLabel]:
+		#node.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if draggable and is_mouse_in_ui and !disabled else Control.CURSOR_ARROW
+		

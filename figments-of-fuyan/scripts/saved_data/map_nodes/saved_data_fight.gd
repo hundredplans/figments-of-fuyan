@@ -4,13 +4,16 @@ class_name SavedDataFight extends SavedDataMapNode
 @export var spawn_group: int
 @export var enemy_cards: Array # Array[SavedDataCard]
 @export var level_preview: LevelPreview
+@export var level_public_id: int
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _map_location: MapLocation = null, _links: Array = [], _is_entered: bool = false, _is_finished: bool = false,\
-	_rotation_y: float = 0, _ability_save: Dictionary = {}, _level_info: LevelInfo = null, _spawn_group: int = 0, _enemy_cards: Array = [], _level_preview: LevelPreview = null) -> void:
+	_rotation_y: float = 0, _ability_save: Dictionary = {}, _level_info: LevelInfo = null, _spawn_group: int = 0, _enemy_cards: Array = [],\
+	_level_preview: LevelPreview = null, _level_public_id: int = 0) -> void:
 	super(_id, _first_init, _public_id, _map_location, _links, _is_entered, _is_finished, _rotation_y, _ability_save)
 	level_info = _level_info
 	spawn_group = _spawn_group
 	enemy_cards = _enemy_cards
 	level_preview = _level_preview
+	level_public_id = _level_public_id
 	
 	

@@ -1,4 +1,4 @@
-extends Node3D
+extends BaseFieldInfo
 
 @onready var BossIntentSprite: Sprite3D = %BossIntentSprite
 
@@ -12,10 +12,9 @@ extends Node3D
 
 const INTENT_CHANGE_TIME: float = 0.5
 
-var Card: EpicCardGD
-func setInfo(_Card: EpicCardGD) -> void:
-	Card = _Card
-	BossIntentSprite.position.y = Card.getStatFromInfo()
+func setInfo(_Card: CardGD) -> void:
+	super(_Card)
+	position.y = Card.getStatFromInfo()
 	onUpdateBossIntent()
 
 func onUpdateBossIntent() -> void:

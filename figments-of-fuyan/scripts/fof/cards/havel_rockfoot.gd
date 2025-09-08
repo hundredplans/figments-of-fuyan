@@ -37,7 +37,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 			AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.HAVEL_ROCKFOOT, true), true)]
 			
 		if revenge_triggers > 0:
-			actions.append(StatAction.new(StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.HEALTH], [revenge_triggers, revenge_triggers])))
+			actions.append(StatAction.new(StatInfo.new(self, [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.HEALTH], [revenge_triggers, revenge_triggers, revenge_triggers])))
 			actions.append(RemoveFieldEffectAction.new(Game.onFindPublicIDObject(black_rage_public_id)))
 			black_rage_public_id = 0
 			revenge_triggers = 0
@@ -45,7 +45,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(actions)
 		onAbility()
 
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var ally_vision: Array = Game.getTeamVision(0)
 	var tiles: Array = active_effect_tiles.pickable_tiles.filter(func(x: TileGD): return x in ally_vision)
 	if !tiles.is_empty() and revenge_triggers > 0:

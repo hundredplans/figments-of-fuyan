@@ -10,6 +10,7 @@ var owner: Variant # FofGD or another action always
 var forced: bool
 
 @export var lock_action_delay: bool
+@export var frame_delay: int = 0
 @export var action_delay: float = 0
 @export var owner_public_id: int
 @export var failed: bool = false
@@ -38,10 +39,9 @@ func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action:
 		actions = [actions]
 	
-	actions.reverse()
 	for action in actions:
 		action.owner = action_owner
-		push_action.emit(action)
+	push_action.emit(actions)
 		
 # If action is succesfully found
 func onPushAfterAction(actions: Variant, action_or_script: Variant, action_owner: Variant = self) -> bool:
@@ -92,6 +92,12 @@ func onLoad() -> void:
 func setActionDelay(_action_delay: float) -> void:
 	if lock_action_delay: return
 	action_delay = _action_delay
+	
+func setFrameDelay(_frame_delay: int) -> void:
+	frame_delay = _frame_delay
+
+func getFrameDelay() -> int:
+	return frame_delay
 
 func setLockActionDelay(state: bool) -> void:
 	lock_action_delay = state

@@ -4,6 +4,7 @@ var spawn_group: int
 var level_preview: LevelPreview
 var enemy_cards: Array # Array[SavedDataCard]
 var level_info: LevelInfo
+var level_public_id: int
 
 #region Save / Load / Init
 func onFofInit() -> void:
@@ -25,7 +26,8 @@ func onCreateLevelPreview(enemy_cards: Array) -> void:
 func getEliteExaltId() -> int: return 0
 	
 func onSave() -> SavedDataMapNode:
-	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group, enemy_cards, level_preview)
+	return SavedDataFight.new(info.id, false, public_id, map_location, links, is_entered, is_finished, rotation.y, ability_save, level_info, spawn_group,\
+		enemy_cards, level_preview, level_public_id)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -33,6 +35,7 @@ func onLoadData(data: SavedData) -> void:
 	enemy_cards = data.enemy_cards
 	spawn_group = data.spawn_group
 	level_preview = data.level_preview
+	level_public_id = data.level_public_id
 	add_to_group("FightMapNodesGD")
 #endregion
 
@@ -50,11 +53,7 @@ func getHoverUIPath() -> String:
 #endregion
 
 #region Loading Level
-func onEntered() -> void:
-	super()
-	onCreateScreen()
-	
-func onFinished() -> void:
+func onEnteredInit() -> void:
 	super()
 	if self is EliteFightNodeGD or self is MinibossFightNodeGD or self is BossFightNodeGD: return
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
@@ -62,8 +61,18 @@ func onFinished() -> void:
 	new_level_data.level_preview = level_preview
 	new_level_data.spawn_group = spawn_group
 	new_level_data.fight_type = Game.FightTypes.REGULAR
-	
-	load_level.emit(new_level_data)
+	level_public_id = Game.onIncrementPublicID()
+	new_level_data.public_id = level_public_id
+	onPushLoadingScreenAction(new_level_data)
+		
+func onPushLoadingScreenAction(level_data: SavedDataLevel, area_id: int = Game.getArea().getInfo().id) -> void:
+	onPushAction([StartLoadingScreenAction.new(
+		Game.LoadingType.LEVEL,
+		area_id,
+		Helper.getFofInfoID(LevelInfo, level_data.id).name,
+		Game.getArea().getProgress(),
+		level_data.curse_id
+	), CreateLevelAction.new(level_data)])
 #endregion
 
 #region Level Gen
@@ -76,3 +85,9 @@ func setLevelInfo() -> void:
 	else:
 		level_info = Game.getArea().getLevelInfoForProgress(map_location.progress)
 #endregion
+
+func onProcessAction(action: Action) -> void:
+	super(action)
+	if action.post:
+		if action is LevelRewardsFinishedAction and action.getActiveLevelData().public_id == level_public_id:
+			onFinished()

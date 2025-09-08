@@ -20,6 +20,11 @@ signal claim_button_down
 @onready var RewardsLabel: Label = %RewardsLabel
 @onready var Main: Control = %Main
 
+@onready var ViewStashButton: Control = %ViewStashButton
+
+@onready var LeftArrowButton: Control = %LeftArrowButton
+@onready var RightArrowButton: Control = %RightArrowButton
+
 var is_page_reward_taken: bool
 var rewards_ui: Control
 var rewards: Rewards
@@ -27,6 +32,14 @@ var page: int
 
 func setInfo(_rewards: Rewards, _level_type: Game.FightTypes) -> void:
 	rewards = _rewards
+	
+	var main_color: Color = Game.getArea().getInfo().getAreaColor()
+	var secondary_color: Color = Game.getArea().getInfo().getSecondAreaColor()
+	var tertiary_color: Color = Game.getArea().getInfo().getThirdAreaColor()
+	
+	FadeCreamBackground.FADE_COLOR = main_color
+	FadeCreamBackground.color = main_color
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_viewport().update_mouse_cursor_state()
 	
@@ -34,6 +47,26 @@ func setInfo(_rewards: Rewards, _level_type: Game.FightTypes) -> void:
 	setExitButtonText()
 	setRewardsLabelText()
 	setRewardUI()
+	
+	LeftArrowButton.BASE_COLOR = main_color
+	LeftArrowButton.HOVER_COLOR = secondary_color
+	LeftArrowButton.DISABLED_COLOR = tertiary_color
+	LeftArrowButton.setModulate()
+	
+	RightArrowButton.BASE_COLOR = main_color
+	RightArrowButton.HOVER_COLOR = secondary_color
+	RightArrowButton.DISABLED_COLOR = tertiary_color
+	RightArrowButton.setModulate()
+	
+	ViewStashButton.BASE_COLOR = main_color
+	ViewStashButton.HOVER_COLOR = secondary_color
+	ViewStashButton.DISABLED_COLOR = tertiary_color
+	ViewStashButton.setModulate()
+	
+	ExitButton.BASE_COLOR = main_color
+	ExitButton.HOVER_COLOR = secondary_color
+	ExitButton.DISABLED_COLOR = tertiary_color
+	ExitButton.setModulate()
 	
 func setRewardUI() -> void:
 	if rewards_ui != null: rewards_ui.queue_free()
@@ -84,15 +117,12 @@ func onExitButtonPressed() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color.BLACK, Game.FADE_TIME)
 	
-	FadeCreamBackground.DEFAULT_ALPHA = 255
-	FadeCreamBackground.FADE_COLOR = Color.BLACK
-	FadeCreamBackground.onFade(true)
-	
-	await tween.finished
+	Game.getSaveFile().onPushAction(StartLoadingScreenAction.new(
+		Game.LoadingType.MAP,
+		Game.getArea().getInfo().id
+	))
 	await get_tree().process_frame
-	
 	screen_finished.emit()
-	queue_free()
 	
 func onFadeInMain() -> void:
 	FadeCreamBackground.onFade(true)
@@ -102,6 +132,7 @@ func onFadeInMain() -> void:
 
 func onViewStashButtonPressed() -> void:
 	var StashScreen: Control = Game.onCreateStashScreen(Main)
+	if StashScreen == null: return
 	onStashScreenFadeIn()
 	StashScreen.exit_start.connect(onStashScreenFadeOut)
 

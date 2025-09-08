@@ -3,17 +3,26 @@ extends GridContainer
 
 signal mouse_in_ui
 
-func onAddBoon(Boon: BoonGD) -> void:
+func onAddBoon(Boon: BoonGD, visual: bool = false) -> void:
 	var BoonIcon: Control = BoonIconPacked.instantiate()
 	add_child(BoonIcon)
 	BoonIcon.setInfo(Boon, false, false, true)
 	BoonIcon.onShowTierLabel()
 	BoonIcon.setDisabled(Boon.getDisabled())
+	
+	if visual:
+		BoonIcon.onItemGainedVisual()
 
-func onUpdate() -> void:
-	for BoonIcon in get_children(): BoonIcon.queue_free()
-	for Boon in Game.getSaveFile().getBoons():
-		onAddBoon(Boon)
+func onUpdate(Boon: BoonGD = null, remove: bool = false) -> void:
+	if Boon == null:
+		for BoonIcon in get_children(): BoonIcon.queue_free()
+		for _Boon in Game.getSaveFile().getBoons():
+			onAddBoon(_Boon, false)
+	elif !remove:
+		onAddBoon(Boon, true)
+	elif remove:
+		for BoonIcon in get_children():
+			if BoonIcon.getItem() == Boon: BoonIcon.queue_free()
 
 func onUpdateBoonChargesAndDisabled(Boon: BoonGD) -> void:
 	var BoonIcon: TextureRect = onFindBoonIcon(Boon.info.id)

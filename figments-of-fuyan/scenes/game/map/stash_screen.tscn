@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=27 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
 [ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="3_v8bki"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="4_sli05"]
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="5_jpe4s"]
+[ext_resource type="Texture2D" uid="uid://b4kkv4s35sd16" path="res://assets/sprites/ui/icons/max_energy.png" id="6_iniqv"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="9_2jssj"]
 [ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="9_jpe4s"]
 [ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="11_htpxe"]
@@ -241,7 +242,7 @@ mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 2
-offset_left = 1190.0
+offset_left = 1072.0
 offset_right = 1920.0
 offset_bottom = 120.0
 size_flags_horizontal = 3
@@ -252,6 +253,26 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
 alignment = 2
+
+[node name="MaxEnergyContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="ScreenManager/MarginContainer2/HBoxContainer/MaxEnergyContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_iniqv")
+expand_mode = 2
+
+[node name="MaxEnergyLabel" type="Label" parent="ScreenManager/MarginContainer2/HBoxContainer/MaxEnergyContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "3"
+label_settings = ExtResource("2_sli05")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="EnergyLimitContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2/HBoxContainer"]
 unique_name_in_owner = true
@@ -302,6 +323,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="ExitButton" parent="ScreenManager/MarginContainer2/HBoxContainer" instance=ExtResource("1_xnd7x")]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
 
@@ -318,7 +340,8 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Decklabel" type="Label" parent="ScreenManager/MarginContainer/VBoxContainer"]
+[node name="DeckLabel" type="Label" parent="ScreenManager/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -357,7 +380,6 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 mouse_filter = 2
 horizontal_scroll_mode = 3
-vertical_scroll_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer"]
 layout_mode = 2
@@ -400,12 +422,12 @@ columns = 6
 
 [node name="MarginContainer3" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 0
-offset_left = 174.0
-offset_right = 610.0
+offset_right = 755.0
 offset_bottom = 120.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer3"]
 layout_mode = 2
+alignment = 2
 
 [node name="SortByToolButton" parent="ScreenManager/MarginContainer3/HBoxContainer" instance=ExtResource("11_htpxe")]
 layout_mode = 2

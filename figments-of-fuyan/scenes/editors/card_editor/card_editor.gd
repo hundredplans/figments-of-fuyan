@@ -45,7 +45,7 @@ func onAnimationNameButtonPressed(ani_name: String) -> void:
 		Card.AniPlayer.play(ani_name)
 
 func onCreateDeckCardUI(Card: CardGD) -> void:
-	var CardUI: Control = Card.onCreateCardUI(CardGrid, true, true)
+	var CardUI: Control = Card.onCreateCardUI(CardGrid, true, false, false, true)
 	CardUI.pressed.connect(onCardUIPressed)
 	
 	var ArchetypeLabel := Label.new()

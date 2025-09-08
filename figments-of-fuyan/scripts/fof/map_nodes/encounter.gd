@@ -39,10 +39,6 @@ func onLoadEncounterDatastore() -> void:
 		_: path = GENERAL_SHOP_DATASTORE_PATH
 	encounter_datastore = load(path)
 
-func onEntered() -> void:
-	super()
-	onCreateScreen()
-
 func onUpdateHovered() -> void:
 	if is_queued_for_deletion(): return
 	var state: bool = getHoveredState()

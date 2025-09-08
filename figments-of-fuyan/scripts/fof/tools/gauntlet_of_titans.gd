@@ -12,6 +12,9 @@ const TIER_FOUR_MAX_HP: int = 5
 
 func onToolEquipped() -> void:
 	super()
+	
+func onToolHolderAwakened() -> void:
+	super()
 	var stat_action := StatAction.new(StatInfo.new(Card,\
 		[Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.HEALTH],\
 		[getTierAttack(), getTierMaxHp(), getTierMaxHp()]))

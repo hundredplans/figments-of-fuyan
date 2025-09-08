@@ -45,6 +45,8 @@ var card_offset: CardOffset # Offset of ronotation and position
 var tier: int
 var death_ids: Array[int] # id's of every unit this killed, used for blade
 var vision_range: int
+
+var StaticBody: StaticBody3D
 #endregion
 
 #region Globals
@@ -85,8 +87,7 @@ func setDefaultCollisionLayers() -> void:
 	
 func setCollisionLayers(layer: int) -> void:
 	layer = 0 if is_in_group("GraveyardCardsGD") else layer
-	for body in getStaticBodies():
-		body.collision_layer = layer
+	StaticBody.collision_layer = layer
 	
 func setMapPosition() -> void:
 	position = Vector3((sqrt(3) * coords.x + sqrt(3) * coords.y * 0.5), (coords.w * 0.6) + 0.3, coords.y * 3 / 2.0)
@@ -219,10 +220,11 @@ func onPauseAnimationWithDelay(delay: float) -> void:
 #endregion
 
 #region Card
-func onCreateCardUI(parent: Control, highlight_on_hover: bool = false, ui_inspectable: bool = true, draggable: bool = false, autoscale: bool = false) -> Control:
+func onCreateCardUI(parent: Control, hoverable: bool = false, draggable: bool = false, autoscale: bool = false, inspectable: bool = false) -> TbcUI:
 	var CardUI: Control = load(info.CARD_UI_SCENE_PATH).instantiate()
 	parent.add_child(CardUI)
-	CardUI.setInfo(self, highlight_on_hover, ui_inspectable, draggable, autoscale)
+	CardUI.setInfo(self, hoverable, draggable, autoscale)
+	CardUI.setInspectable(inspectable)
 	return CardUI
 	
 func onCreateTbcUI(parent: Control, hoverable: bool = false, draggable: bool = false, autoscale: bool = false) -> TbcUI:
@@ -286,6 +288,7 @@ func onLoadData(data: SavedData) -> void:
 	tier = data.tier
 	death_ids = data.death_ids
 	vision_range = data.vision_range
+	setAwakenedInCombat(data.is_awakened_in_combat)
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
@@ -366,6 +369,7 @@ func onCreateModel() -> void:
 	
 	var body := StaticBody3D.new()
 	Model.add_child(body)
+	StaticBody = body
 	
 	var collision_shape_packed: PackedScene = getCollisionShapeFromInfo()
 	if collision_shape_packed != null:
@@ -648,63 +652,94 @@ func getVisionRange() -> int:
 
 func onUpdateVision() -> void: # Returns the new visibles
 	if card_place != Game.CardPlaces.FIELD: return
-	
-	var cards: Array = get_tree().get_nodes_in_group("FieldCardsGD")
-	var tile_to_card: Dictionary = {}
+	var t: int = Time.get_ticks_usec()
 
-	var vision_range_game_objects: Array = Game.getAdjacentOrCloserTiles(Tile, getVisionRange()) + [Tile]
 	var visibles: Dictionary = vision_datastore.getVisibles()
 	var previous_direct_game_objects: Array = []
 	for GameObject in visibles:
 		if visibles[GameObject].direct:
 			previous_direct_game_objects.append(GameObject)
-
-	for Card: CardGD in cards.duplicate(): # Because it's erasing inside
-		var tile_in_vision_range: bool = Card.Tile in vision_range_game_objects
-		Card.setDetectableByRay(tile_in_vision_range and Card.isNotInvisibleOrIsAdjacent(Tile))
-		if !tile_in_vision_range:
-			cards.erase(Card)
+	
+	var all_tiles: Array = get_tree().get_nodes_in_group("LevelTilesGD")
+	var all_coords: Array = all_tiles.map(func(x: TileGD): return x.getCoordsHeightless())
+	var vision_range_game_objects: Array = []
+	var main_coords: Vector3i = Tile.getCoordsHeightless()
+	var radius: int = getVisionRange()
+	var static_body_to_game_object: Dictionary[StaticBody3D, GameObjectGD] = {}
+	
+	for x: int in range(-radius, (radius + 1)):
+		for y: int in range(max(-radius, - x - radius), min(radius, -x + radius) + 1):
+			var index: int = all_coords.find(Vector3i(x, y, -x - y) + main_coords)
+			if index == -1: continue
+			var AllTile: TileGD = all_tiles[index]
+			vision_range_game_objects.append(AllTile)
+			static_body_to_game_object[AllTile.getStaticBody()] = AllTile
+			static_body_to_game_object[AllTile.getTileFillStaticBody()] = AllTile
 			
-	for FieldCard in cards:
-		tile_to_card[FieldCard.Tile] = FieldCard
+	vision_range_game_objects.append(Tile)
+	static_body_to_game_object[Tile.getStaticBody()] = Tile
+	static_body_to_game_object[Tile.getTileFillStaticBody()] = Tile
 	
-	for obj_array in vision_range_game_objects.map(func(x: GameObjectGD): return x.occupied_objects):
-		for Obj in obj_array: vision_range_game_objects.append(Obj)
+	var objects: Dictionary[ObjectGD, Variant] = {} # To avoid duplicates
+	for obj_array: Array in vision_range_game_objects.map(func(x: TileGD): return x.occupied_objects):
+		for Obj in obj_array:
+			objects[Obj] = null
+			
+	for obj: ObjectGD in objects.keys():
+		vision_range_game_objects.append(obj)
+		for static_body: StaticBody3D in obj.getStaticBodies():
+			static_body_to_game_object[static_body] = obj
 		
-	var adjacent_tiles_and_center: Array = Game.getAdjacentTiles(Tile, 1) + [Tile]
-	#for AdjacentTile: TileGD in adjacent_tiles_and_center:
-		#vision_range_game_objects.erase(AdjacentTile)
+	var adjacent_tiles_and_center: Array = []
+	for direction: Vector3i in Game.getCubeDirectionsRegular():
+		var offset: Vector3i = main_coords + direction
+		var index: int = all_coords.find(offset)
+		if index == -1: continue
+		adjacent_tiles_and_center.append(all_tiles[index])
 		
-	vision_range_game_objects += cards
+	var cards: Array = []
+	var tile_to_card: Dictionary[TileGD, CardGD] = {}
 	
+	for Card: CardGD in get_tree().get_nodes_in_group("FieldCardsGD"): # 0.1msec
+		var CardTile: TileGD = Card.getTile()
+		var tile_in_vision_range: bool = CardTile in vision_range_game_objects
+		Card.setDetectableByRay(tile_in_vision_range and Card.isNotInvisibleOrIsAdjacent(Tile))
+		if tile_in_vision_range:
+			cards.append(Card)
+			tile_to_card[CardTile] = Card
+			vision_range_game_objects.append(Card)
+			static_body_to_game_object[Card.getStaticBody()] = Card
+		
+	#var prepre_t: float = Time.get_ticks_usec() - t 
+	#print("Start: " + str(prepre_t))
+	# Everything before this takes 0.75msecs
 	var direct_game_objects_dict: Dictionary = {}
-	var point_batches: Dictionary = {}
-	for GameObject in vision_range_game_objects:
-		point_batches[GameObject] = GameObject.getAdjustedPoints()
-	
-	#var t: float = Time.get_ticks_msec()
-	for GameObject: GameObjectGD in point_batches:
-		for point: Vector3 in point_batches[GameObject]:
+	for GameObject: GameObjectGD in vision_range_game_objects:
+		for point: Vector3 in GameObject.getAdjustedPoints():
 			VisionRay.target_position = (point - VisionRay.global_position) * EXTRA_RAY_LENGTH
 			VisionRay.force_raycast_update()
 			if VisionRay.is_colliding():
-				var DirectGameObject: GameObjectGD = Helper.getCollision(VisionRay.get_collider(), GameObjectGD)
+				var collider: StaticBody3D = VisionRay.get_collider()
+				
+				if !static_body_to_game_object.has(collider): continue
+				var DirectGameObject: GameObjectGD = static_body_to_game_object[collider]
 				
 				direct_game_objects_dict[DirectGameObject] = null
 				if GameObject == DirectGameObject: break
-	#var post_t: float = Time.get_ticks_msec() - t
-	#print("Points:" + str(post_t))
-	#pass
-	
+	# This takes ~4msecs, biggest issues is walls blocking tiles behind em, could make it so when it
+	# hits a wall it discards the points for tiles?
+	#var pre_t: float = Time.get_ticks_usec() - t 
+	#print("End: " + str(pre_t))
+	#print()
+
 	for AdjacentTile: TileGD in adjacent_tiles_and_center:
 		direct_game_objects_dict[AdjacentTile] = null
 		
 	direct_game_objects_dict[Tile] = null
 	direct_game_objects_dict[self] = null
 	
-	var direct_game_objects: Array = direct_game_objects_dict.keys()\
-		.filter(func(x: GameObjectGD): return x in vision_range_game_objects)
-		
+	var direct_game_objects: Array = direct_game_objects_dict.keys()
+	
 	for GameObject in previous_direct_game_objects.filter(func(x: GameObjectGD): return x not in direct_game_objects): # No longer direct
 		vision_datastore.setDirect(GameObject, false)
 		
@@ -723,7 +758,6 @@ func onUpdateVision() -> void: # Returns the new visibles
 		elif GameObject is ObjectGD:
 			for ObjTile: TileGD in GameObject.occupied_tiles:
 				visibles[ObjTile].onRemoveObject(GameObject)
-		
 	for GameObject in direct_game_objects:
 		if GameObject is CardGD and GameObject in cards:
 			vision_datastore.setDirect(GameObject, true)
@@ -741,6 +775,7 @@ func onUpdateVision() -> void: # Returns the new visibles
 			vision_datastore.setDirect(GameObject, true)
 			for ObjTile: TileGD in GameObject.occupied_tiles:
 				visibles[ObjTile].onAddObject(GameObject)
+	# This takes 0.5msecs, fix this later
 	
 func onTileOccupiedIsInVision(OccupiedTile: TileGD, PreviousTile: TileGD, Card: CardGD) -> void:
 	var visibles: Dictionary = vision_datastore.getVisibles()
@@ -963,9 +998,6 @@ func onCreateArmorTrait(armor: int) -> TraitGD:
 	var armor_data := SavedDataTrait.new(1, true, 0, armor)
 	return SavedData.onLoadModel(armor_data, self)
 	
-func isMobile() -> bool:
-	return getOverworldTraitByID(3) != null
-	
 func getOverworldTraitByID(id: int) -> OverworldTrait:
 	for overworld_trait in overworld_traits:
 		if overworld_trait.getData().id == id:
@@ -1040,7 +1072,7 @@ func getActiveAbilities() -> Array:
 func getActiveEffects() -> Array:
 	return active_effects
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return null
 	
 func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
@@ -1385,7 +1417,7 @@ func getActiveArchetype() -> ArchetypeInfo:
 	return ai_datastore.getActiveArchetype()
 	
 # True if active effect used
-func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Array, after_action: MovementFinishAction = null) -> bool:
+func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Array, after_action: MovementFinishAction = null, type := Game.AbilityAI.NULL) -> bool:
 	var tool_active_effects: Array = Tool.getActiveEffects() if Tool != null else []
 	var ai_active_effects: Array = getActiveEffects() + tool_active_effects
 	
@@ -1400,7 +1432,7 @@ func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Arra
 			if active_effect.owner is not IObjectGD else active_effect.owner.onAIAbilityCheckerDefault(active_effect, self)
 		if active_effect_tiles == null: continue
 		
-		var ChosenTile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL)
+		var ChosenTile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL, type)
 		if ChosenTile == null: continue
 		
 		var actions: Array = [ChangeTurnStateAction.new(self, Game.TurnStates.ACTIVE),\
@@ -1412,8 +1444,8 @@ func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Arra
 		return true
 	return false
 	
-func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: MovementFinishAction = null) -> bool:
-	return onAICheckActiveEffects(DFL, DFL.allies, DFL.enemies, after_action)
+func onAICheckActiveEffectsOnlyDFL(DFL: DefaultFightLogic, after_action: MovementFinishAction = null, type := Game.AbilityAI.NULL) -> bool:
+	return onAICheckActiveEffects(DFL, DFL.allies, DFL.enemies, after_action, type)
 #endregion
 
 #region Materials
@@ -1569,7 +1601,7 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 	if speed_override != -1:
 		new_speed = speed_override
 		
-	var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, speed) # Gather all tiles
+	var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, new_speed) # Gather all tiles
 	var visible_cards_tiles: Array = []
 	
 	if isAlly(0):
@@ -1582,46 +1614,8 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 	#tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in all_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
 	tiles = tiles.filter(func(x: TileGD): return !x.isSolid() and x not in visible_cards_tiles and x.isBelowMaxMovementHeight(self)) # Check for solidity
 	for AstarTile: TileGD in tiles:
-		var astar := AStar3D.new()
-		# Limits tiles to those in movement range
-		var add_to_astar_tiles: Array = tiles.filter(func(x: TileGD): return Game.getCoordsDistance(AstarTile.getCoords(), x.getCoords()) <= new_speed)
-		add_to_astar_tiles.append(CenterTile)
-		for _Tile: TileGD in add_to_astar_tiles: astar.add_point(_Tile.get_instance_id(), _Tile.getCoordsHeightless())
+		setAstarTile(AstarTile, tiles, new_speed, CenterTile)
 		
-		for StartTile: TileGD in add_to_astar_tiles:
-			for EndTile: TileGD in add_to_astar_tiles.filter(func(x: TileGD): return Game.isAdjacent(x, StartTile)):
-				var height_diff: int = EndTile.getHeight() - StartTile.getHeight()
-				if StartTile.isRamp():
-					if StartTile.isValidRampRelation(EndTile, height_diff):
-						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
-					
-				elif EndTile.isRamp():
-					if EndTile.isValidRampRelation(StartTile, height_diff):
-						astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
-					
-				elif height_diff <= 1:
-					astar.connect_points(StartTile.get_instance_id(), EndTile.get_instance_id(), false)
-						
-		var valid_path: bool = false
-		var point_path: Array = []
-		var movement_path: Array = []
-		
-		while(!valid_path):
-			point_path = astar.get_id_path(CenterTile.get_instance_id(), AstarTile.get_instance_id())
-			if point_path.is_empty(): break
-			if point_path.size() > new_speed + 1:
-				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
-				continue
-			
-			movement_path = point_path.map(func(x: int): return instance_from_id(x))
-			if movement_path.size() > new_speed + 2:
-				astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
-				continue
-			if !onSurviveFallDamage(self, movement_path, point_path, astar): continue
-			valid_path = true
-			
-		AstarTile.setMovementPath(MovementPathGD.new(movement_path, isAlly(0)) if valid_path else null)
-	
 	var available_tiles: Array = tiles.filter(func(x: TileGD): return x.getMovementPath() != null)
 	available_tiles.append(CenterTile)
 	
@@ -1654,6 +1648,48 @@ func getsetMovementRange(speed_override: int = -1) -> Array:
 	
 	available_tiles.erase(CenterTile)
 	return available_tiles
+	
+func setAstarTile(AstarTile: TileGD, tiles: Array, new_speed: int, CenterTile: TileGD) -> void:
+	var astar := AStar3D.new()
+	var add_to_astar_tiles: Array = tiles.filter(func(x: TileGD): return Game.getCoordsDistance(AstarTile.getCoords(), x.getCoords()) <= new_speed) # Consistently causes ~150 usecs
+	add_to_astar_tiles.append(CenterTile)
+	for _Tile: TileGD in add_to_astar_tiles: astar.add_point(_Tile.get_instance_id(), _Tile.getCoordsHeightless()) # Causes ~50 usecs
+	
+	onLoopAstarTiles(astar, add_to_astar_tiles) # Scales the worst
+	var valid_path: bool = false
+	var point_path: Array = []
+	var movement_path: Array = []
+	
+	while(!valid_path):
+		point_path = astar.get_id_path(CenterTile.get_instance_id(), AstarTile.get_instance_id())
+		if point_path.is_empty(): break
+		if point_path.size() > new_speed + 1:
+			astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
+			continue
+		
+		movement_path = point_path.map(func(x: int): return instance_from_id(x))
+		if movement_path.size() > new_speed + 2:
+			astar.disconnect_points(point_path[point_path.size() - 1], point_path[point_path.size() - 2])
+			continue
+		if !onSurviveFallDamage(self, movement_path, point_path, astar): continue
+		valid_path = true
+	var movement_path_obj := MovementPathGD.new(movement_path, isAlly(0)) if valid_path else null # 15 frames to create
+	AstarTile.setMovementPath(movement_path_obj) # 25 frames for outline material
+	
+func onLoopAstarTiles(astar: AStar3D, add_to_astar_tiles: Array) -> void:
+	var coords_to_tile: Dictionary[Vector3i, TileGD] = {}
+	for AstarTile: TileGD in add_to_astar_tiles:
+		coords_to_tile[AstarTile.getCoordsHeightless()] = AstarTile
+	
+	var directions: Array = Game.getCubeDirectionsRegular()
+	for StartTile: TileGD in add_to_astar_tiles: # This takes the longest with a large sample
+		var heightless: Vector3i = StartTile.getCoordsHeightless()
+		var height: int = StartTile.getHeight()
+		for direction: Vector3i in directions:
+			var coords: Vector3i = heightless + direction
+			if coords_to_tile.has(coords):
+				if coords_to_tile[coords].getHeight() - height <= 1:
+					astar.connect_points(StartTile.get_instance_id(), coords_to_tile[coords].get_instance_id(), false)
 	
 func onSurviveFallDamage(Card: CardGD, movement_path: Array, point_path: Array, astar: AStar3D) -> bool:
 	Card.temp_fall_damage = 0
@@ -1727,3 +1763,10 @@ func getRarity() -> Game.Rarities:
 
 func onUpdateVisionRange(delta: int) -> void:
 	vision_range = max(vision_range + delta, 1)
+
+func getStaticBody() -> StaticBody3D: return StaticBody
+
+func getStaticBodies() -> Array:
+	return [StaticBody]
+
+func getInfo() -> CardInfo: return info

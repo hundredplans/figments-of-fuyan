@@ -3,6 +3,7 @@ extends Control
 signal mouse_in_ui
 signal pressed
 
+@onready var InsideRect: ColorRect = %InsideRect
 @onready var MainTexture: TextureRect = %MainTexture
 @onready var MainPanel: PanelContainer = $MainPanel
 @onready var ToolIconRect: Control = %ToolIconRect
@@ -19,8 +20,9 @@ func setData(_data: SavedData) -> void:
 	data = _data
 	if data != null:
 		var info: FofInfo = Helper.getFofInfoID(data.getInfoType(), data.id)
+		InsideRect.color = Game.getArea().getAreaColor() 
 		MainTexture.texture = info.getIcon()
-		MainPanel.theme_type_variation = Game.getRarityThemeVariation(info.rarity)
+		MainPanel.self_modulate = Game.getRarityColor(info.rarity)
 		
 		if data is SavedDataCard:
 			ToolIconRect.visible = data.tool_data != null
@@ -42,3 +44,6 @@ func onMouseInUI(state: bool) -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
 		pressed.emit()
+
+func setBackgroundModulate(color: Color) -> void:
+	MainPanel.self_modulate = color

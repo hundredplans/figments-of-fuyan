@@ -4,9 +4,9 @@ class_name MapNodeGD extends FofGD
 signal create_screen
 signal create_world_scene
 @warning_ignore("unused_signal")
-signal load_level
 signal hovered
 signal pressed
+signal fade_loaded
 
 var is_minimap: bool
 var is_finished: bool
@@ -43,7 +43,7 @@ static func onCalculatePosition(_map_location: MapLocation) -> Vector3:
 #region Base Functions
 var was_pressed: bool = false
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("MainInput") and hovered_state and !was_pressed and !is_minimap:
+	if Input.is_action_just_pressed("MainInput") and !is_mouse_in_ui and hovered_state and !was_pressed and !is_minimap:
 		pressed.emit(self)
 		was_pressed = true
 		
@@ -52,6 +52,9 @@ func _process(delta: float) -> void:
 	
 func onProcessAction(action: Action) -> void:
 	super(action)
+	if action.post:
+		if action is MapNodeEnteredAction and action.map_node == self:
+			onEnteredInit()
 #endregion
 
 #region Save / Load
@@ -134,8 +137,10 @@ func setRayPickableGlobal(state: bool) -> void:
 #endregion
 
 #region Hovered
+var is_mouse_in_ui: bool
 var hovered_state: bool
-func onMouseInUI(_state: bool) -> void:
+func onMouseInUI(state: bool) -> void:
+	is_mouse_in_ui = state
 	if hovered_state:
 		onUpdateHovered()
 
@@ -145,11 +150,11 @@ func onMouseHovered(state: bool) -> void:
 	onUpdateHovered()
 
 func onUpdateHovered() -> void:
-	var state: bool = getHoveredState()
+	var state: bool = getHoveredState() and !is_mouse_in_ui
 	hovered.emit(self, state, HoverUI)
 	
 func getHoveredState() -> bool:
-	return hovered_state and !Game.isMouseInUI()
+	return hovered_state
 
 func onStaticBodyHovered(is_walkable: bool, state: bool) -> void:
 	var mat: Material = null
@@ -177,10 +182,13 @@ func onTweenChain() -> void:
 func onExited() -> void:
 	is_entered = false
 		
+func onEnteredInit() -> void:
+	onEntered()
+		
 func onEntered() -> void:
-	onPushAction(MapNodeEnteredAction.new(self))
 	is_entered = true
 	setRayPickable(false)
+	onCreateScreen()
 		
 func onEnteredVisual(is_instant: bool = false) -> void:
 	for link_model in link_models: link_model.onMapNodeSelected()
@@ -211,14 +219,19 @@ func onCreateScreen() -> void:
 	if info.is_encounter:
 		screen = load(ENCOUNTER_SCREEN_PATH).instantiate()
 		screen.finished.connect(onFinished)
+		screen.fade_loaded.connect(onFadeLoaded)
 		create_screen.emit(self, screen)
 	elif info.screen != null:
 		screen = info.screen.instantiate()
 		screen.finished.connect(onFinished)
+		screen.fade_loaded.connect(onFadeLoaded)
 		create_screen.emit(self, screen)
-	else: onFinished()
-	
+	else: return
+		
 func onCreateWorldScene() -> void:
 	var world: Node3D = info.world.instantiate()
 	create_world_scene.emit(self, world)
+	
+func onFadeLoaded() -> void:
+	fade_loaded.emit()
 #endregion

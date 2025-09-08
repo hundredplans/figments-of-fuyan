@@ -113,7 +113,7 @@ func onFirstUpdateTileIntents() -> void:
 func onCreateInitialActiveAbilities() -> void: # Inte
 	return
 	
-func onAICheckActiveEffectsOnlyDFL(_DFL: DefaultFightLogic, _after_action: MovementFinishAction = null) -> bool:
+func onAICheckActiveEffectsOnlyDFL(_DFL: DefaultFightLogic, _after_action: MovementFinishAction = null, type := Game.AbilityAI.NULL) -> bool:
 	return false
 #endregion
 
@@ -304,3 +304,6 @@ func onCanCreateInspectScreen() -> bool: return false
 
 func setFieldInfoVisible(state: bool) -> void: # Access via action
 	BossFieldInfo.visible = state
+
+func getStatsFromInfo() -> StatsDatastore:
+	return info.getStats(getPhase(), tier)

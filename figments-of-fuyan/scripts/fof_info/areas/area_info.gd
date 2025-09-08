@@ -13,12 +13,30 @@ class_name AreaInfo extends FofInfo
 @export var boss_music: AudioStream
 @export var epic_datastores: Array[EpicAreaDatastore]
 @export var main_menu_decoration: DecorationDatastore
+
+@export_group("Area Colors")
 @export var area_color: Color
+@export var secondary_area_color: Color
+@export var tertiary_area_color: Color
+@export_group("")
 
 @export_group("Tile Fill")
 @export var tile_fill_material: ShaderMaterial
 @export var tile_fill_greyscale_material: ShaderMaterial
 @export_group("")
 
+@export var background_scene: PackedScene
+@export var loading_screens: Array[LoadingScreenDatastore]
+
 static func getInfoPath() -> String: return "res://resources/fof/areas"
 static func getFofName() -> String: return "Area"
+func getAreaColor() -> Color: return area_color
+func getSecondAreaColor() -> Color: return secondary_area_color
+func getThirdAreaColor() -> Color: return tertiary_area_color
+func getBackgroundScene() -> Node3D: return background_scene.instantiate()
+
+func getRandomLoadingScreenDatastore() -> LoadingScreenDatastore:
+	return loading_screens.pick_random()
+
+func getLoadingScreens() -> Array:
+	return loading_screens

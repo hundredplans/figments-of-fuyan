@@ -22,5 +22,5 @@ func getSpeed() -> int:
 func getEnergy() -> int:
 	return energy
 
-func getActiveAbilities() -> Array[ActiveEffectDatastore]:
-	return active_abilities
+func getActiveAbilities() -> Array:
+	return active_abilities.map(func(x: ActiveEffectDatastore): return x.duplicate())

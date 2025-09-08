@@ -10,6 +10,7 @@ var height: int
 var occupied_coords: Array
 var occupied_tiles: Array
 var groups: Array
+var static_bodies: Array
 #endregion
 
 var GroupLabel: Label3D # Set by level editor
@@ -100,6 +101,10 @@ func onLoadData(data: SavedData) -> void:
 	
 	onLoadModel()
 	add_to_group("ObjectsGD")
+	
+func onLoadModel() -> void:
+	super()
+	static_bodies = Helper.getChildrenRecursive(self).filter(func(x: Node): return x is StaticBody3D)
 	
 func onLoadDataLevel() -> void:
 	loaded_in_level = true
@@ -204,3 +209,4 @@ func onChangeSpawnGroup(group_index: int) -> void:
 	
 	GroupLabel.setGroups(groups)
 	
+func getStaticBodies() -> Array: return static_bodies

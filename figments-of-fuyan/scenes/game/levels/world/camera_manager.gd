@@ -58,6 +58,7 @@ func _ready() -> void:
 
 func setInfo(level_camera_data: LevelCameraData) -> void:
 	if level_camera_data != null:
+		LevelCamera.current = true
 		total_progress = level_camera_data.total_progress
 		FreelookCamera.position = level_camera_data.freelook_posrot.pos
 		FreelookCamera.rotation = level_camera_data.freelook_posrot.rot

@@ -58,8 +58,9 @@ func _ready() -> void:
 	clip_contents = false
 
 func onFofIconsReplace(regex: RegEx, fancy_text: FancyText) -> void:
+	infos = []
 	for fof_icon_fancy_text: FofIconFancyText in fancy_text.icons:
-		regex.compile("(\\[a?[1-4]?" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
+		regex.compile("(\\[[1-4]?" + str(fof_icon_fancy_text.name) + "=[0-9]+\\])")
 		var offset: int = 0
 		while(true):
 			var _result: RegExMatch = regex.search(text, offset)
@@ -87,7 +88,7 @@ func onFofImagesReplace(regex: RegEx, fancy_text: FancyText) -> void:
 	for image_fancy_text in fancy_text.images:
 		var compile_text: String = "\\b" + image_fancy_text.name + "\\b"
 		if image_fancy_text.capture_preceding_number_plus:
-			compile_text = compile_text.insert(0, "((\\[[0-9]*\\])?\\+?-?([0-9]*)?\\s)?")
+			compile_text = compile_text.insert(0, "([0-9]*)?((\\[[0-9]*\\])?\\+?-?([0-9]*)?\\s)?")
 		regex.compile(compile_text)
 		
 		while(true):

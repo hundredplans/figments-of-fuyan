@@ -8,7 +8,6 @@ class_name MapNodeInfo extends FofInfo
 @export var is_shop: bool
 @export var is_unique: bool
 @export var float_y: float
-@export var legend_order: int
 #endregion
 
 #region Globals

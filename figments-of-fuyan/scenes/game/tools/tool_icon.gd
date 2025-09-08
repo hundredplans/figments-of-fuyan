@@ -8,12 +8,14 @@ const SPIN_SPEED: float = 10
 @onready var ToolTxRect: TextureRect = %ToolTextureRect
 var Tool: ToolGD
 
-func setInfo(_Tool: ToolGD, _hoverable: bool = false, _autoscale: bool = false) -> void:
-	Tool = _Tool
+func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false) -> void:
+	super(_item, _hoverable, _draggable, _autoscale)
+	Tool = _item
 	if Tool != null:
 		Tool.update_tier.connect(onUpdateTier)
-	setInfoDirect(Tool.getIcon() if Tool != null else null, _hoverable, _autoscale)
+		
 	setMouseFilter(mouse_filter)
+	onUpdateToolIcon()
 	onUpdateTier(Tool.getTier() if Tool != null else 0)
 	
 func onShowTierLabel(label_offset: int = 0) -> void:
@@ -32,13 +34,12 @@ func onShowNameLabel(label_offset: int = 0) -> void:
 	
 func setTool(_Tool: ToolGD) -> void:
 	Tool = _Tool
-	setInfoDirect(Tool.getIcon() if Tool != null else null, hoverable)
+	onUpdateToolIcon()
 	
-func setInfoDirect(icon: Texture2D, _hoverable: bool = false, _autoscale: bool = false) -> void:
+func onUpdateToolIcon() -> void:
+	var icon: Texture2D = Tool.getIcon() if Tool != null else null
 	visible = icon != null
 	ToolTxRect.texture = icon
-	hoverable = _hoverable
-	autoscale = _autoscale
 	
 func setDisabled(state: bool) -> void:
 	disabled = state
@@ -71,3 +72,6 @@ func onMouseInUI(state: bool) -> void:
 func onUpdateTier(tier: int) -> void:
 	if tier == 0: return
 	#ToolTxRect.modulate = Game.getTierColor(tier)
+
+func onUpdateCursorVisual(state: bool) -> void:
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if state else Control.CURSOR_ARROW

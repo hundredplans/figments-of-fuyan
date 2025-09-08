@@ -9,16 +9,17 @@ func onFofInit() -> void:
 	setLevelInfo()
 	spawn_group = level_info.getRandomSpawnGroup()
 
-func onFinished() -> void:
+func onEnteredInit() -> void:
 	super()
 	var new_level_data: SavedDataLevel = level_info.saved_data.new(level_info.id, true, 0, level_info.data.duplicate())
 	new_level_data.spawn_group = spawn_group
 	new_level_data.level_preview = level_preview # Not that important for epic fights
 	new_level_data.enemy_cards = enemy_cards
 	new_level_data.fight_type = getFightType()
-	
-	load_level.emit(new_level_data)
-	
+	level_public_id = Game.onIncrementPublicID()
+	new_level_data.public_id = level_public_id
+	onPushLoadingScreenAction(new_level_data)
+
 func setLevelInfo() -> void:
 	var fight_type: Game.FightTypes = getFightType()
 	var epic_datastore: EpicAreaDatastore = Game.getArea().info.epic_datastores\

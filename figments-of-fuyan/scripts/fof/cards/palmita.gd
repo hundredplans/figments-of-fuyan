@@ -38,7 +38,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(actions)
 		
 # Use if a unit is adjacent with 3 or more health, if there's no units on board with 3 or more health use on whoever
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	if !isLevelVisible(): return null
 	var card_to_health: Dictionary = {}
 	for PickableTile: TileGD in active_effect_tiles.pickable_tiles:

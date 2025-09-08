@@ -50,7 +50,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_tx62y"]
 script = ExtResource("12_04cdr")
-attack = 3
+attack = 4
 health = 1
 speed = 3
 energy = 2
@@ -65,7 +65,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_04cdr"]
 script = ExtResource("12_04cdr")
-attack = 3
+attack = 5
 health = 1
 speed = 3
 energy = 2
@@ -80,7 +80,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_0i1uj"]
 script = ExtResource("12_04cdr")
-attack = 3
+attack = 6
 health = 1
 speed = 3
 energy = 2
@@ -103,18 +103,6 @@ collision_shape = SubResource("PackedScene_lok3x")
 stat = 2.649
 top = 2.444
 eye = 1.897
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_kej33")]([])
-attack = 3
-health = 1
-speed = 3
-energy = 2
-description = "How'd you get here?"
-ascended_description = ""
-initial_traits = Array[ExtResource("2_kej33")]([])
 id = 78
 name = "Blade of the Palms"
 gdscript = ExtResource("6_v3vbl")

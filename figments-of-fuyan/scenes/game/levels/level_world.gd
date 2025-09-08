@@ -423,6 +423,8 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangeEnvironmentAction:
 			onChangeEnvironment(action)
+		elif action is StartLevelAction:
+			CameraManager.setCurrent(true)
 			
 func onChangeEnvironment(action: ChangeEnvironmentAction) -> void:
 	setEnvironment(action.environment)

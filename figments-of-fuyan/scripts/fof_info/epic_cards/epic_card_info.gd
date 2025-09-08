@@ -60,6 +60,9 @@ func getHealth(phase: int = 1, tier: int = 1) -> int:
 func getSpeed(phase: int = 1, tier: int = 1) -> int:
 	return phases[phase - 1].getSpeed(tier)
 	
+func getStats(phase: int = 1, tier: int = 1) -> StatsDatastore:
+	return StatsDatastore.new(getAttack(phase, tier), getHealth(phase, tier), getSpeed(phase, tier))
+	
 func getBossIntents(phase: int = 1) -> Array[BossIntent]:
 	return phases[phase - 1].getBossIntents()
 	

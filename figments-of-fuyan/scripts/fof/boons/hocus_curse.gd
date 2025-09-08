@@ -6,12 +6,17 @@ const TIER_TWO_HEAL: int = 3
 const TIER_THREE_HEAL: int = 4
 const TIER_FOUR_HEAL: int = 5
 
+const REGENERATE_ID: int = 22
+
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if action.post and action is StatAction and action.owner is DamageAction and action.owner.damage > 0 and\
-	action.owner.damage_type != Game.DamageTypes.FALL_DAMAGE and action.owner.Defenders.any(func(x: CardGD): return x.isAlly(1))\
-	and !(action.owner.Defenders.all(func(x: CardGD): return x.public_id in cards_triggered_public_ids or x.getHealth() == 0)):
-		onPushAction(BoonActivatedAction.new(self, action))
+	if action.post:
+		if action is StatAction and action.owner is DamageAction and action.owner.damage > 0 and\
+		action.owner.damage_type != Game.DamageTypes.FALL_DAMAGE and action.owner.Defenders.any(func(x: CardGD): return x.isAlly(1))\
+		and !(action.owner.Defenders.all(func(x: CardGD): return x.public_id in cards_triggered_public_ids or x.getHealth() == 0)):
+			onPushAction(BoonActivatedAction.new(self, action))
+		elif action is AwakenAction and action.Card.isAlly(1):
+			action.Card.onCreateBaseFieldEffect(REGENERATE_ID, getTierHeal(), -1, self)
 
 func getDescription(use_default_values: bool = false) -> String:
 	return super(use_default_values)
@@ -21,6 +26,9 @@ func onBoon(action: StatAction) -> void:
 	defenders = defenders.filter(func(x: CardGD): return x.isAlly(1) and x.public_id not in cards_triggered_public_ids and x.getHealth() > 0)
 	cards_triggered_public_ids += defenders.map(func(x: CardGD): return x.public_id)
 	onPushAction(HealAction.new(defenders.map(func(x: CardGD): return HealDatastore.new(x, getTierHeal()))))
+	
+	for Defender: CardGD in defenders:
+		Defender.onRemoveFieldEffectsByOwner(self)
 
 func onBoonAdded() -> void:
 	super()

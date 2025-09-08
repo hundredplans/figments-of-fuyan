@@ -23,6 +23,11 @@ var stash_sort_type: int
 var default_hand_size: int
 var end_of_turn_card_draw: int
 
+const WATER_REPEATING_PATH: String = "res://scenes/game/levels/world/coconut_springs/water_repeating.tscn"
+const VALID_AREA_IDS: Array = [1, 3]
+var LoadingScreenBackground: Node3D
+var area_ids: Array # What areas will show up in each world
+
 #region Helper
 func getChampionCard() -> CardGD:
 	for Card in get_tree().get_nodes_in_group("AllyCardsGD"):
@@ -45,7 +50,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataSaveFile.new(id, false, public_id, my_seed, area.onSave(), shillings, time_elapsed,\
 	ally_cards, saved_boons, highest_public_id, world_difficulty,\
-	max_energy, energy_limit, deck_slots, stash_sort_type, default_hand_size, end_of_turn_card_draw)
+	max_energy, energy_limit, deck_slots, stash_sort_type, default_hand_size, end_of_turn_card_draw, area_ids)
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
@@ -61,6 +66,10 @@ func onLoadData(data: SavedData) -> void:
 	stash_sort_type = data.stash_sort_type
 	default_hand_size = data.default_hand_size
 	end_of_turn_card_draw = data.end_of_turn_card_draw
+	area_ids = data.area_ids
+	
+	LoadingScreenBackground = Node3D.new()
+	add_child(LoadingScreenBackground)
 	
 	for card_data: SavedDataCard in data.ally_cards:
 		var Card: CardGD = SavedData.onLoadModel(card_data, get_parent())
@@ -71,7 +80,6 @@ func onLoadData(data: SavedData) -> void:
 	
 	if data.area_data != null:
 		var _area: AreaGD = SavedData.onLoadModel(data.area_data, get_parent())
-		_area.load_level.connect(onLoadLevel)
 		setArea(_area)
 	
 	shillings = data.shillings
@@ -86,6 +94,11 @@ func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
 	var actions: Array = [AddToDeckAction.new(getChampionCard()), AddBoonAction.new(boon_info.id, 1),\
 		getPlayerDeckUpgradeAction(0)]
+	area_ids = VALID_AREA_IDS.duplicate()
+	area_ids.shuffle()
+	var a_id: int = Helper.admin_datastore.starting_area_id
+	if a_id != 0:
+		area_ids.sort_custom(func(x: int, y: int): return x == a_id and y != a_id)
 	
 	onPushAction(actions)
 	onChooseArea()
@@ -94,6 +107,7 @@ func setInfo(_area: AreaGD) -> void:
 	setArea(_area)
 	
 func setArea(_area: AreaGD) -> void:
+	if area == _area: return
 	area = _area
 	
 func setStashSortType(_stash_sort_type: int) -> void:
@@ -124,11 +138,8 @@ func getShillings() -> int:
 #endregion
 
 #region Load Level / Map / Main Menu
-func onLoadLevel(level_data: SavedDataLevel) -> void:
-	load_level.emit(level_data, self, area)
-	
 func onLoadMap() -> void:
-	load_map.emit(self, area)
+	load_map.emit()
 	onPushAction(PlayMusicAction.new(Audio.BACKGROUND))
 	
 func onLoadMainMenu() -> void:
@@ -137,7 +148,7 @@ func onLoadMainMenu() -> void:
 	
 func onLoadGame() -> void:
 	if area.active_level_data == null: onLoadMap()
-	else: onLoadLevel(area.active_level_data)
+	else: load_level.emit(area.active_level_data)
 	
 func onAreaFinished(difficulty: int) -> void:
 	world_difficulty = difficulty
@@ -146,20 +157,12 @@ func onAreaFinished(difficulty: int) -> void:
 	
 	await get_tree().process_frame # Important for everything to despawn
 	onChooseArea(current_area_id)
-	onLoadMap()
-	area.init_load.emit()
+	onPushAction([StartLoadingScreenAction.new(Game.LoadingType.MAP, Game.getArea().getInfo().id), CreateMapAction.new(), CreateAreaAction.new(area)])
 	
 func onChooseArea(current_area_id: int = 0) -> void:
-	var valid_areas: Array = [1, 3]
-	valid_areas.erase(current_area_id)
-	if current_area_id == 0 and Helper.admin_datastore.starting_area_id > 0:
-		valid_areas = valid_areas.filter(func(x: int):\
-			return x == Helper.admin_datastore.starting_area_id)
-			
-	var area_id: int = valid_areas.pick_random()
+	var area_id: int = area_ids[world_difficulty - 1]
 	var area_data: SavedDataArea = SavedDataArea.new(area_id, true)
 	var _area: AreaGD = SavedData.onLoadModel(area_data, get_parent())
-	_area.load_level.connect(onLoadLevel)
 	setArea(_area)
 #endregion
 
@@ -192,7 +195,11 @@ func onProcessAction(action: Action) -> void:
 		elif action is ExitGameAction:
 			onSaveToFile()
 			get_tree().quit()
-
+		elif action is CreateLevelAction:
+			load_level.emit(action.getLevelData())
+		elif action is CreateMapAction:
+			onLoadMap()
+		
 #region Player Deck Upgrade
 func onPlayerDeckUpgrade(player_deck_upgrade: PlayerDeckUpgrade) -> void:
 	if player_deck_upgrade == null: assert(false); return
@@ -263,3 +270,6 @@ func setEndOfTurnCardDraw(_end_of_turn_card_draw: int) -> void:
 	
 func getEndOfTurnCardDraw() -> int:
 	return end_of_turn_card_draw
+
+func getAreaIds() -> Array:
+	return area_ids

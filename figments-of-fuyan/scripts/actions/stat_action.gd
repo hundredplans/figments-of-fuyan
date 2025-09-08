@@ -77,7 +77,10 @@ func onProcessTypes(stat_info: StatInfo, types: Array, values: Array, turns: int
 					difference = Card.onTakeDamage(owner.Damager, -value, lock_action_delay) * -1
 				else:
 					var old_health: int = Card.health
-					Card.health = clamp(Card.health + value, 0, Card.max_health)
+					if absolute: Card.health = value
+					else: Card.health += value
+					
+					Card.health = clamp(Card.health, 1, Card.max_health)
 					difference = Card.health - old_health
 					
 			Game.Stats.MAX_HEALTH:
@@ -85,7 +88,7 @@ func onProcessTypes(stat_info: StatInfo, types: Array, values: Array, turns: int
 				if absolute: Card.max_health = value
 				else: Card.max_health += value
 				
-				Card.max_health = clamp(Card.max_health, 0, 99)
+				Card.max_health = clamp(Card.max_health, 1, 99)
 				difference = Card.max_health - old_health
 				
 			Game.Stats.ATTACK:

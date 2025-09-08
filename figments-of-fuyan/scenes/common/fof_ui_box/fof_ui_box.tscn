@@ -33,7 +33,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_type_variation = &"WhitePanelContainer"
+theme_type_variation = &"EmptyPanelContainer"
+
+[node name="InsideRect" type="ColorRect" parent="MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
 
 [node name="MainTexture" type="TextureRect" parent="MainPanel"]
 unique_name_in_owner = true
@@ -45,6 +50,7 @@ texture = SubResource("ImageTexture_ovdq5")
 [node name="ToolIconRect" type="TextureRect" parent="."]
 unique_name_in_owner = true
 visible = false
+z_index = 1
 texture_filter = 1
 layout_mode = 0
 offset_left = 61.0

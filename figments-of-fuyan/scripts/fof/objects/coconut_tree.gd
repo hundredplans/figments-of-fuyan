@@ -55,5 +55,5 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLo
 	if !tiles_to_value.has(occupied_tiles[0]): return
 	tiles_to_value[occupied_tiles[0]] += NEGATIVE_TRANSFORM if (recharge > 0 or DFL.Card.health == 1 or !DFL.Card.isInCombat()) else POSITIVE_TRANSFORM
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0]

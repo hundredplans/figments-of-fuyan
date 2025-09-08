@@ -46,8 +46,10 @@ func onPostAction() -> void:
 				var ai_turn_action := AITurnAction.new(Card, false, false, previous_allies, previous_enemies)
 				actions.append(ai_turn_action)
 			elif !retry:
-				actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
-				actions.append(AITurnStartAction.new(Card.team))
+				var DFL := DefaultFightLogic.new(Card, tiles, previous_enemies, previous_allies, false)
+				if !Card.onAICheckActiveEffectsOnlyDFL(DFL, null, Game.AbilityAI.END):
+					actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
+					actions.append(AITurnStartAction.new(Card.team))
 		elif retry:
 			actions.append(AITurnAction.new(Card, false, false, previous_allies, previous_enemies))
 			onPushAction(actions)

@@ -52,7 +52,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 			
 		onPushAction(StatAction.new(StatInfo.new(Card, type, getTempStatBuff(), turns)))
 		
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	match info.id:
 		# If you're injured use heal 1 hp
 		1:
@@ -88,13 +88,16 @@ func onToolAction(action: StatAction) -> void:
 	
 func onToolUnequipped() -> void:
 	super()
-	var type: Game.Stats
+	var types: Array = []
 	match info.id:
-		1: type = Game.Stats.MAX_HEALTH
-		4: type = Game.Stats.ATTACK
-		6: type = Game.Stats.MAX_SPEED
-
-	var stat_action := StatAction.new(StatInfo.new(Card, type, -getStatBuff()))
+		1: types.append(Game.Stats.MAX_HEALTH); types.append(Game.Stats.HEALTH)
+		4: types.append(Game.Stats.ATTACK)
+		6: types.append(Game.Stats.MAX_SPEED)
+		
+	var values: Array = []
+	values.resize(types.size())
+	values.fill(-getStatBuff())
+	var stat_action := StatAction.new(StatInfo.new(Card, types, values))
 	onPushAction(ToolActivatedAction.new(self, stat_action))
 
 func onToolHolderAwakened() -> void:

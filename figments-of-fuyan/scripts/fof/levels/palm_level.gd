@@ -52,10 +52,6 @@ func onRandomiseStartCoord() -> Vector4i:
 
 #region Decorations
 func onCreatePalmDecorations() -> void:
-	var water_repeating: Node3D = preload("res://test/water_repating.tscn").instantiate()
-	add_child(water_repeating)
-	water_repeating.name = "WaterRepeating"
-	
 	for PalmIsland: PalmIslandDecoration in level_area_datastore.palm_island_decorations:
 		var coords: Vector4i = Game.onRotateCoordsCC(PalmIsland.tile_rotation, PalmIsland.coords)
 		var decoration_position: Vector3 = Game.onCoordsToPosition(coords)

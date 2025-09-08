@@ -14,8 +14,8 @@ boss = 0.0
 
 [sub_resource type="Resource" id="Resource_akddw"]
 script = ExtResource("2_27jhm")
-shillings_min = 16
-shillings_max = 20
+shillings_min = 10
+shillings_max = 14
 boon_odds = 0.33
 tool_odds = 0.67
 tool_tier_up_rate = 0.075
@@ -26,10 +26,10 @@ card_tool_tier_up_rate = 0.075
 
 [sub_resource type="Resource" id="Resource_1xgva"]
 script = ExtResource("2_27jhm")
-shillings_min = 10
-shillings_max = 14
+shillings_min = 6
+shillings_max = 10
 boon_odds = 0.1
-tool_odds = 0.2
+tool_odds = 0.1
 tool_tier_up_rate = 0.05
 boon_tier_up_rate = 0.05
 card_tier_up_rate = 0.05
@@ -50,9 +50,8 @@ enemy_tier_up_rate = 0.05
 elite_enemy_tier_up_rate = 0.075
 tool_enemy_spawn_rate = 0.1
 tool_enemy_spawn_rate_tier_up = 0.1
-card_reward_tool_chance = 0.0
 UPGRADE_REGULAR_FIGHT = 0.125
 MIN_ELITE_FIGHTS = 2
 foreigner_mult = 1.5
 default_shop_variance = 3
-card_with_tool_odds = 0.1
+card_with_tool_odds = 0.025

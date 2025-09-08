@@ -68,7 +68,6 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	Card.ai_datastore.DFL = DFL
 	
 	var dfl_data: DFLData = DFL.getTilesDFL()
-	
 	if !dfl_data.kill_path.is_empty():
 		onKillPathChosen(dfl_data.kill_path, DFL, allies, enemies)
 		return
@@ -80,7 +79,7 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 		onTileChosen(tiles_sorted_by_value[index - 1], DFL, allies, enemies)
 		return
 		
-	if Card.onAICheckActiveEffects(DFL, allies, enemies):
+	if Card.onAICheckActiveEffects(DFL, allies, enemies, null, Game.AbilityAI.START if is_first_ai_turn else Game.AbilityAI.RECALCULATE):
 		return
 		
 	var movement_finish_action := MovementFinishAction.new(Card, [], allies, enemies)
@@ -102,9 +101,10 @@ func onTileChosen(Tile: TileGD, DFL: DefaultFightLogic, allies: Array, enemies: 
 	
 	var path: Array = Tile.getMovementPathTiles()
 	path = DFL.onTileChosenGetUpdatedAttackablePath(path)
+	
 	DFL.setPath(path)
 	
-	if Card.onAICheckActiveEffects(DFL, allies, enemies):
+	if Card.onAICheckActiveEffects(DFL, allies, enemies, null, Game.AbilityAI.START if is_first_ai_turn else Game.AbilityAI.RECALCULATE):
 		return
 	
 	var actions: Array = [ChangeTurnStateAction.new(Card, Game.TurnStates.ACTIVE)]
@@ -125,7 +125,7 @@ func onKillPathChosen(kill_path: Array, DFL: DefaultFightLogic, allies: Array, e
 			LastTile.setInfoSprite(tx)
 	DFL.setPath(kill_path)
 	
-	if Card.onAICheckActiveEffects(DFL, allies, enemies):
+	if Card.onAICheckActiveEffects(DFL, allies, enemies, null, Game.AbilityAI.PRE_ATTACK):
 		return
 		
 	var movement_action := MovementAction.new(Card, kill_path)

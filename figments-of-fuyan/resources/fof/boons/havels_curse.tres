@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_6f638"]
 [ext_resource type="Script" uid="uid://bck30cwikxsr" path="res://scripts/fof/boons/havels_curse.gd" id="1_58m6m"]
+[ext_resource type="Texture2D" uid="uid://drcvpww627y41" path="res://assets/sprites/game/boons/havel_curse.png" id="2_58m6m"]
 [ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_cw3s1"]
-[ext_resource type="Texture2D" uid="uid://cj1ihg5ofwain" path="res://assets/sprites/game/cards/art_mini/havel_rockfoot.png" id="2_ov1no"]
 [ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_opxm6"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_lfeoy"]
 
@@ -54,7 +54,7 @@ metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
 [resource]
 script = ExtResource("1_6f638")
 tiers = Array[ExtResource("2_cw3s1")]([SubResource("Resource_wpmfx"), SubResource("Resource_v6dqu"), SubResource("Resource_eewu8"), SubResource("Resource_wmfb3")])
-icon = ExtResource("2_ov1no")
+icon = ExtResource("2_58m6m")
 rarity = 0
 curse = true
 display_trigger = true

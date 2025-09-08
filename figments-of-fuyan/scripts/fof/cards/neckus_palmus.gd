@@ -1,14 +1,19 @@
 extends CardGD
 
-const TIER_ONE_MAX_HP: int = 1
+const TIER_ONE_MAX_HP: int = 2
 const TIER_TWO_MAX_HP: int = 2
 const TIER_THREE_MAX_HP: int = 2
-const TIER_FOUR_MAX_HP: int = 3
+const TIER_FOUR_MAX_HP: int = 2
+
+const TIER_ONE_CHARGES: int = 1
+const TIER_TWO_CHARGES: int = 2
+const TIER_THREE_CHARGES: int = 2
+const TIER_FOUR_CHARGES: int = 2
 
 var when_healed_charges: int
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if isValidWhenHealed(action) and when_healed_charges > 0: # Has to be max hp
+	if isValidWhenHealed(action) and when_healed_charges != 0: # Has to be max hp
 		onPushAction(WhenHealedAction.new(self, action))
 
 func onWhenHealed(_action: StatAction) -> void:
@@ -22,7 +27,7 @@ func getDescription(use_default_values: bool = false) -> String:
 	return Helper.getDescription(super(), [when_healed_charges])
 
 func getDefaultCharges() -> int:
-	return 3
+	return getTierCharges()
 	
 func onSave() -> SavedDataCard:
 	ability_save['when_healed_charges'] = when_healed_charges
@@ -31,6 +36,10 @@ func onSave() -> SavedDataCard:
 func onRegularReset() -> void:
 	super()
 	when_healed_charges = getDefaultCharges()
+	
+func onRetiered(_tier: int) -> void:
+	super(_tier)
+	when_healed_charges = getDefaultCharges()
 
 func getTierMaxHp() -> int:
 	match tier:
@@ -38,4 +47,12 @@ func getTierMaxHp() -> int:
 		2: return TIER_TWO_MAX_HP
 		3: return TIER_THREE_MAX_HP
 		4: return TIER_FOUR_MAX_HP
+	return 0
+	
+func getTierCharges() -> int:
+	match tier:
+		1: return TIER_ONE_CHARGES
+		2: return TIER_TWO_CHARGES
+		3: return TIER_THREE_CHARGES
+		4: return TIER_FOUR_CHARGES
 	return 0

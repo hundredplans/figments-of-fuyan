@@ -73,6 +73,7 @@ func onRetiered(_tier: int) -> void:
 	var attack: int = new_attack - old_attack
 	var health: int = new_health - old_health
 	var speed: int = new_speed - old_speed
+	
 	onPushAction(StatAction.new(StatInfo.new(ActiveCard,\
 	[Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.HEALTH, Game.Stats.MAX_SPEED],\
 	[attack, health, health, speed])))

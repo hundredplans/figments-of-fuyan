@@ -63,7 +63,7 @@ func onChangeBossIntent(boss_intents: Array, _enemies: Array, _allies: Array) ->
 	if boss_intent.name == "Clone Phase Change":
 		return getBossIntentByName("Double Teleport Attack")
 	
-	if phase in [2, 3]: 
+	if phase in [2, 3]:
 		boss_intents = boss_intents.filter(func(x: BossIntent): return x.name != "Clone Phase Change")
 		
 	if boss_intent.name == "Fan Blind":
@@ -179,7 +179,7 @@ func onTeleportAttackSetIntents() -> BossTileIntents:
 	
 	enemies.sort_custom(func(x: CardGD, y: CardGD): return x.max_speed < y.max_speed)
 	
-	var TeleportTile: TileGD 
+	var TeleportTile: TileGD
 	if !enemies.is_empty(): TeleportTile = enemies[0].getTile()
 	else:
 		var potential_tiles: Array = getVisibleTiles().filter(isValidTeleportTile)
@@ -188,7 +188,7 @@ func onTeleportAttackSetIntents() -> BossTileIntents:
 		potential_tiles.shuffle()
 		TeleportTile = potential_tiles.pick_random()
 	
-	var teleport_coords: Vector4i = TeleportTile.getCoords()	
+	var teleport_coords: Vector4i = TeleportTile.getCoords()
 	tile_intents.append(TileIntentDatastore.new(Game.TileIntents.DARK_RED, null, teleport_coords))
 	
 	var adjacent_coords: Array = Game.getAdjacentCoords(teleport_coords, 1)
@@ -390,7 +390,7 @@ func onBatAttack(use_type: UseType) -> Array:
 		actions.append(DamageAction.new(self, edge_damagables, attack - 2, Game.DamageTypes.OTHER))
 	return actions
 	
-func getBatCoords(_tile_rotation: int) -> Dictionary[Vector4i, String]:	
+func getBatCoords(_tile_rotation: int) -> Dictionary[Vector4i, String]:
 	var bat_coords: Dictionary[Vector4i, String] = {}
 	
 	var left_pyramid_coords: Array = Game.getInversePyramidCoords(Vector4i.ZERO, 6,  posmod(_tile_rotation - 1, 6), posmod(_tile_rotation - 2, 6), -1)
@@ -479,7 +479,7 @@ func getDefaultTeleportActions(BestTile: TileGD, reset_offset: bool = false) -> 
 	var actions: Array = [teleport_enter, TeleportAction.new(self, BestTile), teleport_exit, CameraChangeAction.new(self)]
 	if reset_offset:
 		actions.insert(1, CardOffsetAction.new(self))
-	return actions 
+	return actions
 #endregion
 
 #region Double Teleport Attack
@@ -656,10 +656,7 @@ func onChangeBossPhasePostDelay() -> void:
 	actions += ally_cards.map(func(x: CardGD): return RemoveStatusEffectAction.new(x.getStatusEffect(BLIND_ID, self)))
 	
 	var intent_name: String = "Clone Phase Change"
-	var clone_amount: int = Game.getAllyUnits(0).size() 
-	
-	if getPhase() == 2 and clone_amount > 3:
-		clone_amount = max(clone_amount - 2, 3)
+	var clone_amount: int = Game.getAllyUnits(0).size()
 	
 	actions += onPhaseChangeGetCloneActions(clone_amount)
 	actions.append(ChangeBossIntentAction.new(getBossIntentByName(intent_name), true))
@@ -837,7 +834,7 @@ func onCloneMinifanAttackSetIntents() -> BossTileIntents:
 		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.RED, OffsetDatastore.new(fan_coord, true, tile_rotation), coords))
 	
 	for clone_coord: Vector4i in clone_coords:
-		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.YELLOW, OffsetDatastore.new(clone_coord, true, tile_rotation), coords)) 
+		tile_intents.append(TileIntentDatastore.new(Game.TileIntents.YELLOW, OffsetDatastore.new(clone_coord, true, tile_rotation), coords))
 	
 	return BossTileIntents.new(tile_intents, {})
 	

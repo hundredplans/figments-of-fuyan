@@ -2,9 +2,9 @@ extends ToolGD
 
 const SPEED_AMOUNT: int = 1
 const TIER_ONE_TURN_AMOUNT: int = 1
-const TIER_TWO_TURN_AMOUNT: int = 1
-const TIER_THREE_TURN_AMOUNT: int = 1
-const TIER_FOUR_TURN_AMOUNT: int = 1
+const TIER_TWO_TURN_AMOUNT: int = 2
+const TIER_THREE_TURN_AMOUNT: int = 3
+const TIER_FOUR_TURN_AMOUNT: int = 4
 var remaining_turn_amount: int
 
 func onSave() -> SavedDataTool:
@@ -15,14 +15,15 @@ func onProcessAction(action: Action) -> void:
 	super(action)
 	if Card != null and Card.isValidEndOfTurn(action) and remaining_turn_amount > 0:
 		remaining_turn_amount -= 1
-		if remaining_turn_amount == 0: onPushAction(RemoveToolAction.new(Card))
+		if remaining_turn_amount == 0:
+			onPushAction(RemoveToolAction.new(Card))
 				
 func onCardTurnPassed() -> void:
 	super()
 
 func onToolHolderAwakened() -> void:
 	super()
-	var remaining_turn_amount: int = getSpeedTurnAmount()
+	remaining_turn_amount = getSpeedTurnAmount()
 	var stat_action := StatAction.new(StatInfo.new(Card, Game.Stats.MAX_SPEED, SPEED_AMOUNT, remaining_turn_amount))
 	onPushAction(ToolActivatedAction.new(self, stat_action))
 	

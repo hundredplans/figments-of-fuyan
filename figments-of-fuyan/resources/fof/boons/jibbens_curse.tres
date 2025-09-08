@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_a1m5o"]
 [ext_resource type="Script" uid="uid://sa06w4cb1d30" path="res://scripts/fof/boons/jibbens_curse.gd" id="1_fchqb"]
 [ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_bxax6"]
-[ext_resource type="Texture2D" uid="uid://ctcp4oq6bc2ny" path="res://assets/sprites/game/cards/art_mini/jibben.png" id="2_xc7pe"]
+[ext_resource type="Texture2D" uid="uid://dm5e2lyktv28s" path="res://assets/sprites/game/boons/jibben_curse.png" id="2_fchqb"]
 [ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_jhuwa"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="6_hqbpl"]
 
@@ -54,7 +54,7 @@ metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
 [resource]
 script = ExtResource("1_a1m5o")
 tiers = Array[ExtResource("2_bxax6")]([SubResource("Resource_5gln1"), SubResource("Resource_y2akp"), SubResource("Resource_sx4i5"), SubResource("Resource_8apnj")])
-icon = ExtResource("2_xc7pe")
+icon = ExtResource("2_fchqb")
 rarity = 0
 curse = true
 display_trigger = true

@@ -26,10 +26,6 @@ const TOOL_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/enc
 @export_range(0, 1, 0.005) var tool_enemy_spawn_rate_tier_up: float
 @export_group("")
 
-@export_group("Rewards")
-@export_range(0, 1, 0.005) var card_reward_tool_chance: float
-@export_group("")
-
 @export_group("Map")
 @export_range(0, 1, 0.01) var UPGRADE_REGULAR_FIGHT: float = 0.125
 @export_group("")
@@ -38,7 +34,7 @@ const TOOL_RARITY_PRICES_DATASTORE_PATH: String = "res://resources/datastore/enc
 @export var MIN_ELITE_FIGHTS: int = 2
 @export_range(0, 100, 1) var foreigner_mult: float = 1.5
 @export_range(0, 10, 1) var default_shop_variance: int = 3
-@export_range(0, 1, 0.005) var card_with_tool_odds: float = 0.1
+@export_range(0, 1, 0.005) var card_with_tool_odds: float = 0.025
 @export_group("")
 
 static func getInfoPath() -> String: return "res://resources/datastore/world"

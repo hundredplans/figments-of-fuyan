@@ -5,6 +5,7 @@ class_name MapNodeScreen extends Control
 signal create_stash_screen
 signal minimap_mode
 signal finished
+signal fade_loaded # Only triggers when u walk manually, used for camera reset
 
 var World: Node3D
 var map_node: MapNodeGD

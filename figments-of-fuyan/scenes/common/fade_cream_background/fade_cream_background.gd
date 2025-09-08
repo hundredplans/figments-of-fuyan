@@ -17,6 +17,7 @@ func onFade(fade_in: bool) -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", fade_value, FADE_TIME)
 	
-	if FADE_COLOR == color: return
-	var color_tween := get_tree().create_tween()
-	color_tween.tween_property(self, "color", FADE_COLOR, FADE_TIME)
+	if FADE_COLOR != color:
+		var color_tween := get_tree().create_tween()
+		color_tween.tween_property(self, "color", FADE_COLOR, FADE_TIME)
+	await tween.finished

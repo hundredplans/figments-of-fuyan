@@ -79,10 +79,13 @@ func onItemBought(price_datastore: PriceDatastore) -> void:
 #endregion
 
 func onEntered() -> void:
-	if !is_entered: # First time enter
-		onCreateItems()
 	super()
 	onPushAction(PlayMusicAction.new(Audio.SHOP))
+	
+func onEnteredInit() -> void:
+	super()
+	onCreateItems()
+	screen.onCreatePurchasables()
 	
 func onFinished() -> void:
 	super()

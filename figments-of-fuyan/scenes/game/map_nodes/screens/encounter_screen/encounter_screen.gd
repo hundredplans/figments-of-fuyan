@@ -24,7 +24,7 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	Subscreen.setInfo(map_node)
 	Subscreen.create_stash_screen.connect(func(x: TbcUI): create_stash_screen.emit(x))
 	NameLabel.text = map_node.info.name
-	NameLabel.modulate = map_node.getEncounterDatastore().getBackgroundMainColor()
+	#NameLabel.modulate = map_node.getEncounterDatastore().getBackgroundMainColor()
 	
 func _on_exit_button_pressed() -> void:
 	finished.emit()
@@ -53,24 +53,13 @@ func onUpdateStashScreen(created: bool) -> void:
 
 func onMinimapButtonPressed() -> void:
 	is_minimap_visible = !is_minimap_visible
-	var nodes: Array = [BackgroundIconContainer, NameLabel] + Subscreen.getMinimapFadeNodes()
-	if !is_minimap_visible:
-		for node: Control in nodes:
-			node.visible = true
-
-	var desired: float = int(!is_minimap_visible)
-	var val: float = desired - BackgroundIconContainer.modulate.a
-	for node: Control in nodes:
-		var tween := create_tween()
-		tween.tween_property(node, "modulate:a", val, Game.FADE_TIME).as_relative()
-	minimap_mode.emit(is_minimap_visible)
-	
-	await get_tree().create_timer(Game.FADE_TIME).timeout
-	if is_minimap_visible:
-		for node: Control in nodes:
-			node.visible = false
+	var nodes: Array = [BackgroundIconContainer, NameLabel, ExitButton] + Subscreen.getMinimapFadeNodes()
+	minimap_mode.emit(is_minimap_visible, nodes)
 
 func getFadeBackgroundColor() -> Color: return Subscreen.getFadeBackgroundColor()
 func onStashScreenExitStart() -> void: Subscreen.onStashScreenExitStart()
 func onStashScreenStart() -> void: Subscreen.onStashScreenStart()
 func onActiveToolAdded(CardUI: TbcUI) -> void: Subscreen.onActiveToolAdded(CardUI)
+
+func onCreatePurchasables() -> void:
+	Subscreen.onCreatePurchasables()

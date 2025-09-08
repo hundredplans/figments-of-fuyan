@@ -8,7 +8,7 @@ var is_exiting: bool
 func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Variant = null) -> void:
 	if HoverUI != null: Game.onEmptyTooltip(state, HoverUI, self)
 	if state and HoverUI != null:
-		HoverUI.setInfo(map_node.onSave())
+		HoverUI.setInfo(map_node)
 
 func setInfo() -> void:
 	for map_node: MapNodeGD in get_tree().get_nodes_in_group("MapNodesGD"):
@@ -22,11 +22,8 @@ func onExit() -> void:
 	if is_exiting: return
 	is_exiting = true
 	
-	FadeBackground.DEFAULT_ALPHA = 255.0
-	FadeBackground.onFade(true)
-	await get_tree().create_timer(Game.FADE_TIME).timeout
-	await get_tree().process_frame
+	exit.emit()
 	
 	Game.getArea().onClearMapNodes()
 	queue_free()
-	exit.emit()
+	

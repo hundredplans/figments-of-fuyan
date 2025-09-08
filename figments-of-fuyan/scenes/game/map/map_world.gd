@@ -5,6 +5,10 @@ extends Node3D
 @export var UNIT_SPOTLIGHT_UP_OFFSET: float
 #endregion
 
+const CAMERA_OFFSET_ZOOM_IN := Vector3(0, 5, 4)
+const CAMERA_ROTATION_ZOOM_IN_X: float = 30.0
+const CAMERA_DEFAULT_ROTATION_X: float = -60
+
 #region Globals
 signal action_lock
 var MapCard: CardGD
@@ -60,11 +64,13 @@ func setInfo(_save_file: SaveFileGD, _is_minimap: bool = false) -> void:
 		UI.screen_finished.connect(onScreenFinished)
 	
 	setEnvironment()
+	add_child(area.getInfo().getBackgroundScene())
 	
 	if !is_minimap:
 		for map_node in get_tree().get_nodes_in_group("MapNodesGD"):
 			map_node.pressed.connect(onMapNodePressed)
 			map_node.create_world_scene.connect(onMapNodeCreateWorldScene)
+			map_node.fade_loaded.connect(onMapNodeFadeLoaded.bind(map_node))
 	
 func onInitLoad() -> void:
 	onMapStartAnimation()
@@ -74,11 +80,11 @@ func _input(event: InputEvent) -> void:
 		if Input.is_action_just_pressed("AltInput") and !is_camera_disabled_by_ui:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			Camera.onDisableMovement(true)
-			get_viewport().warp_mouse(get_viewport().get_mouse_position())
+			get_viewport().update_mouse_cursor_state()
 		elif Input.is_action_just_released("AltInput") and !is_camera_disabled_by_ui:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			Camera.onDisableMovement(false)
-			get_viewport().warp_mouse(get_viewport().get_mouse_position())
+			get_viewport().update_mouse_cursor_state()
 		
 		if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			Camera.position.x += -event.relative.x * MOUSE_HOLD_SLOWDOWN
@@ -103,9 +109,15 @@ func onMapNodePressed(map_node: MapNodeGD) -> void:
 	var tween := get_tree().create_tween()
 	tween.tween_property(UnitSpotlight, "position", spotlight_destination, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
 	
+	var relative_vec: Vector3 = map_node.position - Camera.position + CAMERA_OFFSET_ZOOM_IN
 	var camera_tween := get_tree().create_tween()
-	camera_tween.tween_property(Camera, "position:x", map_node.position.x, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)
-	
+	camera_tween.tween_property(Camera, "position", relative_vec, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+		
+	var rot_tween := get_tree().create_tween()
+	rot_tween.tween_property(Camera, "rotation_degrees:x", CAMERA_ROTATION_ZOOM_IN_X, Game.SELECTED_MAP_NODE_TRAVEL_SPEED)\
+		.as_relative().set_trans(Tween.TRANS_SINE)
+		
 	await tween.finished
 	is_unit_walking_to_map_node = false
 	onUpdateActionLock()
@@ -153,6 +165,8 @@ func onMapStartAnimation() -> void:
 func onUpdateActionLock() -> void:
 	var state: bool = isActionLock()
 	action_lock.emit(state)
+	
+	if get_tree() == null: return
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", !state)
 #endregion
 
@@ -195,3 +209,7 @@ func onProcessAction(action: Action) -> void:
 			onMapNodeEntered(action.map_node)
 		elif action is MapNodeFinishedAction:
 			onMapNodeFinished(action.map_node)
+
+func onMapNodeFadeLoaded(map_node: MapNodeGD) -> void:
+	Camera.position = getMapNodeDestination(map_node) + CAMERA_OFFSET
+	Camera.rotation_degrees.x = CAMERA_DEFAULT_ROTATION_X

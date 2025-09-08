@@ -1,5 +1,6 @@
 class_name RemoveBoonAction extends Action
 
+var Boon: BoonGD
 var id: int
 func _init(_id: int = 0) -> void:
 	super()
@@ -9,7 +10,7 @@ func onPreAction() -> void:
 	onCheckFail()
 	
 func onPostAction() -> void:
-	var Boon: BoonGD = Game.get_tree().get_nodes_in_group("BoonsGD").filter(func(x: BoonGD): return x.info.id == id)[0]
+	Boon = Game.get_tree().get_nodes_in_group("BoonsGD").filter(func(x: BoonGD): return x.info.id == id)[0]
 	Game.getSaveFile().getBoons().erase(Boon)
 	Boon.onRemoveBoon()
 	Boon.onClear()

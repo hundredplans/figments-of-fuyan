@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bi5dpcw30h2c4" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="1_7a170"]
 [ext_resource type="Script" uid="uid://dbuj34xbg554v" path="res://scripts/fof/field_effects/bouncy_shield.gd" id="1_ec6ep"]
-[ext_resource type="Texture2D" uid="uid://vuld0eegj8g8" path="res://assets/sprites/game/fof_object_icons/field_effects/palm_fireplace.png" id="2_v58uv"]
+[ext_resource type="Texture2D" uid="uid://bgov5y4ltsm5" path="res://assets/sprites/game/fof_object_icons/field_effects/bouncy_shield.png" id="2_ec6ep"]
 [ext_resource type="Script" uid="uid://dw8fbr6hatp7q" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_wu60l"]
 
 [resource]
 script = ExtResource("1_7a170")
-icon = ExtResource("2_v58uv")
+icon = ExtResource("2_ec6ep")
 description = "This has SHIELD that will move to another suitable ally when it's broken"
 display_number_type = 0
 remove_on_owner_death = true

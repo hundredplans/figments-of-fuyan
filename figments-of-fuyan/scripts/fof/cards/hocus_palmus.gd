@@ -80,7 +80,7 @@ func getHealableAllies() -> Array:
 	return allies
 		
 # Escapes injured units in combat, sorts by energy
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL	) -> TileGD:
 	if Game.getAllyUnits(team).filter(func(x: CardGD): return x.isHealable()).size() >= getTierAmount():
 		return getTile()
 	return null

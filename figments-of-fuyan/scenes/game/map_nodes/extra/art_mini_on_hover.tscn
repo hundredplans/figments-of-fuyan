@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://cm8ycjcgfonbr"]
+
+[ext_resource type="Script" uid="uid://dqhh2mi7jnd8l" path="res://scenes/game/map_nodes/extra/art_mini_on_hover.gd" id="1_v6356"]
+[ext_resource type="PackedScene" uid="uid://bk7ao27fc3efw" path="res://scenes/common/fof_ui_box/fof_ui_box.tscn" id="1_y2ie5"]
+[ext_resource type="LabelSettings" uid="uid://dkjl7vfshajei" path="res://resources/ui/label_settings/spicyrice_small.tres" id="2_v6356"]
+
+[node name="ArtMiniOnHover" type="Control"]
+custom_minimum_size = Vector2(100, 140)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 140.0
+mouse_filter = 2
+script = ExtResource("1_v6356")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ArtMiniBox" parent="VBoxContainer" instance=ExtResource("1_y2ie5")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TierLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Tier I"
+label_settings = ExtResource("2_v6356")
+horizontal_alignment = 1

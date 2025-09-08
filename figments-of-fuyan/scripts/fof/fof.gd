@@ -23,12 +23,10 @@ func onClear() -> void: queue_free(); clear.emit()
 func onPushAction(actions: Variant, action_owner: Variant = self) -> void:
 	if actions is Action:
 		actions = [actions]
-		
-	actions.reverse()
 	
 	for action in actions:
 		action.owner = action_owner
-		push_action.emit(action)
+	push_action.emit(actions)
 		
 # If action is succesfully found
 func onPushAfterAction(actions: Variant, action_or_script: Variant, action_owner: Variant = self) -> bool:
@@ -44,7 +42,6 @@ func onPushAfterAction(actions: Variant, action_or_script: Variant, action_owner
 	if actions is Action:
 		actions = [actions]
 		
-	actions.reverse()
 	for action in actions:
 		action.owner = action_owner
 		

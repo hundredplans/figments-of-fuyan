@@ -111,10 +111,10 @@ var HolderCard: CardGD
 var HolderNode: MeshInstance3D
 func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var animation_action := AnimationAction.new(self, getAbilityAnimationName())
-	animation_action.setActionDelay(ABILITY_DELAY)
+	var camera_change_action := CameraChangeAction.new(Card)
+	camera_change_action.setActionDelay(ABILITY_DELAY)
 	var occupy_action := OccupyAction.new(Card, end_tiles[start_tiles.find(ActiveStartTile)])
-	
-	var actions: Array = [animation_action, occupy_action]
+	var actions: Array = [animation_action, camera_change_action, occupy_action]
 	onPushAction(actions)
 	
 	used_this_turn_cards.append(Card)
@@ -168,7 +168,7 @@ func _process(_delta: float) -> void:
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
-		if action is ActiveEffectUsedAction and action.ActiveEffect in active_effects:
+		if action is OccupyAction and action.owner == self:
 			onZiplineFinished()
 #endregion
 
@@ -184,7 +184,7 @@ const TURN_COOLDOWN_FOR_ABILITY_AND_TRANSFORM: int = 3
 const CHANCE_TO_USE_REGULAR: float = 0.75
 const CHANCE_TO_USE_IN_COOLDOWN: float = 0.05
 
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var roll: bool = Random.rollFloat(CHANCE_TO_USE_REGULAR\
 	if DFL.Card not in ai_cooldown_cards.keys() else CHANCE_TO_USE_IN_COOLDOWN)
 	

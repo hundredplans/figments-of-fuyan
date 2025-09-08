@@ -493,5 +493,6 @@ polygon = PackedVector2Array(-15, -15, 29, -52, 60, -63, 112, -62, 156, -46, 184
 [connection signal="mouse_exited" from="ModulateMain/Art/Background" to="." method="onMouseInUI" binds= [false]]
 [connection signal="mouse_entered" from="ModulateMain/Art/ArtPop" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="ModulateMain/Art/ArtPop" to="." method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="ModulateMain/Stats/ToolControl/ToolIcon" to="." method="onToolIconMouseInUI"]
 [connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInText"]
+[connection signal="mouse_in_ui" from="ModulateMain/Text/VBoxContainer/TextLabel" to="." method="onMouseInUI"]

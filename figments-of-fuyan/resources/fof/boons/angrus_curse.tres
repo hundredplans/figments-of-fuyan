@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="BoonInfo" load_steps=15 format=3 uid="uid://c1vnesfaa6g6b"]
 
-[ext_resource type="Texture2D" uid="uid://cjghaccl0t01m" path="res://assets/sprites/game/cards/art_mini/angrus_palmus.png" id="1_8lxap"]
 [ext_resource type="Script" uid="uid://tvnk0bnlhblt" path="res://scripts/fof/boons/angrus_curse.gd" id="1_m2be4"]
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_vuk44"]
 [ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_km5ut"]
+[ext_resource type="Texture2D" uid="uid://c5witkjloldtp" path="res://assets/sprites/game/boons/angrus_curse.png" id="2_m2be4"]
 [ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_w6vsf"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="4_4r6fg"]
 
@@ -54,10 +54,10 @@ metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
 [resource]
 script = ExtResource("1_vuk44")
 tiers = Array[ExtResource("2_km5ut")]([SubResource("Resource_w6vsf"), SubResource("Resource_jepbx"), SubResource("Resource_g5sgd"), SubResource("Resource_ag5wh")])
-icon = ExtResource("1_8lxap")
+icon = ExtResource("2_m2be4")
 rarity = 0
 curse = true
-display_trigger = true
+display_trigger = false
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false

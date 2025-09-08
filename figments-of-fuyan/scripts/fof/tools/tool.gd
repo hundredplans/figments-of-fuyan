@@ -47,7 +47,7 @@ func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
 func getActiveEffects() -> Array:
 	return active_effects
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return null
 	
 func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
@@ -108,9 +108,12 @@ func onToolHolderAwakened() -> void:
 func onToolHolderDeath() -> void:
 	pass
 	
-func onReset(_override: bool = false) -> void:
+func onReset(override: bool = false) -> void:
 	if info.rarity == Game.Rarities.MINI:
 		onPushAction(RemoveToolAction.new(Card))
+	
+	if !override: return
+	active_effects = []
 	
 func onRegularReset() -> void: #  Fof Init, Awakened, Death, Level Start, Level End
 	if info.auto_reset_charges:

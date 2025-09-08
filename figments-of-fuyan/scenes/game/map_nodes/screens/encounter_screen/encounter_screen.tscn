@@ -14,7 +14,7 @@ step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("BackgroundIconContainer:position")
+tracks/0/path = NodePath("Control/BackgroundIconContainer:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -29,7 +29,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("BackgroundIconContainer:position")
+tracks/0/path = NodePath("Control/BackgroundIconContainer:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -54,6 +54,34 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_3jm3p")
+
+[node name="Control" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchor_top = 0.046
+anchor_bottom = 0.046
+offset_top = 0.319996
+offset_right = 2120.0
+offset_bottom = 1280.32
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BackgroundIconContainer" type="GridContainer" parent="Control"]
+unique_name_in_owner = true
+z_index = -2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -171.0
+offset_bottom = -171.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 30
+columns = 6
 
 [node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("2_1pd3x")]
 unique_name_in_owner = true
@@ -87,23 +115,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("4_145is")
 
-[node name="BackgroundIconContainer" type="GridContainer" parent="."]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.25098)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -171.0
-offset_right = 200.0
-offset_bottom = 29.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/h_separation = 100
-theme_override_constants/v_separation = 30
-columns = 6
-
 [node name="AniPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 libraries = {
@@ -112,7 +123,6 @@ libraries = {
 
 [node name="NameLabel" type="Label" parent="."]
 unique_name_in_owner = true
-modulate = Color(0.4, 0.18, 0, 1)
 layout_mode = 0
 offset_top = 6.0
 offset_right = 1920.0

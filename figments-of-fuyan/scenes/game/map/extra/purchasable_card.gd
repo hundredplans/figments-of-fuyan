@@ -1,6 +1,4 @@
 extends Purchasable
-
-
 @onready var MainContainer: Container = %MainContainer
 
 func setInfo(_price_datastore: PriceDatastore) -> void:
@@ -11,9 +9,10 @@ func setInfo(_price_datastore: PriceDatastore) -> void:
 		card_data.tool_data.public_id = 0
 	
 	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getArea().getEnteredMapNode())
-	DisplayedUI = Card.onCreateCardUI(self, true)
+	DisplayedUI = Card.onCreateCardUI(self, true, false, true, true)
 	DisplayedUI.onShowTierLabel()
 	DisplayedUI.pressed.connect(func(__: Control): onPressed())
+	PriceLabel.reparent(DisplayedUI)
 	
 	super(_price_datastore)
 	

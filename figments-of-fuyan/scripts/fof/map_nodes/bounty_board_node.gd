@@ -15,10 +15,6 @@ signal change_shillings
 	
 var price: int
 var selected_card_public_id: int
-	
-func onEntered() -> void:
-	super()
-	onCreateScreen()
 
 func onSave() -> SavedDataMapNode:
 	ability_save['price'] = price

@@ -9,7 +9,6 @@ class_name ActiveEffectDatastore extends Resource
 @export_storage var used: bool
 
 enum CameraTypes {KEEP, CYCLE}
-
 var owner: FofGD
 
 func getName() -> String:
@@ -37,6 +36,5 @@ func getDefaultDisabled(Card: CardGD) -> bool:
 		
 	var no_charges: bool = getCharges() == 0
 	var turn_passed: bool = Card.turn_state == Game.TurnStates.PASSED
-	var is_not_mobile_and_active: bool = !Card.isMobile() and Card.turn_state == Game.TurnStates.ACTIVE
-	return active_effect_disabled or used or no_charges or is_not_mobile_and_active or turn_passed or dependant_disabled
+	return active_effect_disabled or used or no_charges or turn_passed or dependant_disabled
 	

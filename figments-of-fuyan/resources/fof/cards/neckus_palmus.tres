@@ -30,8 +30,8 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_xkwai"]
 script = ExtResource("13_iu4kl")
-description = "When Healed [[X]]: Gain +1 HP"
-default_values = Array[int]([3])
+description = "When Healed [[X]]: Gain +2 HP"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_7jips"]
 script = ExtResource("12_5yiio")
@@ -46,12 +46,12 @@ description_datastore = SubResource("Resource_xkwai")
 [sub_resource type="Resource" id="Resource_cxr3u"]
 script = ExtResource("13_iu4kl")
 description = "When Healed [[X]]: Gain +2 HP"
-default_values = Array[int]([3])
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_3jfae"]
 script = ExtResource("12_5yiio")
 attack = 2
-health = 5
+health = 6
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_jja8n")]([])
@@ -61,12 +61,12 @@ description_datastore = SubResource("Resource_cxr3u")
 [sub_resource type="Resource" id="Resource_518gu"]
 script = ExtResource("13_iu4kl")
 description = "When Healed [[X]]: Gain +2 HP"
-default_values = Array[int]([3])
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_5yiio"]
 script = ExtResource("12_5yiio")
 attack = 3
-health = 6
+health = 7
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_jja8n")]([])
@@ -75,13 +75,13 @@ description_datastore = SubResource("Resource_518gu")
 
 [sub_resource type="Resource" id="Resource_iu4kl"]
 script = ExtResource("13_iu4kl")
-description = "When Healed [[X]]: Gain +3 HP"
-default_values = Array[int]([3])
+description = "When Healed [[X]]: Gain +2 HP"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_dfhpq"]
 script = ExtResource("12_5yiio")
 attack = 3
-health = 6
+health = 9
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_jja8n")]([])

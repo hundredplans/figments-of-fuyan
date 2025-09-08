@@ -40,7 +40,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 
 # Use ability if enemies are within DISTANCE tiles below
 const HARDENED_SHELL_ENEMY_DISTANCE_TO_USE: int = 4
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var enemies: Array = getVisibleFieldCardsEnemies()
 	var use_ability: bool = !enemies.is_empty() and ai_ability_cooldown_turns_left == 0 and\
 	enemies.any(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), getCoords()) <= HARDENED_SHELL_ENEMY_DISTANCE_TO_USE)

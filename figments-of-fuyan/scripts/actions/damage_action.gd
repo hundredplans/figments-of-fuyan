@@ -44,10 +44,9 @@ func onPostAction() -> void:
 		var new_damage: int = max(0, damage) if (!fatal) else 99
 		if !ignore_armor_shield:
 			new_damage = max(0, new_damage - armor)
-			if ShieldFieldEffect != null:
-				new_damage = min(damage, 1)
-				if new_damage > 0:
-					actions.append(RemoveFieldEffectAction.new(ShieldFieldEffect))
+			if ShieldFieldEffect != null and new_damage > 0:
+				new_damage = max(0, 1 - armor)
+				actions.append(RemoveFieldEffectAction.new(ShieldFieldEffect))
 		elif ShieldFieldEffect != null or armor > 0:
 			setIgnoreArmorShieldSuccess(true)
 			

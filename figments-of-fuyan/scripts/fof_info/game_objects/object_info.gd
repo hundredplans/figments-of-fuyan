@@ -22,3 +22,6 @@ static func getInfoPath() -> String: return "res://resources/fof/tile_objects"
 static func getFofName() -> String: return "Object"
 func getModel(variation: int) -> PackedScene:
 	return models[variation]
+	
+func getActiveEffects() -> Array:
+	return active_effects.map(func(x: ActiveEffectDatastore): return x.duplicate())

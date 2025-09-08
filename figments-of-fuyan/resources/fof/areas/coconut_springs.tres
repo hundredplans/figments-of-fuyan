@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=20 format=3 uid="uid://divjktvvya1ee"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=29 format=3 uid="uid://divjktvvya1ee"]
 
+[ext_resource type="PackedScene" uid="uid://y5ytdt7d7c61" path="res://scenes/game/levels/world/coconut_springs/water_repeating.tscn" id="1_1r76i"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/palm_day_environment.tres" id="1_nr01x"]
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
 [ext_resource type="Script" uid="uid://dyvdkimog5nh1" path="res://scripts/fof/levels/palm_level.gd" id="2_48x5e"]
@@ -9,12 +10,16 @@
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_otepg"]
 [ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="4_xelp4"]
 [ext_resource type="Resource" uid="uid://bkwj7bgi6c4in" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
-[ext_resource type="Resource" uid="uid://ctfukjvhoe8nm" path="res://resources/datastore/world/world_one.tres" id="5_dy22h"]
 [ext_resource type="PackedScene" uid="uid://bvbfjek6o431c" path="res://scripts/fof/areas/extra/coconut_springs_default_light.tscn" id="5_mg38q"]
 [ext_resource type="PackedScene" uid="uid://tu38c5oc2rpw" path="res://scenes/menus/main_menu/champion_entrance/champion_entrance_coconut_springs.tscn" id="6_48x5e"]
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="6_p3usl"]
 [ext_resource type="Script" uid="uid://j3gava8i61i7" path="res://scripts/fof_info/areas/extra/epic_area_datastore.gd" id="9_ik72x"]
 [ext_resource type="Resource" uid="uid://cjmhdi4s82ra8" path="res://resources/datastore/decorations/PalmIsland1.tres" id="10_ik72x"]
+[ext_resource type="Script" uid="uid://c4ctb2tm8w44a" path="res://scripts/fof_info/areas/extra/loading_screen_datastore.gd" id="11_myjy2"]
+[ext_resource type="Resource" uid="uid://bmelws328vqy6" path="res://resources/datastore/decorations/PalmIsland4.tres" id="12_u3c60"]
+[ext_resource type="PackedScene" uid="uid://dvev7ayy8isjb" path="res://scenes/game/areas/coconut_springs/loading_screen_camera_one_palms.tscn" id="13_7o35x"]
+[ext_resource type="Resource" uid="uid://i6h2tha5v3q" path="res://resources/datastore/decorations/PalmIsland2.tres" id="14_35205"]
+[ext_resource type="Resource" uid="uid://cedek8v044lfg" path="res://resources/datastore/decorations/PalmIsland3.tres" id="15_1r76i"]
 [ext_resource type="Material" uid="uid://2tolf65ex50q" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_fill_greyscale_material.tres" id="15_ow43y"]
 [ext_resource type="Material" uid="uid://cwgt42e81io2h" path="res://resources/materials/game/tile_material/palm_tile/palm_tile_fill_material.tres" id="16_u3c60"]
 
@@ -32,9 +37,36 @@ epic_id = 2
 type = 4
 metadata/_custom_type_script = "uid://j3gava8i61i7"
 
+[sub_resource type="Resource" id="Resource_1sxdl"]
+script = ExtResource("11_myjy2")
+name = "PalmIsland1"
+camera = ExtResource("13_7o35x")
+decoration = ExtResource("10_ik72x")
+metadata/_custom_type_script = "uid://c4ctb2tm8w44a"
+
+[sub_resource type="Resource" id="Resource_7o35x"]
+script = ExtResource("11_myjy2")
+name = "PalmIsland2"
+camera = ExtResource("13_7o35x")
+decoration = ExtResource("14_35205")
+metadata/_custom_type_script = "uid://c4ctb2tm8w44a"
+
+[sub_resource type="Resource" id="Resource_rkxbf"]
+script = ExtResource("11_myjy2")
+name = "PalmIsland3"
+camera = ExtResource("13_7o35x")
+decoration = ExtResource("15_1r76i")
+metadata/_custom_type_script = "uid://c4ctb2tm8w44a"
+
+[sub_resource type="Resource" id="Resource_bwwa7"]
+script = ExtResource("11_myjy2")
+name = "PalmIsland4"
+camera = ExtResource("13_7o35x")
+decoration = ExtResource("12_u3c60")
+metadata/_custom_type_script = "uid://c4ctb2tm8w44a"
+
 [resource]
 script = ExtResource("2_omppq")
-world = ExtResource("5_dy22h")
 card_background = ExtResource("1_xwfqh")
 champion_entrance_packed = ExtResource("6_48x5e")
 card_ids = Array[int]([2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 78, 79])
@@ -49,8 +81,12 @@ boss_music = ExtResource("4_otepg")
 epic_datastores = Array[ExtResource("9_ik72x")]([SubResource("Resource_48x5e"), SubResource("Resource_ianwb")])
 main_menu_decoration = ExtResource("10_ik72x")
 area_color = Color(1, 0.894118, 0.376471, 1)
+secondary_area_color = Color(0.64, 0.573867, 0.2432, 1)
+tertiary_area_color = Color(0.266747, 0.234788, 0.075612, 1)
 tile_fill_material = ExtResource("16_u3c60")
 tile_fill_greyscale_material = ExtResource("15_ow43y")
+background_scene = ExtResource("1_1r76i")
+loading_screens = Array[ExtResource("11_myjy2")]([SubResource("Resource_1sxdl"), SubResource("Resource_7o35x"), SubResource("Resource_rkxbf"), SubResource("Resource_bwwa7")])
 id = 1
 name = "Coconut Springs"
 gdscript = ExtResource("4_xelp4")

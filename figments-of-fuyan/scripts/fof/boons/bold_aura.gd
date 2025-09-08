@@ -25,7 +25,7 @@ func onLevelEnded(is_win: bool) -> void:
 	if level == null or level.isEpic(): return
 	
 	current_points += REGULAR_FIGHT_POINTS if !level.isElite() else ELITE_FIGHT_POINTS
-	if current_points >= POINTS_TO_UPGRADE and tier < Game.MAX_BOON_TIER:
+	if current_points >= POINTS_TO_UPGRADE and tier < Game.MAX_TIER:
 		onPushAction(BoonRetieredAction.new(self, tier + 1))
 
 func onRetiered(_tier: int) -> void:

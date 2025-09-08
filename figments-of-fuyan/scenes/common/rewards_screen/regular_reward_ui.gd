@@ -91,14 +91,15 @@ func onClaimButtonDown() -> void:
 	if reward.isTaken() or StashScreen != null: return
 	var item: FofGD = reward.getItem()
 	if item is ToolGD:
-		var ToolIcon: Control = ToolIconPacked.instantiate()
+		var ToolIcon: TbcUI = ToolIconPacked.instantiate()
 		add_child(ToolIcon)
-		ToolIcon.setInfo(item, false)
+		ToolIcon.setInfo(item)
 		ToolIcon.setSizeScale(3)
 		ToolIcon.setDisableTooltip(true)
 		ToolIcon.global_position = get_viewport().get_mouse_position() - ToolIcon.pivot_offset
 		
 		StashScreen = Game.onCreateStashScreen(self, ToolIcon)
+		if StashScreen == null: return
 		stash_screen_fade_in.emit()
 		StashScreen.active_tool_added.connect(onToolClaimed.bind(ToolIcon))
 		StashScreen.exit_start.connect(onActiveToolStashExitStart.bind(ToolIcon))

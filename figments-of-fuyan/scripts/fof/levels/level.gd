@@ -141,6 +141,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		
 	if is_init:
 		var actions: Array = [StartLevelAction.new(), ChangePhaseAction.new(Game.Phases.START)]
+		if curse_id > 0: actions.append(AddBoonAction.new(curse_id, Game.getArea().getWorldDifficulty()))
 		speed_order = SpeedOrder.new()
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
 			GameObject.onLoadDataLevelFofInit()
@@ -154,8 +155,6 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		
 		level_area_datastore = onCreateLevelAreaDatastore()
 		
-		if curse_id > 0: onPushAction(AddBoonAction.new(curse_id, Game.getArea().getWorldDifficulty()))
-		
 		var deck_cards: Array = Game.get_tree().get_nodes_in_group("DeckCardsGD")
 		deck_cards.shuffle()
 		for i in range(deck_cards.size()):
@@ -163,8 +162,10 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		
 		actions.append(ChangeEnvironmentAction.new(Game.getArea().getEnvironmentFromInfo(isElite())))
 		onPushAction(actions)
+		onCreateBackgroundScene()
 		return
-		
+	
+	onCreateBackgroundScene()
 	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
 		onPushAction(HandCardAction.new(Card))
 		
@@ -183,7 +184,7 @@ func onFofInit() -> void:
 	
 func getTilePositionToTile() -> Dictionary:
 	var tile_position_to_tile: Dictionary
-	for Tile in get_tree().get_nodes_in_group("TilesGD"):
+	for Tile in get_tree().get_nodes_in_group("LevelTilesGD"):
 		tile_position_to_tile[Tile.position] = Tile
 	return tile_position_to_tile
 	
@@ -248,7 +249,6 @@ func onProcessAction(action: Action) -> void:
 		elif action is EnergyAction:
 			energy = min(action.delta + energy, max_energy)
 			energy_changed.emit(energy, action)
-			onCheckSkipHandPhase()
 		elif action is ChangeTurnStateAction:
 			turn_state_changing.emit(action.Card, action)
 		elif action is ActiveEffectUsedAction:
@@ -307,9 +307,7 @@ func onProcessAction(action: Action) -> void:
 			if action.phase == phase: action.onFailAction(); return
 			onChangePhase(action.phase)
 		elif action is CameraChangeAction:
-			if action.SpectateObject != null and getSpectateObject() == action.SpectateObject:
-				action.onFailAction()
-			else:
+			if !(action.SpectateObject != null and getSpectateObject() == action.SpectateObject):
 				camera_change_pre.emit(action.SpectateObject, getSpectateObject())
 		elif action is MovementFinishAction:
 			action.setPhaseByLevel(phase)
@@ -443,7 +441,7 @@ func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD) -> void:
 	if finish_action.Card != Card: return
 	
 	if (action.owner != null and action.owner is not MoveToTileAction)\
-		or Card.onAICheckActiveEffectsOnlyDFL(Card.ai_datastore.DFL, finish_action):
+		or Card.onAICheckActiveEffectsOnlyDFL(Card.ai_datastore.DFL, finish_action, Game.AbilityAI.RECALCULATE):
 			
 		onRemoveMoveAndAttackActions(Card)
 		finish_action.setRetryAiTurn(true)
@@ -516,6 +514,21 @@ func isElite() -> bool:
 func isEpic() -> bool:
 	return fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]
 	
+func isBoss() -> bool:
+	return fight_type == Game.FightTypes.BOSS
+	
+func isCurseFight() -> bool:
+	return fight_type == Game.FightTypes.CURSE
+	
+func isAdvancedFight() -> bool:
+	return fight_type == Game.FightTypes.ADVANCED
+	
+func isMirrorFight() -> bool:
+	return fight_type == Game.FightTypes.MIRROR
+	
+func isForeignFight() -> bool:
+	return fight_type == Game.FightTypes.FOREIGN
+	
 func isEliteOrEpic() -> bool:
 	return isElite() or isEpic()
 
@@ -532,4 +545,15 @@ func onActionLock(state: bool) -> void:
 	
 func isActionLock() -> bool:
 	return is_action_lock
+	
+func getLevelPreview() -> LevelPreview:
+	return level_preview
 #endregion
+
+func getLevelAreaDatastore() -> LevelAreaDatastore:
+	return level_area_datastore
+
+func onCreateBackgroundScene() -> void:
+	add_child(Helper.getFofInfoID(AreaInfo, level_area_datastore.getAreaID()).getBackgroundScene())
+
+func getCurseID() -> int: return curse_id

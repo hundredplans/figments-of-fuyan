@@ -2,9 +2,12 @@ extends Node
 
 signal update_stash_screen
 signal mouse_in_ui
+
+var is_dragging: bool
 var is_mouse_in_ui: bool
 var save_file: SaveFileGD
 var area: AreaGD
+var main: Node
 
 var brain: bool # AI Brain
 
@@ -21,8 +24,10 @@ enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
 enum Stats {ATTACK, HEALTH, SPEED, MAX_HEALTH, MAX_SPEED, ENERGY}
 enum Archetypes {NULL, ADVENTURER, BRUTE, DOCILE, ERRATIC, HOSTILE, REINFORCER, SCOUT, SUPPORT, TACTICIAN, WARDEN, RECEIVER, MERCENARY}
 enum DamageTypes {ATTACK, FALL_DAMAGE, OTHER}
-enum FightTypes {NULL, REGULAR, ELITE, MINIBOSS, BOSS, COLOSSEUM}
+enum FightTypes {NULL, REGULAR, ELITE, MINIBOSS, BOSS, ADVANCED, CURSE, FOREIGN, MIRROR}
 enum TileIntents {NULL, RED, PURPLE, GREEN, DARK_RED, LIGHT_RED, YELLOW, LIGHTER_RED, BLACK}
+enum AbilityAI {NULL, START, END, PRE_ATTACK, RECALCULATE} # Start of Turn, End of Turn, Right before attack, Recalculate Movement
+enum LoadingType {LEVEL, MAP}
 
 var CARD_PLACES_TO_GROUP: Dictionary = {
 	CardPlaces.NULL: "Null",
@@ -73,10 +78,8 @@ var cube_directions: Array[Vector3i] = [
 var tile_face_directions: Array[Vector3] = [
 ]
 
-const SELL_MULT: float = 0.5
-const MAX_CARD_TIER: int = 4
-const MAX_TOOL_TIER: int = 4
-const MAX_BOON_TIER: int = 4
+const SELL_MULT: float = 0.33
+const MAX_TIER: int = 4
 const CARD_UI_SIZE := Vector2(264, 400)
 
 const FALL_DAMAGE_BEGIN_HEIGHT: int = 5
@@ -400,7 +403,7 @@ const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
 var Tooltip: Control
 func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = true, offset := Vector2(30, 0)) -> void:
 	if Tooltip != null: Tooltip.queue_free()
-	if state:
+	if state and !is_dragging:
 		if item is Array and item.is_empty(): return
 		if item is not Array: item = [item]
 		Tooltip = load(TOOLTIP_PACKED_PATH).instantiate()
@@ -410,7 +413,7 @@ func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = nul
 		
 func onEmptyTooltip(state: bool, child: Control = null, parent: Control = null) -> Control:
 	if Tooltip != null: Tooltip.queue_free()
-	if state:
+	if state and !is_dragging:
 		Tooltip = Control.new()
 		Tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		Tooltip.size = Vector2.ZERO
@@ -453,23 +456,6 @@ func setCardDataFromInfo(card_data: SavedDataCard, card_info: CardInfo) -> Saved
 	card_data.health = card_data.max_health
 	card_data.speed = card_data.max_speed
 	return card_data
-	
-const REMOVE_CARD_ANIMATION_TIME: float = 2
-const REMOVE_CARD_ANIMATION_OFFSET: float = 0.5
-const TOTAL_SPIN_DEGREES: int = 360
-func onRemoveCardWithAnimation(Card: CardGD, parent: Control, action_user: FofGD) -> void:
-	var CardUI: Control = Card.onCreateCardUI(parent, false)
-	CardUI.global_position = get_viewport().get_mouse_position() - (CardUI.size / 2)
-	CardUI.setDisabled(true)
-	
-	var rotate_tween := create_tween()
-	rotate_tween.tween_property(CardUI, "rotation_degrees", TOTAL_SPIN_DEGREES, REMOVE_CARD_ANIMATION_TIME)
-	
-	var scale_tween := create_tween()
-	scale_tween.tween_property(CardUI, "scale", Vector2(0.01, 0.01), REMOVE_CARD_ANIMATION_TIME)
-	await get_tree().create_timer(REMOVE_CARD_ANIMATION_TIME + REMOVE_CARD_ANIMATION_OFFSET).timeout
-	
-	action_user.onPushAction(RemoveFromDeckAction.new(Card, true))
 		
 func onCreateBaseCard(id: int, tier: int = 1, tool_data: SavedDataTool = null) -> SavedDataCard:
 	var card_data := SavedDataCard.new(id, true)
@@ -574,10 +560,17 @@ func onCreatePauseMenu(parent: Control) -> Control:
 	parent.add_child(PauseMenu)
 	return PauseMenu
 	
+var StashScreen: Control
 const STASH_SCREEN_PATH: String = "res://scenes/game/map/stash_screen.tscn"
-func onCreateStashScreen(parent: Control, ActiveToolIcon: Control = null) -> Control:
-	var StashScreen: Control = load(STASH_SCREEN_PATH).instantiate()
+func onCreateStashScreen(parent: Control, ActiveToolIcon: Control = null, bg_color := Color.BLACK) -> Control:
+	if StashScreen != null: return null
+	StashScreen = load(STASH_SCREEN_PATH).instantiate()
 	parent.add_child(StashScreen)
+	
+	if bg_color == Color.BLACK:
+		bg_color = getArea().info.getAreaColor()
+		
+	StashScreen.setBackgroundColor(bg_color)
 	StashScreen.setInfo()
 	if ActiveToolIcon != null:
 		StashScreen.setToolIcon(ActiveToolIcon)
@@ -658,6 +651,9 @@ func getCubeDirectionExtra(index: int) -> Vector4i:
 func getCubeDirectionsExtra() -> Array:
 	return range(6).map(getCubeDirectionExtra)
 	
+func getCubeDirectionsRegular() -> Array:
+	return range(6).map(getCubeDirectionRegular)
+	
 func getTierString(tier: int) -> String:
 	return NUMBER_TO_ROMAN_NUMERAL[tier]
 	
@@ -701,3 +697,6 @@ func getDuplicateCardData(_card_data: SavedDataCard) -> SavedDataCard:
 	if card_data.tool_data != null:
 		card_data.tool_data.public_id = 0
 	return card_data
+	
+func getMain() -> Node:
+	return main

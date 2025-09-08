@@ -60,6 +60,9 @@ func onDrawCardUI(Card: CardGD, CardUI: Control) -> void:
 func onUpdateEnergy(_energy: int) -> void:
 	energy = _energy
 	onSelectableCards(selectable_cards)
+	
+func onUpdateCardEnergy() -> void:
+	onSelectableCards(selectable_cards)
 
 func onUp(instant: bool = false) -> void:
 	if is_tweening: return

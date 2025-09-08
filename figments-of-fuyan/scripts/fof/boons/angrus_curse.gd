@@ -6,6 +6,8 @@ const TIER_TWO_ATTACK: int = 2
 const TIER_THREE_ATTACK: int = 3
 const TIER_FOUR_ATTACK: int = 4
 
+const OPEN_FRENZY_ID: int = 21
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -22,8 +24,14 @@ func onBoon(action: Action) -> void:
 	if action is DeathAction:
 		cards_triggered_public_ids.append(action.Damager.public_id)
 		onPushAction(StatAction.new(StatInfo.new(action.Damager, Game.Stats.ATTACK, -getTierAttack())))
+		
+		var Card: CardGD = action.Damager
+		Card.onRemoveFieldEffectsByOwner(self)
 	elif action is AwakenAction:
-		onPushAction(StatAction.new(StatInfo.new(action.Card, Game.Stats.ATTACK, getTierAttack())))
+		var Card: CardGD = action.Card
+		var stat_action := StatAction.new(StatInfo.new(action.Card, Game.Stats.ATTACK, getTierAttack()))
+		var field_effect_action := Card.onCreateBaseFieldEffectAction(OPEN_FRENZY_ID, getTierAttack(), -1, self)
+		onPushAction([stat_action, field_effect_action])
 
 func onBoonAdded() -> void:
 	super()

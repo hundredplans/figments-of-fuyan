@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg5qw5gnyr5vp"]
+
+[ext_resource type="Material" uid="uid://d0b7pk4h002q3" path="res://resources/materials/game/levels/coconut_springs/grass_repeating_material.tres" id="1_bgo4t"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lxl27"]
+material = ExtResource("1_bgo4t")
+size = Vector2(10000, 10000)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_lxl27")

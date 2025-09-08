@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d3lgvy3r3xxo" path="res://scenes/game/levels/level_ui.tscn" id="6_tdyrb"]
 [ext_resource type="PackedScene" uid="uid://cjmt3kd7ntlan" path="res://scenes/game/levels/level_world.tscn" id="7_6lvwx"]
 [ext_resource type="PackedScene" uid="uid://bloplwh136nrx" path="res://scenes/globals/autoload/action_manager.tscn" id="8_hvpr2"]
-[ext_resource type="AudioStream" uid="uid://cqbm8uwjldncr" path="res://assets/sounds/music/song1.mp3" id="9_3gh8x"]
+[ext_resource type="PackedScene" uid="uid://b4bragqpsimtg" path="res://scenes/common/loading_screen_ui/loading_screen_ui.tscn" id="9_3gh8x"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_vaj5h")
@@ -19,7 +19,10 @@ map_world = ExtResource("5_eo3rv")
 level_ui = ExtResource("6_tdyrb")
 level_world = ExtResource("7_6lvwx")
 ActionManagerPacked = ExtResource("8_hvpr2")
-main_menu_music = ExtResource("9_3gh8x")
+LoadingScreenUIPacked = ExtResource("9_3gh8x")
+
+[node name="LoadingScreenBackground" type="Node3D" parent="."]
+unique_name_in_owner = true
 
 [node name="KeepAcross" type="Node3D" parent="."]
 unique_name_in_owner = true

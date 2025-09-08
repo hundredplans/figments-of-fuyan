@@ -43,11 +43,13 @@ func onStashScreenExitStart() -> void:
 	onUpdateBaseSprite()
 	onUpdateRewardItem()
 	onUpdateInfoLabel()
+	EncounterMainUI.setDisableUpdateModulate(false)
 	
 func onStashScreenStart() -> void:
 	super()
 
 func _on_encounter_main_ui_pressed() -> void:
+	EncounterMainUI.setDisableUpdateModulate(true)
 	create_stash_screen.emit(null)
 	
 func onUpdateBaseSprite() -> void:

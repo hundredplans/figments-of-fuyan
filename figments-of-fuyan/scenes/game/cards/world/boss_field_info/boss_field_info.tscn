@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d4msabmicn7rt"]
+[gd_scene load_steps=13 format=3 uid="uid://d4msabmicn7rt"]
 
 [ext_resource type="Script" uid="uid://cn2ojinduvk6t" path="res://scenes/game/cards/world/boss_field_info/boss_field_info.gd" id="1_tvnno"]
 [ext_resource type="Texture2D" uid="uid://c64donnquwx7" path="res://assets/sprites/game/epic_cards/intents/attack.png" id="2_boc1b"]
@@ -8,6 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://drxf4wfdnrsrf" path="res://assets/sprites/game/epic_cards/intents/movement.png" id="6_k714t"]
 [ext_resource type="Texture2D" uid="uid://b2hm0b55ll8ri" path="res://assets/sprites/game/epic_cards/intents/movement_attack.png" id="7_x68mu"]
 [ext_resource type="Texture2D" uid="uid://co8h8d76gvxs5" path="res://assets/sprites/game/epic_cards/intents/hammer.png" id="8_daesc"]
+[ext_resource type="PackedScene" uid="uid://c4hntclk7hxr4" path="res://assets/models/general/floating_stats/speed.glb" id="9_x8pfq"]
+[ext_resource type="Script" uid="uid://cqeu1p4km0fp6" path="res://scenes/game/cards/world/field_info/speed_model_script.gd" id="10_5g6ju"]
+[ext_resource type="Material" uid="uid://b08hwp8ifl8v5" path="res://resources/materials/unique/speed_field_info_material.tres" id="11_4hocr"]
+[ext_resource type="Material" uid="uid://18fiptojg7qr" path="res://resources/materials/unique/speed_field_info_material_no_dt.tres" id="12_4w7gv"]
 
 [node name="BossFieldInfo" type="Node3D"]
 script = ExtResource("1_tvnno")
@@ -18,8 +22,16 @@ misc_texture = ExtResource("5_o8ob5")
 movement_texture = ExtResource("6_k714t")
 movement_attack_texture = ExtResource("7_x68mu")
 hammer_texture = ExtResource("8_daesc")
+SpeedDefaultPacked = ExtResource("9_x8pfq")
+speed_model_script = ExtResource("10_5g6ju")
+speed_material = ExtResource("11_4hocr")
+speed_material_no_dt = ExtResource("12_4w7gv")
 
 [node name="BossIntentSprite" type="Sprite3D" parent="."]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.531768, 0)
 pixel_size = 0.008
 billboard = 2
+
+[node name="SpeedFloatingStatSpot" type="Node3D" parent="."]
+unique_name_in_owner = true

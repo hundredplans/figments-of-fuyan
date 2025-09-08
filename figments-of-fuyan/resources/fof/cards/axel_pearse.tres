@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://dcochm584o52t"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://b1rqeh73368ma"]
 
 [ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_a55fc"]
 [ext_resource type="Image" uid="uid://d2ks2sqp8ojlm" path="res://assets/sprites/game/cards/art_pop/axel_pearse.png" id="2_acjsm"]
@@ -30,8 +30,7 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_147te"]
 script = ExtResource("13_yvma7")
-description = "On Hit: If they have ARMOR & SHIELD ignore it and gain
-+1 ATT"
+description = "On Hit: If they have ARMOR & SHIELD ignore it and gain +1 ATT"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_qa2y5"]
@@ -46,18 +45,8 @@ description_datastore = SubResource("Resource_147te")
 
 [sub_resource type="Resource" id="Resource_02p1n"]
 script = ExtResource("13_yvma7")
-description = "MOBILE
-On Hit: If they have ARMOR & SHIELD ignore it and gain
-+1 ATT"
+description = "On Hit: If they have ARMOR & SHIELD ignore it and gain +1 ATT"
 default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_swj80"]
-script = ExtResource("3_0dvgo")
-display_number = -1
-id = 3
-first_init = true
-public_id = 0
-metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_pruha"]
 script = ExtResource("12_fqlag")
@@ -65,15 +54,13 @@ attack = 2
 health = 3
 speed = 3
 energy = 2
-traits = Array[ExtResource("3_0dvgo")]([SubResource("Resource_swj80")])
+traits = Array[ExtResource("3_0dvgo")]([])
 active_abilities = Array[ExtResource("11_llebb")]([])
 description_datastore = SubResource("Resource_02p1n")
 
 [sub_resource type="Resource" id="Resource_a6lft"]
 script = ExtResource("13_yvma7")
-description = "MOBILE
-On Hit: If they have ARMOR & SHIELD ignore it and gain
-+1 ATT"
+description = "On Hit: If they have ARMOR & SHIELD ignore it and gain +1 ATT"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_fqlag"]
@@ -82,15 +69,13 @@ attack = 2
 health = 3
 speed = 4
 energy = 2
-traits = Array[ExtResource("3_0dvgo")]([SubResource("Resource_swj80")])
+traits = Array[ExtResource("3_0dvgo")]([])
 active_abilities = Array[ExtResource("11_llebb")]([])
 description_datastore = SubResource("Resource_a6lft")
 
 [sub_resource type="Resource" id="Resource_yvma7"]
 script = ExtResource("13_yvma7")
-description = "MOBILE
-On Hit: If they have ARMOR & SHIELD ignore it and gain
-+1 ATT"
+description = "On Hit: If they have ARMOR & SHIELD ignore it and gain +1 ATT"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_poj5o"]
@@ -99,7 +84,7 @@ attack = 3
 health = 4
 speed = 4
 energy = 2
-traits = Array[ExtResource("3_0dvgo")]([SubResource("Resource_swj80")])
+traits = Array[ExtResource("3_0dvgo")]([])
 active_abilities = Array[ExtResource("11_llebb")]([])
 description_datastore = SubResource("Resource_yvma7")
 

@@ -37,3 +37,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[connection signal="pressed" from="EncounterMainUI" to="." method="_on_encounter_main_ui_pressed"]

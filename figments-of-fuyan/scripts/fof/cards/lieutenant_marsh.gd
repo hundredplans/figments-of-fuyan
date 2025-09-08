@@ -20,6 +20,12 @@ func onProcessAction(action: Action) -> void:
 					onAddToAura(action.Discovered)
 				elif !action.enter_vision and action.Discovered in affected_cards:
 					onRemoveFromAura(action.Discovered)
+		
+		if action is DeathAction and action.Defender in affected_cards:
+			onRemoveFromAura(action.Defender)
+	elif !action.post:
+		if action is GetDamageAction and action.Damager == self and action.damage_type == Game.DamageTypes.ATTACK:
+			action.onAdd(getDamage())
 			
 func onArrivePre(_action: AwakenAction) -> void: pass
 func onArrive(_action: AwakenAction) -> void:
@@ -34,16 +40,19 @@ func onAddToAura(Card: CardGD) -> void:
 	affected_cards.append(Card)
 	var LieutenantsFieldEffect: FieldEffectGD = Game.onFindPublicIDObject(lieutenants_aura_public_id)
 	if LieutenantsFieldEffect == null: assert(false); return
-	LieutenantsFieldEffect.setCharges(affected_cards.size())
+	LieutenantsFieldEffect.setCharges(getDamage())
 	
 func onRemoveFromAura(Card: CardGD) -> void:
 	affected_cards.erase(Card)
 	var LieutenantsFieldEffect: FieldEffectGD = Game.onFindPublicIDObject(lieutenants_aura_public_id)
 	if LieutenantsFieldEffect == null: assert(false); return
-	LieutenantsFieldEffect.setCharges(affected_cards.size())
+	LieutenantsFieldEffect.setCharges(getDamage())
+
+func getDamage() -> int:
+	return affected_cards.size()
 
 func onHit(damage_action: DamageAction, _attack_action: AttackAction) -> void:
-	damage_action.damage += affected_cards.size()
+	damage_action.damage += getDamage()
 	
 func onSave() -> SavedDataCard:
 	ability_save['affected_cards_public_ids'] = affected_cards.map(func(x: CardGD): return x.public_id)

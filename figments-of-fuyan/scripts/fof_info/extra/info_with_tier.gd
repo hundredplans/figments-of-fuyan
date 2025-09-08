@@ -9,5 +9,5 @@ func _init(_info: FofInfo = null, _tier: int = 1) -> void:
 func getTier() -> int:
 	return tier
 
-func getDescription() -> String:
-	return info.getDescription(tier)
+func getDescription(use_default_values: bool = false) -> String:
+	return info.getDescription(tier, use_default_values)

@@ -9,9 +9,9 @@ var reward_data: SavedData
 var junk_man_value: int
 
 const WORLD_DIFFICULTY_TO_MAX_VALUE: Dictionary[int, int] = {
-	1: 40,
-	2: 60,
-	3: 80
+	1: 30,
+	2: 45,
+	3: 60
 }
 
 func onSave() -> SavedDataEncounter:

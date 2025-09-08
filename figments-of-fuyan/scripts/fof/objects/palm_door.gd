@@ -133,5 +133,5 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, _DFL: DefaultFightL
 			tiles_to_value[Tile] += GET_CLOSE_TO_DOOR_INCENTIVE
 
 # When possible open the door, never close it
-func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0] if !is_open and active_effect.name == "Open Door" else null

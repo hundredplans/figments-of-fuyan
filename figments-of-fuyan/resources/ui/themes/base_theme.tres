@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=49 format=3 uid="uid://dcbv431prk86r"]
+[gd_resource type="Theme" load_steps=50 format=3 uid="uid://dcbv431prk86r"]
 
 [ext_resource type="FontFile" uid="uid://dpk4daccj6hwv" path="res://assets/fonts/roboto.ttf" id="1_8d2p5"]
 
@@ -137,6 +137,19 @@ border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0.858824, 0.713726, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j2dsw"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -420,7 +433,7 @@ border_color = Color(0, 0, 0, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycnox"]
-bg_color = Color(0.997771, 0.921575, 0.775806, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
@@ -433,7 +446,7 @@ corner_radius_bottom_left = 10
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mux0y"]
-bg_color = Color(0.997771, 0.921575, 0.775806, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
@@ -531,6 +544,8 @@ DarkBrownPanelContainer/base_type = &"PanelContainer"
 DarkBrownPanelContainer/styles/panel = SubResource("StyleBoxFlat_lrxfy")
 DarkBrownPanelContainerAscended/base_type = &"PanelContainer"
 DarkBrownPanelContainerAscended/styles/panel = SubResource("StyleBoxFlat_gf6hc")
+EmptyPanelContainer/base_type = &"PanelContainer"
+EmptyPanelContainer/styles/panel = SubResource("StyleBoxFlat_j2dsw")
 GreyPanelContainer/base_type = &"PanelContainer"
 GreyPanelContainer/styles/panel = SubResource("StyleBoxFlat_jjiah")
 GreyPanelContainerAscended/base_type = &"PanelContainer"

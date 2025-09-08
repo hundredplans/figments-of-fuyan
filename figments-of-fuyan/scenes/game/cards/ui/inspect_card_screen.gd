@@ -24,7 +24,7 @@ signal mouse_in_ui
 var Card: CardGD
 func setInfo(_Card: CardGD) -> void:
 	Card = _Card
-	var CardUI: Control = Card.onCreateCardUI(CardSpot, false, false)
+	var CardUI: Control = Card.onCreateCardUI(CardSpot)
 	CardUI.mouse_in_ui.connect(onMouseInUI)
 	CardUI.setBuffLabels()
 		

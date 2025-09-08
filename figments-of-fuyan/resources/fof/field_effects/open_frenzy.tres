@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="FieldEffectInfo" load_steps=5 format=3 uid="uid://blkvor1s5qmop"]
+
+[ext_resource type="Script" uid="uid://bbx877j8ova3a" path="res://scripts/fof/field_effects/open_frenzy.gd" id="1_hd4v2"]
+[ext_resource type="Texture2D" uid="uid://bfq0ofsvrewpc" path="res://assets/sprites/game/fof_object_icons/field_effects/open_frenzy.png" id="1_s34g6"]
+[ext_resource type="Script" uid="uid://bi5dpcw30h2c4" path="res://scripts/fof_info/field_effects/field_effect_info.gd" id="2_3etmc"]
+[ext_resource type="Script" uid="uid://dw8fbr6hatp7q" path="res://scripts/saved_data/field_effects/saved_data_field_effect.gd" id="3_wjcq6"]
+
+[resource]
+script = ExtResource("2_3etmc")
+icon = ExtResource("1_s34g6")
+description = "This has +[X] ATT until first RAMPAGE"
+display_number_type = 1
+remove_on_owner_death = true
+id = 21
+name = "Open Frenzy"
+gdscript = ExtResource("1_hd4v2")
+saved_data = ExtResource("3_wjcq6")
+metadata/_custom_type_script = "uid://bi5dpcw30h2c4"

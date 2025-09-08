@@ -51,7 +51,7 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 		onPushAction(actions)
 		
 # Guaranteed for 2 units, 10% chance to use for 1 unit
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	if active_effect_tiles.pickable_tiles.size() >= GUARANTEED_CHARMING_STANCE_UNIT_AMOUNT_AI:
 		return active_effect_tiles.pickable_tiles.pick_random()
 	elif active_effect_tiles.pickable_tiles.size() == 1 and Random.rollFloat(SINGLE_UNIT_CHANCE):

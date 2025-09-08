@@ -51,7 +51,7 @@ base_tier: int, tier_up_odds: float, tool_odds: float, tool_tier_up_odds: float,
 	return null
 	
 static func getCardDataFromInfo(card_info: CardInfo, base_tier: int, tier_up_odds: float, tool_odds_datastore: RarityOddsDatastore, tool_odds: float, tool_tier_up_odds: float) -> SavedDataCard:
-	var card_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_CARD_TIER)
+	var card_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_TIER)
 	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
 	card_data.tier = card_tier
 	Game.setCardDataFromInfo(card_data, card_info)
@@ -76,7 +76,7 @@ base_tier: int = Game.getArea().getWorldDifficulty(), used_ids: Array = []) -> S
 		@warning_ignore("int_as_enum_without_cast")
 		var rarity: Game.Rarities = int(Random.getRandomKey(odds))
 		var tool_infos: Array = Helper.getFofInfoArray(ToolInfo)
-		var tool_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_TOOL_TIER)
+		var tool_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_TIER)
 		tool_infos = tool_infos.filter(func(x: ToolInfo): return x.rarity == rarity)
 		
 		if !used_ids.is_empty():
@@ -99,7 +99,7 @@ base_tier: int = Game.getArea().getWorldDifficulty(), used_ids: Array = []) -> S
 		@warning_ignore("int_as_enum_without_cast")
 		var rarity: Game.Rarities = int(Random.getRandomKey(odds))
 		var boon_infos: Array = Helper.getFofInfoArray(BoonInfo)
-		var boon_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_BOON_TIER)
+		var boon_tier: int = min(base_tier + int(Random.rollFloat(tier_up_odds)), Game.MAX_TIER)
 		boon_infos = boon_infos.filter(func(x: BoonInfo): return x.rarity == rarity)
 		boon_infos = boon_infos.filter(onBoonDoesntExistAtTier.bind(boon_tier))
 		
@@ -117,4 +117,4 @@ static func onBoonDoesntExistAtTier(boon_info: BoonInfo, tier: int) -> bool:
 	var existing_boons: Array = Game.getSaveFile().getBoons()
 	if existing_boons.is_empty(): return true
 	return !existing_boons.any(func(x: BoonGD):\
-		return x.info.id == boon_info.id and x.getTier() == tier)
+		return x.info.id == boon_info.id and tier < x.getTier())

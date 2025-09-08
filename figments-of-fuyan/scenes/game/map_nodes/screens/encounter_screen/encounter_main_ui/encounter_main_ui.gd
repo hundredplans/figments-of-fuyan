@@ -8,6 +8,7 @@ var is_mouse_in_ui: bool
 var is_extra_frame: bool
 var frames: Array[Texture2D]
 var bitmap_frames: Array[BitMap]
+var disable_update_modulate: bool
 
 @onready var BitmapButton: TextureButton = %BitmapButton
 @onready var FrameSprite: TextureRect = %FrameSprite
@@ -49,7 +50,15 @@ func setBaseSprite(base_sprite: Texture2D) -> void:
 
 func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
-	modulate = Color(0.5, 0.5, 0.5) if state else Color.WHITE
+	onUpdateModulate()
+	
+func setDisableUpdateModulate(_disable_update_modulate: bool) -> void:
+	disable_update_modulate = _disable_update_modulate
+	onUpdateModulate()
+
+func onUpdateModulate() -> void:
+	if disable_update_modulate: return
+	modulate = Color(0.5, 0.5, 0.5) if is_mouse_in_ui else Color.WHITE
 
 func onUpdateGlobalMouseFilter() -> void:
 	BitmapButton.mouse_filter = global_mouse_filter

@@ -1,6 +1,7 @@
 extends Control
 signal mouse_in_ui
 
+@onready var SettingsButton: DefaultButton = %SettingsButton
 @onready var ButtonsContainer: Container = %ButtonsContainer
 @onready var FadeCreamBackground: Control = %FadeCreamBackground
 
@@ -10,7 +11,22 @@ const FADE_BACKGROUND_TIME: float = 0.25
 func _ready() -> void:
 	ButtonsContainer.pivot_offset = ButtonsContainer.size / 2
 	ButtonsContainer.scale = Vector2.ZERO
+	
+	var main_color: Color = Game.getArea().getAreaColor()
+	var second_color: Color = Game.getArea().getSecondAreaColor()
+	var third_color: Color = Game.getArea().getThirdAreaColor()
+	
+	FadeCreamBackground.FADE_COLOR = main_color
+	FadeCreamBackground.color = main_color
 	FadeCreamBackground.onFade(true)
+	
+	SettingsButton.setDisabled(true)
+	
+	for btn: DefaultButton in ButtonsContainer.get_children():
+		btn.BASE_COLOR = main_color
+		btn.HOVER_COLOR = second_color
+		btn.DISABLED_COLOR = third_color
+		btn.setModulate()
 	
 	var tween := create_tween()
 	tween.tween_property(ButtonsContainer, "scale", Vector2.ONE, SCALE_BUTTONS_TIME)\

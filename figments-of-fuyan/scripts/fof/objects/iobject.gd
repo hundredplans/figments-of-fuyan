@@ -63,7 +63,7 @@ func getValidActiveEffects(_Card: CardGD) -> Array: # Returns the ability effect
 	return []
 
 func onCreateActiveEffects() -> void:
-	var new_active_effects: Array = info.active_effects.duplicate()
+	var new_active_effects: Array = info.getActiveEffects()
 	if !new_active_effects.is_empty():
 		onPushAction(new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
 
@@ -90,7 +90,7 @@ func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
 func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
 	return description
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return null
 	
 func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:

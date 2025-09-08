@@ -15,10 +15,7 @@ func getMeshes(parent: Node3D = self) -> Array[MeshInstance3D]:
 	arr.assign(Helper.getChildrenRecursive(parent).filter(func(x: Node): return x is MeshInstance3D))
 	return arr
 
-func getStaticBodies() -> Array[StaticBody3D]:
-	var arr: Array[StaticBody3D] = []
-	arr.assign(Helper.getChildrenRecursive(self).filter(func(x: Node): return x is StaticBody3D))
-	return arr
+func getStaticBodies() -> Array: return []
 #endregion
 
 #region Getters

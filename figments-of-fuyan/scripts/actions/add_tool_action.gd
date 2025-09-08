@@ -15,7 +15,7 @@ func onPreAction() -> void:
 	if Card.Tool != null:
 		if Card.Tool.info.id != Tool.info.id or Card.Tool.getTier() < Tool.getTier():
 			onForceAction(RemoveToolAction.new(Card))
-		elif Card.Tool.getTier() == Tool.getTier() and Tool.getTier() != Game.MAX_TOOL_TIER:
+		elif Card.Tool.getTier() == Tool.getTier() and Tool.getTier() != Game.MAX_TIER:
 			if !keep_tool:
 				Tool.onClear()
 			onForceAction(ToolRetieredAction.new(Card.Tool, Card.Tool.getTier() + 1))

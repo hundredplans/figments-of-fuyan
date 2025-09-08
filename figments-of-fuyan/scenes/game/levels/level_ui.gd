@@ -122,7 +122,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	BoonBox.onUpdate()
 	
-	for Tile: TileGD in get_tree().get_nodes_in_group("TilesGD"):
+	for Tile: TileGD in get_tree().get_nodes_in_group("LevelTilesGD"):
 		onTileCreated(Tile)
 		
 func _process(_delta: float) -> void:
@@ -182,7 +182,7 @@ func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = fal
 #region Hand
 @onready var HandBox: Container = %HandBox
 func onDrawCardUI(Card: CardGD) -> void:
-	var CardUI: Control = Card.onCreateCardUI(HandBox, true, true, true)
+	var CardUI: Control = Card.onCreateCardUI(HandBox, true, true, true, true)
 	Card.setInspectable(true, self)
 	CardUI.drag_begin.connect(onCardDraggedBegin)
 	CardUI.drag_end.connect(onCardDraggedEnd)
@@ -291,13 +291,17 @@ func setActiveEffectLabel(text: String = "") -> void:
 
 #region Minimap
 var MinimapUI: Control
+var active_minimap: bool
 func _on_minimap_button_pressed() -> void:
 	if MinimapUI != null: return
-	FadeBackground.DEFAULT_ALPHA = 255
-	FadeBackground.onFade(true)
-	await get_tree().create_timer(FadeBackground.FADE_TIME).timeout
-	await get_tree().process_frame
+	active_minimap = true
 	
+	var start_loading_screen_action := StartLoadingScreenAction.new(
+		Game.LoadingType.MAP,
+		Game.getArea().getInfo().id)
+	Game.getSaveFile().onForceAction(start_loading_screen_action)
+	
+func onMinimapPostLoadingScreen() -> void:
 	World.onMinimapCreated()
 	MainControl.visible = false
 	Game.getLevel().visible = false
@@ -308,7 +312,7 @@ func _on_minimap_button_pressed() -> void:
 	MinimapUI.exit.connect(onMinimapUIExit)
 	
 func onMinimapUIExit() -> void:
-	FadeBackground.onFade(false)
+	active_minimap = false
 	World.onMinimapExited()
 	MainControl.visible = true
 	Game.getLevel().visible = true
@@ -423,7 +427,7 @@ func onGameEnded(rewards: Rewards) -> void:
 	else:
 		RewardsUI = Game.onCreateRewardsScreen(rewards, MainControl, level.fight_type)
 		AniPlayer.play("RewardsScreenCreated")
-		RewardsUI.screen_finished.connect(level.onRewardsFinished)
+		RewardsUI.screen_finished.connect(onRewardsFinished)
 		RewardsUI.stash_screen_fade_out.connect(onRewardsStashScreenFade.bind(false))
 		RewardsUI.stash_screen_fade_in.connect(onRewardsStashScreenFade.bind(true))
 		MinimapControl = RewardsUI.MinimapControl
@@ -488,7 +492,7 @@ const HOVER_CARD_OFFSET := Vector2(-110, -400)
 func onChangeHoverCardState(Card: CardGD, state: bool) -> void:
 	if HoverCardUI != null and !state: HoverCardUI.queue_free()
 	elif HoverCardUI == null and state and Card.onCanHoverOnTile():
-		HoverCardUI = Card.onCreateCardUI(HoverCardControl, false, false)
+		HoverCardUI = Card.onCreateCardUI(HoverCardControl)
 		setHoverCardUIPosition()
 		
 func setHoverCardUIPosition() -> void:
@@ -520,9 +524,9 @@ func onProcessAction(action: Action) -> void:
 		elif action is InsertAction: # For champion, who inserts himself
 			onUpdateDeckCardAmountLabel()
 		elif action is AddBoonAction:
-			BoonBox.onUpdate()
+			BoonBox.onUpdate(action.Boon)
 		elif action is RemoveBoonAction:
-			BoonBox.onUpdate()
+			BoonBox.onUpdate(action.Boon, true)
 		elif action is ChangeBoonChargesAction:
 			BoonBox.onUpdateBoonChargesAndDisabled(action.Boon)
 		elif action is ChangeShillingsAction:
@@ -533,6 +537,10 @@ func onProcessAction(action: Action) -> void:
 			onBoonEffectTemp(action)
 		elif action is HandCardAction:
 			onDrawCardUI(action.Card)
+		elif action is CardEnergyAction:
+			HandBox.onUpdateCardEnergy()
+		elif action is StartLoadingScreenAction and active_minimap:
+			onMinimapPostLoadingScreen()
 			
 		if level.isEpic():
 			var BossCard: CardGD = level.getBoss() 
@@ -550,6 +558,9 @@ func onProcessAction(action: Action) -> void:
 				EpicFightControl.setBossShieldUI(true)
 			elif action is RemoveFieldEffectAction and action.getCard() == BossCard and action.getFieldEffectId() == SHIELD_ID:
 				EpicFightControl.setBossShieldUI(false)
+	elif !action.post:
+		if action is StartLoadingScreenAction:
+			onHideLevelUI()
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:
@@ -576,3 +587,9 @@ func setEpicFightControlInfo() -> void:
 	EpicFightControl.visible = true
 	EpicFightControl.setInfo()
 #endregion
+
+func onRewardsFinished() -> void:
+	level.onRewardsFinished()
+
+func onHideLevelUI() -> void:
+	MainControl.visible = false

@@ -22,12 +22,12 @@ func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, ac
 	if active_effect.name == "Mistletoe":
 		onPushAction(getStatAction())
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic) -> TileGD:
+func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0]
 	
 func getStatAction() -> StatAction:
 	var combination: Array = getRandomCombination()
-	var values: Array = [Card.getAttack(), Card.getHealth(), Card.getSpeed()]
+	var values: Array = [Card.getAttack(), Card.getHealth(), Card.getMaxSpeed()]
 	var types: Array = [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED]
 	var new_types: Array = []
 	var new_values: Array = []
@@ -44,10 +44,8 @@ func getStatAction() -> StatAction:
 		if new_type == Game.Stats.MAX_HEALTH:
 			new_values.append(new_value)
 			new_types.append(Game.Stats.HEALTH)
-		elif new_type == Game.Stats.MAX_SPEED:
-			new_values.append(new_value)
-			new_types.append(Game.Stats.SPEED)
-	return StatAction.new(StatInfo.new(Card, new_types, new_values, 0, true))
+			
+	return StatAction.new(StatInfo.new(Card, new_types, new_values, 0, true, true, true))
 	
 func getRandomCombination() -> Array:
 	return combinations.pick_random()

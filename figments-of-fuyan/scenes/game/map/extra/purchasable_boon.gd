@@ -8,7 +8,7 @@ func setInfo(_price_datastore: PriceDatastore) -> void:
 	
 	var Boon: BoonGD = SavedData.onLoadModel(data, Game.getArea().getEnteredMapNode()) 
 	
-	BoonIcon.setInfo(Boon, true)
+	BoonIcon.setInfo(Boon, true, false, true)
 	BoonIcon.setSizeScale(2)
 	BoonIcon.onShowNameLabel(-1)
 	BoonIcon.onShowTierLabel(-1)

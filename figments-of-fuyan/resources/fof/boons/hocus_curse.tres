@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dtfrw6cqe4m1d" path="res://scripts/fof/boons/hocus_curse.gd" id="1_0npa7"]
 [ext_resource type="Script" uid="uid://cwaxy6m1b8n5m" path="res://scripts/fof_info/boons/boon_info.gd" id="1_fcdr6"]
-[ext_resource type="Texture2D" uid="uid://dorudq0txf7sh" path="res://assets/sprites/game/cards/art_mini/hocus_palmus.png" id="1_huryp"]
+[ext_resource type="Texture2D" uid="uid://dk3chysttep7m" path="res://assets/sprites/game/boons/hocus_curse.png" id="2_0npa7"]
 [ext_resource type="Script" uid="uid://dvmmxj5fg76xx" path="res://scripts/fof_info/boons/boon_tier_datastore.gd" id="2_huryp"]
 [ext_resource type="Script" uid="uid://dh3x145y3ihra" path="res://scripts/saved_data/boons/saved_data_boon.gd" id="3_0qmrs"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="4_t0l61"]
@@ -54,7 +54,7 @@ metadata/_custom_type_script = "uid://dvmmxj5fg76xx"
 [resource]
 script = ExtResource("1_fcdr6")
 tiers = Array[ExtResource("2_huryp")]([SubResource("Resource_0npa7"), SubResource("Resource_d0i25"), SubResource("Resource_a8qc6"), SubResource("Resource_j86j4")])
-icon = ExtResource("1_huryp")
+icon = ExtResource("2_0npa7")
 rarity = 0
 curse = true
 display_trigger = true

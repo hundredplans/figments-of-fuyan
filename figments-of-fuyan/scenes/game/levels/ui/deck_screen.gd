@@ -14,9 +14,8 @@ func setInfo(_selectable: bool = false, _max_select_amount: int = 1, _valid_sele
 	selectable = _selectable
 	max_select_amount = _max_select_amount
 	valid_selection = _valid_selection
-	for Card in get_tree().get_nodes_in_group("DeckCardsGD"):
-		var CardUI: Control = Card.onCreateCardUI(DeckCards, selectable)
-		Card.setInspectable(true, self)
+	for Card: CardGD in get_tree().get_nodes_in_group("DeckCardsGD"):
+		var CardUI: Control = Card.onCreateCardUI(DeckCards, selectable, false, false, true)
 		if selectable: CardUI.pressed.connect(onSelected)
 
 func _on_quit_button_pressed() -> void:
