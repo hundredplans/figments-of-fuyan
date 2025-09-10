@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=185 format=3 uid="uid://bkacgdi87ewb4"]
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=185 format=3]
 
-[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_uc3fm"]
-[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_6a4fm"]
-[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_wocuj"]
-[ext_resource type="Script" uid="uid://d3nlf4kn1ucxr" path="res://scripts/fof/levels/varoma_level.gd" id="4_n51e6"]
-[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_inr8x"]
-[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="5_q8n3v"]
-[ext_resource type="Script" uid="uid://bml6vtchj31b0" path="res://scripts/fof_info/levels/level_info.gd" id="6_inr8x"]
-[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_v72ib"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_uc3fm"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_6a4fm"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_wocuj"]
+[ext_resource type="Script" path="res://scripts/fof/levels/varoma_level.gd" id="4_n51e6"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_inr8x"]
+[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="5_q8n3v"]
+[ext_resource type="Script" path="res://scripts/fof_info/levels/level_info.gd" id="6_inr8x"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_v72ib"]
 
 [sub_resource type="Resource" id="Resource_v72ib"]
 script = ExtResource("3_wocuj")
@@ -1743,12 +1743,8 @@ public_id = 0
 script = ExtResource("6_inr8x")
 data = [SubResource("Resource_wocuj"), SubResource("Resource_n51e6"), SubResource("Resource_q8n3v"), SubResource("Resource_inr8x"), SubResource("Resource_s4ngo"), SubResource("Resource_5xn0e"), SubResource("Resource_2csly"), SubResource("Resource_s3585"), SubResource("Resource_wrb15"), SubResource("Resource_g2qkp"), SubResource("Resource_yn0vf"), SubResource("Resource_mfey0"), SubResource("Resource_qf1pq"), SubResource("Resource_3k851"), SubResource("Resource_fjgym"), SubResource("Resource_cwfkv"), SubResource("Resource_54i50"), SubResource("Resource_h42ly"), SubResource("Resource_p3btg"), SubResource("Resource_1f53y"), SubResource("Resource_yftjj"), SubResource("Resource_k0pnb"), SubResource("Resource_qtqgg"), SubResource("Resource_wfwca"), SubResource("Resource_5qlgf"), SubResource("Resource_mobk3"), SubResource("Resource_tf6fa"), SubResource("Resource_vg1mi"), SubResource("Resource_tnkg1"), SubResource("Resource_ttww0"), SubResource("Resource_tt513"), SubResource("Resource_60l00"), SubResource("Resource_m6me7"), SubResource("Resource_qdk84"), SubResource("Resource_uo5xr"), SubResource("Resource_hxa3f"), SubResource("Resource_ydoqh"), SubResource("Resource_faso2"), SubResource("Resource_yjp35"), SubResource("Resource_3kox1"), SubResource("Resource_ulj1s"), SubResource("Resource_8hu4d"), SubResource("Resource_cqhsn"), SubResource("Resource_nwwwh"), SubResource("Resource_7nyvk"), SubResource("Resource_mifpo"), SubResource("Resource_5uynk"), SubResource("Resource_y33p4"), SubResource("Resource_8764i"), SubResource("Resource_23d83"), SubResource("Resource_c3od2"), SubResource("Resource_l6sb0"), SubResource("Resource_hk5g5"), SubResource("Resource_g1ymg"), SubResource("Resource_eie71"), SubResource("Resource_w6ti3"), SubResource("Resource_8msuh"), SubResource("Resource_nqu72"), SubResource("Resource_dl2pg"), SubResource("Resource_rsgo2"), SubResource("Resource_ao1kq"), SubResource("Resource_d4eey"), SubResource("Resource_4qus5"), SubResource("Resource_t8huw"), SubResource("Resource_lif6h"), SubResource("Resource_1ljo5"), SubResource("Resource_chmtl"), SubResource("Resource_xr4sc"), SubResource("Resource_f35os"), SubResource("Resource_0u6fj"), SubResource("Resource_m11ub"), SubResource("Resource_okb14"), SubResource("Resource_ayjti"), SubResource("Resource_kkn7x"), SubResource("Resource_gj88k"), SubResource("Resource_6205e"), SubResource("Resource_gg5xi"), SubResource("Resource_njo3p"), SubResource("Resource_22fct"), SubResource("Resource_ibhyo"), SubResource("Resource_6qeg7"), SubResource("Resource_43px8"), SubResource("Resource_ld1ap"), SubResource("Resource_1am15"), SubResource("Resource_08vcw"), SubResource("Resource_8rirj"), SubResource("Resource_xdetk"), SubResource("Resource_68r2m"), SubResource("Resource_bvhq3"), SubResource("Resource_4gydi"), SubResource("Resource_kud7w"), SubResource("Resource_pc6dm"), SubResource("Resource_ijn08"), SubResource("Resource_68cac"), SubResource("Resource_dniqp")]
 lights = Array[PackedScene]([])
-enemy_min_spawn_amount = 1
-enemy_max_spawn_amount = 1
-progress_min = 10
-progress_max = 10
-enemy_budget_offset = 0
-difficulty = 0
+budget_min = 0
+budget_max = 0
 id = 14
 name = "Test"
 gdscript = ExtResource("4_n51e6")
