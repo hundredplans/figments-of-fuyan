@@ -8,10 +8,12 @@ extends Node3D
 @onready var AniPlayer: AnimationPlayer = %AniPlayer
 @onready var ChampionCardsNode: Node3D = %ChampionCardsNode
 @onready var Decoration: Node3D = %Decoration
+@onready var Camera: Camera3D = %Camera3D
 
 var champion_cards: Array = []
 func _ready() -> void:
 	var champions: Array = Helper.getFofInfoArray(ChampionCardInfo)
+	Camera.current = true
 	
 	var theta: float = 0
 	var theta_increment: float = (2 * PI) / champions.size()

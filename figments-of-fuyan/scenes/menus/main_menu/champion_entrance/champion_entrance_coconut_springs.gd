@@ -2,6 +2,7 @@ extends Node3D
 const DIVINUS_ID: int = 2
 var ChampionCard: CardGD
 
+@onready var Camera: Camera3D = %Camera3D
 @onready var Decoration: Node3D = %Decoration
 
 func setInfo(area_id: int) -> void:
@@ -9,6 +10,7 @@ func setInfo(area_id: int) -> void:
 	var champion_info: ChampionCardInfo = Helper.getFofInfoID(ChampionCardInfo, DIVINUS_ID)
 	var champion_data := SavedDataCard.new(champion_info.id, true)
 	
+	Camera.current = true
 	ChampionCard = SavedData.onLoadModel(champion_data, self)
 	ChampionCard.onCreateModel()
 	ChampionCard.getModel().rotation.y = 0

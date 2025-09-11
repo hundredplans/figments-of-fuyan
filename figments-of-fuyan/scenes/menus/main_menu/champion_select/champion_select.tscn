@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ck4m8j45epneb"]
 
 [ext_resource type="Script" uid="uid://17stl4eb4y5t" path="res://scenes/menus/main_menu/champion_select/champion_select.gd" id="1_lk8o8"]
-[ext_resource type="Resource" path="res://resources/datastore/decorations/ChampionSelectBackground.tres" id="3_mq018"]
+[ext_resource type="Resource" uid="uid://cuhw6thx5hjsc" path="res://resources/datastore/decorations/ChampionSelectBackground.tres" id="3_mq018"]
 [ext_resource type="PackedScene" uid="uid://b535kqbktkims" path="res://scripts/fof/areas/extra/varoma_default_light.tscn" id="3_mw8dk"]
 [ext_resource type="Material" uid="uid://cqlne7cpv3wxu" path="res://resources/materials/game/base_material.tres" id="4_mw8dk"]
 
@@ -74,6 +74,7 @@ DefaultLightPacked = ExtResource("3_mw8dk")
 background_decoration_datastore = ExtResource("3_mq018")
 
 [node name="Camera3D" type="Camera3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, -0.00781822, 2.10301, 4)
 
 [node name="ChampionCardsNode" type="Node3D" parent="."]

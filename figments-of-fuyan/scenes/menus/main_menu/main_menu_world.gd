@@ -16,6 +16,7 @@ func _ready() -> void:
 	UI.load_champion_select.connect(onLoadChampionSelect)
 	onLoadChampionEntrance()
 	
+	
 func onLoadChampionEntrance() -> void:
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, area_id)
 	ChampionEntrance = area_info.champion_entrance_packed.instantiate()

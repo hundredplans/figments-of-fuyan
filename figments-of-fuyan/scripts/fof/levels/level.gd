@@ -134,11 +134,12 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	save_file = _save_file
 	energy_changed.emit(energy)
 	
+	var actions: Array = []
 	if isEpic() and !is_ended:
-		onPushAction(PlayMusicAction.new(Audio.COCONUT_SPRINGS_BOSS))
+		actions.append(PlayMusicAction.new(Audio.COCONUT_SPRINGS_BOSS))
 		
 	if is_init:
-		var actions: Array = [StartLevelAction.new(), ChangePhaseAction.new(Game.Phases.START)]
+		actions += [StartLevelAction.new(), ChangePhaseAction.new(Game.Phases.START)]
 		if curse_id > 0: actions.append(AddBoonAction.new(curse_id, Game.getArea().getWorldDifficulty()))
 		speed_order = SpeedOrder.new()
 		for GameObject in get_tree().get_nodes_in_group("GameObjectsGD"):
@@ -159,7 +160,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 			deck_cards[i].draw_order = i
 		
 		actions.append(ChangeEnvironmentAction.new(Game.getArea().getEnvironmentFromInfo(isElite())))
-		onPushAction(actions)
+		onAppendAction(actions)
 		onCreateBackgroundScene()
 		return
 	
@@ -172,6 +173,7 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		onGameEnded()
 		
 	load_env.emit(env)
+	onPushAction(actions)
 
 var is_init: bool = false
 func onFofInit() -> void:
