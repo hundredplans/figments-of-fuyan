@@ -8,7 +8,7 @@ var items: Array # [FofGD]
 @export var auto_clear: bool
 @export var reward_type: RewardType
 
-enum RewardType {CARDS, MINIBOSS, BOSS}
+enum RewardType {CARDS, MINIBOSS, BOSS, UPGRADE}
 
 func _init(_items: Array = [], _reward_type := RewardType.CARDS, _auto_clear: bool = true) -> void:
 	super()

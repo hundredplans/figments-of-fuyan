@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="ShopDatastore" load_steps=22 format=3 uid="uid://bhoaiduu3j7vx"]
+[gd_resource type="Resource" script_class="ShopDatastore" load_steps=24 format=3 uid="uid://bhoaiduu3j7vx"]
 
 [ext_resource type="Texture2D" uid="uid://cdtgandyuulnq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/general_shop_bg_icon.png" id="1_2jueg"]
 [ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="1_ye3vs"]
 [ext_resource type="Resource" uid="uid://b7kcrs7gcdyp1" path="res://resources/datastore/encounters/rarity_prices/card_rarity_prices.tres" id="2_ynn2a"]
 [ext_resource type="Script" uid="uid://c4e0un8luq87o" path="res://scripts/common/shop/shop_card_datastore.gd" id="3_qulre"]
+[ext_resource type="BitMap" uid="uid://b2c76gh5rvs1w" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_bitmap1.png" id="3_wdveu"]
 [ext_resource type="Resource" uid="uid://dypcxce3yrfoe" path="res://resources/datastore/encounters/rarity_prices/tool_rarity_prices.tres" id="4_2jueg"]
+[ext_resource type="BitMap" uid="uid://dg7na584fwbuu" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_bitmap2.png" id="4_lnpso"]
 [ext_resource type="Resource" uid="uid://ckgqhorrni7il" path="res://resources/datastore/encounters/rarity_prices/boon_rarity_prices.tres" id="5_4naeq"]
 [ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_hand_open.png" id="5_orrb8"]
 [ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="6_dg6sx"]
@@ -84,7 +86,7 @@ background_main_color = Color(0.826088, 1, 0.80839, 1)
 base_sprite = ExtResource("6_dg6sx")
 frames = Array[Texture2D]([ExtResource("6_qulre"), ExtResource("7_2jueg")])
 hands = Array[Texture2D]([ExtResource("5_orrb8"), ExtResource("6_xolar")])
-bitmap_frames = Array[BitMap]([])
+bitmap_frames = Array[BitMap]([ExtResource("3_wdveu"), ExtResource("4_lnpso")])
 drag_zone_name = ""
 drag_zone_label_color = Color(0, 0, 0, 1)
 metadata/_custom_type_script = "uid://doid1bi8h7kwu"

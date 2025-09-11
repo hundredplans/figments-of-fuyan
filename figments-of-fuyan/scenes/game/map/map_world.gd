@@ -122,9 +122,12 @@ func onMapNodePressed(map_node: MapNodeGD) -> void:
 	is_unit_walking_to_map_node = false
 	onUpdateActionLock()
 
-func onMapNodeEntered(_map_node: MapNodeGD) -> void:
+func onMapNodeEntered(map_node: MapNodeGD) -> void:
 	is_unit_entered = true
 	onUpdateActionLock()
+	
+	if map_node is FightNodeGD: MapCard.onIdleRare()
+	else: MapCard.onIdle()
 	
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	is_unit_entered = false
@@ -189,10 +192,12 @@ func onMapNodeCreateWorldScene(map_node: MapNodeGD, _ActiveWorld: Node3D) -> voi
 #endregion
 
 #region Screen
-func onScreenCreated() -> void:
+func onScreenCreated(is_another_screen: bool) -> void:
+	if is_another_screen: return
 	onDisableCameraByUI(true)
 	
-func onScreenFinished() -> void:
+func onScreenFinished(is_another_screen: bool) -> void:
+	if is_another_screen: return
 	onDisableCameraByUI(false)
 	
 #region Camera

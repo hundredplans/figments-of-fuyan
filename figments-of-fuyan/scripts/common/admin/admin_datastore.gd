@@ -1,5 +1,6 @@
 class_name AdminDatastore extends Resource
 
+@export var use_new_save_file: bool
 @export_group("Music")
 @export var NO_MUSIC: bool
 @export_group("")

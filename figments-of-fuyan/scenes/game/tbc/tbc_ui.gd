@@ -68,7 +68,7 @@ func onRemovePriceLabel() -> void:
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("MainInput") and is_dragging and !end_drag_on_release and can_disable_dragging_pressed:
 		onDragEnd()
-	elif Input.is_action_just_pressed("MainInput") and is_mouse_in_ui and !disabled:
+	elif Input.is_action_just_pressed("MainInput") and is_mouse_in_ui:
 		onPressed()
 	elif Input.is_action_just_released("MainInput") and is_dragging and end_drag_on_release:
 		onDragEnd()
@@ -210,13 +210,17 @@ func getHoverable() -> bool: return hoverable
 func getAutoscale() -> bool: return autoscale
 func getDraggable() -> bool: return draggable
 
-func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false) -> void:
+func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false, _disabled: bool = false) -> void:
 	hoverable = _hoverable
 	draggable = _draggable
 	autoscale = _autoscale
+	setDisabled(_disabled)
 	
-	if autoscale:
+	if autoscale and !disabled:
 		onInitialAutoscale.call_deferred()
+		
+func setDisabled(_disabled: bool) -> void: pass
+	
 		
 func onInitialAutoscale() -> void:
 	if get_viewport() == null: return

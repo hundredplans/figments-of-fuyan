@@ -51,9 +51,6 @@ func setInfo(_map_node: MapNodeGD) -> void:
 		IconRect.texture = getColosseumIcon(chosen_fight_types[i])
 		DescriptionLabel.text = getColosseumDescription(chosen_fight_types[i])
 		TitleLabel.text = chosen_fight_types[i]
-
-func onSpecialFightPressed() -> void:
-	map_node.onCreateSpecialFight()
 	
 func onLeftRectHovered() -> void:
 	if disabled: return
@@ -90,6 +87,11 @@ func onMouseInRightRect(state: bool) -> void:
 func onRectChosen(is_right: bool) -> void:
 	disabled = true
 	map_node.onCreateSpecialFight(is_right)
+	onFadeBackgroundBlack()
+	
+	for rect: Control in [LeftRect, RightRect]:
+		var ntween := create_tween()
+		ntween.tween_property(self, "color:a", 1.0, Game.FADE_TIME)
 
 func getMinimapFadeNodes() -> Array: return [EncounterMainUI, LeftRect, RightRect]
 func getStashFadeNodes() -> Array: return [EncounterMainUI, LeftRect, RightRect]

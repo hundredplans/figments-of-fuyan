@@ -6,6 +6,7 @@ extends Control
 @onready var DescriptionLabel: FancyTextLabel = %DescriptionLabel
 @onready var CurseNameLabel: Label = %CurseNameLabel
 @onready var TipLabel: FancyTextLabel = %TipLabel
+@onready var BackgroundRect: ColorRect = %BackgroundRect
 
 func setInfo(action: StartLoadingScreenAction) -> void:
 	get_viewport().update_mouse_cursor_state()
@@ -29,3 +30,12 @@ func setForLevel(action: StartLoadingScreenAction) -> void:
 func setForMap() -> void:
 	MainLabel.text = "Travelling to map..."
 	MainLabel.modulate = Game.getArea().getAreaColor()
+	
+func onRemove() -> void:
+	var tween := create_tween()
+	tween.tween_property(BackgroundRect, "color:a", 1.0, Game.FADE_TIME)
+	
+	var ntween := create_tween()
+	ntween.tween_property(self, "modulate", Color.BLACK, Game.FADE_TIME)
+	await tween.finished
+	queue_free()

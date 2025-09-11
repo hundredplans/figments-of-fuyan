@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://ujptvfe1vos7"]
+[gd_scene load_steps=12 format=3 uid="uid://ujptvfe1vos7"]
 
 [ext_resource type="Script" uid="uid://bra0qsja2krco" path="res://scenes/common/rewards_screen/rewards_screen.gd" id="1_nxb6h"]
 [ext_resource type="PackedScene" uid="uid://5nwc4umlinj0" path="res://scenes/common/rewards_screen/regular_reward_ui.tscn" id="2_r8rvy"]
 [ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="2_sxcui"]
+[ext_resource type="PackedScene" uid="uid://dwfct3b2l4pwr" path="res://scenes/common/rewards_screen/upgrade_reward_ui.tscn" id="2_wj0yc"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="3_h6agl"]
 [ext_resource type="LabelSettings" uid="uid://dsm7fumrqa20f" path="res://resources/ui/label_settings/spicyrice_large_shadow.tres" id="4_r8rvy"]
 [ext_resource type="PackedScene" uid="uid://bamh0kd0bdhrl" path="res://scenes/common/rewards_screen/choose_card_reward_ui.tscn" id="4_y0wmh"]
@@ -28,6 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_nxb6h")
+UpgradeRewardUIPacked = ExtResource("2_wj0yc")
 RegularRewardUIPacked = ExtResource("2_r8rvy")
 ChooseCardRewardUIPacked = ExtResource("4_y0wmh")
 EpicRewardUIPacked = ExtResource("5_wj0yc")

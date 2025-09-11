@@ -398,8 +398,6 @@ func onWalkTo(pos: Vector3, walk_speed: float) -> void:
 	AniPlayer.play("Walk")
 	var tween := get_tree().create_tween()
 	tween.tween_property(self, "position", pos, walk_speed)
-	await tween.finished
-	AniPlayer.play("Idle")
 	
 #endregion
 

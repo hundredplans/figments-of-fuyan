@@ -7,6 +7,8 @@ var chosen_special_fights: Array
 var level_public_id: int
 var level_info: LevelInfo
 
+const ENTER_DELAY: float = 0.75
+
 func onProcessAction(action: Action) -> void:
 	super(action)
 	if action.post:
@@ -28,7 +30,7 @@ func onSave() -> SavedDataEncounter:
 func isDragZone() -> bool: return false
 	
 func onLoadLevel(level_data: SavedDataLevel, area_id: int = Game.getArea().getInfo().id) -> void:
-	onPushAction([StartLoadingScreenAction.new(
+	onPushAction([DelayAction.new(ENTER_DELAY), StartLoadingScreenAction.new(
 		Game.LoadingType.LEVEL,
 		area_id,
 		Helper.getFofInfoID(LevelInfo, level_data.id).name,
@@ -64,6 +66,7 @@ func onCreateSpecialFight(is_right: bool) -> void:
 	level_public_id = Game.onIncrementPublicID()
 	level_data.public_id = level_public_id
 	onLoadLevel(level_data, valid_area_id)
+	
 	
 func onCreateAdvancedFight(enemy_spawns: Array, spawn_group: int, progress: int) -> SavedDataLevel:
 	var budget: int = Game.getArea().getBudget(progress)

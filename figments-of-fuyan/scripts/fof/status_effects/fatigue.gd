@@ -15,4 +15,4 @@ func onProcessAction(action: Action) -> void:
 				
 		if action.post:
 			if action is AddStatusEffectAction and action.StatusEffect == self:
-				onPushAction(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED))
+				onPushAction(ChangeTurnStateAction.new(Card, Game.TurnStates.PASSED, false, true))

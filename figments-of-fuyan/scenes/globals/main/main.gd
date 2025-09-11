@@ -56,7 +56,7 @@ func _ready():
 		var champion_id: int = Helper.admin_datastore.starting_champion_id
 		var card_info: CardInfo = Helper.getFofInfoID(ChampionCardInfo, champion_id)
 		
-		if files.is_empty(): onStartGame(card_info)
+		if files.is_empty() or Helper.admin_datastore.use_new_save_file: onStartGame(card_info)
 		else: onLoadGame(load(DIR_PATH + files[0]))
 	
 func onProcessAction(action: Action) -> void:
@@ -101,9 +101,11 @@ func onLoadWorld(packed_scene: PackedScene) -> void:
 	ActiveWorld = packed_scene.instantiate()
 	
 func onStartGame(champion_info: ChampionCardInfo) -> void:
+	Game.public_id_objects = {}
+	Game.highest_public_id = 0
+	
 	var card_data := SavedDataCard.new(champion_info.id, true)
 	Game.setCardDataFromInfo(card_data, champion_info)
-	Game.highest_public_id = 0
 	
 	var save_file_data := SavedDataSaveFile.new(
 		getFirstEmptySaveSlotID(), true, 0, randi(), null,\
@@ -116,7 +118,6 @@ func onLoadGame(save_file_data: SavedDataSaveFile) -> void:
 	Game.highest_public_id = save_file_data.highest_public_id
 	
 	var save_file: SaveFileGD = SavedData.onLoadModel(save_file_data, KeepAcross)
-	
 	save_file.load_level.connect(onLoadLevel)
 	save_file.load_map.connect(onLoadMap)
 	save_file.load_main_menu.connect(onLoadMainMenu)
@@ -181,7 +182,9 @@ func onCreateLoadingScreens() -> void:
 			LoadingScreenBackground.add_child(parent)
 			
 			parent.position.x += (2000 * j)
-			for data: SavedData in decoration_datastore.data:
+			for _data: SavedData in decoration_datastore.data:
+				var data: SavedData = _data.duplicate()
+				data.public_id = 0
 				SavedData.onLoadModel(data, parent)
 			var background_scene: Node3D = area_info.getBackgroundScene()
 			parent.add_child(background_scene)
@@ -222,8 +225,7 @@ func onCreateLoadingScreenUI(action: StartLoadingScreenAction) -> void:
 	LoadingScreenUI.setInfo(action)
 	
 func onRemoveLoadingScreenUI() -> void:
-	if LoadingScreenUI != null:
-		LoadingScreenUI.queue_free()
+	if LoadingScreenUI != null: LoadingScreenUI.onRemove()
 		
 #region Action
 func onPushAction(actions: Variant, action_owner: Variant = self) -> void:

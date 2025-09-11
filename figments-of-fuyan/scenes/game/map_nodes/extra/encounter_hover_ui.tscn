@@ -1,54 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://csvrxjr43b64p"]
+[gd_scene load_steps=3 format=3 uid="uid://csvrxjr43b64p"]
 
 [ext_resource type="Script" uid="uid://buamyn42nbk7h" path="res://scenes/game/map_nodes/extra/encounter_hover_ui.gd" id="1_texbr"]
 [ext_resource type="LabelSettings" uid="uid://cnmlfs66pb1a1" path="res://resources/ui/label_settings/spicyrice_huge.tres" id="2_1re0d"]
-[ext_resource type="PackedScene" uid="uid://bvwvxtul7dpd8" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_main_ui/encounter_main_ui.tscn" id="3_o45eg"]
 
 [node name="EncounterHoverUI" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 588.0
+offset_right = 1920.0
 offset_bottom = 89.0
+pivot_offset = Vector2(960, 44)
 mouse_filter = 2
 script = ExtResource("1_texbr")
 
-[node name="HBoxContainer" type="VBoxContainer" parent="."]
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.624
-anchor_bottom = 4.596
-offset_right = 0.0879822
-offset_bottom = -0.0440063
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -33.0
+offset_bottom = -33.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 30
-
-[node name="NameLabel" type="Label" parent="HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
 text = "General Shop"
 label_settings = ExtResource("2_1re0d")
-
-[node name="Control" type="Control" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="EncounterMainUI" parent="HBoxContainer/Control" instance=ExtResource("3_o45eg")]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = -128.0
-offset_right = 128.0
-offset_bottom = 128.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 4
-stretch_mode = 6
-global_mouse_filter = 2
+horizontal_alignment = 1

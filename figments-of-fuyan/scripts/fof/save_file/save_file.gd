@@ -92,8 +92,7 @@ func onLoadData(data: SavedData) -> void:
 	
 func onFofInit() -> void:
 	var boon_info: BoonInfo = getChampionCard().info.boon_info
-	var actions: Array = [AddToDeckAction.new(getChampionCard()), AddBoonAction.new(boon_info.id, 1),\
-		getPlayerDeckUpgradeAction(0)]
+	var actions: Array = [getPlayerDeckUpgradeAction(0), AddToDeckAction.new(getChampionCard()), AddBoonAction.new(boon_info.id, 1)]
 	area_ids = VALID_AREA_IDS.duplicate()
 	area_ids.shuffle()
 	var a_id: int = Helper.admin_datastore.starting_area_id
@@ -219,6 +218,19 @@ func getPlayerDeckUpgradeAction(world: int, fight_type := Game.FightTypes.NULL) 
 	if player_deck_upgrade == null: assert(false); return
 	var player_deck_upgrade_action := PlayerDeckUpgradeAction.new(player_deck_upgrade)
 	return player_deck_upgrade_action
+	
+func onUpdateMaxEnergy(delta: int) -> void:
+	max_energy += delta
+	
+func onUpdateEnergyLimit(delta: int) -> void:
+	energy_limit += delta
+	
+func onUpdateCardLimit(delta: int) -> void:
+	if delta > 0:
+		deck_slots += range(delta).map(func(__: int): return DeckSlot.new())
+	elif delta < 0:
+		var new_deck_slot_size: int = max(deck_slots.size() - delta, 1)
+		deck_slots.resize(new_deck_slot_size)
 	
 func getDeckSlots() -> Array:
 	return deck_slots

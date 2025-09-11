@@ -4,6 +4,7 @@ extends TbcUI
 @onready var BigTierLabel: Label = %BigTierLabel
 @onready var TierLabel: Label = %TierLabel
 
+@onready var PressButton: TextureButton = %PressButton
 @onready var AreaBackground: ButtonAutomask = %AreaBackground
 @onready var Background: ButtonAutomask = %Background
 @onready var ArtPop: ButtonAutomask = %ArtPop
@@ -36,6 +37,7 @@ extends TbcUI
 @onready var AwakenedInCombatMarker: TextureRect = %AwakenedInCombatMarker
 @onready var Ring: Sprite2D = %Ring
 
+@export var bitmaps: Array[BitMap]
 @export var rarities: Array[Image]
 
 #region Globals
@@ -54,8 +56,8 @@ var include_tool_for_hover: bool
 
 const OUTLINE_PIXEL_SIZE: int = 3
 
-func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false) -> void:
-	super(_item, _hoverable, _draggable, _autoscale)
+func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false, _disabled: bool = false) -> void:
+	super(_item, _hoverable, _draggable, _autoscale, _disabled)
 	Card = _item
 	
 	Background.setTexture(rarities[Card.info.rarity])
@@ -63,6 +65,7 @@ func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _
 	TextLabel.setText(Card.getDescription())
 	AreaBackground.setTexture(Card.getArea().card_background)
 	NameLabel.text = Card.info.name
+	PressButton.texture_click_mask = bitmaps[Card.info.rarity]
 	
 	onUpdateTemporaryCardMarker()
 	onUpdateAwakenedInCombat()
@@ -154,10 +157,7 @@ func getCenterPos() -> Vector2:
 	
 func onChangeBackgroundMouseFilter(is_stop: bool, ignore_tool: bool = false) -> void:
 	var new_mouse_filter := Control.MOUSE_FILTER_STOP if is_stop else Control.MOUSE_FILTER_IGNORE
-	Background.mouse_filter = new_mouse_filter
-	AreaBackground.mouse_filter = new_mouse_filter
-	ArtPop.mouse_filter = new_mouse_filter
-	TextLabel.mouse_filter = new_mouse_filter
+	PressButton.mouse_filter = new_mouse_filter
 	
 	if !ignore_tool:
 		ToolIcon.setMouseFilter(new_mouse_filter)
@@ -214,7 +214,5 @@ func onToolIconMouseInUI(_state: bool) -> void:
 	onUpdateModulate()
 
 func onUpdateCursorVisual(state: bool) -> void:
-	pass
-	#for node: Control in [Background, AreaBackground, ArtPop, TextLabel]:
-		#node.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if draggable and is_mouse_in_ui and !disabled else Control.CURSOR_ARROW
+	PressButton.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if draggable and is_mouse_in_ui and !disabled else Control.CURSOR_ARROW
 		

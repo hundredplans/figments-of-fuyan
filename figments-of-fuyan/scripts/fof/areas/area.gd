@@ -15,6 +15,11 @@ var active_level: LevelGD
 const JUNK_MAN_ID: int = 12
 const EPIC_CARD_REWARDS_CARD_AMOUNT: int = 3
 const MIRROR_CARD_REWARD_AMOUNT: int = 3
+
+const ENERGY_LIMIT_UPGRADE: int = 3
+const CARD_LIMIT_UPGRADE: int = 1
+const MAX_ENERGY_UPGRADE: int = 1
+const UPGRADE_REWARD_OPTIONS_SIZE: int = 2
 #endregion
 
 #region Saved Data
@@ -84,8 +89,9 @@ func onFofInit() -> void:
 	onCreateMapNodes()
 	
 func onLoadMap(parent: Node3D = self) -> void:
-	for tile_object_data in info.overworld_decoration.data:
-		SavedData.onLoadModel(tile_object_data, parent)
+	for _data in info.overworld_decoration.data:
+		var data = _data.duplicate()
+		SavedData.onLoadModel(data, parent)
 		
 	for map_node_data in map_nodes_data:
 		onCreateMapNode(map_node_data)
@@ -408,7 +414,9 @@ func setRewards(is_win: bool) -> void:
 		var add_boon: bool = add_array[0]
 		var add_tool: bool = add_array[1]
 		
-		if is_epic: items.append(onAddEpicReward(fight_type))
+		if is_epic:
+			items.append(onAddEpicReward(fight_type))
+			items.append(getUpgradeRewards())
 		items.append(onAddShillingReward(fight_rewards_datastore))
 		if add_boon: items.append(onAddBoonReward())
 		
@@ -421,6 +429,22 @@ func setRewards(is_win: bool) -> void:
 		rewards.setInfo(active_level)
 		active_level.rewards = rewards
 	active_level.onGameEnded()
+	
+func getUpgradeRewards() -> ActionWrapper: # [ActionWrapper]
+	var options: Array = [
+		MaxEnergyAction.new(MAX_ENERGY_UPGRADE),
+		EnergyLimitAction.new(ENERGY_LIMIT_UPGRADE),
+		CardLimitAction.new(CARD_LIMIT_UPGRADE)]
+		
+	var ChampionCard: CardGD = Game.getSaveFile().getChampionCard()
+	if ChampionCard != null and ChampionCard.getTier() < Game.MAX_TIER:
+		options.append(CardRetieredAction.new(ChampionCard, ChampionCard.getTier() + 1))
+	
+	options.shuffle()
+	options.resize(UPGRADE_REWARD_OPTIONS_SIZE)
+	var upgrade_rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
+	upgrade_rewards_wrapper.setActions(options)
+	return upgrade_rewards_wrapper
 	
 func onAddEpicReward(fight_type: Game.FightTypes) -> ActionWrapper:
 	var epic_rewards_wrapper: ActionWrapper = SavedData.onLoadModel(SavedDataActionWrapper.new(), active_level)
@@ -828,12 +852,12 @@ func onRewardsFinished(save_file: SaveFileGD) -> void:
 	active_level_data = null
 	
 	var actions: Array = [CreateMapAction.new(), LevelRewardsFinishedAction.new(_active_level_data)]
-	if fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
-		var old_deck_limit: int = Game.getSaveFile().getDeckLimit()
-		var old_energy_limit: int = Game.getSaveFile().getEnergyLimit()
-		var old_max_energy: int = Game.getSaveFile().getMaxEnergy()
-		actions += [ChampionUpgradeAction.new(old_deck_limit, old_energy_limit, old_max_energy),\
-			Game.getSaveFile().getPlayerDeckUpgradeAction(getWorldDifficulty(), fight_type)]
+	#if fight_type in [Game.FightTypes.MINIBOSS, Game.FightTypes.BOSS]:
+		#var old_deck_limit: int = Game.getSaveFile().getDeckLimit()
+		#var old_energy_limit: int = Game.getSaveFile().getEnergyLimit()
+		#var old_max_energy: int = Game.getSaveFile().getMaxEnergy()
+		#actions += [ChampionUpgradeAction.new(old_deck_limit, old_energy_limit, old_max_energy),\
+			#Game.getSaveFile().getPlayerDeckUpgradeAction(getWorldDifficulty(), fight_type)]
 	onPushAction(actions)
 	
 func onLossFinished() -> void:

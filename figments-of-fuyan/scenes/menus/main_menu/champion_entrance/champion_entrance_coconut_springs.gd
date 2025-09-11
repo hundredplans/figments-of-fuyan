@@ -17,8 +17,9 @@ func setInfo(area_id: int) -> void:
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, area_id)
 	var decoration_datastore: DecorationDatastore = area_info.main_menu_decoration
 	
-	for data: SavedData in decoration_datastore.data:
-		SavedData.onLoadModel(data, Decoration)
+	for _data: SavedData in decoration_datastore.data:
+		var data: SavedData = _data.duplicate()
+		SavedData.onLoadModel(_data, Decoration)
 	
 func onStart() -> void:
 	ChampionCard.AniPlayer.play("IntroEntrance")

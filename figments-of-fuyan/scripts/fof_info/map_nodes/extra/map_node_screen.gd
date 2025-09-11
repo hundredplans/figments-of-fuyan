@@ -6,6 +6,7 @@ signal create_stash_screen
 signal minimap_mode
 signal finished
 signal fade_loaded # Only triggers when u walk manually, used for camera reset
+signal fade_background_black
 
 var World: Node3D
 var map_node: MapNodeGD

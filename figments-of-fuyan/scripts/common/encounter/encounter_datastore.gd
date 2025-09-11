@@ -7,9 +7,9 @@ class_name EncounterDatastore extends Resource
 @export var base_sprite: Texture2D
 @export var frames: Array[Texture2D]
 @export var hands: Array[Texture2D]
+@export var bitmap_frames: Array[BitMap]
 
 @export_group("Encounter")
-@export var bitmap_frames: Array[BitMap]
 @export var drag_zone_material: ShaderMaterial
 @export var drag_zone_name: String
 @export var drag_zone_label_color: Color

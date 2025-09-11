@@ -39,7 +39,8 @@ func _ready() -> void:
 		
 		theta += theta_increment
 		
-	for data: SavedDataTileObject in background_decoration_datastore.data:
+	for _data: SavedDataTileObject in background_decoration_datastore.data:
+		var data: SavedDataTileObject = _data.duplicate()
 		SavedData.onLoadModel(data, Decoration)
 
 func getChampionCards() -> Array:

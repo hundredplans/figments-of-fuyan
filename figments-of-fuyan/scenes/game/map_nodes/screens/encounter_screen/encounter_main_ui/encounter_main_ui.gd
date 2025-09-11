@@ -38,6 +38,7 @@ func onUpdateFrames(extra_tx: Texture2D = null) -> void:
 		
 	FrameSprite.texture = tx
 	
+	if get_tree() == null: return
 	await get_tree().create_timer(SWAP_FRAME_TIME).timeout
 	if is_extra_frame: is_extra_frame = false; return
 	onUpdateFrames()

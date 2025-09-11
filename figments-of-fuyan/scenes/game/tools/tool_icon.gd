@@ -8,8 +8,8 @@ const SPIN_SPEED: float = 10
 @onready var ToolTxRect: TextureRect = %ToolTextureRect
 var Tool: ToolGD
 
-func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false) -> void:
-	super(_item, _hoverable, _draggable, _autoscale)
+func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false, _disabled: bool = false) -> void:
+	super(_item, _hoverable, _draggable, _autoscale, _disabled)
 	Tool = _item
 	if Tool != null:
 		Tool.update_tier.connect(onUpdateTier)

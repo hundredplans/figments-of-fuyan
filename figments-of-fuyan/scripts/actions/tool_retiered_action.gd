@@ -4,6 +4,7 @@ var Tool: ToolGD
 var tier: int
 
 func _init(_Tool: ToolGD = null, _tier: int = 1) -> void:
+	super()
 	Tool = _Tool
 	tier = _tier
 	

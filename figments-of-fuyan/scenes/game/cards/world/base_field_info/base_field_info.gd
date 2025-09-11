@@ -206,7 +206,7 @@ func onCreateSpecificStat(type: Game.Stats, value: int) -> void:
 	var stat_datastore: StatsDatastore = Card.getStatsFromInfo()
 	match type:
 		Game.Stats.MAX_SPEED: onCreateMaxSpeedStat(value, stat_datastore.speed, Card.speed)
-		Game.Stats.SPEED: onUpdateSpeedStat(value)
+		Game.Stats.SPEED: onUpdateSpeedStat(value, true)
 
 func onResetStats(override: bool = false) -> void:
 	onResetDepthTest(override)

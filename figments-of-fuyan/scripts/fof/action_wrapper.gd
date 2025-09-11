@@ -1,14 +1,16 @@
 class_name ActionWrapper extends FofGD
 
 var actions: Array
+var chosen_index: int # If one action is chosen out of array
 	
 func onSave() -> SavedData:
 	for action: Action in actions: action.onSave()
-	return SavedDataActionWrapper.new(1, false, public_id, actions)
+	return SavedDataActionWrapper.new(1, false, public_id, actions, chosen_index)
 	
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	actions = data.actions
+	chosen_index = data.chosen_index
 	for action: Action in actions: action.onLoad(); action.setSignals()
 	
 func setActions(_actions: Variant = null) -> void:
@@ -34,3 +36,7 @@ func getActions() -> Array:
 func onUse() -> void:
 	onPushAction(actions)
 	
+func setChosenIndex(action: Action) -> void:
+	chosen_index = actions.find(action)
+	
+func getChosenIndex() -> int: return chosen_index

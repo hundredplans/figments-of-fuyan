@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://dwfct3b2l4pwr"]
+[gd_scene load_steps=8 format=3 uid="uid://dwfct3b2l4pwr"]
 
 [ext_resource type="Script" uid="uid://bi7toik8oaaar" path="res://scenes/common/rewards_screen/upgrade_reward_ui.gd" id="1_wq06e"]
+[ext_resource type="PackedScene" uid="uid://cvbsaqyy7wle8" path="res://scenes/common/rewards_screen/champion_upgrade_reward.tscn" id="2_m8g16"]
+[ext_resource type="Texture2D" uid="uid://b4kkv4s35sd16" path="res://assets/sprites/ui/icons/max_energy.png" id="2_ojhl7"]
+[ext_resource type="Texture2D" uid="uid://dum30f1ix8v5h" path="res://assets/sprites/ui/icons/energy_limit.png" id="2_p3sgn"]
+[ext_resource type="PackedScene" uid="uid://b7lmkbj55sdy7" path="res://scenes/common/rewards_screen/icon_upgrade_reward.tscn" id="2_p82la"]
+[ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="4_y24y8"]
+[ext_resource type="PackedScene" uid="uid://c1a0nexo0ytc6" path="res://scenes/common/rewards_screen/claimed_label.tscn" id="7_m8g16"]
 
 [node name="UpgradeRewardUI" type="Control"]
 layout_mode = 3
@@ -9,4 +15,34 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_wq06e")
+ChampionUpgradeRewardPacked = ExtResource("2_m8g16")
+IconUpgradeRewardPacked = ExtResource("2_p82la")
+energy_limit_icon = ExtResource("2_p3sgn")
+max_energy_icon = ExtResource("2_ojhl7")
+deck_limit_icon = ExtResource("4_y24y8")
+energy_limit_text = "Energy Limit +%s"
+max_energy_text = "Max Energy +%s"
+deck_limit_text = "Deck Limit +%s"
+ClaimedLabelPacked = ExtResource("7_m8g16")
+
+[node name="RewardsContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -666.5
+offset_top = -260.0
+offset_right = 666.5
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[connection signal="tree_exited" from="." to="." method="onTreeExited"]

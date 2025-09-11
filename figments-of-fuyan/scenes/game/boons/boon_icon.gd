@@ -10,8 +10,8 @@ const SPIN_SPEED: float = 10
 @onready var BoonTextureRect: TextureRect = %BoonTextureRect
 @onready var ChargesLabel: Label = %ChargesLabel
 
-func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false) -> void:
-	super(_item, _hoverable, _draggable, _autoscale)
+func setInfo(_item: FofGD, _hoverable: bool = false, _draggable: bool = false, _autoscale: bool = false, _disabled: bool = false) -> void:
+	super(_item, _hoverable, _draggable, _autoscale, _disabled)
 	Boon = _item
 	Boon.update_tier.connect(onUpdateTier)
 	Boon.update_disabled.connect(setDisabled)

@@ -3,7 +3,6 @@ class_name Reward extends Resource
 var item: FofGD
 
 @export var taken: bool
-
 @export var item_data: SavedData
 
 func _init(_item: FofGD = null, _taken: bool = false) -> void:

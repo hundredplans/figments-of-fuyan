@@ -14,6 +14,7 @@ var brain: bool # AI Brain
 var ActionManagerReference: ActionManagerGD
 var ADVANCE_PHASES: Array = [Phases.PLAYER, Phases.AI, Phases.NEUTRAL]
 
+const BLACK_SCREEN_WAIT_TIME: float = 0.5
 const SELECTED_MAP_NODE_TRAVEL_SPEED: float = 1
 enum Rarities {SCRAP, NEUTRAL, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
 enum ShopTypes {CARD, BOON, TOOL, DECK}

@@ -15,7 +15,6 @@ var anti_boons: Array
 var save_file: SaveFileGD
 var old_player_vision: Array
 var speed_order: SpeedOrder
-var player_card_last_seen_turn: int # Default -1 which means they were never seen, if this is > 10 or -1 every enemy has the adventurer tag
 var level_area_datastore: LevelAreaDatastore # Specific to each areao
 var recent_camera_position: Vector3 # Not saved
 var spawn_group: int
@@ -59,7 +58,7 @@ func onSave() -> SavedData:
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCardDatas(), phase, level_camera_data, energy, max_energy,\
-		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, player_card_last_seen_turn, level_area_datastore, speed_order, spawn_group,\
+		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, level_area_datastore, speed_order, spawn_group,\
 		curse_id, level_preview, env)
 
 func onClear() -> void:
@@ -76,7 +75,6 @@ func onLoadData(data: SavedData) -> void:
 	speed_order = data.speed_order
 	spawn_group = data.spawn_group
 	curse_id = data.curse_id
-	player_card_last_seen_turn = data.player_card_last_seen_turn
 	level_preview = data.level_preview
 	env = data.env
 	
@@ -117,7 +115,7 @@ func onLoadData(data: SavedData) -> void:
 func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
 	if data is SavedDataObject and (!data.groups.is_empty() and spawn_group not in data.groups): return null
 		
-	var TileObject: TileObjectGD = SavedData.onLoadModel(data, self)
+	var TileObject: TileObjectGD = SavedData.onLoadModel(data.duplicate(), self)
 	TileObject.add_to_group("LevelTileObjectsGD")
 	TileObject.set_spectate_card.connect(func(x: TileObjectGD): set_spectate_card.emit(x))
 	
@@ -205,13 +203,10 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false, reload: bool = fa
 	match old_phase:
 		Game.Phases.START:
 			onDrawStarterHand()
-			setAlliesTurnState(Game.TurnStates.INACTIVE)
+			setAlliesTurnState(Game.TurnStates.INACTIVE, true)
 			
 	phase = _phase
 	phase_changed.emit(phase, old_phase, instant)
-	
-	if phase in Game.ADVANCE_PHASES:
-		onAdvanceTurn(Game.ADVANCE_PHASES.find(phase))
 	
 	if reload: return
 	match phase:
@@ -231,9 +226,9 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false, reload: bool = fa
 		Game.Phases.NEUTRAL: onAppendAction(AITurnStartAction.new(2))
 			
 	
-func setAlliesTurnState(turn_state: Game.TurnStates) -> void:
+func setAlliesTurnState(turn_state: Game.TurnStates, instant: bool = false) -> void:
 	for Card in Game.getAllyUnits():
-		onPushAction(ChangeTurnStateAction.new(Card, turn_state))
+		onPushAction(ChangeTurnStateAction.new(Card, turn_state, false, instant))
 #endregion
 
 #region Action Processing
@@ -281,7 +276,7 @@ func onProcessAction(action: Action) -> void:
 					onRecalculateAITurn(action.Discoverer, true, true)
 				
 				if action.Discoverer.isAlly(1) and action.Discovered.isAlly(0):
-					onPlayerCardSpottedByAI()
+					action.Discovered.ai_datastore.setLastSeenEnemy(0)
 					
 				if phase == Game.Phases.PLAYER and action.Discoverer.isAlly(0) and action.Discovered.isEnemy(0) and action.Discovered not in action.old_player_vision:
 					onRemoveMoveAndAttackActions(action.Discoverer)
@@ -296,9 +291,6 @@ func onProcessAction(action: Action) -> void:
 			update_active_effects.emit()
 		elif action is CameraSpectateGroupAction:
 			spectate_group.emit(action.team)
-		elif action is RevealAction:
-			if action.Revealed is CardGD and action.Revealed != null and action.Revealed.isAlly(0):
-				onPlayerCardSpottedByAI()
 		elif action is StartLevelAction:
 			if action.getDelay() == 0: return
 			game_started_post.emit()
@@ -445,18 +437,6 @@ func onRecalculateAITurnOccupy(action: OccupyAction, Card: CardGD) -> void:
 			
 		onRemoveMoveAndAttackActions(Card)
 		finish_action.setRetryAiTurn(true)
-#endregion
-
-#region Player Card Last Seen Turn
-func isAIAdventurerArchetypeGlobal() -> bool:
-	return player_card_last_seen_turn == -1 or player_card_last_seen_turn >= AI_TURNS_UNTIL_ADVENTURER
-
-func onAdvanceTurn(team: int) -> void:
-	if team != 1 or player_card_last_seen_turn == -1: return
-	player_card_last_seen_turn += 1
-		
-func onPlayerCardSpottedByAI() -> void:
-	player_card_last_seen_turn = 0
 #endregion
 
 #region Level Area Datastore

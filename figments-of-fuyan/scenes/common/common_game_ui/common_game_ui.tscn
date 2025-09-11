@@ -49,6 +49,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(80, 80)
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("1_1s2qd")
 stretch_mode = 0
 script = ExtResource("3_i1o8o")
@@ -82,10 +83,21 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
-texture_filter = 1
+[node name="ShillingControl" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
+mouse_filter = 2
+
+[node name="ShillingTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/ShillingControl"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 20)
 size_flags_horizontal = 0
 mouse_filter = 2
 texture = ExtResource("3_av872")
@@ -119,7 +131,7 @@ BoonIconPacked = ExtResource("9_62j63")
 
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
 [connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]

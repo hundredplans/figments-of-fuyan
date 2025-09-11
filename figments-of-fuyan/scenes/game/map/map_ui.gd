@@ -14,6 +14,8 @@ var area: AreaGD
 var PauseMenu: Control
 var ChampionUpgradeUI: Control
 
+const FIGHT_ENTER_DELAY: float = 1.25
+
 @onready var CommonGameUI: Control = %CommonGameUI
 @onready var MainManager: Control = %MainManager
 @onready var FadeBackground: ColorRect = %FadeBackground
@@ -33,8 +35,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Back") and PauseMenu == null:
 		PauseMenu = Game.onCreatePauseMenu(self)
 		PauseMenu.mouse_in_ui.connect(onMouseInUI)
-		PauseMenu.tree_exited.connect(func(): screen_finished.emit())
-		screen_created.emit()
+		PauseMenu.tree_exited.connect(onScreenFinished.bind(PauseMenu))
+		onScreenCreated(PauseMenu)
 
 func setInfo(_save_file: SaveFileGD) -> void:
 	Game.update_stash_screen.connect(onUpdateStashScreen)
@@ -83,6 +85,8 @@ func onProcessAction(action: Action) -> void:
 			ChampionUpgradeUI.edit_deck.connect(onCreateStashScreen)
 		elif action is MapNodeFinishedAction:
 			onMapNodeFinished(action.map_node)
+		elif action is MapNodeEnteredAction:
+			onMapNodeEntered(action.map_node)
 	elif !action.post:
 		if action is StartLoadingScreenAction:
 			onHideMapUI()
@@ -102,17 +106,21 @@ func onUpdateShillings() -> void:
 #endregion
 
 #region Map Node
-func onCreateScreen(map_node: MapNodeGD, ActiveScreen: Control) -> void:
+
+var ActiveScreen: Control
+func onCreateScreen(map_node: MapNodeGD, _ActiveScreen: Control) -> void:
+	ActiveScreen = _ActiveScreen
 	add_child(ActiveScreen)
 	ActiveScreen.setInfo(save_file, area, World, self, map_node)
 	ActiveScreen.minimap_mode.connect(onMinimapMode)
 	ActiveScreen.create_stash_screen.connect(onCreateStashScreen)
+	ActiveScreen.fade_background_black.connect(onFadeBackgroundBlack)
 	
 	stash_screen_start.connect(ActiveScreen.onStashScreenStart)
 	stash_screen_exit_start.connect(ActiveScreen.onStashScreenExitStart)
 	active_tool_added.connect(ActiveScreen.onActiveToolAdded)
 	
-	screen_created.emit()
+	onScreenCreated(ActiveScreen)
 	if ActiveScreen.onFadeBackground():
 		FadeBackground.color = Color(1, 1, 1, 0)
 		FadeBackground.FADE_COLOR = ActiveScreen.getFadeBackgroundColor()
@@ -154,9 +162,23 @@ func onCreateStashScreen(ToolIcon: TbcUI = null) -> void:
 	
 func onUpdateStashScreen(created: bool) -> void:
 	var end_value: float = 0.0 if created else 1.0
-	if created: screen_created.emit()
-	else: screen_finished.emit()
+	if created: onScreenCreated(StashScreen)
+	else: onScreenFinished(StashScreen)
+	onFadeBackgroundNodes(end_value)
+	
+func onScreenCreated(ignore_screen: Variant) -> void:
+	screen_created.emit(isAnotherScreen(ignore_screen))
+	
+func onScreenFinished(ignore_screen: Variant) -> void:
+	screen_finished.emit(isAnotherScreen(ignore_screen))
+	
+func isAnotherScreen(ignore_screen: Variant) -> bool:
+	for screen: Control in [ActiveScreen, PauseMenu, StashScreen]:
+		if screen == ignore_screen: continue
+		if screen != null: return true
+	return false
 		
+func onFadeBackgroundNodes(end_value: float) -> void:
 	for node: Control in [CommonGameUI]:
 		var tween := create_tween()
 		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)
@@ -201,3 +223,15 @@ func onMinimapMode(is_start: bool, nodes: Array = []) -> void:
 
 func onHideMapUI() -> void:
 	MainManager.visible = false
+
+func onMapNodeEntered(map_node: MapNodeGD) -> void:
+	if map_node is FightNodeGD:
+		await get_tree().create_timer(FIGHT_ENTER_DELAY).timeout
+		FadeBackground.color = Color.BLACK
+		onFadeBackgroundBlack()
+		onFadeBackgroundNodes(0.0)
+		
+func onFadeBackgroundBlack() -> void:
+	FadeBackground.FADE_COLOR = Color.BLACK
+	FadeBackground.onFade(true)
+	onFadeBackgroundNodes(0.0)

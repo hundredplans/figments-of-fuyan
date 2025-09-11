@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://cjejml4esueol"]
+[gd_scene load_steps=2 format=3 uid="uid://cjejml4esueol"]
+
+[ext_resource type="Script" uid="uid://ciyhknr3jpylm" path="res://scenes/game/map_nodes/map_node_ball.gd" id="1_2wf3v"]
 
 [node name="MapNodeBall" type="MeshInstance3D"]
+script = ExtResource("1_2wf3v")

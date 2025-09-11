@@ -23,6 +23,7 @@ func setInfo(_save_file: SaveFileGD, _area: AreaGD, _World: Node3D, _UI: Control
 	add_child(Subscreen)
 	Subscreen.setInfo(map_node)
 	Subscreen.create_stash_screen.connect(func(x: TbcUI): create_stash_screen.emit(x))
+	Subscreen.fade_background_black.connect(onFadeBackgroundBlack)
 	NameLabel.text = map_node.info.name
 	#NameLabel.modulate = map_node.getEncounterDatastore().getBackgroundMainColor()
 	
@@ -63,3 +64,11 @@ func onActiveToolAdded(CardUI: TbcUI) -> void: Subscreen.onActiveToolAdded(CardU
 
 func onCreatePurchasables() -> void:
 	Subscreen.onCreatePurchasables()
+
+func onFadeBackgroundBlack() -> void:
+	fade_background_black.emit()
+	
+	var tween := create_tween()
+	tween.tween_property(self, "modulate", Color.BLACK, Game.FADE_TIME)
+	await tween.finished
+	set_visible.call_deferred(false)

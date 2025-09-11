@@ -46,7 +46,7 @@ func onPostAction() -> void:
 		var turn_amount: int = 1 if phase != Game.Phases.HAND else 2
 		actions.append(Card.getBaseStatusEffectAction(3, turn_amount))
 		
-	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED))
+	actions.append(ChangeTurnStateAction.new(Card, Game.TurnStates.INACTIVE if owner is not PlayCardAction else Game.TurnStates.PASSED, false, true))
 	Card.onRegularReset()
 	
 	onPushAction(actions)

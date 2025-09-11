@@ -541,6 +541,8 @@ func onProcessAction(action: Action) -> void:
 			HandBox.onUpdateCardEnergy()
 		elif action is StartLoadingScreenAction and active_minimap:
 			onMinimapPostLoadingScreen()
+		elif action is EndLoadingScreenAction and !active_minimap:
+			onEndLoadingScreen()
 			
 		if level.isEpic():
 			var BossCard: CardGD = level.getBoss() 
@@ -593,3 +595,11 @@ func onRewardsFinished() -> void:
 
 func onHideLevelUI() -> void:
 	MainControl.visible = false
+
+func onEndLoadingScreen() -> void:
+	visible = false
+	FadeBackground.modulate.a = 1.0
+	await get_tree().create_timer(Game.FADE_TIME).timeout
+	visible = true
+	await get_tree().create_timer(Game.FADE_TIME * 2).timeout
+	FadeBackground.onFade(false)

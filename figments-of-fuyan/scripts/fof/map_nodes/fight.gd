@@ -6,6 +6,8 @@ var enemy_cards: Array # Array[SavedDataCard]
 var level_info: LevelInfo
 var level_public_id: int
 
+const ENTER_DELAY: float = 2.0
+
 #region Save / Load / Init
 func onFofInit() -> void:
 	super()
@@ -66,7 +68,8 @@ func onEnteredInit() -> void:
 	onPushLoadingScreenAction(new_level_data)
 		
 func onPushLoadingScreenAction(level_data: SavedDataLevel, area_id: int = Game.getArea().getInfo().id) -> void:
-	onPushAction([StartLoadingScreenAction.new(
+	var delay_action := DelayAction.new(ENTER_DELAY)
+	onPushAction([delay_action, StartLoadingScreenAction.new(
 		Game.LoadingType.LEVEL,
 		area_id,
 		Helper.getFofInfoID(LevelInfo, level_data.id).name,

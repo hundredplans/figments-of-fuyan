@@ -8,13 +8,11 @@ const RECEIVER_ARCHETYPE_PATH: String = "res://resources/fof/archetypes/receiver
 const ADVENTURER_ARCHETYPE_PATH: String = "res://resources/fof/archetypes/adventurer.tres"
 const BRUTE_ARCHETYPE_PATH: String = "res://resources/fof/archetypes/brute.tres"
 const DEFAULT_FIGHT_LOGIC_SCRIPT_PATH: String = "res://scripts/fof_info/cards/extra/behaviours/default_fight_logic.gd"
-const TOP_AMOUNT: int = 5
+const TOP_AMOUNT: int = 3
 const TOP_ODDS: Dictionary = {
-	1: 0.5,
-	2: 0.25,
-	3: 0.15,
-	4: 0.075,
-	5: 0.025
+	1: 0.75,
+	2: 0.2,
+	3: 0.05,
 }
 
 var pacifist: bool # For when coconut crab wakes up
@@ -75,7 +73,7 @@ func onDefaultAITurn(enemies: Array, allies: Array, tiles: Array) -> void:
 	var tiles_to_value: Dictionary = onApplyBehaviours(Card, enemies, allies, tiles, dfl_data)
 	var tiles_sorted_by_value: Array = getTilesSortedByValue(tiles_to_value)
 	var index: int = min(Random.getRandomKeyVariant(TOP_ODDS), tiles_sorted_by_value.size())
-	if index > 0: # If the tile is valid	
+	if index > 0: # If the tile is valid
 		onTileChosen(tiles_sorted_by_value[index - 1], DFL, allies, enemies)
 		return
 		
@@ -183,7 +181,7 @@ func onApplyBehaviours(BehaviourCard: CardGD, enemies: Array, allies: Array, til
 
 func getBehaviours(BehaviourCard: CardGD) -> Array:
 	var archetype: ArchetypeInfo
-	if BehaviourCard.isAlly(1) and Game.getLevel().isAIAdventurerArchetypeGlobal():
+	if BehaviourCard.isAlly(1) and BehaviourCard.ai_datastore.isForceAdventurer():
 		archetype = load(ADVENTURER_ARCHETYPE_PATH)
 	elif Game.getAllyUnits(1).size() == 1:
 		archetype = load(BRUTE_ARCHETYPE_PATH)

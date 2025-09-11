@@ -52,7 +52,7 @@ func see() -> void:
 
 func tier(value: int) -> void:
 	if SpectateObject is CardGD:
-		SpectateObject.onRetiered(value)
+		Game.getSaveFile().onPushAction(CardRetieredAction.new(SpectateObject, value))
 
 func status_effect(name_id: Variant, turns: int = 1) -> void:
 	if SpectateObject is CardGD:

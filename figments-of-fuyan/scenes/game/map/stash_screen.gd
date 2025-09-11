@@ -295,13 +295,15 @@ func onToolDragBegin(ToolIcon: TbcUI, CardUI: Control) -> void:
 		DragIconUI = ToolIcon
 		onShowDragZone()
 		onCreatePriceLabel(ToolIcon, ToolIcon.getItem())
-		
+	
 	CardUI.onChangeBackgroundMouseFilter(false, true)
 	for _CardUI: TbcUI in getAllCardUI():
 		_CardUI.setAutoscale(false)
 		_CardUI.setIncludeToolForHover(true)
 		_CardUI.getToolIcon().setHoverable(false)
-		_CardUI.getToolIcon().setAutoscale(false)
+		
+		_CardUI.getToolIcon().setAutoscale(false, false, false)
+	ToolIcon.onScaleIconUISize(true, false)
 	
 func onToolDragEnd(ToolIcon: TbcUI, CardUI: Control) -> void:
 	if ToolIcon.getItem().getRarity() in draggable_rarities and is_drag_zone and !isSmithMaxTier(ToolIcon.getItem()):
@@ -309,6 +311,7 @@ func onToolDragEnd(ToolIcon: TbcUI, CardUI: Control) -> void:
 		onHideDragZone()
 		ToolIcon.onRemovePriceLabel()
 		
+	ToolIcon.setAutoscale(true, false, true)
 	for _CardUI: TbcUI in getAllCardUI():
 		_CardUI.setAutoscale(true)
 		_CardUI.setIncludeToolForHover(false)

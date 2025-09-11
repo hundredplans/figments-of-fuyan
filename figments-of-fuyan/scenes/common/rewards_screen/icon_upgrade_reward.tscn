@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://b7lmkbj55sdy7"]
+
+[ext_resource type="Script" uid="uid://rfg0e7ehixsn" path="res://scenes/common/rewards_screen/icon_upgrade_reward.gd" id="1_650ra"]
+[ext_resource type="Texture2D" uid="uid://b4kkv4s35sd16" path="res://assets/sprites/ui/icons/max_energy.png" id="2_0ahux"]
+[ext_resource type="Script" uid="uid://dclswmoq0nxko" path="res://scenes/common/new/default_button.gd" id="3_c52s8"]
+[ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/default_press.mp3" id="4_5p1ba"]
+[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="5_8dq4t"]
+[ext_resource type="LabelSettings" uid="uid://d1gwol4x31yyt" path="res://resources/ui/label_settings/spicyrice_large.tres" id="6_5p1ba"]
+
+[node name="IconUpgradeReward" type="Control"]
+custom_minimum_size = Vector2(320, 403)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 403.0
+pivot_offset = Vector2(160, 260)
+mouse_filter = 2
+script = ExtResource("1_650ra")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(320, 320)
+layout_mode = 2
+offset_top = 79.0
+offset_right = 320.0
+offset_bottom = 399.0
+texture = ExtResource("2_0ahux")
+script = ExtResource("3_c52s8")
+autoscale = true
+CLICK_NOISE = ExtResource("4_5p1ba")
+HOVER_NOISE = ExtResource("5_8dq4t")
+
+[node name="Label" type="Label" parent="TextureRect"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 2
+offset_top = 335.0
+offset_right = 320.0
+offset_bottom = 403.0
+text = "Energy Limit +1"
+label_settings = ExtResource("6_5p1ba")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[connection signal="mouse_entered" from="TextureRect" to="TextureRect" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="TextureRect" to="TextureRect" method="onMouseInUI" binds= [false]]
+[connection signal="pressed" from="TextureRect" to="." method="onPressed"]

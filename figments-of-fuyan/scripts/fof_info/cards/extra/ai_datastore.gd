@@ -2,7 +2,9 @@ class_name AIDatastore extends Resource
 
 const CALL_BASE_COOLDOWN: int = 2
 const RECEIVER_BASE_TURNS: int = 4 # How many turns you are the receiver
+const TURNS_UNTIL_FORCE_ADVENTURER: int = 3
 
+@export var last_seen_enemy: int = -1
 @export var last_seen_violence: int = -1 # Turns since they last violence, -1 for haven't seen it yet
 @export var last_ignore_behaviour_roll: bool
 @export var active_archetype: ArchetypeInfo
@@ -12,17 +14,24 @@ var DFL: DefaultFightLogic # The last DFL of this unit's ai turn action, used fo
 var enemies_to_tiles: Dictionary # The enemy card to the tile they were on, if they die it's removed
 @export var enemies_to_tiles_public_ids: Dictionary # Card.public_id : Tile.public_id
 
-func setLastSeenViolence(value: bool) -> void:
+func setLastSeenViolence(value: int) -> void:
 	last_seen_violence = value
+	
+func setLastSeenEnemy(value: int) -> void:
+	last_seen_enemy = value
 	
 func onReset() -> void:
 	last_seen_violence = -1
+	last_seen_enemy = -1
 	last_ignore_behaviour_roll = false
 	enemies_to_tiles = {}
 	
 func onCardTurnPassed() -> void:
 	if last_seen_violence != -1:
 		last_seen_violence += 1
+		
+	if last_seen_enemy != -1:
+		last_seen_enemy += 1
 	
 func getEnemyTiles() -> Array:
 	return enemies_to_tiles.values()
@@ -45,3 +54,5 @@ func getActiveArchetype() -> ArchetypeInfo:
 func setActiveArchetype(archetype_info: ArchetypeInfo) -> void:
 	active_archetype = archetype_info
 	
+func isForceAdventurer() -> bool:
+	return last_seen_enemy == -1 or last_seen_enemy >= TURNS_UNTIL_FORCE_ADVENTURER

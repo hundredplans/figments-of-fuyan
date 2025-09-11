@@ -32,6 +32,8 @@ func onCreateBalls() -> void:
 			mesh_node = default_ball.instantiate()
 			add_child(mesh_node)
 			mesh_node.position = Vector3(vector.x * progress, 0, vector.z * progress)
+			mesh_node.setInfo(map_link)
+			mesh_node.onTweenChain()
 			continue
 			
 		BigBall = big_ball.instantiate()

@@ -12,7 +12,6 @@ class_name SavedDataLevel extends SavedData
 @export var rewards: Rewards
 @export var anti_boons: Array
 @export var old_player_vision: Array
-@export var player_card_last_seen_turn: int
 @export var level_area_datastore: LevelAreaDatastore
 @export var speed_order: SpeedOrder
 @export var spawn_group: int
@@ -22,7 +21,7 @@ class_name SavedDataLevel extends SavedData
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: Array = [], _enemy_cards: Array = [], _field_cards_data: Array = [], \
 	_phase := Game.Phases.NULL, _level_camera_data: LevelCameraData = null, _energy: int = 0, _max_energy: int = 0, _fight_type := Game.FightTypes.REGULAR, _is_ended: bool = false,
-	_rewards: Rewards = null, _anti_boons: Array = [], _old_player_vision: Array = [], _player_card_last_seen_turn: int = -1,\
+	_rewards: Rewards = null, _anti_boons: Array = [], _old_player_vision: Array = [],\
 	_level_area_datastore: LevelAreaDatastore = null, _speed_order: SpeedOrder = null, _spawn_group: int = 0, _curse_id: int = 0,\
 	_level_preview: LevelPreview = null, _env: Environment = null) -> void:
 	super(_id, _first_init, _public_id)
@@ -38,7 +37,6 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _data: 
 	rewards = _rewards
 	anti_boons = _anti_boons
 	old_player_vision = _old_player_vision
-	player_card_last_seen_turn = _player_card_last_seen_turn
 	level_area_datastore = _level_area_datastore
 	speed_order = _speed_order
 	spawn_group = _spawn_group

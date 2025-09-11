@@ -9,6 +9,7 @@ const FADE_IN_TIME: float = 0.25
 signal claim_button_pressed
 signal claim_button_down
 
+@export var UpgradeRewardUIPacked: PackedScene
 @export var RegularRewardUIPacked: PackedScene
 @export var ChooseCardRewardUIPacked: PackedScene
 @export var EpicRewardUIPacked: PackedScene
@@ -29,6 +30,7 @@ var is_page_reward_taken: bool
 var rewards_ui: Control
 var rewards: Rewards
 var page: int
+var is_exit: bool
 
 func setInfo(_rewards: Rewards, _level_type: Game.FightTypes) -> void:
 	rewards = _rewards
@@ -87,6 +89,9 @@ func setRewardUI() -> void:
 		elif item.hasType(ChangeShillingsAction):
 			rewards_ui_packed = RegularRewardUIPacked
 			setClaimInfoLabel(RegularRewardUIPacked, reward)
+		elif isUpgradeReward(item):
+			rewards_ui_packed = UpgradeRewardUIPacked
+			setClaimInfoLabel(UpgradeRewardUIPacked, reward)
 	elif is_instance_of(item, ToolGD) or is_instance_of(item, BoonGD):
 		rewards_ui_packed = RegularRewardUIPacked
 		setClaimInfoLabel(RegularRewardUIPacked, reward)
@@ -114,8 +119,17 @@ func setRewardsLabelText() -> void:
 	RewardsLabel.text = "Rewards [%s/%s]" % [page + 1, rewards.items.size()]
 	
 func onExitButtonPressed() -> void:
+	if is_exit: return
+	is_exit = true
+	
 	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color.BLACK, Game.FADE_TIME)
+	
+	var alpha_tween := create_tween()
+	alpha_tween.tween_property(FadeCreamBackground, "modulate:a", 1.0, Game.FADE_TIME)
+	
+	await tween.finished
+	await get_tree().create_timer(Game.BLACK_SCREEN_WAIT_TIME).timeout
 	
 	Game.getSaveFile().onPushAction(StartLoadingScreenAction.new(
 		Game.LoadingType.MAP,
@@ -170,6 +184,7 @@ func setClaimInfoLabel(reward_ui_packed: PackedScene, reward: Reward) -> void:
 		RegularRewardUIPacked: text = "(Click anywhere to claim!)"
 		EpicRewardUIPacked: text = "(Choose an Epic Reward!)"
 		ChooseCardRewardUIPacked: text = "(Choose a Card!)"
+		UpgradeRewardUIPacked: text = "(Choose a permanent Upgrade!)"
 	ClaimInfoLabel.text = text
 	setClaimInfoLabelModulate(reward)
 
@@ -183,3 +198,7 @@ func onRewardTaken(reward: Reward) -> void:
 	
 func setClaimInfoLabelModulate(reward: Reward) -> void:
 	ClaimInfoLabel.modulate = Color(0.5, 0.5, 0.5, 1.0) if reward.isTaken() else Color.WHITE
+
+func isUpgradeReward(item: ActionWrapper) -> bool:
+	return item.getActions().any(func(x: Action): return x is MaxEnergyAction or x is CardLimitAction or x is CardRetieredAction or x is EnergyLimitAction)
+	
