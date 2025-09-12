@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=200 format=3]
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=200 format=3 uid="uid://d37inux331xt5"]
 
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_ymo1u"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_xorwq"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_mwh3q"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_0oujy"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_c7vqx"]
-[ext_resource type="Script" path="res://scripts/fof/levels/varoma_level.gd" id="6_2ohrx"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_xorwq"]
-[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="7_r31u8"]
-[ext_resource type="Script" path="res://scripts/fof_info/levels/level_info.gd" id="8_4jae6"]
+[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_ymo1u"]
+[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_xorwq"]
+[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_mwh3q"]
+[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_0oujy"]
+[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_c7vqx"]
+[ext_resource type="Script" uid="uid://d3nlf4kn1ucxr" path="res://scripts/fof/levels/varoma_level.gd" id="6_2ohrx"]
+[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_xorwq"]
+[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="7_r31u8"]
+[ext_resource type="Script" uid="uid://bml6vtchj31b0" path="res://scripts/fof_info/levels/level_info.gd" id="8_4jae6"]
 
 [sub_resource type="Resource" id="Resource_583o5"]
 script = ExtResource("3_mwh3q")
@@ -2075,7 +2075,7 @@ reveals = Array[ExtResource("2_xorwq")]([])
 
 [sub_resource type="Resource" id="Resource_1ap1e"]
 script = ExtResource("6_xorwq")
-spawn_id = 77
+spawn_id = 6
 rotation = 0.0
 position = Vector3(0, 2.1, 0)
 height = 3

@@ -249,7 +249,7 @@ func onTileObjectInfoSelected(data: SavedData, remove_last: bool = true) -> void
 	onReleaseLineEditFocus()
 	
 	if data is SavedDataTile: data.is_decoration = is_decoration
-	HoverModel = SavedData.onLoadModel(data, World)
+	HoverModel = SavedData.onLoadModel(data.duplicate(), World)
 		
 	HoverModel.setRayPickable(true)
 	HoverModel.position = Vector3(0, 10000, 0)
@@ -585,7 +585,7 @@ func onLoadLevel(loaded_info: Variant) -> void:
 		tile_object.onClear()
 	
 	for data in loaded.data:
-		var TileObject: TileObjectGD = SavedData.onLoadModel(data, World)
+		var TileObject: TileObjectGD = SavedData.onLoadModel(data.duplicate(), World)
 		if TileObject is ObjectGD:
 			TileObject.onCreateGroupLabel()
 	

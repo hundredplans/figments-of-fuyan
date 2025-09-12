@@ -512,6 +512,7 @@ func onRollEliteCardReward(elite_exalt_id: int) -> CardGD:
 	var tool_tier_up_odds: float = fight_rewards_datastore.getToolTierUpOdds()
 	
 	var card_data: SavedDataCard = Random.getCardDataFromInfo(card_info, base_tier, card_tier_up_odds, tool_odds_datastore, tool_odds, tool_tier_up_odds)
+	card_data.team = 1
 	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getSaveFile())
 	return Card
 	

@@ -21,7 +21,7 @@ const CHANGE_BACK_DELAY: float = 2.0
 
 func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
 	super(active_effect)
-	if active_effect.name == "Palmist Prayer":
+	if active_effect.name == "Palmist Prayer":	
 		var tiles: Array = getVisibleFieldCardsAllies().filter(func(x: CardGD): return x.isHealable())\
 		.map(func(x: CardGD): return x.Tile)
 		tiles.erase(Tile)

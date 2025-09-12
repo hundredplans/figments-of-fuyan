@@ -60,6 +60,7 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 				return active_effect_tiles.pickable_tiles[0]
 		# If you can get a kill out of it use 1 att
 		4:
+			return null
 			if DFL.is_kill_guaranteed: return null
 			
 			DFL.onAddTempAtt(1)
@@ -71,6 +72,7 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 			return active_effect_tiles.pickable_tiles[0]
 		# If speed is debuffed or a killable enemy is 1 tile from being attackable
 		6:
+			return null
 			if DFL.is_kill_guaranteed: return null
 			elif DFL.is_card_attack: return null
 			elif Card.speed < Card.max_speed: return active_effect_tiles.pickable_tiles[0]

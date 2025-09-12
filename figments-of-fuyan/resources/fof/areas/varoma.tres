@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b535kqbktkims" path="res://scripts/fof/areas/extra/varoma_default_light.tscn" id="6_8fijj"]
 [ext_resource type="Script" uid="uid://c4ctb2tm8w44a" path="res://scripts/fof_info/areas/extra/loading_screen_datastore.gd" id="9_cw20m"]
 [ext_resource type="PackedScene" uid="uid://dvev7ayy8isjb" path="res://scenes/game/areas/coconut_springs/loading_screen_camera_one_palms.tscn" id="10_6mquc"]
-[ext_resource type="Resource" uid="uid://chg03x1wfo76x" path="res://resources/datastore/decorations/VaromaOverworld.tres" id="10_153du"]
+[ext_resource type="Resource" uid="uid://cmceqsyn15umk" path="res://resources/datastore/decorations/VaromaOverworld.tres" id="10_153du"]
 [ext_resource type="Resource" uid="uid://cxuwhsvounmcn" path="res://resources/datastore/decorations/VaromaDeco1.tres" id="11_vjfl3"]
 [ext_resource type="Resource" uid="uid://b6hoe5qhsmrun" path="res://resources/datastore/decorations/VaromaDeco2.tres" id="12_j6t7y"]
 [ext_resource type="Material" uid="uid://b30a7ejxylfva" path="res://resources/materials/game/tile_material/varoma_tile/varoma_tile_fill_greyscale_material.tres" id="13_fy5xq"]
@@ -77,9 +77,9 @@ default_light = ExtResource("6_8fijj")
 boss_music = ExtResource("4_153du")
 epic_datastores = Array[ExtResource("2_6hpxj")]([SubResource("Resource_153du"), SubResource("Resource_8fijj")])
 main_menu_decoration = ExtResource("10_153du")
-area_color = Color(0, 0.286312, 0, 1)
-secondary_area_color = Color(0, 0.200369, 0, 1)
-tertiary_area_color = Color(0, 0.112106, 0, 1)
+area_color = Color(5.72756e-06, 0.573129, 1.92523e-07, 1)
+secondary_area_color = Color(0, 0.39, 0, 1)
+tertiary_area_color = Color(0, 0.23, 0, 1)
 tile_fill_material = ExtResource("14_qps0y")
 tile_fill_greyscale_material = ExtResource("13_fy5xq")
 background_scene = ExtResource("1_6mquc")

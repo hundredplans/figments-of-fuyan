@@ -8,7 +8,7 @@ const TIER_FOUR_HEAL: int = 2
 var revenge_charges: int
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if isValidRevenge(action) and revenge_charges > 0:
+	if isValidRevenge(action) and revenge_charges != 0:
 		onPushAction(RevengeAction.new(self, action.owner, true))
 	
 func getDescription(use_default_values: bool = false) -> String:
