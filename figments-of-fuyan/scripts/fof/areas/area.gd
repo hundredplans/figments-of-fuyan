@@ -746,7 +746,9 @@ func getLevelPreview(enemy_cards: Array, elite_exalt_id: int = 0, curse_id: int 
 		
 	enemy_cards.sort_custom(func(x: SavedDataCard, y: SavedDataCard):\
 		return enemy_card_to_preview_value[x] > enemy_card_to_preview_value[y])
-	enemy_cards.resize(Game.CARD_REWARD_DEFAULT_AMOUNT)
+	
+	var preview_amount: int = Game.REGULAR_PREVIEW_DEFAULT_AMOUNT if elite_exalt_id == 0 else Game.ELITE_PREVIEW_DEFAULT_AMOUNT
+	enemy_cards.resize(preview_amount)
 	enemy_cards = enemy_cards.filter(func(x: SavedDataCard): return x != null)
 	return LevelPreview.new(enemy_cards, total_amount, elite_exalt_id, curse_id)
 	

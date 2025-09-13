@@ -10,8 +10,7 @@
 
 [sub_resource type="Resource" id="Resource_wxud4"]
 script = ExtResource("8_xxwgp")
-description = "This gains +1 SPD
-This unit's attack is equal to it's current SPD"
+description = "This unit's attack is equal to it's current SPD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ytat7"]
@@ -19,11 +18,24 @@ script = ExtResource("6_xuyan")
 active_abilities = Array[ExtResource("7_27r3d")]([])
 description_datastore = SubResource("Resource_wxud4")
 
-[sub_resource type="Resource" id="Resource_1sk16"]
+[sub_resource type="Resource" id="Resource_ician"]
 script = ExtResource("8_xxwgp")
-description = "This gains +2 SPD
+description = "ARRIVE: Gain +1 SPD
 This unit's attack is equal to it's current SPD"
 default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
+
+[sub_resource type="Resource" id="Resource_xxwgp"]
+script = ExtResource("6_xuyan")
+active_abilities = Array[ExtResource("7_27r3d")]([])
+description_datastore = SubResource("Resource_ician")
+
+[sub_resource type="Resource" id="Resource_1sk16"]
+script = ExtResource("8_xxwgp")
+description = "ARRIVE: Gain +2 SPD
+This unit's attack is equal to it's current SPD"
+default_values = Array[int]([])
+metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_hhki7"]
 script = ExtResource("6_xuyan")
@@ -32,29 +44,18 @@ description_datastore = SubResource("Resource_1sk16")
 
 [sub_resource type="Resource" id="Resource_27r3d"]
 script = ExtResource("8_xxwgp")
-description = "This gains +3 SPD
-This unit's attack is equal to it's current SPD"
-default_values = Array[int]([])
-
-[sub_resource type="Resource" id="Resource_xxwgp"]
-script = ExtResource("6_xuyan")
-active_abilities = Array[ExtResource("7_27r3d")]([])
-description_datastore = SubResource("Resource_27r3d")
-
-[sub_resource type="Resource" id="Resource_2kfq1"]
-script = ExtResource("8_xxwgp")
-description = "This gains +4 SPD
+description = "ARRIVE: Gain +3 SPD
 This unit's attack is equal to it's current SPD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ej5rr"]
 script = ExtResource("6_xuyan")
 active_abilities = Array[ExtResource("7_27r3d")]([])
-description_datastore = SubResource("Resource_2kfq1")
+description_datastore = SubResource("Resource_27r3d")
 
 [resource]
 script = ExtResource("2_ut24a")
-tiers = Array[ExtResource("6_xuyan")]([SubResource("Resource_ytat7"), SubResource("Resource_hhki7"), SubResource("Resource_xxwgp"), SubResource("Resource_ej5rr")])
+tiers = Array[ExtResource("6_xuyan")]([SubResource("Resource_ytat7"), SubResource("Resource_xxwgp"), SubResource("Resource_hhki7"), SubResource("Resource_ej5rr")])
 icon = ExtResource("3_hgpag")
 rarity = 6
 use_charges = false

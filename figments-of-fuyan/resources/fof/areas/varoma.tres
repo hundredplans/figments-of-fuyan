@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=27 format=3 uid="uid://dvlxu5qrn822j"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=28 format=3 uid="uid://dvlxu5qrn822j"]
 
 [ext_resource type="PackedScene" uid="uid://bg5qw5gnyr5vp" path="res://scenes/game/levels/world/varoma/grass_repeating.tscn" id="1_6mquc"]
 [ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="1_8fijj"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="3_xlptc"]
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_153du"]
 [ext_resource type="PackedScene" uid="uid://b535kqbktkims" path="res://scripts/fof/areas/extra/varoma_default_light.tscn" id="6_8fijj"]
+[ext_resource type="PackedScene" uid="uid://usl6ylxpw7e4" path="res://scenes/menus/main_menu/champion_entrance/champion_entrance_varoma.tscn" id="7_vjfl3"]
 [ext_resource type="Script" uid="uid://c4ctb2tm8w44a" path="res://scripts/fof_info/areas/extra/loading_screen_datastore.gd" id="9_cw20m"]
 [ext_resource type="PackedScene" uid="uid://dvev7ayy8isjb" path="res://scenes/game/areas/coconut_springs/loading_screen_camera_one_palms.tscn" id="10_6mquc"]
 [ext_resource type="Resource" uid="uid://cmceqsyn15umk" path="res://resources/datastore/decorations/VaromaOverworld.tres" id="10_153du"]
@@ -65,9 +66,10 @@ metadata/_custom_type_script = "uid://c4ctb2tm8w44a"
 
 [resource]
 script = ExtResource("2_0a3gj")
+champion_id = 1
 card_background = ExtResource("1_co4xt")
+champion_entrance_packed = ExtResource("7_vjfl3")
 card_ids = Array[int]([1, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77])
-encounter_ids = Array[int]([])
 overworld_decoration = ExtResource("10_153du")
 base_environment = ExtResource("1_8fijj")
 elite_environment = ExtResource("1_8fijj")
@@ -76,7 +78,7 @@ base_tile_info = ExtResource("2_t1onc")
 default_light = ExtResource("6_8fijj")
 boss_music = ExtResource("4_153du")
 epic_datastores = Array[ExtResource("2_6hpxj")]([SubResource("Resource_153du"), SubResource("Resource_8fijj")])
-main_menu_decoration = ExtResource("10_153du")
+main_menu_decoration = ExtResource("12_j6t7y")
 area_color = Color(5.72756e-06, 0.573129, 1.92523e-07, 1)
 secondary_area_color = Color(0, 0.39, 0, 1)
 tertiary_area_color = Color(0, 0.23, 0, 1)

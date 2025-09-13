@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://ssbbc35p2xby"]
 
 [ext_resource type="Script" uid="uid://bxyqpp5rj7htd" path="res://scenes/game/map/map_ui.gd" id="1_8nhbi"]
-[ext_resource type="LabelSettings" uid="uid://baxopkmeda53x" path="res://resources/ui/label_settings/roboto_huge.tres" id="2_r0ufu"]
 [ext_resource type="PackedScene" uid="uid://dkv06ds5ncutu" path="res://scenes/game/levels/ui/deck_screen.tscn" id="3_nrqx8"]
+[ext_resource type="LabelSettings" uid="uid://d1gwol4x31yyt" path="res://resources/ui/label_settings/spicyrice_large.tres" id="4_m5akl"]
 [ext_resource type="PackedScene" uid="uid://brlcl2ndapeef" path="res://scenes/common/common_game_ui/common_game_ui.tscn" id="6_m5akl"]
 [ext_resource type="PackedScene" uid="uid://du22nfcbi2vth" path="res://scenes/common/fade_cream_background/fade_cream_background.tscn" id="13_giufq"]
 [ext_resource type="PackedScene" uid="uid://d02qi38rwbhoh" path="res://scenes/game/levels/ui/console.tscn" id="13_n8ysn"]
@@ -35,18 +35,6 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1e-05, 1e-05)]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MainManager/AreaNameLabel:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.25, 1.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 6.28319]
-}
 
 [sub_resource type="Animation" id="Animation_g6ohg"]
 length = 0.001
@@ -73,18 +61,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MainManager/AreaNameLabel:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1dwtc"]
@@ -116,6 +92,7 @@ mouse_filter = 2
 
 [node name="CommonGameUI" parent="MainManager" instance=ExtResource("6_m5akl")]
 unique_name_in_owner = true
+z_index = 1
 
 [node name="AreaNameLabel" type="Label" parent="MainManager"]
 unique_name_in_owner = true
@@ -125,7 +102,7 @@ offset_right = 1920.0
 offset_bottom = 120.0
 pivot_offset = Vector2(960, 60)
 text = "Coconut Springs"
-label_settings = ExtResource("2_r0ufu")
+label_settings = ExtResource("4_m5akl")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -155,6 +132,6 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[connection signal="create_stash_screen" from="MainManager/CommonGameUI" to="." method="onCreateStashScreen"]
 [connection signal="mouse_in_ui" from="MainManager/CommonGameUI" to="." method="onMouseInUI"]
+[connection signal="update_stash_screen" from="MainManager/CommonGameUI" to="." method="onUpdateStashScreenExisting"]
 [connection signal="mouse_in_ui" from="MainManager/Console" to="." method="onMouseInUI"]

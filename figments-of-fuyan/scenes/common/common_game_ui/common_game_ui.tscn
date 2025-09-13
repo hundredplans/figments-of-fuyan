@@ -40,14 +40,14 @@ mouse_filter = 2
 
 [node name="StashButton" type="TextureButton" parent="MarginContainer/HBoxContainer/Control"]
 unique_name_in_owner = true
+top_level = true
 texture_filter = 1
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 165.0
+offset_bottom = 165.0
 pivot_offset = Vector2(80, 80)
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("1_1s2qd")
@@ -78,17 +78,18 @@ custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+[node name="ExtraInfoManager" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="ShillingControl" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ShillingControl" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ShillingTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/ShillingControl"]
+[node name="ShillingTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager/ShillingControl"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 1
@@ -102,7 +103,7 @@ size_flags_horizontal = 0
 mouse_filter = 2
 texture = ExtResource("3_av872")
 
-[node name="ShillingsLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ShillingsLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "15"
@@ -110,12 +111,12 @@ label_settings = ExtResource("2_hifen")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ClockTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ClockTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("9_lv8m3")
 
-[node name="TimeLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_p1mhw")]
+[node name="TimeLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager" instance=ExtResource("6_p1mhw")]
 layout_mode = 2
 text = "00:02"
 label_settings = ExtResource("4_ubqsg")
@@ -131,7 +132,7 @@ BoonIconPacked = ExtResource("9_62j63")
 
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
+[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://usl6ylxpw7e4"]
+
+[ext_resource type="Script" uid="uid://cror3lcl3y0co" path="res://scenes/menus/main_menu/champion_entrance/champion_entrance.gd" id="1_7sbgl"]
+[ext_resource type="Script" uid="uid://m4j4oush86vt" path="res://addons/movement_camera.gd" id="2_7p2xh"]
+
+[node name="ChampionEntranceVaroma" type="Node3D"]
+script = ExtResource("1_7sbgl")
+
+[node name="ChampionParent" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-0.819152, 0, 0.573576, 0, 1, 0, -0.573576, 0, -0.819152, -0.8, 1.5, 1.4)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-0.992114, 0.0559234, 0.112165, 0, 0.894935, -0.446198, -0.125333, -0.44268, -0.887877, -0.485, 1.761, -1.134)
+script = ExtResource("2_7p2xh")
+disable_movement = true
+disable_freelook = true
+metadata/_custom_type_script = "uid://m4j4oush86vt"

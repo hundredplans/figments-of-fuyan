@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://cuel7me6smiw1"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://b3lsiqlgj6ccq"]
 
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_7gsfi"]
 [ext_resource type="Image" uid="uid://1nrwl75020iu" path="res://assets/sprites/game/cards/art_pop/angrus_palmus.png" id="2_mdfjq"]
@@ -30,7 +30,7 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_5gbe1"]
 script = ExtResource("13_8e8kn")
-description = "RAMPAGE [[X]]: Deal ATT DMG to adjacent enemies"
+description = "RAMPAGE: Can Attack again"
 default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_jbfd0"]
@@ -45,13 +45,13 @@ description_datastore = SubResource("Resource_5gbe1")
 
 [sub_resource type="Resource" id="Resource_53o7q"]
 script = ExtResource("13_8e8kn")
-description = "RAMPAGE: Deal ATT DMG to adjacent enemies"
+description = "RAMPAGE: Can Attack again"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_nfmee"]
 script = ExtResource("12_mqhm5")
 attack = 4
-health = 5
+health = 6
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_7gsfi")]([])
@@ -60,13 +60,13 @@ description_datastore = SubResource("Resource_53o7q")
 
 [sub_resource type="Resource" id="Resource_xspkr"]
 script = ExtResource("13_8e8kn")
-description = "RAMPAGE: Deal ATT DMG to adjacent enemies"
+description = "RAMPAGE: Can Attack again"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_mqhm5"]
 script = ExtResource("12_mqhm5")
-attack = 4
-health = 8
+attack = 5
+health = 7
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_7gsfi")]([])
@@ -75,7 +75,7 @@ description_datastore = SubResource("Resource_xspkr")
 
 [sub_resource type="Resource" id="Resource_8e8kn"]
 script = ExtResource("13_8e8kn")
-description = "RAMPAGE: Deal ATT DMG to adjacent enemies"
+description = "RAMPAGE: Can Attack again"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_cfj85"]

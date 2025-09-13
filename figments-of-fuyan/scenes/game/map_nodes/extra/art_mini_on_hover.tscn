@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm8ycjcgfonbr"]
+[gd_scene load_steps=5 format=3 uid="uid://cm8ycjcgfonbr"]
 
 [ext_resource type="Script" uid="uid://dqhh2mi7jnd8l" path="res://scenes/game/map_nodes/extra/art_mini_on_hover.gd" id="1_v6356"]
 [ext_resource type="PackedScene" uid="uid://bk7ao27fc3efw" path="res://scenes/common/fof_ui_box/fof_ui_box.tscn" id="1_y2ie5"]
 [ext_resource type="LabelSettings" uid="uid://dkjl7vfshajei" path="res://resources/ui/label_settings/spicyrice_small.tres" id="2_v6356"]
+[ext_resource type="Texture2D" uid="uid://blhnulmfwjixi" path="res://assets/sprites/ui/icons/silhouette.png" id="2_x68ay"]
 
 [node name="ArtMiniOnHover" type="Control"]
 custom_minimum_size = Vector2(100, 140)
@@ -12,6 +13,8 @@ offset_right = 100.0
 offset_bottom = 140.0
 mouse_filter = 2
 script = ExtResource("1_v6356")
+elite_silhouette_texture = ExtResource("2_x68ay")
+elite_tier_label_color = Color(0.262745, 0.262745, 0.262745, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -30,6 +33,6 @@ mouse_filter = 2
 [node name="TierLabel" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Tier I"
+text = "Tier ?"
 label_settings = ExtResource("2_v6356")
 horizontal_alignment = 1

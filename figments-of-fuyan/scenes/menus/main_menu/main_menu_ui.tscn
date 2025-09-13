@@ -1,9 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://6pss8e1ltd03"]
+[gd_scene load_steps=14 format=3 uid="uid://6pss8e1ltd03"]
 
 [ext_resource type="Script" uid="uid://chjab37a8xga" path="res://scenes/menus/main_menu/main_menu_ui.gd" id="1_hm4t8"]
 [ext_resource type="PackedScene" uid="uid://ch7j15ito6q3d" path="res://scenes/menus/main_menu/champion_select/champion_select_ui.tscn" id="2_d00pr"]
 [ext_resource type="PackedScene" uid="uid://dleioqgg331i7" path="res://scenes/menus/main_menu/load_menu/load_menu.tscn" id="2_ik15o"]
-[ext_resource type="AudioStream" uid="uid://dvcbwf5t1xgjj" path="res://assets/sounds/music/main_menu.mp3" id="2_re0qq"]
 [ext_resource type="Texture2D" uid="uid://dvnha0bhvnno6" path="res://assets/backgrounds/splash-screen.png" id="3_o11ev"]
 [ext_resource type="Texture2D" uid="uid://dqvwh4o83r4aj" path="res://assets/sprites/ui/general/logo_name_swingus.png" id="5_m2x35"]
 [ext_resource type="FontFile" uid="uid://baxu43ooayfrm" path="res://assets/fonts/irish_grover.ttf" id="5_nuh7a"]
@@ -220,7 +219,6 @@ script = ExtResource("1_hm4t8")
 LoadMenuPacked = ExtResource("2_ik15o")
 ChampionSelectUIPacked = ExtResource("2_d00pr")
 MainMenuButtonPacked = ExtResource("6_m2x35")
-main_menu_music = ExtResource("2_re0qq")
 
 [node name="FadeBackground" type="TextureRect" parent="."]
 unique_name_in_owner = true

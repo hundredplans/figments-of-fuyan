@@ -105,6 +105,7 @@ func onLoadData(data: SavedData) -> void:
 func onLoadModel() -> void:
 	super()
 	static_bodies = Helper.getChildrenRecursive(self).filter(func(x: Node): return x is StaticBody3D)
+	onAfterLoadModel()
 	
 func onLoadDataLevel() -> void:
 	loaded_in_level = true

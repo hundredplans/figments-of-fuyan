@@ -1,7 +1,6 @@
-[gd_scene load_steps=27 format=3 uid="uid://cqxjqqj3gig1b"]
+[gd_scene load_steps=26 format=3 uid="uid://cqxjqqj3gig1b"]
 
 [ext_resource type="Script" uid="uid://0tx4w8g33qop" path="res://scenes/game/map/stash_screen.gd" id="1_vh71u"]
-[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="1_xnd7x"]
 [ext_resource type="PackedScene" uid="uid://chlcllps1hfda" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/price_label.tscn" id="2_cajyl"]
 [ext_resource type="PackedScene" uid="uid://c4feu28rxx6ev" path="res://scenes/game/map/deck_slot_ui.tscn" id="2_dd1xv"]
 [ext_resource type="PackedScene" uid="uid://cjlqbuh73ripg" path="res://scenes/game/map_nodes/screens/encounter_screen/subscreen/shop/shillings_effect.tscn" id="2_l4vsq"]
@@ -242,7 +241,7 @@ mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 2
-offset_left = 1072.0
+offset_left = 1080.0
 offset_right = 1920.0
 offset_bottom = 120.0
 size_flags_horizontal = 3
@@ -251,28 +250,8 @@ mouse_filter = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 20
-alignment = 2
-
-[node name="MaxEnergyContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2/HBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 20
-alignment = 2
-
-[node name="TextureRect" type="TextureRect" parent="ScreenManager/MarginContainer2/HBoxContainer/MaxEnergyContainer"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("6_iniqv")
-expand_mode = 2
-
-[node name="MaxEnergyLabel" type="Label" parent="ScreenManager/MarginContainer2/HBoxContainer/MaxEnergyContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "3"
-label_settings = ExtResource("2_sli05")
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_constants/separation = 50
+alignment = 1
 
 [node name="EnergyLimitContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2/HBoxContainer"]
 unique_name_in_owner = true
@@ -304,28 +283,42 @@ text = "0/12"
 label_settings = ExtResource("2_sli05")
 horizontal_alignment = 2
 
-[node name="CardSprite" type="TextureRect" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+[node name="CardLimitContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CardSprite" type="TextureRect" parent="ScreenManager/MarginContainer2/HBoxContainer/CardLimitContainer"]
 texture_filter = 1
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("5_jpe4s")
 expand_mode = 2
 
-[node name="DeckLimitLabel" type="Label" parent="ScreenManager/MarginContainer2/HBoxContainer"]
+[node name="DeckLimitLabel" type="Label" parent="ScreenManager/MarginContainer2/HBoxContainer/CardLimitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0/5"
 label_settings = ExtResource("2_sli05")
 
-[node name="LesserFiler" type="Control" parent="ScreenManager/MarginContainer2/HBoxContainer"]
-custom_minimum_size = Vector2(20, 0)
+[node name="MaxEnergyContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 2
 
-[node name="ExitButton" parent="ScreenManager/MarginContainer2/HBoxContainer" instance=ExtResource("1_xnd7x")]
+[node name="TextureRect" type="TextureRect" parent="ScreenManager/MarginContainer2/HBoxContainer/MaxEnergyContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_iniqv")
+expand_mode = 2
+
+[node name="MaxEnergyLabel" type="Label" parent="ScreenManager/MarginContainer2/HBoxContainer/MaxEnergyContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 0
+text = "3"
+label_settings = ExtResource("2_sli05")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 1
@@ -387,6 +380,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 15
 
 [node name="BoonBox" type="GridContainer" parent="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer"]
@@ -422,7 +416,7 @@ columns = 6
 
 [node name="MarginContainer3" type="MarginContainer" parent="ScreenManager"]
 layout_mode = 0
-offset_right = 755.0
+offset_right = 821.0
 offset_bottom = 120.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScreenManager/MarginContainer3"]
@@ -556,7 +550,6 @@ position = Vector2(2060, 567)
 texture = ExtResource("3_ma1bm")
 
 [connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
-[connection signal="pressed" from="ScreenManager/MarginContainer2/HBoxContainer/ExitButton" to="." method="onExitButtonPressed"]
 [connection signal="scroll_ended" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer" to="." method="_on_main_scroll_container_scroll_ended"]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onSortByTool"]

@@ -9,7 +9,7 @@
 [ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="3_w51i3"]
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_otepg"]
 [ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="4_xelp4"]
-[ext_resource type="Resource" uid="uid://bkwj7bgi6c4in" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
+[ext_resource type="Resource" uid="uid://bjaaoyrx2freu" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
 [ext_resource type="PackedScene" uid="uid://bvbfjek6o431c" path="res://scripts/fof/areas/extra/coconut_springs_default_light.tscn" id="5_mg38q"]
 [ext_resource type="PackedScene" uid="uid://tu38c5oc2rpw" path="res://scenes/menus/main_menu/champion_entrance/champion_entrance_coconut_springs.tscn" id="6_48x5e"]
 [ext_resource type="Script" uid="uid://ddqxntix0kb3c" path="res://scripts/saved_data/saved_data_area.gd" id="6_p3usl"]
@@ -67,6 +67,7 @@ metadata/_custom_type_script = "uid://c4ctb2tm8w44a"
 
 [resource]
 script = ExtResource("2_omppq")
+champion_id = 2
 card_background = ExtResource("1_xwfqh")
 champion_entrance_packed = ExtResource("6_48x5e")
 card_ids = Array[int]([2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 78, 79])

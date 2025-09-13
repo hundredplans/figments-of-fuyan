@@ -7,14 +7,15 @@ var neutral_speed_order: Array = []
 @export var neutral_speed_order_public_ids: Array
 
 var archetype_order: Dictionary = {
-	Game.Archetypes.SCOUT: 12,
-	Game.Archetypes.MERCENARY: 11,
-	Game.Archetypes.BRUTE: 10,
-	Game.Archetypes.ADVENTURER: 9,
-	Game.Archetypes.WARDEN: 8,
-	Game.Archetypes.REINFORCER: 7,
-	Game.Archetypes.TACTICIAN: 6,
-	Game.Archetypes.SUPPORT: 5,
+	Game.Archetypes.SUPPORT: 12,
+	Game.Archetypes.REINFORCER: 11,
+	Game.Archetypes.SCOUT: 10,
+	Game.Archetypes.MERCENARY: 9,
+	Game.Archetypes.BRUTE: 8,
+	Game.Archetypes.ADVENTURER: 7,
+	Game.Archetypes.WARDEN: 6,
+	Game.Archetypes.TACTICIAN: 5,
+	
 	Game.Archetypes.HOSTILE: 4,
 	Game.Archetypes.ERRATIC: 3,
 	Game.Archetypes.DOCILE: 2,

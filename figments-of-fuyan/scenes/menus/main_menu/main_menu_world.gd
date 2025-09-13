@@ -2,12 +2,11 @@ extends Node3D
 
 const START_ANIMATION_DELAY: float = 3.0
 
+@onready var WorldEnv: WorldEnvironment = %WorldEnv
 @onready var Decoration: Node3D = %Decoration
-@export var area_id: int
-
 @export var ChampionSelectPacked: PackedScene
 
-var ChampionEntrance: Node3D
+var ChampionEntranceNode: Node3D
 var ChampionSelect: Node3D
 
 var UI: Control
@@ -16,24 +15,26 @@ func _ready() -> void:
 	UI.load_champion_select.connect(onLoadChampionSelect)
 	onLoadChampionEntrance()
 	
-	
 func onLoadChampionEntrance() -> void:
+	var area_id: int = UI.getSelectedAreaID()
 	var area_info: AreaInfo = Helper.getFofInfoID(AreaInfo, area_id)
-	ChampionEntrance = area_info.champion_entrance_packed.instantiate()
+	ChampionEntranceNode = area_info.champion_entrance_packed.instantiate()
 	
-	add_child(ChampionEntrance)
-	ChampionEntrance.setInfo(area_id)
-	ChampionEntrance.add_child(area_info.default_light.instantiate())
+	add_child(ChampionEntranceNode)
+	ChampionEntranceNode.setInfo(area_id)
+	ChampionEntranceNode.add_child(area_info.default_light.instantiate())
+	
+	WorldEnv.environment = area_info.getBaseEnvironment()
 	
 func onFirstLoad() -> void:
 	await get_tree().create_timer(START_ANIMATION_DELAY).timeout
-	ChampionEntrance.onStart()
+	ChampionEntranceNode.onStart()
 	
 func onNotFirstLoad() -> void:
-	ChampionEntrance.onSetToEndState()
+	ChampionEntranceNode.onSetToEndState()
 	
 func onLoadChampionSelect(ChampionSelectUI: Control) -> void:
-	ChampionEntrance.queue_free()
+	ChampionEntranceNode.queue_free()
 	ChampionSelect = ChampionSelectPacked.instantiate()
 	ChampionSelectUI.arrow_pressed.connect(ChampionSelect.onRotateChampions)
 	ChampionSelectUI.view_champion.connect(ChampionSelect.onViewChampion)

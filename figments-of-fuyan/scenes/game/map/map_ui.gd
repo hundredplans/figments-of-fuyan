@@ -97,6 +97,7 @@ var is_init_load: bool
 func onMapStartAnimation() -> void:
 	if !Helper.admin_datastore.skip_map_start_animation:
 		AreaNameLabel.text = area.info.name
+		AreaNameLabel.modulate = area.getInfo().getAreaColor()
 		AniPlayer.play("MapStart")
 #endregion
 
@@ -164,7 +165,7 @@ func onUpdateStashScreen(created: bool) -> void:
 	var end_value: float = 0.0 if created else 1.0
 	if created: onScreenCreated(StashScreen)
 	else: onScreenFinished(StashScreen)
-	onFadeBackgroundNodes(end_value)
+	onFadeBackgroundNodes(end_value, true)
 	
 func onScreenCreated(ignore_screen: Variant) -> void:
 	screen_created.emit(isAnotherScreen(ignore_screen))
@@ -178,10 +179,8 @@ func isAnotherScreen(ignore_screen: Variant) -> bool:
 		if screen != null: return true
 	return false
 		
-func onFadeBackgroundNodes(end_value: float) -> void:
-	for node: Control in [CommonGameUI]:
-		var tween := create_tween()
-		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)
+func onFadeBackgroundNodes(end_value: float, only_boons: bool = false) -> void:
+	CommonGameUI.onFadeBackgroundNodes(end_value, only_boons)
 #endregion
 
 #region Deck Card Amount
@@ -235,3 +234,10 @@ func onFadeBackgroundBlack() -> void:
 	FadeBackground.FADE_COLOR = Color.BLACK
 	FadeBackground.onFade(true)
 	onFadeBackgroundNodes(0.0)
+
+func onUpdateStashScreenExisting() -> void:
+	if StashScreen == null:
+		onCreateStashScreen()
+	else:
+		StashScreen.onExitButtonPressed()
+	

@@ -90,6 +90,9 @@ const ATTACK_DELAY: float = 1.25
 
 const CARD_REWARD_DEFAULT_AMOUNT: int = 3
 
+const REGULAR_PREVIEW_DEFAULT_AMOUNT: int = 3
+const ELITE_PREVIEW_DEFAULT_AMOUNT: int = 2
+
 const FADE_TIME: float = 0.25
 
 func _ready() -> void:

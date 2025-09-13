@@ -5,6 +5,8 @@ signal start_game
 signal load_game
 signal load_champion_select
 
+const VALID_AREA_IDS: Array = [1, 3]
+var selected_area_id: int
 var MAIN_MENU_BUTTONS: Array = ["Start", "Settings", "Extras", "", "Exit"]
 
 @onready var AniPlayer: AnimationPlayer = %AniPlayer
@@ -31,6 +33,7 @@ func onNotFirstLoad() -> void:
 
 func _ready() -> void:
 	Audio.onPlayMusic(Audio.MAIN_MENU)
+	selected_area_id = 3
 	onLoadButtons(MAIN_MENU_BUTTONS, false)
 
 #region Mouse In UI
@@ -47,11 +50,12 @@ func onLoadButtons(button_names: Array, use_animation: bool = true) -> void:
 	if use_animation:
 		AniPlayer.play("SlideMainMenuButtons")
 		await get_tree().create_timer(AniPlayer.get_animation("SlideMainMenuButtons").length / 2).timeout
-		
+	
 	for child: Control in MainMenuButtonsVBox.get_children(): child.queue_free()
 	for button_name: String in button_names:
 		var HBox := HBoxContainer.new()
 		var MainMenuButton: Label = MainMenuButtonPacked.instantiate()
+		MainMenuButton.setAreaID(selected_area_id)
 		MainMenuButton.text = button_name
 		MainMenuButton.pressed.connect(onMainMenuButtonPressed.bind(MainMenuButton.text))
 		MainMenuButton.setPressable(false)
@@ -216,3 +220,5 @@ func setPressable(state: bool) -> void:
 	pressable = state
 	for MainMenuButton: Label in getMainMenuButtons():
 		MainMenuButton.setPressable(state)
+
+func getSelectedAreaID() -> int: return selected_area_id

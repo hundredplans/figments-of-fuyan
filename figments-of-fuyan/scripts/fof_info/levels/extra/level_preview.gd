@@ -16,15 +16,6 @@ func setCardDatas(_card_datas: Array = []) -> void:
 	
 func getCardDatas() -> Array:
 	return card_datas
-	
-func getPreviewCardDatas() -> Array:
-	if elite_exalt_id == 0: return getCardDatas()
-	var temp_card_datas: Array = card_datas.duplicate()
-	for card_data: SavedDataCard in card_datas:
-		if card_data.id == elite_exalt_id: # Only first is removed
-			temp_card_datas.erase(card_data)
-			break
-	return temp_card_datas
 
 func getTotalAmount() -> int:
 	return total_amount

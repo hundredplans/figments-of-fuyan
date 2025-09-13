@@ -1,6 +1,6 @@
 extends Control
 
-signal create_stash_screen
+signal update_stash_screen
 signal mouse_in_ui
 
 const SCALE_MAX: float = 1.1
@@ -14,6 +14,8 @@ const SHILLING_SPIN_TIME: float = 2.0
 @onready var StashAmountLabel: Label = %StashAmountLabel
 @onready var StashButton: TextureButton = %StashButton
 @onready var ShillingTxRect: TextureRect = %ShillingTxRect
+
+@onready var ExtraInfoManager: Control = %ExtraInfoManager
 
 var is_mouse_in_ui: bool
 
@@ -37,7 +39,7 @@ func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
 	
 func onStashButtonPressed() -> void:
-	create_stash_screen.emit()
+	update_stash_screen.emit()
 
 var ScaleStashButtonTween: Tween
 func onStashButtonMouseInUI(state: bool) -> void:
@@ -53,3 +55,13 @@ func onSpinShillings(direction: int = 1) -> void:
 		.as_relative().set_trans(Tween.TRANS_SINE)
 	direction *= -1
 	tween.finished.connect(onSpinShillings.bind(direction))
+
+func setZIndex(_z_index: int) -> void:
+	StashButton.z_index = _z_index
+	ExtraInfoManager.z_index = _z_index
+
+func onFadeBackgroundNodes(end_value: float, only_boons: bool) -> void:
+	var nodes: Array = [StashButton, ExtraInfoManager, BoonBox] if !only_boons else [BoonBox] 
+	for node: Control in nodes:
+		var tween := create_tween()
+		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)

@@ -47,3 +47,8 @@ func _process(_delta: float) -> void:
 
 func setBackgroundModulate(color: Color) -> void:
 	MainPanel.self_modulate = color
+
+func setSilhouette(icon: Texture2D, outside_color: Color) -> void:
+	InsideRect.color = Color.BLACK
+	MainTexture.texture = icon
+	MainPanel.self_modulate = outside_color

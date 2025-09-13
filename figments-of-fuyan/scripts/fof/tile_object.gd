@@ -59,11 +59,12 @@ func onLoadModel() -> void:
 	Model = info.getModel(variation).instantiate()
 	
 	add_child(Model)
-	onAfterLoadModel()
 	
 func onAfterLoadModel() -> void:
-	call("setDefaultCollisionLayers")
+	setDefaultCollisionLayers()
 	setRayPickable(getRayPickable())
+	
+func setDefaultCollisionLayers() -> void: pass
 	
 func onFofInit() -> void:
 	super()

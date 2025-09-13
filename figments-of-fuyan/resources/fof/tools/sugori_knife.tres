@@ -10,7 +10,7 @@
 
 [sub_resource type="Resource" id="Resource_wy6tp"]
 script = ExtResource("8_6kbw3")
-description = "This deals [1] extra DMG to injured enemies"
+description = "On Hit [1]: This deals [2] extra DMG to injured enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_pd808"]
@@ -20,7 +20,7 @@ description_datastore = SubResource("Resource_wy6tp")
 
 [sub_resource type="Resource" id="Resource_uliio"]
 script = ExtResource("8_6kbw3")
-description = "This and adjacent allies deal [1] extra DMG to injured enemies"
+description = "On Hit [2]: This deals [2] extra DMG to injured enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_fkuxw"]
@@ -30,7 +30,7 @@ description_datastore = SubResource("Resource_uliio")
 
 [sub_resource type="Resource" id="Resource_borlc"]
 script = ExtResource("8_6kbw3")
-description = "This and allies in a [2] Tile range deal [1] extra DMG to injured enemies"
+description = "On Hit: This deals [2] extra DMG to injured enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_6kbw3"]
@@ -40,7 +40,7 @@ description_datastore = SubResource("Resource_borlc")
 
 [sub_resource type="Resource" id="Resource_m24v2"]
 script = ExtResource("8_6kbw3")
-description = "This and allies in vision deal [1] extra DMG to injured enemies"
+description = "On Hit: This deals [3] extra DMG to injured enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ax7w8"]

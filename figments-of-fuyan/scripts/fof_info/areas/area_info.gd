@@ -1,9 +1,9 @@
 class_name AreaInfo extends FofInfo
 
+@export var champion_id: int
 @export var card_background: Image
 @export var champion_entrance_packed: PackedScene
 @export var card_ids: Array[int]
-@export var encounter_ids: Array[int]
 @export var overworld_decoration: DecorationDatastore
 @export var base_environment: Environment
 @export var elite_environment: Environment
@@ -30,6 +30,9 @@ class_name AreaInfo extends FofInfo
 
 static func getInfoPath() -> String: return "res://resources/fof/areas"
 static func getFofName() -> String: return "Area"
+
+func getBaseEnvironment() -> Environment: return base_environment
+func getChampionID() -> int: return champion_id
 func getAreaColor() -> Color: return area_color
 func getSecondAreaColor() -> Color: return secondary_area_color
 func getThirdAreaColor() -> Color: return tertiary_area_color
