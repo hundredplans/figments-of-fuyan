@@ -69,39 +69,30 @@ func onRemoveFromAura(Card: CardGD) -> void:
 	onPushAction(actions)
 					
 func getDescription(use_default_values: bool = false) -> String:
-	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Blacksmith's Will")
-	if !use_default_values and active_effect != null:
-		return Helper.getDescription(super(), [active_effect.charges])
+	if !use_default_values:
+		return Helper.getDescription(super(), [active_effect_charges])
 	return super(true)
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Blacksmith's Will":
-		return ActiveEffectTiles.new([getTile()], [getTile()])
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
-	return false
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var animation_action := AnimationAction.new(self, "Ability")
+	animation_action.setActionDelay(ABILITY_DELAY)
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Blacksmith's Will":
-		var animation_action := AnimationAction.new(self, "Ability")
-		animation_action.setActionDelay(ABILITY_DELAY)
+	ability_turns_remaining = getDefaultCharges()
+	var visible_allies: Array = getVisibleFieldCardsAllies()
+	visible_allies.erase(self)
+	for VisibleAlly: CardGD in visible_allies:
+		onAddToAura(VisibleAlly)
 		
-		ability_turns_remaining = getDefaultCharges()
-		var visible_allies: Array = getVisibleFieldCardsAllies()
-		visible_allies.erase(self)
-		for VisibleAlly: CardGD in visible_allies:
-			onAddToAura(VisibleAlly)
-			
-		var add_field_effect_action: AddFieldEffectAction = onCreateBaseFieldEffectAction(BLACKSMITHS_AURA_ID)
-		blacksmiths_aura_public_id = add_field_effect_action.FieldEffect.public_id
-		
-		var actions: Array = [animation_action, add_field_effect_action]
-		onPushAction(actions)
+	var add_field_effect_action: AddFieldEffectAction = onCreateBaseFieldEffectAction(BLACKSMITHS_AURA_ID)
+	blacksmiths_aura_public_id = add_field_effect_action.FieldEffect.public_id
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+	var actions: Array = [animation_action, add_field_effect_action]
+	onPushAction(actions)
+	
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var ally_vision: Array = Game.getTeamVision(0)
 	var tiles: Array = active_effect_tiles.pickable_tiles.filter(func(x: TileGD): return x in ally_vision)
 	if !tiles.is_empty():

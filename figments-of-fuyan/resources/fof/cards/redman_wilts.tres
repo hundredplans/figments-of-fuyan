@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://0y5bkkh36a1v"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://0y5bkkh36a1v"]
 
 [ext_resource type="Image" uid="uid://tng4kkyjsisr" path="res://assets/sprites/game/cards/art_pop/redman_wilts.png" id="2_j5sl3"]
 [ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_u6i83"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_skmeu"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_qokvw"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_hq263"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_54y7x"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_rsx1a"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_c1ldd"]
 
@@ -40,7 +39,6 @@ health = 2
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_xhvae")]([])
-active_abilities = Array[ExtResource("11_54y7x")]([])
 description_datastore = SubResource("Resource_hmppw")
 
 [sub_resource type="Resource" id="Resource_k4ru1"]
@@ -55,7 +53,6 @@ health = 2
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_xhvae")]([])
-active_abilities = Array[ExtResource("11_54y7x")]([])
 description_datastore = SubResource("Resource_k4ru1")
 
 [sub_resource type="Resource" id="Resource_pbeu6"]
@@ -70,7 +67,6 @@ health = 2
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_xhvae")]([])
-active_abilities = Array[ExtResource("11_54y7x")]([])
 description_datastore = SubResource("Resource_pbeu6")
 
 [sub_resource type="Resource" id="Resource_c1ldd"]
@@ -85,7 +81,6 @@ health = 2
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_xhvae")]([])
-active_abilities = Array[ExtResource("11_54y7x")]([])
 description_datastore = SubResource("Resource_c1ldd")
 
 [resource]
@@ -103,18 +98,6 @@ collision_shape = SubResource("PackedScene_1xbhj")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("3_xhvae")]([])
-attack = 3
-health = 2
-speed = 2
-energy = 3
-description = "RANGED [1-2]; RAMPAGE: If DUELLING gain [+1] RANGED"
-ascended_description = ""
-initial_traits = Array[ExtResource("3_xhvae")]([])
 id = 38
 name = "Redman Wilts"
 gdscript = ExtResource("4_nqfe4")

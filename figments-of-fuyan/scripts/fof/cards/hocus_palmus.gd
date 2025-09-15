@@ -18,56 +18,48 @@ const TIER_TWO_AMOUNT: int = 2
 const TIER_THREE_AMOUNT: int = 3
 const TIER_FOUR_AMOUNT: int = 3
 
-func getActiveEffectDisabled(active_effect: ActiveEffectDatastore) -> bool:
-	super(active_effect)
-	if active_effect.name == "Cocus Pocus":
-		return !isSpawnAvailable()
-	return true
+func isActiveEffectDisabled() -> bool:
+	return super() or !isSpawnAvailable()
+
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Cocus Pocus":
-		return ActiveEffectTiles.new([getTile()], [getTile()])
-	return null
+func onActiveEffectPre(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void: pass
 	
-func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void: pass
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var allies: Array = getHealableAllies()
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Cocus Pocus":
-		var allies: Array = getHealableAllies()
+	var animation_action := AnimationAction.new(self, "Ability")
+	animation_action.setActionDelay(ABILITY_DELAY)
+	
+	var heal_amount: int = getTierHeal()
+	var actions: Array = [animation_action]
+	var used_spawn_tiles: Array = []
+	for AllyCard: CardGD in allies:
+		var SpawnTile: TileGD = getRandomSpawnTile(used_spawn_tiles)
+		if SpawnTile == null: continue
+		used_spawn_tiles.append(SpawnTile)
 		
-		var animation_action := AnimationAction.new(self, "Ability")
-		animation_action.setActionDelay(ABILITY_DELAY)
+		var FirstHat: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(HAT_ID, true), AllyCard)
+		FirstHat.setStartHat(true)
 		
-		var heal_amount: int = getTierHeal()
-		var actions: Array = [animation_action]
-		var used_spawn_tiles: Array = []
-		for AllyCard: CardGD in allies:
-			var SpawnTile: TileGD = getRandomSpawnTile(used_spawn_tiles)
-			if SpawnTile == null: continue
-			used_spawn_tiles.append(SpawnTile)
-			
-			var FirstHat: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(HAT_ID, true), AllyCard)
-			FirstHat.setStartHat(true)
-			
-			var SecondHat: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(HAT_ID, true), AllyCard)
-			SecondHat.setStartHat(false)
-			
-			var first_hat_action := CreateVFXAction.new(FirstHat, true)
-			first_hat_action.setActionDelay(FIRST_HAT_DELAY)
-			
-			var second_hat_action := CreateVFXAction.new(SecondHat, true)
-			second_hat_action.setActionDelay(SECOND_HAT_DELAY)
-			
-			var after_camera_action := CameraChangeAction.new(AllyCard)
-			after_camera_action.setActionDelay(SECOND_HAT_AFTER_DELAY)
-			
-			actions += [CameraChangeAction.new(AllyCard), first_hat_action, OccupyAction.new(AllyCard, SpawnTile),\
-				DestroyVFXAction.new(FirstHat), HealAction.new(HealDatastore.new(AllyCard, heal_amount)), second_hat_action, after_camera_action]
+		var SecondHat: VFXGD = SavedData.onLoadModel(SavedDataVFX.new(HAT_ID, true), AllyCard)
+		SecondHat.setStartHat(false)
 		
-		actions.append(CameraChangeAction.new(self))
-		onPushAction(actions)
+		var first_hat_action := CreateVFXAction.new(FirstHat, true)
+		first_hat_action.setActionDelay(FIRST_HAT_DELAY)
+		
+		var second_hat_action := CreateVFXAction.new(SecondHat, true)
+		second_hat_action.setActionDelay(SECOND_HAT_DELAY)
+		
+		var after_camera_action := CameraChangeAction.new(AllyCard)
+		after_camera_action.setActionDelay(SECOND_HAT_AFTER_DELAY)
+		
+		actions += [CameraChangeAction.new(AllyCard), first_hat_action, OccupyAction.new(AllyCard, SpawnTile),\
+			DestroyVFXAction.new(FirstHat), HealAction.new(HealDatastore.new(AllyCard, heal_amount)), second_hat_action, after_camera_action]
+	
+	actions.append(CameraChangeAction.new(self))
+	onPushAction(actions)
 		
 func getHealableAllies() -> Array:
 	var allies: Array = Game.getAllyUnits(team)
@@ -80,7 +72,7 @@ func getHealableAllies() -> Array:
 	return allies
 		
 # Escapes injured units in combat, sorts by energy
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL	) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL	) -> TileGD:
 	if Game.getAllyUnits(team).filter(func(x: CardGD): return x.isHealable()).size() >= getTierAmount():
 		return getTile()
 	return null
@@ -101,9 +93,8 @@ func getRandomSpawnTile(used_spawn_tiles: Array = []) -> TileGD:
 		.pick_random()
 	
 func getDescription(use_default_values: bool = false) -> String:
-	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Cocus Pocus")
-	if !use_default_values and active_effect != null:
-		return Helper.getDescription(super(), [active_effect.charges])
+	if !use_default_values:
+		return Helper.getDescription(super(), [active_effect_charges])
 	return super(true)
 
 func getTierHeal() -> int:

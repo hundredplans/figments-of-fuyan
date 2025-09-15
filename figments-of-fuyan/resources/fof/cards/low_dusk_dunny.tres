@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://b6typhv3aygis"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://b6typhv3aygis"]
 
 [ext_resource type="Texture2D" uid="uid://buanku5dahwvf" path="res://assets/sprites/game/cards/art_mini/low_dusk_dunny.png" id="2_0dbb0"]
 [ext_resource type="Image" uid="uid://t554x2ary785" path="res://assets/sprites/game/cards/art_pop/low_dusk_dunny.png" id="2_ddi1t"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_875w4"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tv3ju"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_707qb"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_a2lfj"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_3qrtb"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_cmpd2"]
 
@@ -40,7 +39,6 @@ health = 3
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_albhr")]([])
-active_abilities = Array[ExtResource("11_a2lfj")]([])
 description_datastore = SubResource("Resource_fcowd")
 
 [sub_resource type="Resource" id="Resource_s0qlj"]
@@ -55,7 +53,6 @@ health = 3
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_albhr")]([])
-active_abilities = Array[ExtResource("11_a2lfj")]([])
 description_datastore = SubResource("Resource_s0qlj")
 
 [sub_resource type="Resource" id="Resource_8m86x"]
@@ -70,7 +67,6 @@ health = 3
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_albhr")]([])
-active_abilities = Array[ExtResource("11_a2lfj")]([])
 description_datastore = SubResource("Resource_8m86x")
 
 [sub_resource type="Resource" id="Resource_cmpd2"]
@@ -85,7 +81,6 @@ health = 3
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_albhr")]([])
-active_abilities = Array[ExtResource("11_a2lfj")]([])
 description_datastore = SubResource("Resource_cmpd2")
 
 [resource]
@@ -103,18 +98,6 @@ collision_shape = SubResource("PackedScene_1xbhj")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("3_albhr")]([])
-attack = 2
-health = 3
-speed = 2
-energy = 3
-description = "RANGED [1-3]; All injured enemies on [2] HP or less are REVEALED"
-ascended_description = ""
-initial_traits = Array[ExtResource("3_albhr")]([])
 id = 49
 name = "\"Low Dusk\" Dunny"
 gdscript = ExtResource("4_5c2c6")

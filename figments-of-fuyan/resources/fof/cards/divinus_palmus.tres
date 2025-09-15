@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=29 format=3 uid="uid://d0cemsb5ul7w3"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=24 format=3 uid="uid://d0cemsb5ul7w3"]
 
 [ext_resource type="Resource" uid="uid://dfod534mlbwba" path="res://resources/fof/boons/divine_aura.tres" id="2_4ivuh"]
 [ext_resource type="Script" uid="uid://cmihmrsjxfdyi" path="res://scripts/fof/cards/divinus_palmus.gd" id="2_7n28t"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://w83kn76qjgqx" path="res://assets/models/fof/cards/divinus_palmus.glb" id="3_pmwws"]
 [ext_resource type="Script" uid="uid://c4pplm1lm032l" path="res://scripts/common/data_structures/pos_rot.gd" id="3_yh5yn"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="9_tgpi3"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_0fay3"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_cqsfm"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_cui8c"]
 
@@ -35,15 +34,6 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_0fay3"]
-script = ExtResource("14_0fay3")
-name = "Coconut Touch"
-description = "Heal [1] HP to an ally in vision or self"
-max_charges = 2
-camera_type = 0
-charges = 0
-used = false
-
 [sub_resource type="Resource" id="Resource_caqu0"]
 script = ExtResource("16_cui8c")
 description = "ABILITY [[X]]: Heal [1] HP to an ally in vision or self"
@@ -56,17 +46,7 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_276uu")]([])
-active_abilities = Array[ExtResource("14_0fay3")]([SubResource("Resource_0fay3")])
 description_datastore = SubResource("Resource_caqu0")
-
-[sub_resource type="Resource" id="Resource_g177c"]
-script = ExtResource("14_0fay3")
-name = "Coconut Touch"
-description = "Heal [1] HP to an ally in vision or self"
-max_charges = 2
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_72n3c"]
 script = ExtResource("16_cui8c")
@@ -80,17 +60,7 @@ health = 4
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_276uu")]([])
-active_abilities = Array[ExtResource("14_0fay3")]([SubResource("Resource_g177c")])
 description_datastore = SubResource("Resource_72n3c")
-
-[sub_resource type="Resource" id="Resource_lm5r2"]
-script = ExtResource("14_0fay3")
-name = "Coconut Touch"
-description = "Heal [1] HP to an ally in vision or self"
-max_charges = 3
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_ilokd"]
 script = ExtResource("16_cui8c")
@@ -104,17 +74,7 @@ health = 4
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_276uu")]([])
-active_abilities = Array[ExtResource("14_0fay3")]([SubResource("Resource_lm5r2")])
 description_datastore = SubResource("Resource_ilokd")
-
-[sub_resource type="Resource" id="Resource_btub2"]
-script = ExtResource("14_0fay3")
-name = "Coconut Touch"
-description = "Heal [1] HP to an ally in vision or self"
-max_charges = 3
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_cui8c"]
 script = ExtResource("16_cui8c")
@@ -128,7 +88,6 @@ health = 4
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_276uu")]([])
-active_abilities = Array[ExtResource("14_0fay3")]([SubResource("Resource_btub2")])
 description_datastore = SubResource("Resource_cui8c")
 
 [resource]

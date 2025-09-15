@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://qp8i871gbqs0"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://qp8i871gbqs0"]
 
 [ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_racig"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_sigte"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://dediuf1xvriyq" path="res://scripts/fof/cards/palm_acolyte.gd" id="4_6mvja"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_8qtb0"]
 [ext_resource type="PackedScene" uid="uid://dowgcs0ja2fo4" path="res://assets/models/fof/cards/palm_acolyte.glb" id="7_r3qlw"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_glhbm"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uul8t"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rtjl2"]
 
@@ -28,19 +27,10 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_glhbm"]
-script = ExtResource("11_glhbm")
-name = "Divine Light"
-description = "Deal [2] DMG to a unit in vision"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
-
 [sub_resource type="Resource" id="Resource_ma80g"]
 script = ExtResource("13_rtjl2")
-description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Deal [2] DMG to a unit in vision"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_lbu58"]
 script = ExtResource("12_uul8t")
@@ -49,13 +39,12 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_sigte")]([])
-active_abilities = Array[ExtResource("11_glhbm")]([SubResource("Resource_glhbm")])
 description_datastore = SubResource("Resource_ma80g")
 
 [sub_resource type="Resource" id="Resource_2ionm"]
 script = ExtResource("13_rtjl2")
-description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Deal [2] DMG to a unit in vision"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_8b0q2"]
 script = ExtResource("12_uul8t")
@@ -64,13 +53,12 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_sigte")]([])
-active_abilities = Array[ExtResource("11_glhbm")]([])
 description_datastore = SubResource("Resource_2ionm")
 
 [sub_resource type="Resource" id="Resource_vfoye"]
 script = ExtResource("13_rtjl2")
-description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Deal [2] DMG to a unit in vision"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_uul8t"]
 script = ExtResource("12_uul8t")
@@ -79,13 +67,12 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_sigte")]([])
-active_abilities = Array[ExtResource("11_glhbm")]([])
 description_datastore = SubResource("Resource_vfoye")
 
 [sub_resource type="Resource" id="Resource_rtjl2"]
 script = ExtResource("13_rtjl2")
-description = "ABILITY [1]: Deal [2] DMG to a unit in vision"
-default_values = Array[int]([])
+description = "ABILITY [[X]]: Deal [2] DMG to a unit in vision"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_rk3py"]
 script = ExtResource("12_uul8t")
@@ -94,7 +81,6 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_sigte")]([])
-active_abilities = Array[ExtResource("11_glhbm")]([])
 description_datastore = SubResource("Resource_rtjl2")
 
 [resource]

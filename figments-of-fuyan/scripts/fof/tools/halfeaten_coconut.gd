@@ -15,24 +15,19 @@ func onToolHolderAwakened() -> void:
 func onToolHolderDeath() -> void:
 	super()
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	if active_effect.name == "Half-eaten Coconut":
-		var in_range_tiles: Array = Game.getAdjacentTiles(Card.Tile)
-		return ActiveEffectTiles.new(in_range_tiles, in_range_tiles.filter(isPickable))
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	var in_range_tiles: Array = Game.getAdjacentTiles(Card.Tile)
+	return ActiveEffectTiles.new(in_range_tiles, in_range_tiles.filter(isPickable))
 	
 func isPickable(Tile: TileGD) -> bool:
 	var FieldCard: CardGD = Game.getAllyFieldCard(Tile, Card.team)
 	return FieldCard != null and (FieldCard.isHealable() or Card.isHealable())
 
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Half-eaten Coconut":
-		var cards: Array = [Game.getFieldCard(PickedTile)]
-		if Card.isHealable(): cards.append(Card)
-		
-		onPushAction(HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))))
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var cards: Array = [Game.getFieldCard(PickedTile)]
+	if Card.isHealable(): cards.append(Card)
+	onPushAction(HealAction.new(cards.map(func(x: CardGD): return HealDatastore.new(x, 1))))
 		
 # When possible
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles.pick_random()

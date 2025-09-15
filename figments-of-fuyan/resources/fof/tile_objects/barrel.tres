@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://c75tirkvgvad7"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://c75tirkvgvad7"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_x1es4"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_nfhh8"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_r72jn"]
 [ext_resource type="PackedScene" uid="uid://b1fgxasrb3mfs" path="res://assets/models/fof/objects/barrel.glb" id="3_3guup"]
@@ -18,7 +17,6 @@ ignore_collisions = false
 solids = Array[bool]([true, true, true, true])
 models = Array[PackedScene]([ExtResource("3_3guup"), ExtResource("4_dj634"), ExtResource("5_xvo35"), ExtResource("6_8cwl3")])
 points = Array[Array]([[Vector3(-0.0552413, 0.263435, -0.387727), Vector3(-0.321424, 0.266817, -0.222831), Vector3(-0.350153, 0.23599, 0.179837), Vector3(0.0428301, 0.272324, 0.390195), Vector3(0.388777, 0.262128, 0.0499577), Vector3(0.394076, 0.840455, -0.0233222), Vector3(-0.0234377, 0.846079, 0.394053), Vector3(-0.384597, 0.849373, 0.0709734), Vector3(-0.257114, 0.863346, -0.298518), Vector3(0.102083, 0.848874, -0.378409), Vector3(0.0113469, 1.01476, 0.0867606), Vector3(-0.037902, 1.01101, -0.133545)], [Vector3(-0.306811, 0.304457, 0.244702), Vector3(0.153285, 0.305239, 0.367894), Vector3(0.384031, 0.327766, -0.0738193), Vector3(0.0245534, 0.355178, -0.393831), Vector3(-0.297066, 0.336121, -0.259287), Vector3(-0.275706, 1.05025, -0.286095), Vector3(-0.332883, 1.03874, 0.205682), Vector3(0.172163, 1.0709, 0.35528), Vector3(0.393457, 1.01952, 0.0264328), Vector3(0.193007, 1.06174, -0.341353), Vector3(0.12443, 1.25082, 0.102555), Vector3(-0.102849, 1.25057, -0.13679)], [Vector3(-0.30173, 0.726589, -0.212615), Vector3(-0.306304, 0.772326, 0.124308), Vector3(-0.308458, 0.605363, 0.331986), Vector3(-0.299021, 0.461682, -0.386115), Vector3(0.285553, 0.482534, -0.381967), Vector3(0.303679, 0.77017, -0.135144), Vector3(0.264032, 0.744969, 0.185106), Vector3(0.292027, 0.402892, 0.397809), Vector3(0.555729, 0.435632, 0.160977), Vector3(0.555729, 0.386668, -0.153662), Vector3(-0.461147, 0.374794, 0.122657), Vector3(-0.457625, 0.305563, -0.114972), Vector3(-0.00857458, 0.757389, -0.098385), Vector3(0.00431192, 0.413835, -0.366671), Vector3(-0.0408724, 0.516307, 0.348867)], [Vector3(-0.34464, 0.514215, 0.37542), Vector3(-0.33649, 0.694074, -0.259432), Vector3(-0.330571, 0.39123, -0.397546), Vector3(-0.339482, 0.72892, 0.207281), Vector3(0.376026, 0.380225, 0.395357), Vector3(0.361377, 0.687821, 0.268791), Vector3(0.419171, 0.72436, -0.213967), Vector3(0.399991, 0.335338, -0.386429), Vector3(0.685894, 0.406161, 0.137723), Vector3(0.685894, 0.39684, -0.117262), Vector3(-0.568852, 0.421832, -0.0785791), Vector3(-0.561745, 0.371816, 0.193316)]])
-active_effects = Array[ExtResource("1_x1es4")]([])
 area_ids = Array[int]([3])
 id = 52
 name = "Barrel"

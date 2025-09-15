@@ -16,7 +16,7 @@ func onBoon(action: Action = null) -> void:
 	if action is AwakenAction: onPushAction(ChangeBoonChargesAction.new(self, 1))
 	elif action is FinishAwakenAction:
 		onResetCharges()
-		onPushAction(action.Card.getActiveAbilities().map(func(x: ActiveEffectDatastore): return ChangeActiveEffectChargesAction.new(x, 1)))
+		onPushAction(ChangeActiveEffectChargesAction.new(action.Card, 1))
 
 func onBoonAdded() -> void:
 	super()

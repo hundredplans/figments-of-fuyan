@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://blpej36cj1s0q"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://blpej36cj1s0q"]
 
 [ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_kr22h"]
 [ext_resource type="Image" uid="uid://cepsbqhr1w002" path="res://assets/sprites/game/cards/art_pop/palmysitter.png" id="2_lt3xo"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_y72ej"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_i2u37"]
 [ext_resource type="PackedScene" uid="uid://btx7hrh5b8hey" path="res://assets/models/fof/cards/palmysitter.glb" id="5_sahhw"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_m04a6"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_otdfc"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_241r8"]
 
@@ -40,7 +39,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_w3gab")]([])
-active_abilities = Array[ExtResource("11_m04a6")]([])
 description_datastore = SubResource("Resource_oq8e0")
 
 [sub_resource type="Resource" id="Resource_u8jb5"]
@@ -55,7 +53,6 @@ health = 2
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_w3gab")]([])
-active_abilities = Array[ExtResource("11_m04a6")]([])
 description_datastore = SubResource("Resource_u8jb5")
 
 [sub_resource type="Resource" id="Resource_cwoh6"]
@@ -70,7 +67,6 @@ health = 3
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_w3gab")]([])
-active_abilities = Array[ExtResource("11_m04a6")]([])
 description_datastore = SubResource("Resource_cwoh6")
 
 [sub_resource type="Resource" id="Resource_241r8"]
@@ -85,7 +81,6 @@ health = 3
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_w3gab")]([])
-active_abilities = Array[ExtResource("11_m04a6")]([])
 description_datastore = SubResource("Resource_241r8")
 
 [resource]

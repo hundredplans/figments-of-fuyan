@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://clgnsgqmpypne"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://clgnsgqmpypne"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_g4js1"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_6wxeu"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_xv5fa"]
 [ext_resource type="PackedScene" uid="uid://doj1xwib28btc" path="res://assets/models/fof/objects/reed.glb" id="3_vouis"]
@@ -18,7 +17,6 @@ ignore_collisions = false
 solids = Array[bool]([false, false, false, false])
 models = Array[PackedScene]([ExtResource("3_vouis"), ExtResource("4_gmxdh"), ExtResource("5_hbqmt"), ExtResource("6_uyv4n")])
 points = Array[Array]([[], [], [], []])
-active_effects = Array[ExtResource("1_g4js1")]([])
 area_ids = Array[int]([3])
 id = 45
 name = "Reed"

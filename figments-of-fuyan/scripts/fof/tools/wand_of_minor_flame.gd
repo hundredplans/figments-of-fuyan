@@ -5,23 +5,18 @@ const TIER_TWO_DAMAGE: int = 1
 const TIER_THREE_DAMAGE: int = 1
 const TIER_FOUR_DAMAGE: int = 2
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == info.name:
-		var Tile: TileGD = Card.getTile()
-		var team: int = Card.getTeam()
-		var tiles: Array = Card.getVisibleTiles()
-		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getEnemyFieldCard(x, team) != null and x != Tile))
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	var Tile: TileGD = Card.getTile()
+	var team: int = Card.getTeam()
+	var tiles: Array = Card.getVisibleTiles()
+	return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getEnemyFieldCard(x, team) != null and x != Tile))
 
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Wand of Minor Flame":
-		var EnemyCard: CardGD = Game.getFieldCard(PickedTile)
-		onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), PickedTile)))
-		onPushAction(DamageAction.new(Card, EnemyCard, getTierDamage(), Game.DamageTypes.OTHER))
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var EnemyCard: CardGD = Game.getFieldCard(PickedTile)
+	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), PickedTile)))
+	onPushAction(DamageAction.new(Card, EnemyCard, getTierDamage(), Game.DamageTypes.OTHER))
 		
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var enemies: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
 	var valid_enemies: Array = []
 	for EnemyCard: CardGD in enemies:
@@ -38,9 +33,8 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	return null
 	
 func getDescription(use_default_values: bool = false) -> String:
-	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Wand of Minor Flame")
-	if !use_default_values and active_effect != null:
-		return Helper.getDescription(super(), [active_effect.charges])
+	if !use_default_values:
+		return Helper.getDescription(super(), [active_effect_charges])
 	return super(true)
 		
 func getTierDamage() -> int:

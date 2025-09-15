@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://b1cr7i81rsjag"]
+
+[ext_resource type="Material" uid="uid://by2fuwvd5wt5v" path="res://resources/materials/game/base_material_outline_3/outline/elite_fight_color.tres" id="1_k2w28"]
+[ext_resource type="Shader" uid="uid://bti0g8xnidary" path="res://resources/shaders/base_material.tres" id="2_3awxf"]
+[ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="3_hurqg"]
+[ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="4_tj37t"]
+[ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="5_ac2t3"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("1_k2w28")
+shader = ExtResource("2_3awxf")
+shader_parameter/tx_attributes = ExtResource("3_hurqg")
+shader_parameter/tx_color = ExtResource("4_tj37t")
+shader_parameter/tx_emission = ExtResource("5_ac2t3")
+shader_parameter/EmissionStrength = 1.0

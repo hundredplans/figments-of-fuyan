@@ -1,16 +1,15 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://c4cm22m8q67in"]
 
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_1oyp4"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/wynstan_von_aegis.png" id="2_2gnrq"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/wynstan_von_aegis.png" id="2_ji40p"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/mercenary.tres" id="2_pdhn2"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_o3jov"]
-[ext_resource type="Script" path="res://scripts/fof/cards/card.gd" id="4_di4ay"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_mpj45"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/wynstan_von_aegis.glb" id="8_rnroe"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_b4d0y"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4cydo"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_uapb5"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_1oyp4"]
+[ext_resource type="Image" uid="uid://clf4ndpg2kgmu" path="res://assets/sprites/game/cards/art_pop/wynstan_von_aegis.png" id="2_2gnrq"]
+[ext_resource type="Texture2D" uid="uid://dlf6opbqslk4m" path="res://assets/sprites/game/cards/art_mini/wynstan_von_aegis.png" id="2_ji40p"]
+[ext_resource type="Resource" uid="uid://r4emkni6o3hx" path="res://resources/fof/archetypes/mercenary.tres" id="2_pdhn2"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_o3jov"]
+[ext_resource type="Script" uid="uid://d3xulw3ft3e0n" path="res://scripts/fof/cards/card.gd" id="4_di4ay"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_mpj45"]
+[ext_resource type="PackedScene" uid="uid://b8q0bcdcdwi2l" path="res://assets/models/fof/cards/wynstan_von_aegis.glb" id="8_rnroe"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_4cydo"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_uapb5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -48,7 +47,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_1oyp4")]([SubResource("Resource_c2f4w")])
-active_abilities = Array[ExtResource("11_b4d0y")]([])
 description_datastore = SubResource("Resource_reruq")
 
 [sub_resource type="Resource" id="Resource_bmecs"]
@@ -63,7 +61,6 @@ health = 2
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_1oyp4")]([])
-active_abilities = Array[ExtResource("11_b4d0y")]([])
 description_datastore = SubResource("Resource_bmecs")
 
 [sub_resource type="Resource" id="Resource_6ebbt"]
@@ -78,7 +75,6 @@ health = 3
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_1oyp4")]([])
-active_abilities = Array[ExtResource("11_b4d0y")]([])
 description_datastore = SubResource("Resource_6ebbt")
 
 [sub_resource type="Resource" id="Resource_uapb5"]
@@ -93,7 +89,6 @@ health = 4
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_1oyp4")]([])
-active_abilities = Array[ExtResource("11_b4d0y")]([])
 description_datastore = SubResource("Resource_uapb5")
 
 [resource]

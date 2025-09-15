@@ -5,7 +5,6 @@ class_name CardTierDatastore extends TierDatastore
 @export var speed: int = -1
 @export var energy: int = -1
 @export var traits: Array[SavedDataTrait]
-@export var active_abilities: Array[ActiveEffectDatastore]
 
 func getTraits() -> Array[SavedDataTrait]:
 	return traits
@@ -21,6 +20,4 @@ func getSpeed() -> int:
 	
 func getEnergy() -> int:
 	return energy
-
-func getActiveAbilities() -> Array:
-	return active_abilities.map(func(x: ActiveEffectDatastore): return x.duplicate())
+	

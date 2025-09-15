@@ -10,35 +10,30 @@ const TIER_FOUR_MAX_HP: int = 2
 
 const MINIMUM_TIER_GAIN_HP: int = 2
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Helpful Helmet":
-		var tiles: Array = Game.getAdjacentTiles(Tile)
-		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team)))
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	var tiles: Array = Game.getAdjacentTiles(Tile)
+	return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team)))
 	
-func onActiveEffectPre(_active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
+func onActiveEffectPre(PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
 	onForceAction(ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, PickedTile)))
 		
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Helpful Helmet":
-		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var field_effect_data := SavedDataFieldEffect.new(HELPFUL_HELMET_FIELD_EFFECT_ID, true)
-		field_effect_data.display_number = getTierMaxHp()
-		var FieldEffect: FieldEffectGD = SavedData.onLoadModel(field_effect_data, Card)
-		FieldEffect.Card = Card
-		
-		var actions: Array = [DestroyAction.new(self, self), AddFieldEffectAction.new(FieldEffect)]
-		
-		if tier >= MINIMUM_TIER_GAIN_HP:
-			actions.append(StatAction.new(StatInfo.new(Card, Game.Stats.MAX_HEALTH, getTierMaxHp())))
-		
-		onForceAction(AnimationModifierAction.new(self, "Death", "Ability"))
-		onPushAction(actions)
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var Card: CardGD = Game.getFieldCard(PickedTile)
+	var field_effect_data := SavedDataFieldEffect.new(HELPFUL_HELMET_FIELD_EFFECT_ID, true)
+	field_effect_data.display_number = getTierMaxHp()
+	var FieldEffect: FieldEffectGD = SavedData.onLoadModel(field_effect_data, Card)
+	FieldEffect.Card = Card
+	
+	var actions: Array = [DestroyAction.new(self, self), AddFieldEffectAction.new(FieldEffect)]
+	
+	if tier >= MINIMUM_TIER_GAIN_HP:
+		actions.append(StatAction.new(StatInfo.new(Card, Game.Stats.MAX_HEALTH, getTierMaxHp())))
+	
+	onForceAction(AnimationModifierAction.new(self, "Death", "Ability"))
+	onPushAction(actions)
 		
 # Use if a unit is adjacent with 3 or more health, if there's no units on board with 3 or more health use on whoever
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	if !isLevelVisible(): return null
 	var card_to_health: Dictionary = {}
 	for PickableTile: TileGD in active_effect_tiles.pickable_tiles:

@@ -23,7 +23,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is MoveToTileAction and action.Card == self:
 			active_speed = max(active_speed - 1, 0)
 			
-func onSave() -> SavedDataEpicCard:
+func onSave() -> SavedDataCard:
 	ability_save["turns_enemies_unseen"] = turns_enemies_unseen
 	ability_save['active_speed'] = active_speed
 	return super()

@@ -96,7 +96,7 @@ var is_unit_walking_to_map_node: bool = false
 var is_unit_entered: bool = false
 func onMapNodePressed(map_node: MapNodeGD) -> void:
 	var EnteredMapNode: MapNodeGD = area.getEnteredMapNode()
-	if !(EnteredMapNode.isMapNodeLink(map_node) and EnteredMapNode.is_finished): return
+	if !(EnteredMapNode.isMapNodeLink(map_node)): return
 	
 	var spotlight_destination := map_node.position
 	spotlight_destination.y += UNIT_SPOTLIGHT_UP_OFFSET

@@ -27,33 +27,27 @@ func onToolHolderAwakened() -> void:
 func onToolHolderDeath() -> void:
 	super()
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Sandy Spy":
-		return ActiveEffectTiles.new([Card.Tile], [Card.Tile])
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	return ActiveEffectTiles.new([Card.Tile], [Card.Tile])
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Sandy Spy":
-		var enemies: Array = Game.getEnemyUnits(Card.team).filter(func(x: CardGD): return !x.isRevealed(-1))
-		if enemies.is_empty(): return
-		enemies.shuffle()
-		enemies.resize(getEnemyCount())
-		enemies = enemies.filter(func(x: CardGD): return x != null)
-		
-		var turns: int = getRevealedTurns()
-		for EnemyCard: CardGD in enemies:
-			EnemyCard.onCreateBaseStatusEffect(REVEAL_ID, turns)
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var enemies: Array = Game.getEnemyUnits(Card.team).filter(func(x: CardGD): return !x.isRevealed(-1))
+	if enemies.is_empty(): return
+	enemies.shuffle()
+	enemies.resize(getEnemyCount())
+	enemies = enemies.filter(func(x: CardGD): return x != null)
+	
+	var turns: int = getRevealedTurns()
+	for EnemyCard: CardGD in enemies:
+		EnemyCard.onCreateBaseStatusEffect(REVEAL_ID, turns)
 
 # Use when possible
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0]
 
 func getDescription(use_default_values: bool = false) -> String:
-	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Sandy Spy")
-	if !use_default_values and active_effect != null:
-		return Helper.getDescription(super(), [active_effect.charges])
+	if !use_default_values:
+		return Helper.getDescription(super(), [active_effect_charges])
 	return super(true)
 
 func getEnemyCount() -> int:

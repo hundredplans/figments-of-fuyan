@@ -44,7 +44,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is RemoveFieldEffectAction and action.getCard() == self and action.getFieldEffectId() == SHIELD_ID:
 			onPushAction(AnimationModifierAction.new(self, "Hurt", ""))
 		
-func onSave() -> SavedDataEpicCard:
+func onSave() -> SavedDataCard:
 	ability_save['spinning_sword_turns'] = spinning_sword_turns
 	ability_save['active_speed'] = active_speed
 	ability_save['spinning_sword_public_id'] = spinning_sword_public_id

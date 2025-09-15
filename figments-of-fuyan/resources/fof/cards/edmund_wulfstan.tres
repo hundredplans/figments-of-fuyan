@@ -1,16 +1,15 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://c77u7f756dbbu"]
 
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_5fo1h"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/edmund_wulfstan.png" id="2_babe0"]
-[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_qu7ke"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/edmund_wulfstan.png" id="2_wn40t"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_aecmo"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_gjfi1"]
-[ext_resource type="Script" path="res://scripts/fof/cards/edmund_wulfstan.gd" id="6_qu7ke"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/edmund_wulfstan.glb" id="7_qu7ke"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_qhvvk"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_ambev"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_3407n"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_5fo1h"]
+[ext_resource type="Image" uid="uid://cye124to2fjml" path="res://assets/sprites/game/cards/art_pop/edmund_wulfstan.png" id="2_babe0"]
+[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_qu7ke"]
+[ext_resource type="Texture2D" uid="uid://dd81oqek7jbt6" path="res://assets/sprites/game/cards/art_mini/edmund_wulfstan.png" id="2_wn40t"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_aecmo"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_gjfi1"]
+[ext_resource type="Script" uid="uid://ddy77qnh6ieje" path="res://scripts/fof/cards/edmund_wulfstan.gd" id="6_qu7ke"]
+[ext_resource type="PackedScene" uid="uid://c1r1iiadoi20r" path="res://assets/models/fof/cards/edmund_wulfstan.glb" id="7_qu7ke"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_ambev"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_3407n"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -40,7 +39,6 @@ health = 4
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_5fo1h")]([])
-active_abilities = Array[ExtResource("11_qhvvk")]([])
 description_datastore = SubResource("Resource_wjtqc")
 
 [sub_resource type="Resource" id="Resource_raage"]
@@ -55,7 +53,6 @@ health = 6
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_5fo1h")]([])
-active_abilities = Array[ExtResource("11_qhvvk")]([])
 description_datastore = SubResource("Resource_raage")
 
 [sub_resource type="Resource" id="Resource_vbfyd"]
@@ -70,7 +67,6 @@ health = 6
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_5fo1h")]([])
-active_abilities = Array[ExtResource("11_qhvvk")]([])
 description_datastore = SubResource("Resource_vbfyd")
 
 [sub_resource type="Resource" id="Resource_3407n"]
@@ -85,7 +81,6 @@ health = 8
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_5fo1h")]([])
-active_abilities = Array[ExtResource("11_qhvvk")]([])
 description_datastore = SubResource("Resource_3407n")
 
 [resource]

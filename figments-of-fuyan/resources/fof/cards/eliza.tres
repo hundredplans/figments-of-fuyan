@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://b4cd6o5ryllcs"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://b4cd6o5ryllcs"]
 
 [ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_n5tvs"]
 [ext_resource type="Texture2D" uid="uid://s4kyqbd21uuk" path="res://assets/sprites/game/cards/art_mini/eliza.png" id="2_nx46i"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_r24v1"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_bnbcr"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_wml7n"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_m2xwa"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_xfaj5"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_77bil"]
 
@@ -40,7 +39,6 @@ health = 1
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_oen61")]([])
-active_abilities = Array[ExtResource("11_m2xwa")]([])
 description_datastore = SubResource("Resource_yxqy0")
 
 [sub_resource type="Resource" id="Resource_sneed"]
@@ -55,7 +53,6 @@ health = 1
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_oen61")]([])
-active_abilities = Array[ExtResource("11_m2xwa")]([])
 description_datastore = SubResource("Resource_sneed")
 
 [sub_resource type="Resource" id="Resource_t0hku"]
@@ -70,7 +67,6 @@ health = 1
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_oen61")]([])
-active_abilities = Array[ExtResource("11_m2xwa")]([])
 description_datastore = SubResource("Resource_t0hku")
 
 [sub_resource type="Resource" id="Resource_77bil"]
@@ -85,7 +81,6 @@ health = 1
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_oen61")]([])
-active_abilities = Array[ExtResource("11_m2xwa")]([])
 description_datastore = SubResource("Resource_77bil")
 
 [resource]
@@ -103,18 +98,6 @@ collision_shape = SubResource("PackedScene_1xbhj")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("3_oen61")]([])
-attack = 2
-health = 1
-speed = 2
-energy = 2
-description = "RANGED [1-3]; On Hit: Deal ATT dmg to all other enemies in a circle around this"
-ascended_description = ""
-initial_traits = Array[ExtResource("3_oen61")]([])
 id = 52
 name = "Eliza"
 gdscript = ExtResource("4_r0r65")

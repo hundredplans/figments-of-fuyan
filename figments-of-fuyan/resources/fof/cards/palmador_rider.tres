@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3 uid="uid://03afjglpbhao"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://03afjglpbhao"]
 
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_54fdl"]
 [ext_resource type="Resource" uid="uid://27tqk2ax0xx2" path="res://resources/fof/archetypes/scout.tres" id="2_yj6kb"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_g5wjs"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="6_q2yck"]
 [ext_resource type="PackedScene" uid="uid://d33beirjwt2p7" path="res://assets/models/fof/cards/palmador_rider.glb" id="7_lbc4d"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_3w5kh"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_qibe7"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_yvqlm"]
 
@@ -28,15 +27,6 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_tfmrg"]
-script = ExtResource("11_3w5kh")
-name = "Highjump"
-description = "Jump up to a [3] Tile adjacent wall"
-max_charges = -1
-camera_type = 0
-charges = 0
-used = false
-
 [sub_resource type="Resource" id="Resource_0msto"]
 script = ExtResource("13_yvqlm")
 description = "ABILITY: Jump up to a [3] Tile adjacent wall"
@@ -49,18 +39,7 @@ health = 4
 speed = 4
 energy = 3
 traits = Array[ExtResource("2_54fdl")]([])
-active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_tfmrg")])
 description_datastore = SubResource("Resource_0msto")
-
-[sub_resource type="Resource" id="Resource_cviod"]
-script = ExtResource("11_3w5kh")
-name = "Highjump"
-description = "Jump up to a [5] Tile adjacent wall"
-max_charges = -1
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_sm5xp"]
 script = ExtResource("13_yvqlm")
@@ -74,18 +53,7 @@ health = 4
 speed = 4
 energy = 3
 traits = Array[ExtResource("2_54fdl")]([])
-active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_cviod")])
 description_datastore = SubResource("Resource_sm5xp")
-
-[sub_resource type="Resource" id="Resource_km3i2"]
-script = ExtResource("11_3w5kh")
-name = "Highjump"
-description = "Jump up to a [5] Tile adjacent wall"
-max_charges = -1
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_qibe7"]
 script = ExtResource("13_yvqlm")
@@ -99,7 +67,6 @@ health = 5
 speed = 4
 energy = 3
 traits = Array[ExtResource("2_54fdl")]([])
-active_abilities = Array[ExtResource("11_3w5kh")]([SubResource("Resource_km3i2")])
 description_datastore = SubResource("Resource_qibe7")
 
 [sub_resource type="Resource" id="Resource_0xcc7"]
@@ -114,7 +81,6 @@ health = 5
 speed = 4
 energy = 3
 traits = Array[ExtResource("2_54fdl")]([])
-active_abilities = Array[ExtResource("11_3w5kh")]([])
 description_datastore = SubResource("Resource_0xcc7")
 
 [resource]

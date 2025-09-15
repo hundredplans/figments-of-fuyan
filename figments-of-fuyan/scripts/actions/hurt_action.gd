@@ -19,3 +19,4 @@ func onPreAction() -> void:
 
 func onPostAction() -> void:
 	if health_damage > 0: Defender.onHurt()
+	Audio.onSoundEffect(Defender.getInfo().getHurtAudio())

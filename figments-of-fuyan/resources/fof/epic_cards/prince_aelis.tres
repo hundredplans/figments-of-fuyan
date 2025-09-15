@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_umepe"]
 [ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_mrfby"]
 [ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="3_3wagj"]
-[ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_epic_card.gd" id="3_eguk5"]
 [ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="3_kpsji"]
 [ext_resource type="Resource" uid="uid://dwo4xee8cy6gk" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/duo_spawn.tres" id="5_gajfs"]
 [ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="5_k1sjb"]
@@ -14,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://dw86mlnvsxyef" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/strong_duo_spawn.tres" id="8_hehlh"]
 [ext_resource type="Resource" uid="uid://b30nralfchtow" path="res://resources/datastore/boss_intents/prince_aelis/phase_one/royal_boon.tres" id="9_lunae"]
 [ext_resource type="Script" uid="uid://cj8tn3dc0epr7" path="res://scripts/fof_info/cards/extra/epic_card_tier_datastore.gd" id="12_ctdho"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="13_ctdho"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.960953, 2.01422, 0.775299)
@@ -75,5 +75,5 @@ awaken_boss_intent_name = "Sleep"
 id = 5
 name = "Prince Aelis"
 gdscript = ExtResource("1_gajfs")
-saved_data = ExtResource("3_eguk5")
+saved_data = ExtResource("13_ctdho")
 metadata/_custom_type_script = "uid://bd0ljqheerbtm"

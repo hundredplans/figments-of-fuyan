@@ -1,22 +1,18 @@
 class_name ChangeActiveEffectUsedAction extends Action
 
-var active_effect: ActiveEffectDatastore
+var item: FofGD # CardGD, ToolGD, IObjectGD
 var state: bool
 
-func _init(_active_effect: ActiveEffectDatastore = null, _state: bool = false) -> void:
+func _init(_item: FofGD, _state: bool = false) -> void:
 	super()
-	active_effect = _active_effect
+	item = _item
 	state = _state
 	
 func onPreAction() -> void:
 	onCheckFail()
 	
 func onPostAction() -> void:
-	active_effect.owner.setActiveEffectUsed(active_effect, state)
-	active_effect.used = state
-
-func getLogInfo() -> Array:
-	return ["ActiveEffect: " + active_effect.name + "State: " + str(state)]
+	item.setActiveEffectUsed(state)
 
 func onCheckFail() -> void:
-	if active_effect.used == state: onFailAction()
+	if item.getActiveEffectUsed() == state: onFailAction()

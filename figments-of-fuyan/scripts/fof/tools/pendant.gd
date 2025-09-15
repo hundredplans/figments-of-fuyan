@@ -29,30 +29,25 @@ func getTempStatBuff() -> int:
 func onProcessAction(action: Action) -> void:
 	super(action)
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == info.name:
-		var pickable_tiles: Array = ([Card.Tile] if info.id != 1 or Card.isHealable() else [])
-		return ActiveEffectTiles.new([Card.Tile], pickable_tiles)
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	var pickable_tiles: Array = ([Card.Tile] if info.id != 1 or Card.isHealable() else [])
+	return ActiveEffectTiles.new([Card.Tile], pickable_tiles)
 	
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
-	return info.id == 1 and !Card.isHealable()
+func isActiveEffectDisabled() -> bool:
+	return super() or (info.id == 1 and !Card.isHealable())
 
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == info.name:
-		var type: Game.Stats
-		var turns: int = 1
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var type: Game.Stats
+	var turns: int = 1
+	
+	match info.id:
+		1: type = Game.Stats.HEALTH; turns = 0
+		4: type = Game.Stats.ATTACK
+		6: type = Game.Stats.MAX_SPEED
 		
-		match info.id:
-			1: type = Game.Stats.HEALTH; turns = 0
-			4: type = Game.Stats.ATTACK
-			6: type = Game.Stats.MAX_SPEED
-			
-		onPushAction(StatAction.new(StatInfo.new(Card, type, getTempStatBuff(), turns)))
+	onPushAction(StatAction.new(StatInfo.new(Card, type, getTempStatBuff(), turns)))
 		
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	match info.id:
 		# If you're injured use heal 1 hp
 		1:
@@ -134,7 +129,6 @@ func onToolHolderDeath() -> void:
 	super()
 
 func getDescription(use_default_values: bool = false) -> String:
-	var active_effect: ActiveEffectDatastore = getActiveEffectByName(info.name)
-	if !use_default_values and active_effect != null:
-		return Helper.getDescription(super(), [active_effect.charges])
+	if !use_default_values:
+		return Helper.getDescription(super(), [active_effect_charges])
 	return super(true)

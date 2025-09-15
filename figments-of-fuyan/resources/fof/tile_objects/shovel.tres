@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://182wneseu3bl"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://182wneseu3bl"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_lu720"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_8ctky"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_xpqi1"]
 [ext_resource type="PackedScene" uid="uid://cwgfswhsgggbl" path="res://assets/models/fof/objects/shovel.glb" id="3_0dp1o"]
@@ -15,7 +14,6 @@ ignore_collisions = false
 solids = Array[bool]([false])
 models = Array[PackedScene]([ExtResource("3_0dp1o")])
 points = Array[Array]([[Vector3(-0.00397122, 0.0183129, -0.0205615), Vector3(-0.145584, 0.429041, -0.139016), Vector3(0.145393, 0.421845, -0.137537), Vector3(0.0224106, 0.807479, -0.221605), Vector3(0.0298752, 1.18388, -0.324773), Vector3(0.155485, 1.60746, -0.424105), Vector3(-0.151637, 1.60976, -0.445597), Vector3(-0.0249905, 1.00905, -0.297342), Vector3(-0.0262848, 1.40172, -0.387826)]])
-active_effects = Array[ExtResource("1_lu720")]([])
 area_ids = Array[int]([3])
 id = 59
 name = "Shovel"

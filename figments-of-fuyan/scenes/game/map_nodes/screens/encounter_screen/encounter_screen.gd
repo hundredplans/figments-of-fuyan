@@ -8,8 +8,7 @@ class_name EncounterScreen extends MapNodeScreen
 @onready var NameLabel: Label = %NameLabel
 @onready var BackgroundIconContainer: Container = %BackgroundIconContainer
 @onready var AniPlayer: AnimationPlayer = %AniPlayer
-@onready var MapPanel: Control = %MapPanel
-@onready var ExitButton: Control = %ExitButton
+@onready var MinimapButton: Control = %MinimapButton
 
 var Subscreen: EncounterSubscreen
 var is_minimap_visible: bool
@@ -48,13 +47,13 @@ func onCreateBackgroundIcons() -> void:
 		
 func onUpdateStashScreen(created: bool) -> void:
 	var end_value: float = 0.0 if created else 1.0
-	for node: Control in [ExitButton, MapPanel, NameLabel] + Subscreen.getStashFadeNodes():
+	for node: Control in [MinimapButton, NameLabel] + Subscreen.getStashFadeNodes():
 		var tween := create_tween()
 		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)
 
 func onMinimapButtonPressed() -> void:
 	is_minimap_visible = !is_minimap_visible
-	var nodes: Array = [BackgroundIconContainer, NameLabel, ExitButton] + Subscreen.getMinimapFadeNodes()
+	var nodes: Array = [BackgroundIconContainer, NameLabel] + Subscreen.getMinimapFadeNodes()
 	minimap_mode.emit(is_minimap_visible, nodes)
 
 func getFadeBackgroundColor() -> Color: return Subscreen.getFadeBackgroundColor()

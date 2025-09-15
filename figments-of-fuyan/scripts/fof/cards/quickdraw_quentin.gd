@@ -51,30 +51,24 @@ func getDescription(use_default_values: bool = false) -> String:
 		return super(use_default_values)
 	return Helper.getDescription(super(), [bullets, getMaxBullets()])
 
-func getActiveEffectDescription(active_effect: ActiveEffectDatastore, description: String) -> String:
-	if active_effect.name != "Reload": return super(active_effect, description)
+func getActiveEffectDescription(description: String) -> String:
 	return Helper.getDescription(description, [bullets])
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Reload":
-		return ActiveEffectTiles.new([Tile], [Tile])
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	return ActiveEffectTiles.new([Tile], [Tile])
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Reload":
-		var animation_action := AnimationAction.new(self, "Ability")
-		animation_action.setActionDelay(ABILITY_DELAY)
-		var actions: Array = [animation_action]
-		
-		setBullets(1)
-		actions.append(RemoveStatusEffectAction.new(getStatusEffect(DISARM_ID)))
-		actions += getStunActions()
-		onPushAction(actions)
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var animation_action := AnimationAction.new(self, "Ability")
+	animation_action.setActionDelay(ABILITY_DELAY)
+	var actions: Array = [animation_action]
 	
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
-	return bullets == getMaxBullets() or !inEnemyVision()
+	setBullets(1)
+	actions.append(RemoveStatusEffectAction.new(getStatusEffect(DISARM_ID)))
+	actions += getStunActions()
+	onPushAction(actions)
+	
+func isActiveEffectDisabled() -> bool:
+	return super() or (bullets == getMaxBullets() or !inEnemyVision())
 	
 func setBullets(delta: int) -> void:
 	bullets += delta

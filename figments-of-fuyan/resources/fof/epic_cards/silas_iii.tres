@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_whp50"]
 [ext_resource type="Script" uid="uid://c85vjl4hwbga5" path="res://scripts/fof_info/cards/extra/boss_intent.gd" id="3_6wcet"]
 [ext_resource type="Resource" uid="uid://r4emkni6o3hx" path="res://resources/fof/archetypes/mercenary.tres" id="3_ixhyo"]
-[ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_epic_card.gd" id="3_y0bhv"]
 [ext_resource type="Resource" uid="uid://bkjytrcfiqqml" path="res://resources/datastore/boss_intents/silas_iii/autoattack.tres" id="5_jrady"]
 [ext_resource type="Resource" uid="uid://cfqbo8g6ycrrf" path="res://resources/datastore/boss_intents/silas_iii/defensive_stance.tres" id="6_8i8jn"]
 [ext_resource type="Resource" uid="uid://b6kim6ya1nhih" path="res://resources/datastore/boss_intents/silas_iii/grand_slash.tres" id="7_cctem"]
@@ -18,6 +17,7 @@
 [ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="14_5chws"]
 [ext_resource type="PackedScene" uid="uid://f1l6qi13fpy8" path="res://assets/models/fof/cards/silas_iii.glb" id="15_ixhyo"]
 [ext_resource type="Script" uid="uid://cj8tn3dc0epr7" path="res://scripts/fof_info/cards/extra/epic_card_tier_datastore.gd" id="16_jrady"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="17_jrady"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
 size = Vector3(0.633057, 1.99645, 0.406677)
@@ -112,5 +112,5 @@ awaken_boss_intent_name = "Reposition"
 id = 6
 name = "Silas III"
 gdscript = ExtResource("1_ixhyo")
-saved_data = ExtResource("3_y0bhv")
+saved_data = ExtResource("17_jrady")
 metadata/_custom_type_script = "uid://bd0ljqheerbtm"

@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://ce5g8i13ynby2"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://ce5g8i13ynby2"]
 
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_27edh"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="1_r3hko"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_ys83f"]
 [ext_resource type="PackedScene" uid="uid://b6glmyk7pcbsh" path="res://assets/models/fof/objects/coconut_effigy_bad.glb" id="2_0k0o3"]
 [ext_resource type="PackedScene" uid="uid://dq1kdt3taqjvh" path="res://assets/models/fof/objects/coconut_effigy_good.glb" id="3_psfxm"]
 [ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_pwvoq"]
@@ -16,7 +15,6 @@ ignore_collisions = false
 solids = Array[bool]([true, true])
 models = Array[PackedScene]([ExtResource("2_0k0o3"), ExtResource("3_psfxm")])
 points = Array[Array]([[Vector3(0.00705704, 0.386564, 0.139534), Vector3(0.0133819, 0.334846, -0.135822), Vector3(-0.00498295, 0.699486, -0.147032), Vector3(0.00190391, 0.769909, 0.156174), Vector3(-0.00641793, 1.03757, 0.184207), Vector3(0.0053181, 1.45495, 0.278799), Vector3(-0.423355, 1.04224, 0.170516), Vector3(0.460727, 1.02563, 0.173765), Vector3(0.511315, 1.25183, 0.165019), Vector3(-0.489619, 1.23356, 0.170895), Vector3(-0.530282, 1.25029, -0.167602), Vector3(0.482421, 1.22655, -0.178196), Vector3(-0.00217956, 1.01933, -0.183925), Vector3(0.0332634, 1.46552, -0.283503), Vector3(0.0431791, 1.66986, -0.0261776), Vector3(0.665112, 1.18794, -0.0246137), Vector3(-0.667173, 1.17791, 0.0019803)], [Vector3(-0.0109425, 1.50855, 0.264763), Vector3(-0.00178802, 1.02654, 0.176533), Vector3(0.00060305, 0.610279, 0.137814), Vector3(0.0501557, 0.0832586, 0.106152), Vector3(-0.521974, 1.24816, 0.164246), Vector3(0.468258, 1.20162, 0.174313), Vector3(-0.543413, 1.20057, -0.177808), Vector3(0.443439, 1.20378, -0.182066), Vector3(-0.0589006, 1.43058, -0.291239), Vector3(0.0430757, 1.6698, -0.0166911), Vector3(0.0494951, 0.979887, -0.168278), Vector3(0.00316682, 0.613464, -0.154299), Vector3(-0.00580695, 0.243297, -0.146147)]])
-active_effects = Array[ExtResource("1_ys83f")]([])
 area_ids = Array[int]([1])
 id = 10
 name = "Coconut Effigy"

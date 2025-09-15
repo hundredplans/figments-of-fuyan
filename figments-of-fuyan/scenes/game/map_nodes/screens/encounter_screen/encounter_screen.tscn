@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://4ffhqjbja8lj"]
+[gd_scene load_steps=8 format=3 uid="uid://4ffhqjbja8lj"]
 
 [ext_resource type="Script" uid="uid://ctsxv53bvd1yc" path="res://scenes/game/map_nodes/screens/encounter_screen/encounter_screen.gd" id="1_3jm3p"]
-[ext_resource type="PackedScene" uid="uid://dxvuvb68hgxug" path="res://scenes/common/exit_button/exit_button.tscn" id="2_1pd3x"]
-[ext_resource type="PackedScene" uid="uid://mehoa6ajrja5" path="res://scenes/common/highlight_tx_button.tscn" id="3_uht57"]
+[ext_resource type="Script" uid="uid://dclswmoq0nxko" path="res://scenes/common/new/default_button.gd" id="3_145is"]
 [ext_resource type="Texture2D" uid="uid://d203lqs8t7rqv" path="res://assets/sprites/ui/icons/minimap.png" id="4_145is"]
 [ext_resource type="LabelSettings" uid="uid://bw613ebdspq46" path="res://resources/ui/label_settings/spicyrice_massive.tres" id="5_uht57"]
 
@@ -83,37 +82,20 @@ theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 30
 columns = 6
 
-[node name="ExitButton" parent="." node_paths=PackedStringArray("exit_screen") instance=ExtResource("2_1pd3x")]
+[node name="MinimapButton" type="TextureRect" parent="." groups=["ActionLockDisabled"]]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -110.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = 110.0
-grow_horizontal = 0
-exit_screen = NodePath("..")
-
-[node name="MapPanel" type="PanelContainer" parent="."]
-unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(160, 160)
 layout_mode = 0
-offset_left = 1673.0
+offset_left = 1748.0
 offset_top = 10.0
-offset_right = 1793.0
-offset_bottom = 130.0
-mouse_filter = 1
-theme_type_variation = &"WhitePanelContainer"
-
-[node name="MarginContainer" type="MarginContainer" parent="MapPanel"]
-layout_mode = 2
-
-[node name="MinimapButton" parent="MapPanel/MarginContainer" groups=["ActionLockDisabled"] instance=ExtResource("3_uht57")]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture_normal = ExtResource("4_145is")
+offset_right = 1895.0
+offset_bottom = 158.0
+pivot_offset = Vector2(80, 80)
+mouse_filter = 0
+texture = ExtResource("4_145is")
+script = ExtResource("3_145is")
+autoscale = true
 
 [node name="AniPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
@@ -131,5 +113,6 @@ text = "Junk Man"
 label_settings = ExtResource("5_uht57")
 horizontal_alignment = 1
 
-[connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
-[connection signal="pressed" from="MapPanel/MarginContainer/MinimapButton" to="." method="onMinimapButtonPressed"]
+[connection signal="mouse_entered" from="MinimapButton" to="MinimapButton" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="MinimapButton" to="MinimapButton" method="onMouseInUI" binds= [false]]
+[connection signal="pressed" from="MinimapButton" to="." method="onMinimapButtonPressed"]

@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://d1ooiorsq2yic"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://d1ooiorsq2yic"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_8kvx3"]
 [ext_resource type="Script" uid="uid://dag5oajnyiof2" path="res://scripts/fof/objects/lottery_coconut.gd" id="2_bkjq0"]
 [ext_resource type="PackedScene" uid="uid://bqg3umphn7dha" path="res://assets/models/fof/objects/lottery_coconut.glb" id="3_nnook"]
 [ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="4_fim2g"]
@@ -15,7 +14,6 @@ ignore_collisions = true
 solids = Array[bool]([false])
 models = Array[PackedScene]([ExtResource("3_nnook")])
 points = Array[Array]([[Vector3(0.237033, 0.248421, 0.0985637), Vector3(-0.130234, 0.285748, 0.195214), Vector3(-0.0652245, 0.318341, -0.219852), Vector3(0.0191624, 0.485235, 0.0294329)]])
-active_effects = Array[ExtResource("1_8kvx3")]([])
 area_ids = Array[int]([1])
 id = 13
 name = "Lottery Coconut"

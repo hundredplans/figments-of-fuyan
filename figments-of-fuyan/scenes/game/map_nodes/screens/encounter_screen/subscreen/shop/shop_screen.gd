@@ -14,7 +14,8 @@ func setInfo(_map_node: MapNodeGD) -> void:
 	super(_map_node)
 	var base: Texture2D = map_node.getShopDatastore().getBaseSprite()
 	var frames: Array[Texture2D] = map_node.getShopDatastore().getFrames()
-	EncounterMainUI.setInfo(base, frames)
+	var bitmaps: Array[BitMap] = map_node.getShopDatastore().getBitmapFrames()
+	EncounterMainUI.setInfo(base, frames, bitmaps)
 	onCreatePurchasables()
 	
 func onCreatePurchasables() -> void:

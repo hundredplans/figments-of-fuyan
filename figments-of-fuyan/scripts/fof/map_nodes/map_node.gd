@@ -159,8 +159,13 @@ func getHoveredState() -> bool:
 func onStaticBodyHovered(is_walkable: bool, state: bool) -> void:
 	var mat: Material = null
 	if state:
-		if is_walkable and !is_minimap: mat = load(info.MAP_NODE_WALKABLE_OUTLINE_PATH)
-		else: mat = load(info.MAP_NODE_OUTLINE_PATH)
+		if is_walkable and !is_minimap:
+			mat = load(getInfo().getMapNodeWalkableOutlinePath())
+			Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+		else:
+			mat = load(info.MAP_NODE_OUTLINE_PATH)
+	else:
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	mesh.set_surface_override_material(0, mat)
 		
 #endregion
@@ -235,3 +240,5 @@ func onCreateWorldScene() -> void:
 func onFadeLoaded() -> void:
 	fade_loaded.emit()
 #endregion
+
+func getInfo() -> MapNodeInfo: return info

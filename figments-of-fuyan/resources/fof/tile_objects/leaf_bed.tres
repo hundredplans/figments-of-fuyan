@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://vglfu1gwyl5l"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://vglfu1gwyl5l"]
 
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="1_agq2m"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_pt0tl"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_u2cj6"]
 [ext_resource type="PackedScene" uid="uid://dcg40r7xvfl7p" path="res://assets/models/fof/objects/leaf_bed.glb" id="2_ks0tm"]
 [ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="3_fes5l"]
 
@@ -15,7 +14,6 @@ ignore_collisions = false
 solids = Array[bool]([true])
 models = Array[PackedScene]([ExtResource("2_ks0tm")])
 points = Array[Array]([[Vector3(0.533729, 0.415129, 0.0581749), Vector3(1.07462, 0.415129, 0.0386471), Vector3(1.73787, 0.415129, 0.0243597), Vector3(0.154862, 0.554115, 0.0272476), Vector3(1.97213, 0.048094, 0.480275), Vector3(-0.0895537, 0.0550922, 0.491445), Vector3(-0.0831385, 0.275397, 0.406499), Vector3(0.798805, 0.290889, 0.394398), Vector3(1.90118, 0.316079, 0.377081), Vector3(1.90615, 0.262236, -0.430045), Vector3(0.996834, 0.269224, -0.393635), Vector3(-0.0324344, 0.291211, -0.351368), Vector3(-0.0577316, 0.0214882, -0.549269), Vector3(1.9688, 0.03924, -0.549572)]])
-active_effects = Array[ExtResource("1_u2cj6")]([])
 area_ids = Array[int]([1])
 id = 20
 name = "Leaf Bed"

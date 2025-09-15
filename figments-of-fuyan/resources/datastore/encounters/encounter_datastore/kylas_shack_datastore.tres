@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="ShopDatastore" load_steps=17 format=3 uid="uid://dcaj2ek3cysfg"]
+[gd_resource type="Resource" script_class="ShopDatastore" load_steps=19 format=3 uid="uid://dcaj2ek3cysfg"]
 
 [ext_resource type="Texture2D" uid="uid://ci2idrr3n2y2t" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_icon.png" id="1_eayjn"]
 [ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="1_femxc"]
 [ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="2_7m0r6"]
 [ext_resource type="Texture2D" uid="uid://bw6o87sh5cdhp" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_base.png" id="2_07tl3"]
+[ext_resource type="BitMap" uid="uid://ditkeii5g81lk" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_bitmap1.png" id="3_e4cwg"]
 [ext_resource type="Texture2D" uid="uid://bsn45fie3pd8h" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_frame1.png" id="3_s0vea"]
 [ext_resource type="Texture2D" uid="uid://jhemyogg0wsc" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_frame2.png" id="4_e4cwg"]
+[ext_resource type="BitMap" uid="uid://g3ffb3eknso" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_bitmap2.png" id="4_jlglj"]
 [ext_resource type="Texture2D" uid="uid://bbgcwki7jgegh" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_hand_open.png" id="5_07tl3"]
 [ext_resource type="Texture2D" uid="uid://c6n76ityvwtdl" path="res://assets/sprites/ui/scene_specific/shop_screen/kylas_shack/kyla_hand_closed.png" id="6_s0vea"]
 [ext_resource type="Resource" uid="uid://dypcxce3yrfoe" path="res://resources/datastore/encounters/rarity_prices/tool_rarity_prices.tres" id="8_6lh6m"]
@@ -15,42 +17,42 @@
 script = ExtResource("1_femxc")
 item_type = 1
 rarity_price_datastore = ExtResource("8_6lh6m")
-position = Vector2(100, 350)
+position = Vector2(580, 400)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_mo18o"]
 script = ExtResource("1_femxc")
 item_type = 1
 rarity_price_datastore = ExtResource("8_6lh6m")
-position = Vector2(450, 350)
+position = Vector2(330, 400)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_gosbg"]
 script = ExtResource("1_femxc")
 item_type = 1
 rarity_price_datastore = ExtResource("8_6lh6m")
-position = Vector2(800, 350)
+position = Vector2(80, 400)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_ddlpd"]
 script = ExtResource("1_femxc")
 item_type = 1
 rarity_price_datastore = ExtResource("8_6lh6m")
-position = Vector2(1150, 350)
+position = Vector2(1680, 400)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_07tl3"]
 script = ExtResource("1_femxc")
 item_type = 1
 rarity_price_datastore = ExtResource("8_6lh6m")
-position = Vector2(450, 700)
+position = Vector2(1430, 400)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [sub_resource type="Resource" id="Resource_s0vea"]
 script = ExtResource("1_femxc")
 item_type = 1
 rarity_price_datastore = ExtResource("8_6lh6m")
-position = Vector2(800, 700)
+position = Vector2(1180, 400)
 metadata/_custom_type_script = "uid://b48etdqq4rha8"
 
 [resource]
@@ -59,11 +61,11 @@ items = Array[ExtResource("1_femxc")]([SubResource("Resource_5h2gg"), SubResourc
 merchant_buy_frame = ExtResource("8_rmt7j")
 id = 15
 background_icon = ExtResource("1_eayjn")
-background_main_color = Color(0.175183, 0.23, 0.1702, 1)
+background_main_color = Color(0.466667, 0.32549, 0.231373, 1)
 base_sprite = ExtResource("2_07tl3")
 frames = Array[Texture2D]([ExtResource("3_s0vea"), ExtResource("4_e4cwg")])
 hands = Array[Texture2D]([ExtResource("5_07tl3"), ExtResource("6_s0vea")])
-bitmap_frames = Array[BitMap]([])
+bitmap_frames = Array[BitMap]([ExtResource("3_e4cwg"), ExtResource("4_jlglj")])
 drag_zone_name = ""
 drag_zone_label_color = Color(0, 0, 0, 1)
 metadata/_custom_type_script = "uid://doid1bi8h7kwu"

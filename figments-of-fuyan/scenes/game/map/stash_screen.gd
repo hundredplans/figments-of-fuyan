@@ -4,6 +4,7 @@ signal active_tool_added
 signal exit_start
 signal deck_slot_changed
 signal mouse_in_ui
+signal disable_stash_button
 
 var original_tool_icon_disable_tooltip: bool
 
@@ -28,7 +29,6 @@ var DragIconUI: TbcUI
 var draggable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.Rarities.EXALT,\
 	Game.Rarities.MINIBOSS, Game.Rarities.BOSS]
 
-@onready var ExitButton: Control = %ExitButton
 @onready var MaxEnergyLabel: Label = %MaxEnergyLabel
 
 @onready var DragZoneRect: ColorRect = %DragZoneRect
@@ -166,7 +166,8 @@ func onMouseInUI(state: bool) -> void:
 	mouse_in_ui.emit(state)
 	is_mouse_in_ui = state
 
-func onExitButtonPressed() -> void:
+func onStartExit() -> void:
+	if is_exit_start: return
 	is_exit_start = true
 	exit_start.emit()
 	AniPlayer.play_backwards("SlideUIElements")
@@ -174,6 +175,9 @@ func onExitButtonPressed() -> void:
 	Game.update_stash_screen.emit(false)
 	await AniPlayer.animation_finished
 	queue_free()
+
+func isExiting() -> bool:
+	return is_exit_start
 
 func onSlotLocked(deck_slot: DeckSlot, state: bool) -> void:
 	deck_slot.is_locked = state
@@ -418,7 +422,7 @@ func onToolIconDragEnd(ToolIcon: TbcUI) -> void:
 	ToolIcon.setEndDragOnRelease(true)
 	
 	var area: Area2D = StashScreenCardUIRaycast.get_collider()
-	if area == null: onExitButtonPressed(); return
+	if area == null: onStartExit(); return
 	
 	var CardUI: Control = area.get_parent()
 	var Card: CardGD = CardUI.Card
@@ -433,7 +437,7 @@ func onToolIconDragEnd(ToolIcon: TbcUI) -> void:
 		_CardUI.setHoverable(false)
 	
 	await get_tree().create_timer(TOOL_ADDED_EXIT_DELAY).timeout
-	onExitButtonPressed()
+	onStartExit()
 
 var sort_type: int # 0 = nothing, 1 = rarity, 2 = energy, 3 = tier, 4 = area, 5 = tool
 func onSortByRarity() -> void: # Rarity, Energy, Tier, ID
@@ -685,9 +689,10 @@ func onItemDragged(ItemUI: Control, item: FofGD) -> void:
 	if is_junk_man:
 		is_exit = onJunkManSell(price)
 	
-	ExitButton.setDisabled(true)
+	disable_stash_button.emit(true)
 	await onItemDraggedVisual(ItemUI, item, price)
-	if is_exit: onExitButtonPressed()
+	if is_exit:
+		onStartExit()
 	
 	Game.getSaveFile().onPushAction(ChangeShillingsAction.new(price))
 			
@@ -724,7 +729,7 @@ func onItemDragged(ItemUI: Control, item: FofGD) -> void:
 	ItemUI.setDraggable(true)
 	ItemUI.setHoverable(true)
 	ItemUI.onScaleIconUISize(false, true)
-	ExitButton.setDisabled(false)
+	disable_stash_button.emit(false)
 
 func onItemDraggedVisual(ItemUI: Control, item: FofGD, price: int) -> void:
 	ItemUI.setHoverable(false)

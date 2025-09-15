@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://ci4vj0r0fbdf4"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://ci4vj0r0fbdf4"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_hfwv2"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_rtvfu"]
 [ext_resource type="PackedScene" uid="uid://b3xhq0onqg54" path="res://scenes/game/objects/wheat.tscn" id="3_57c3q"]
 [ext_resource type="PackedScene" uid="uid://gbfprabf4nra" path="res://scenes/game/objects/wheat1.tscn" id="4_57c3q"]
@@ -17,7 +16,6 @@ ignore_collisions = false
 solids = Array[bool]([false, false, false])
 models = Array[PackedScene]([ExtResource("3_57c3q"), ExtResource("4_57c3q"), ExtResource("5_hfwv2")])
 points = Array[Array]([[], [], []])
-active_effects = Array[ExtResource("1_hfwv2")]([])
 area_ids = Array[int]([3])
 id = 35
 name = "Wheat"

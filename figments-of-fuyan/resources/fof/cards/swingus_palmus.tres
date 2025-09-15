@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://df2metjp43uwk"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://df2metjp43uwk"]
 
 [ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_np7rs"]
 [ext_resource type="Image" uid="uid://bu3frjs7hgafe" path="res://assets/sprites/game/cards/art_pop/swingus_palmus.png" id="2_qcnbn"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://c1aplll4m1llg" path="res://scripts/fof/cards/swingus_palmus.gd" id="4_45u4o"]
 [ext_resource type="PackedScene" uid="uid://c0efk7tksn457" path="res://assets/models/fof/cards/swingus_palmus.glb" id="5_8mjkv"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_hr3n5"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_01qim"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_x4ske"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_endje"]
 
@@ -40,7 +39,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_v2qqh")]([])
-active_abilities = Array[ExtResource("11_01qim")]([])
 description_datastore = SubResource("Resource_5c8uc")
 
 [sub_resource type="Resource" id="Resource_y3gry"]
@@ -55,7 +53,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_v2qqh")]([])
-active_abilities = Array[ExtResource("11_01qim")]([])
 description_datastore = SubResource("Resource_y3gry")
 
 [sub_resource type="Resource" id="Resource_v0o2b"]
@@ -70,7 +67,6 @@ health = 4
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_v2qqh")]([])
-active_abilities = Array[ExtResource("11_01qim")]([])
 description_datastore = SubResource("Resource_v0o2b")
 
 [sub_resource type="Resource" id="Resource_endje"]
@@ -85,7 +81,6 @@ health = 5
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_v2qqh")]([])
-active_abilities = Array[ExtResource("11_01qim")]([])
 description_datastore = SubResource("Resource_endje")
 
 [resource]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://yj3g0jqsh5ow"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://yj3g0jqsh5ow"]
 
 [ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_7o1xd"]
 [ext_resource type="Image" uid="uid://du02yxtlqrpgq" path="res://assets/sprites/game/cards/art_pop/blade_of_the_palms.png" id="2_67b8k"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://c4qts40qrbkie" path="res://assets/sprites/game/cards/art_mini/blade_of_the_palms.png" id="3_w677l"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_6gq71"]
 [ext_resource type="PackedScene" uid="uid://bb5vdrqxqa0wb" path="res://assets/models/fof/cards/blade_of_the_palms.glb" id="7_lok3x"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_kih3h"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_p6nf4"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_n7tox"]
 
@@ -40,7 +39,6 @@ health = 2
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_xobv8")]([])
-active_abilities = Array[ExtResource("11_kih3h")]([])
 description_datastore = SubResource("Resource_ybgri")
 
 [sub_resource type="Resource" id="Resource_4x8ew"]
@@ -55,7 +53,6 @@ health = 2
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_xobv8")]([])
-active_abilities = Array[ExtResource("11_kih3h")]([])
 description_datastore = SubResource("Resource_4x8ew")
 
 [sub_resource type="Resource" id="Resource_lpc65"]
@@ -70,7 +67,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_xobv8")]([])
-active_abilities = Array[ExtResource("11_kih3h")]([])
 description_datastore = SubResource("Resource_lpc65")
 
 [sub_resource type="Resource" id="Resource_n7tox"]
@@ -85,7 +81,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("2_xobv8")]([])
-active_abilities = Array[ExtResource("11_kih3h")]([])
 description_datastore = SubResource("Resource_n7tox")
 
 [resource]

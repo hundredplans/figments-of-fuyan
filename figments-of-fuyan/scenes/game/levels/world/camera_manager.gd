@@ -3,6 +3,7 @@ extends Node3D
 signal camera_position_updated
 signal create_camera_action
 signal zooming
+signal camera_change_finish
 
 #region Exports
 # How high / low the level camera can go
@@ -117,6 +118,7 @@ func onCameraChange(_SpectateObject: GameObjectGD) -> void:
 		setCameraType(false)
 		setCameraCentralPoint()
 		setCameraPointAlongCircle()
+	camera_change_finish.emit(SpectateObject)
 
 func onCreateCameraChangeAction(NewSpectateObject: GameObjectGD) -> void:
 	create_camera_action.emit(NewSpectateObject)

@@ -39,6 +39,13 @@ const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/bas
 @export var eye: float
 @export_group("")
 
+@export_group("Audio")
+@export var attack_audio: AudioStream
+@export var awaken_audio: AudioStream
+@export var death_audio: AudioStream
+@export var hurt_audio: AudioStream
+@export_group("")
+
 static func getInfoPath() -> String: return "res://resources/fof/cards"
 
 static func getFofName() -> String: return "Card"
@@ -74,3 +81,7 @@ func getColoredBaseMaterial(team: int) -> ShaderMaterial:
 		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH)
 	return null
 	
+func getAwakenAudio() -> AudioStream: return awaken_audio
+func getDeathAudio() -> AudioStream: return death_audio
+func getHurtAudio() -> AudioStream: return hurt_audio
+func getAttackAudio() -> AudioStream: return attack_audio

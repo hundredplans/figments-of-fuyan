@@ -1,16 +1,19 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3 uid="uid://cyprv62o27lf5"]
 
-[ext_resource type="Resource" path="res://resources/fof/archetypes/reinforcer.tres" id="2_05brf"]
-[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/cedric_baldwin.png" id="2_5gqms"]
-[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/cedric_baldwin.png" id="2_fbhtq"]
-[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_xlam3"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_rlsn7"]
-[ext_resource type="Script" path="res://scripts/fof/cards/cedric_baldwin.gd" id="6_05brf"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_eavao"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/cards/cedric_baldwin.glb" id="7_05brf"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_chjoo"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_n2pmv"]
-[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_bjrms"]
+[ext_resource type="Resource" uid="uid://6j57uasj8x66" path="res://resources/fof/archetypes/reinforcer.tres" id="2_05brf"]
+[ext_resource type="Image" uid="uid://k35gyq4mh3hj" path="res://assets/sprites/game/cards/art_pop/cedric_baldwin.png" id="2_5gqms"]
+[ext_resource type="Texture2D" uid="uid://cxqcmmljc3e87" path="res://assets/sprites/game/cards/art_mini/cedric_baldwin.png" id="2_fbhtq"]
+[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_xlam3"]
+[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_rlsn7"]
+[ext_resource type="AudioStream" uid="uid://doduhh7vw6ho2" path="res://assets/audio/game/cards/cedric_baldwin/attack_cedric_baldwin.mp3" id="5_bjrms"]
+[ext_resource type="AudioStream" uid="uid://dj2yp46p3cfus" path="res://assets/audio/game/cards/cedric_baldwin/awaken_cedric_baldwin.mp3" id="5_cmf43"]
+[ext_resource type="Script" uid="uid://unq6mk6diy7r" path="res://scripts/fof/cards/cedric_baldwin.gd" id="6_05brf"]
+[ext_resource type="AudioStream" uid="uid://c2nujhypi5dk2" path="res://assets/audio/game/cards/cedric_baldwin/death_cedric_baldwin.mp3" id="6_cmf43"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_eavao"]
+[ext_resource type="PackedScene" uid="uid://da2ism6tx1vpp" path="res://assets/models/fof/cards/cedric_baldwin.glb" id="7_05brf"]
+[ext_resource type="AudioStream" uid="uid://iii713yxmts4" path="res://assets/audio/game/cards/cedric_baldwin/hurt_cedric_baldwin.mp3" id="8_k0qiy"]
+[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_n2pmv"]
+[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_bjrms"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -28,15 +31,6 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_chjoo"]
-script = ExtResource("11_chjoo")
-name = "Rousing Hair"
-description = "Give an adjacent ally +1 ATT for [1] Turn"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
-
 [sub_resource type="Resource" id="Resource_a3a8t"]
 script = ExtResource("13_bjrms")
 description = "ABILITY [[X]]: Give an ally in vision +1 ATT for [1] Turn"
@@ -49,18 +43,7 @@ health = 1
 speed = 2
 energy = 1
 traits = Array[ExtResource("2_xlam3")]([])
-active_abilities = Array[ExtResource("11_chjoo")]([SubResource("Resource_chjoo")])
 description_datastore = SubResource("Resource_a3a8t")
-
-[sub_resource type="Resource" id="Resource_k0qiy"]
-script = ExtResource("11_chjoo")
-name = "Rousing Hair"
-description = "Give an adjacent ally +2 ATT for [2] Turns"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_6hue0"]
 script = ExtResource("13_bjrms")
@@ -74,7 +57,6 @@ health = 1
 speed = 2
 energy = 1
 traits = Array[ExtResource("2_xlam3")]([])
-active_abilities = Array[ExtResource("11_chjoo")]([SubResource("Resource_k0qiy")])
 description_datastore = SubResource("Resource_6hue0")
 
 [sub_resource type="Resource" id="Resource_xsn4m"]
@@ -89,7 +71,6 @@ health = 1
 speed = 3
 energy = 1
 traits = Array[ExtResource("2_xlam3")]([])
-active_abilities = Array[ExtResource("11_chjoo")]([SubResource("Resource_k0qiy")])
 description_datastore = SubResource("Resource_xsn4m")
 
 [sub_resource type="Resource" id="Resource_bjrms"]
@@ -104,7 +85,6 @@ health = 1
 speed = 3
 energy = 1
 traits = Array[ExtResource("2_xlam3")]([])
-active_abilities = Array[ExtResource("11_chjoo")]([SubResource("Resource_k0qiy")])
 description_datastore = SubResource("Resource_bjrms")
 
 [resource]
@@ -122,6 +102,10 @@ collision_shape = SubResource("PackedScene_d6dgo")
 stat = 1.947
 top = 2.058
 eye = 1.788
+attack_audio = ExtResource("5_bjrms")
+awaken_audio = ExtResource("5_cmf43")
+death_audio = ExtResource("6_cmf43")
+hurt_audio = ExtResource("8_k0qiy")
 id = 56
 name = "Cedric Baldwin"
 gdscript = ExtResource("6_05brf")

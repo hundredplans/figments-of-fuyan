@@ -1,21 +1,11 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=20 format=3 uid="uid://1dywqryan1gg"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://1dywqryan1gg"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_1j7x4"]
 [ext_resource type="Texture2D" uid="uid://sopvox7cn04a" path="res://assets/sprites/game/tools/Half-eaten Coconut.png" id="2_1p4px"]
 [ext_resource type="Script" uid="uid://b862utx14ejyy" path="res://scripts/fof/tools/halfeaten_coconut.gd" id="2_kaqjf"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_m65j5"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="7_unswy"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="8_qrpta"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="9_ab0kq"]
-
-[sub_resource type="Resource" id="Resource_hb5as"]
-script = ExtResource("8_qrpta")
-name = "Half-eaten Coconut"
-description = " If you have an adjacent ally, Heal this and the ally [1] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_k63wb"]
 script = ExtResource("9_ab0kq")
@@ -24,17 +14,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_h53k8"]
 script = ExtResource("7_unswy")
-active_abilities = Array[ExtResource("8_qrpta")]([SubResource("Resource_hb5as")])
 description_datastore = SubResource("Resource_k63wb")
-
-[sub_resource type="Resource" id="Resource_mbtaj"]
-script = ExtResource("8_qrpta")
-name = "Half-eaten Coconut"
-description = "If you have an adjacent ally, Heal this and the ally [2] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_saqps"]
 script = ExtResource("9_ab0kq")
@@ -43,17 +23,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_n37ih"]
 script = ExtResource("7_unswy")
-active_abilities = Array[ExtResource("8_qrpta")]([SubResource("Resource_mbtaj")])
 description_datastore = SubResource("Resource_saqps")
-
-[sub_resource type="Resource" id="Resource_0tfjt"]
-script = ExtResource("8_qrpta")
-name = "Half-eaten Coconut"
-description = "If you have an adjacent ally, Heal this and the ally [2] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_ab0kq"]
 script = ExtResource("9_ab0kq")
@@ -62,17 +32,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_g6801"]
 script = ExtResource("7_unswy")
-active_abilities = Array[ExtResource("8_qrpta")]([SubResource("Resource_0tfjt")])
 description_datastore = SubResource("Resource_ab0kq")
-
-[sub_resource type="Resource" id="Resource_qrpta"]
-script = ExtResource("8_qrpta")
-name = "Half-eaten Coconut"
-description = "If you have an adjacent ally, Heal this and the ally [3] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_160u0"]
 script = ExtResource("9_ab0kq")
@@ -81,7 +41,6 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_dpsfd"]
 script = ExtResource("7_unswy")
-active_abilities = Array[ExtResource("8_qrpta")]([SubResource("Resource_qrpta")])
 description_datastore = SubResource("Resource_160u0")
 
 [resource]

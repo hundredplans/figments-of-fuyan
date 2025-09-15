@@ -9,7 +9,7 @@ const CLONE_ID: int = 78
 const PEDESTAL_TILE_COORDS := Vector4i(6, -12, 6, 8)
 
 #region Defaults
-func onSave() -> SavedDataEpicCard:
+func onSave() -> SavedDataCard:
 	return super()
 
 func onProcessAction(action: Action) -> void:

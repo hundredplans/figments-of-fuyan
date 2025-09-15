@@ -10,29 +10,24 @@ const TIER_TWO_HEAL: int = 1
 const TIER_THREE_HEAL: int = 1
 const TIER_FOUR_HEAL: int = 2
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Treeleaf Remedy":
-		var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 2)
-		return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team) != null))
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	var tiles: Array = Game.getAdjacentOrCloserTiles(Tile, 2)
+	return ActiveEffectTiles.new(tiles, tiles.filter(func(x: TileGD): return Game.getAllyFieldCard(x, team) != null))
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Treeleaf Remedy":
-		var Card: CardGD = Game.getFieldCard(PickedTile)
-		var attack_gain: int = getTierAttack()
-		var heal_amount: int = getTierHeal()
-		var actions: Array = [
-			StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, attack_gain, 1)),
-			DelayedHealAction.new(HealDatastore.new(Card, getTierHeal(), 1)),
-			ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, Card.Tile))]
-		
-		onPushAction(actions)
-		onAbility()
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var Card: CardGD = Game.getFieldCard(PickedTile)
+	var attack_gain: int = getTierAttack()
+	var heal_amount: int = getTierHeal()
+	var actions: Array = [
+		StatAction.new(StatInfo.new(Card, Game.Stats.ATTACK, attack_gain, 1)),
+		DelayedHealAction.new(HealDatastore.new(Card, getTierHeal(), 1)),
+		ChangeTileRotationAction.new(self, Game.getRelativeTileRotation(Tile, Card.Tile))]
+	
+	onPushAction(actions)
+	onAbility()
 		
 # If the unit is in combat, is healable, then sorted by how low the attack is
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var cards: Array = active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
 	
 	cards = cards.filter(func(x: CardGD): return x.isHealable() and x.isInCombat())
@@ -43,9 +38,8 @@ func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_til
 	return cards[0].getTile()
 	
 func getDescription(use_default_values: bool = false) -> String:
-	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Treeleaf Remedy")
-	if !use_default_values and active_effect != null:
-		return Helper.getDescription(super(), [active_effect.charges])
+	if !use_default_values:
+		return Helper.getDescription(super(), [active_effect_charges])
 	return super(true)
 
 func getTierAttack() -> int:

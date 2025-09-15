@@ -2,6 +2,8 @@ extends Control
 
 
 #region Onready
+@onready var EnemyStatusManager: Control = %EnemyStatusManager
+@onready var AllyStatusManager: Control = %AllyStatusManager
 @onready var FadeBackground: Control = %FadeBackground
 @onready var MouseInUILabel: Label = %MouseInUILabel
 @onready var MainControl: Control = %Main
@@ -21,7 +23,6 @@ extends Control
 @onready var BackgroundDimmer: ColorRect = %BackgroundDimmer
 @onready var PassButton: Button = %PassButton
 
-@onready var ActiveEffects: Container = %ActiveEffects
 @onready var Console: Control = %Console
 
 @onready var BoonBox: Control = %BoonBox
@@ -34,7 +35,6 @@ extends Control
 @onready var LeftCameraArrow: Button = %LeftCameraArrow
 @onready var RightCameraArrow: Button = %RightCameraArrow
 
-@onready var MinimapControl: Control = %MinimapControl
 @onready var DeckCardAmountLabel: Label = %DeckCardAmountLabel
 
 @onready var OverworldInformation: Control = %OverworldInformation
@@ -88,8 +88,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.awakened.connect(onAwakened)
 	level.active_effect_used.connect(onActiveEffectUsed)
-	level.active_effect_added.connect(onActiveEffectAdded)
-	level.active_effect_removed.connect(onActiveEffectRemoved)
 	level.tile_occupied.connect(onTileOccupied)
 	level.game_started.connect(onGameStarted)
 	level.game_started_post.connect(onGameStartedPost)
@@ -124,6 +122,10 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	for Tile: TileGD in get_tree().get_nodes_in_group("LevelTilesGD"):
 		onTileCreated(Tile)
+		
+	for Card: CardGD in get_tree().get_nodes_in_group("FieldCardsGD"):
+		if Card.isAlly(0): AllyStatusManager.onCreateUnitStatusUI(Card)
+		else: EnemyStatusManager.onCreateUnitStatusUI(Card)
 		
 func _process(_delta: float) -> void:
 	if HoverCardUI != null:
@@ -357,14 +359,15 @@ func onDeath(Card: CardGD) -> void:
 #endregion
 
 #region Active Effects
-func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore) -> void:
-	var tiles: ActiveEffectTiles = null
-	if active_effect.owner is IObjectGD: tiles = active_effect.owner.getActiveEffectTiles(active_effect, level.getAllySpectateObject())
-	else: tiles = active_effect.owner.getActiveEffectTiles(active_effect)
-	
-	if !tiles.in_range_tiles.is_empty():
-		setActiveEffectLabel(active_effect.name)
-		active_effect_box_pressed.emit(active_effect, tiles)
+func onActiveEffectBoxPressed() -> void:
+	pass
+	#var tiles: ActiveEffectTiles = null
+	#if active_effect.owner is IObjectGD: tiles = active_effect.owner.getActiveEffectTiles(active_effect, level.getAllySpectateObject())
+	#else: tiles = active_effect.owner.getActiveEffectTiles(active_effect)
+	#
+	#if !tiles.in_range_tiles.is_empty():
+		#setActiveEffectLabel(active_effect.name)
+		#active_effect_box_pressed.emit(active_effect, tiles)
 		
 func onActiveEffectDeselected() -> void:
 	setActiveEffectLabel("")
@@ -375,34 +378,15 @@ func onActiveEffectDeselected() -> void:
 func onActiveEffectSelected() -> void:
 	PassButton.setAbilityMode(true)
 		
-func onActiveEffectActivated(_active_effect: ActiveEffectDatastore) -> void:
+func onActiveEffectActivated() -> void:
 	onUpdateActiveEffects()
 	
 func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
-	var active_effects: Array = []
-	var CardSpectate: CardGD = null if SpectateObject is not CardGD else SpectateObject
-	if CardSpectate != null and CardSpectate.isAlive():
-		active_effects = SpectateObject.active_effects
-		if SpectateObject.getTool() != null:
-			active_effects += SpectateObject.getTool().active_effects
-		
-		for IObject in get_tree().get_nodes_in_group("LevelIObjectsGD")\
-			.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
-			active_effects += IObject.getValidActiveEffects(SpectateObject)
-			
-		active_effects = active_effects.filter(func(x: ActiveEffectDatastore): return x.owner is CardGD or x.getCharges() != 0)
-			
-	ActiveEffects.onUpdate(active_effects, CardSpectate)
+	pass
 #endregion
 
 #region Active Effects
-func onActiveEffectUsed(_active_effect: ActiveEffectDatastore) -> void:
-	onUpdateActiveEffects()
-	
-func onActiveEffectAdded(_active_effect: ActiveEffectDatastore) -> void:
-	onUpdateActiveEffects()
-	
-func onActiveEffectRemoved(_active_effect: ActiveEffectDatastore) -> void:
+func onActiveEffectUsed() -> void:
 	onUpdateActiveEffects()
 	
 func onToolRemoved() -> void:
@@ -430,7 +414,6 @@ func onGameEnded(rewards: Rewards) -> void:
 		RewardsUI.screen_finished.connect(onRewardsFinished)
 		RewardsUI.stash_screen_fade_out.connect(onRewardsStashScreenFade.bind(false))
 		RewardsUI.stash_screen_fade_in.connect(onRewardsStashScreenFade.bind(true))
-		MinimapControl = RewardsUI.MinimapControl
 		
 		var filler := Control.new()
 		filler.custom_minimum_size.x = OverworldInformation.size.x
@@ -543,6 +526,9 @@ func onProcessAction(action: Action) -> void:
 			onMinimapPostLoadingScreen()
 		elif action is EndLoadingScreenAction and !active_minimap:
 			onEndLoadingScreen()
+		elif action is FinishAwakenAction:
+			if action.Card.isAlly(0): AllyStatusManager.onCreateUnitStatusUI(action.Card)
+			else: EnemyStatusManager.onCreateUnitStatusUI(action.Card)
 			
 		if level.isEpic():
 			var BossCard: CardGD = level.getBoss() 
@@ -603,3 +589,6 @@ func onEndLoadingScreen() -> void:
 	visible = true
 	await get_tree().create_timer(Game.FADE_TIME * 2).timeout
 	FadeBackground.onFade(false)
+
+func onCameraChangeFinish(SpectateObject: GameObjectGD) -> void:
+	AllyStatusManager.onUpdateSpectatedUnitStatusUI(SpectateObject)

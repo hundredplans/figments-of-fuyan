@@ -1,21 +1,11 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=20 format=3 uid="uid://b8lvyd5a1tx8x"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://b8lvyd5a1tx8x"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_washl"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_6i5g3"]
 [ext_resource type="Texture2D" uid="uid://bbj5jlpmn3rjt" path="res://assets/sprites/game/tools/Coconut Staff.png" id="2_w3w6p"]
 [ext_resource type="Script" uid="uid://bq3pcg505djgw" path="res://scripts/fof/tools/coconut_staff.gd" id="2_xagqf"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_iil5n"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_2esoy"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_fus8k"]
-
-[sub_resource type="Resource" id="Resource_ajxn7"]
-script = ExtResource("7_2esoy")
-name = "Coconut Staff"
-description = "Heal allies in vision [1] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_tr0e8"]
 script = ExtResource("8_fus8k")
@@ -24,17 +14,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_sj3uk"]
 script = ExtResource("6_iil5n")
-active_abilities = Array[ExtResource("7_2esoy")]([SubResource("Resource_ajxn7")])
 description_datastore = SubResource("Resource_tr0e8")
-
-[sub_resource type="Resource" id="Resource_2esoy"]
-script = ExtResource("7_2esoy")
-name = "Coconut Staff"
-description = "Heal allies in vision [2] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_xjk8v"]
 script = ExtResource("8_fus8k")
@@ -43,17 +23,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_odp78"]
 script = ExtResource("6_iil5n")
-active_abilities = Array[ExtResource("7_2esoy")]([SubResource("Resource_2esoy")])
 description_datastore = SubResource("Resource_xjk8v")
-
-[sub_resource type="Resource" id="Resource_h8417"]
-script = ExtResource("7_2esoy")
-name = "Coconut Staff"
-description = "Heal all allies [2] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_fus8k"]
 script = ExtResource("8_fus8k")
@@ -62,17 +32,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_sr3gn"]
 script = ExtResource("6_iil5n")
-active_abilities = Array[ExtResource("7_2esoy")]([SubResource("Resource_h8417")])
 description_datastore = SubResource("Resource_fus8k")
-
-[sub_resource type="Resource" id="Resource_aymn4"]
-script = ExtResource("7_2esoy")
-name = "Coconut Staff"
-description = "Heal all allies [3] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_bd8v1"]
 script = ExtResource("8_fus8k")
@@ -81,7 +41,6 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_46vcf"]
 script = ExtResource("6_iil5n")
-active_abilities = Array[ExtResource("7_2esoy")]([SubResource("Resource_aymn4")])
 description_datastore = SubResource("Resource_bd8v1")
 
 [resource]

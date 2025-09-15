@@ -50,6 +50,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	CameraManager.camera_position_updated.connect(onCameraPositionUpdated)
 	CameraManager.create_camera_action.connect(onCreateCameraChangeAction)
+	CameraManager.camera_change_finish.connect(onCameraChangeFinish)
 	CameraManager.setInfo(level.level_camera_data)
 	
 	UI.action_lock.connect(CameraManager.setActionLock)
@@ -209,6 +210,9 @@ func onCameraChange(SpectateObject: GameObjectGD, OldSpectateObject: GameObjectG
 	
 	setLevelVisibleNotInVisionForSpectateObject(SpectateObject)
 	
+func onCameraChangeFinish(SpectateObject: GameObjectGD) -> void:
+	UI.onCameraChangeFinish(SpectateObject)
+	
 func onCameraChangePre(_SpectateObject: GameObjectGD, _OldSpectateObject: GameObjectGD) -> void:
 	if !CameraManager.isCycle():
 		onActiveEffectDeselected()
@@ -327,17 +331,18 @@ func onVisionChanged() -> void:
 #endregion
 	
 #region Active Effects
-var current_active_effect: ActiveEffectDatastore
+var current_active_effect: Variant
 var current_active_effect_tiles: ActiveEffectTiles
 
-func onActiveEffectBoxPressed(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles) -> void:
-	if current_active_effect != active_effect:
-		if current_active_effect != null: onActiveEffectDeselected()
-		current_active_effect = active_effect
-		current_active_effect_tiles = active_effect_tiles
-		onActiveEffectSelected()
-	else:
-		onActiveEffectDeselected()
+func onActiveEffectBoxPressed(active_effect_tiles: ActiveEffectTiles) -> void:
+	pass
+	#if current_active_effect != active_effect:
+		#if current_active_effect != null: onActiveEffectDeselected()
+		#current_active_effect = active_effect
+		#current_active_effect_tiles = active_effect_tiles
+		#onActiveEffectSelected()
+	#else:
+		#onActiveEffectDeselected()
 
 func onActiveEffectSelected() -> void:
 	onHideMovementRange()
@@ -346,10 +351,6 @@ func onActiveEffectSelected() -> void:
 		
 	for Tile in current_active_effect_tiles.pickable_tiles:
 		Tile.setInActiveEffectPickable(true)
-		
-	if current_active_effect.camera_type == ActiveEffectDatastore.CameraTypes.CYCLE:
-		var cards: Array = current_active_effect_tiles.pickable_tiles.map(func(x: TileGD): return Game.getFieldCard(x))
-		CameraManager.setCycleObjects(cards)
 	
 	active_effect_selected.emit()
 		
@@ -361,17 +362,15 @@ func onActiveEffectDeselected() -> void:
 		for Tile in current_active_effect_tiles.pickable_tiles:
 			Tile.setInActiveEffectPickable(false)
 			
-		if current_active_effect.camera_type == ActiveEffectDatastore.CameraTypes.CYCLE:
-			CameraManager.onRemoveCycleObjects()
-			
 		current_active_effect = null
 		current_active_effect_tiles = null
 		active_effect_deselected.emit()
 		
 func onActiveEffectActivated(Tile: TileGD) -> void:
-	level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile, current_active_effect_tiles, level.getSpectateObject()))
-	active_effect_activated.emit(current_active_effect)
-	onActiveEffectDeselected()
+	pass
+	#level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile, current_active_effect_tiles, level.getSpectateObject()))
+	#active_effect_activated.emit(current_active_effect)
+	#onActiveEffectDeselected()
 	
 func isActiveEffectCurrent() -> bool:
 	return current_active_effect != null

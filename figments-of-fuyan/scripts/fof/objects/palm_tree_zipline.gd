@@ -94,22 +94,21 @@ func onLoadModel() -> void:
 func getValidActiveEffects(Card: CardGD) -> Array:
 	return active_effects if Card.Tile == ActiveStartTile else []
 		
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore, Card: CardGD) -> bool:
+func isActiveEffectDisabled(Card: CardGD) -> bool:
 	var Tile: TileGD = end_tiles[start_tiles.find(ActiveStartTile)]
-	return Tile.isSolid() or Game.getFieldCard(Tile) != null or Card in used_this_turn_cards
+	return super(Card) or Tile.isSolid() or Game.getFieldCard(Tile) != null or Card in used_this_turn_cards
 	
-func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
+func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([ActiveStartTile], [ActiveStartTile])
 	
-func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
-	super(active_effect, PickedTile, active_effect_tiles, Card)
+func onActiveEffectPre(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, end_tiles[start_tiles.find(ActiveStartTile)])))
 	if !Card.isLevelVisible():
 		onForceAction(CameraChangeAction.new(self))
 	
 var HolderCard: CardGD
 var HolderNode: MeshInstance3D
-func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var animation_action := AnimationAction.new(self, getAbilityAnimationName())
 	var camera_change_action := CameraChangeAction.new(Card)
 	camera_change_action.setActionDelay(ABILITY_DELAY)
@@ -184,7 +183,7 @@ const TURN_COOLDOWN_FOR_ABILITY_AND_TRANSFORM: int = 3
 const CHANCE_TO_USE_REGULAR: float = 0.75
 const CHANCE_TO_USE_IN_COOLDOWN: float = 0.05
 
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var roll: bool = Random.rollFloat(CHANCE_TO_USE_REGULAR\
 	if DFL.Card not in ai_cooldown_cards.keys() else CHANCE_TO_USE_IN_COOLDOWN)
 	

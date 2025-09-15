@@ -36,4 +36,5 @@ func onPostAction() -> void:
 		
 	actions.append(DamageAction.new(Attacker, Defenders, Attacker.getAttackDamage() + plus_damage))
 	actions.append(ChangeTileRotationAction.new(Attacker, relative_tile_rotation)) # Change back for ranged
+	Audio.onSoundEffect(Attacker.getInfo().getAttackAudio())
 	onPushAction(actions)

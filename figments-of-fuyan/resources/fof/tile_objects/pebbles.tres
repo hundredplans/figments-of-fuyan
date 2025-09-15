@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3 uid="uid://dxhsr1pavanv5"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://dxhsr1pavanv5"]
 
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_84vkc"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="1_q8n2n"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_wwvqg"]
 [ext_resource type="PackedScene" uid="uid://buw0xk7yo8nsd" path="res://assets/models/fof/objects/pebbles.glb" id="2_7aqu8"]
 [ext_resource type="PackedScene" uid="uid://dp6d444mixlp5" path="res://assets/models/fof/objects/pebbles1.glb" id="3_lipe1"]
 [ext_resource type="PackedScene" uid="uid://dgvqocc2sdl32" path="res://assets/models/fof/objects/pebbles2.glb" id="4_xmr7q"]
@@ -18,7 +17,6 @@ ignore_collisions = true
 solids = Array[bool]([false, false, false, false])
 models = Array[PackedScene]([ExtResource("2_7aqu8"), ExtResource("3_lipe1"), ExtResource("4_xmr7q"), ExtResource("5_hv1pw")])
 points = Array[Array]([[Vector3(-0.155716, 0.115278, 0.0776751)], [Vector3(-0.11649, 0.186248, 0.2179)], [Vector3(-0.0994191, 0.0717669, 0.174103)], [Vector3(-0.228114, 0.0971608, 0.0878284)]])
-active_effects = Array[ExtResource("1_wwvqg")]([])
 area_ids = Array[int]([])
 id = 16
 name = "Pebbles"

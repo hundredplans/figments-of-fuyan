@@ -26,7 +26,6 @@ var status_effects: Array = []
 
 var delayed_stats: Array # Can be [StatInfo] or [HealAction]
 var ability_save: Dictionary
-var active_effects: Array[ActiveEffectDatastore]
 var field_effects: Array[FieldEffectGD]
 
 var anibility_datastore: AnibilityDatastore
@@ -45,6 +44,8 @@ var card_offset: CardOffset # Offset of ronotation and position
 var tier: int
 var death_ids: Array[int] # id's of every unit this killed, used for blade
 var vision_range: int
+var active_effect_charges: int
+var active_effect_used: bool
 
 var StaticBody: StaticBody3D
 #endregion
@@ -57,6 +58,8 @@ const ALPHAGREY_CHANGE_SPEED: float = 0.5
 #endregion
 
 #region Signals
+signal update_level_visible
+signal update_stat
 signal inspect_screen_created
 signal tool_updated
 signal mouse_entered
@@ -245,9 +248,9 @@ func onSave() -> SavedDataCard:
 	onPreSave()
 	return SavedDataCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, \
 	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
-	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
+	ability_save, active_effect_charges, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
 	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore, card_offset, tier, death_ids, vision_range)
+	overworld_traits, bounty_kills, boss_datastore, card_offset, tier, death_ids, vision_range, active_effect_used)
 
 func onPreSave() -> void:
 	for delayed: Variant in delayed_stats: delayed.onSave()
@@ -268,7 +271,6 @@ func onLoadData(data: SavedData) -> void:
 	tile_rotation = data.tile_rotation
 	delayed_stats = data.delayed_stats
 	ability_save = data.ability_save
-	active_effects = data.active_effects
 	attack = data.attack
 	attack_range = data.attack_range
 	health = data.health
@@ -288,15 +290,14 @@ func onLoadData(data: SavedData) -> void:
 	tier = data.tier
 	death_ids = data.death_ids
 	vision_range = data.vision_range
+	active_effect_charges = data.active_effect_charges
+	active_effect_used = data.active_effect_used
 	setAwakenedInCombat(data.is_awakened_in_combat)
 	
 	if data.tool_data != null:
 		Tool = SavedData.onLoadModel(data.tool_data, self)
 		Tool.Card = self
 		onAddTool(Tool)
-	
-	for active_effect in active_effects:
-		active_effect.owner = self
 	
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
@@ -810,6 +811,7 @@ func onCreateVisionRay() -> void:
 	
 func onUpdateLevelVisible() -> void:
 	visible = true if Helper.admin_datastore.see or is_card_change_level_visible else isLevelVisible()
+	update_level_visible.emit(vision_datastore.level_visible)
 	
 func isLevelVisible() -> bool:
 	return isAlly(0) or super()
@@ -959,6 +961,7 @@ func onUpdateStat(type: Game.Stats, difference: int, show_particles: bool) -> vo
 		Game.Stats.MAX_HEALTH: value = max_health
 		Game.Stats.MAX_SPEED: value = max_speed
 	
+	update_stat.emit(type, value)
 	if FieldInfo != null: FieldInfo.onUpdateStat(type, value, difference, isLevelVisible(), show_particles)
 #endregion
 
@@ -1029,59 +1032,31 @@ func getTool() -> ToolGD:
 	return Tool
 
 #region Active Effects
-func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
-	active_effects.append(active_effect)
-	active_effect.owner = self
-	
-func onRemoveActiveEffect(active_effect: ActiveEffectDatastore) -> void:
-	active_effects.erase(active_effect)
+func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void: pass
+func onActiveEffectPre(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void: pass
+func getActiveEffectTiles() -> ActiveEffectTiles: return null
 
-func onCreateInitialActiveAbilities() -> void:
-	var tier_datastore := getCardTierDatastore(tier)
-	var new_active_effects: Array = tier_datastore.getActiveAbilities()
-	onPushAction(new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x)))
+func isValidActiveEffect() -> bool: # Can show up
+	return active_effect_charges != -2
 	
-func getActiveEffectByName(_name: String) -> ActiveEffectDatastore:
-	for active_effect in active_effects:
-		if active_effect.name == _name: return active_effect
+func isActiveEffectDisabled() -> bool: # Is greyedo ut
+	return active_effect_charges == 0 or turn_state == Game.TurnStates.PASSED or active_effect_used
+	
+func onAIActiveEffectChecker(_active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return null
 	
-func getActiveEffectTiles(_active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	return null
+func onAIActiveEffectCheckerDefault() -> ActiveEffectTiles:
+	if isActiveEffectDisabled(): return null
 	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
-	pass
-	
-func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles) -> void:
-	pass
-	
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore) -> bool:
-	return false
-	
-func setActiveEffectUsed(active_effect: ActiveEffectDatastore, used: bool) -> void:
-	active_effect.used = used
-	
-func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
-	return description
-	
-func getActiveAbilities() -> Array:
-	return active_effects
-	
-func getActiveEffects() -> Array:
-	return active_effects
-	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
-	return null
-	
-func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	if active_effect.getDefaultDisabled(self): return null
-	
-	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles(active_effect)
+	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles()
 	if active_effect_tiles == null or active_effect_tiles.pickable_tiles.is_empty(): return null
 	return active_effect_tiles
 	
-func getPickableTiles(active_effect: ActiveEffectDatastore) -> Array:
-	return active_effect.pickable_tiles if active_effect != null else []
+func setActiveEffectUsed(state: bool) -> void: active_effect_used = state
+func getActiveEffectUsed() -> bool: return active_effect_used
+func getActiveEffectCharges() -> int: return active_effect_charges
+func setActiveEffectCharges(value: int) -> void: active_effect_charges = value
+func getDefaultActiveEffectCharges() -> int: return -1
 #endregion
 
 #region Advance Turn
@@ -1091,9 +1066,8 @@ func onAdvanceTurn(turn_team: int) -> void:
 	
 	var actions: Array = [StatAction.new(
 		StatInfo.new(self, Game.Stats.SPEED, max_speed - int(Tile.isDeepwater()), 0, true, false, true)),
-		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE, true)]
+		ChangeTurnStateAction.new(self, Game.TurnStates.INACTIVE, true), ChangeActiveEffectUsedAction.new(self, false)]
 		
-	actions += active_effects.map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
 	onPushAction(actions)
 		
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
@@ -1300,9 +1274,6 @@ func onRetiered(_tier: int) -> void: # This doesn't account for tiering down as 
 	actions += old_traits.map(func(x: OverworldTrait): return RemoveOverworldTraitAction.new(self, x.data.id, OverworldTrait.AddedBy.REGULAR))
 		
 	# Active Effect Region
-	var new_active_effects: Array = tier_datastore.getActiveAbilities()
-	actions += active_effects.map(func(x: ActiveEffectDatastore): return RemoveActiveEffectAction.new(self, x))
-	actions += new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x))
 	onPushAction(actions)
 	update_tier.emit(tier)
 	if Tile != null: Tile.onUpdateTier(tier)
@@ -1416,25 +1387,20 @@ func getActiveArchetype() -> ArchetypeInfo:
 	
 # True if active effect used
 func onAICheckActiveEffects(DFL: DefaultFightLogic, allies: Array, enemies: Array, after_action: MovementFinishAction = null, type := Game.AbilityAI.NULL) -> bool:
-	var tool_active_effects: Array = Tool.getActiveEffects() if Tool != null else []
-	var ai_active_effects: Array = getActiveEffects() + tool_active_effects
+	var items: Array = [self, getTool()]
+	#if getTile() != null:
+		#items += Game.get_tree().get_nodes_in_group("LevelIObjectsGD")\
+			#.filter(func(x: ObjectGD): return !x.is_queued_for_deletion() and IObject.isValidActiveEffect())
 	
-	if getTile() != null:
-		for IObject in Game.get_tree().get_nodes_in_group("LevelIObjectsGD")\
-			.filter(func(x: ObjectGD): return !x.is_queued_for_deletion()):
-			
-			ai_active_effects += IObject.getValidActiveEffects(self)
-		
-	for active_effect in ai_active_effects:
-		var active_effect_tiles: ActiveEffectTiles = active_effect.owner.onAIAbilityCheckerDefault(active_effect)\
-			if active_effect.owner is not IObjectGD else active_effect.owner.onAIAbilityCheckerDefault(active_effect, self)
+	for item: FofGD in items:
+		if item == null or !item.isValidActiveEffect(): continue
+		var active_effect_tiles: ActiveEffectTiles = item.onAIAbilityCheckerDefault()\
+			if item is not IObjectGD else item.onAIAbilityCheckerDefault(self)
 		if active_effect_tiles == null: continue
-		
-		var ChosenTile: TileGD = active_effect.owner.onAIAbilityChecker(active_effect, active_effect_tiles, DFL, type)
+		var ChosenTile: TileGD = item.onAIAbilityChecker(active_effect_tiles, DFL, type)
 		if ChosenTile == null: continue
-		
 		var actions: Array = [ChangeTurnStateAction.new(self, Game.TurnStates.ACTIVE),\
-			ActiveEffectUsedAction.new(active_effect, ChosenTile, active_effect_tiles, self),\
+			ActiveEffectUsedAction.new(self, ChosenTile, active_effect_tiles),\
 			MovementFinishAction.new(self, [], allies, enemies)]
 			
 		if after_action == null: onPushAction(actions)
@@ -1498,7 +1464,8 @@ func onReset(override: bool = false) -> void: # Called when unit enters level (n
 	tile_rotation = 0
 	delayed_stats = []
 	
-	active_effects = []
+	active_effect_charges = getDefaultActiveEffectCharges()
+	active_effect_used = false
 	status_effects = []
 	field_effects = []
 	ability_save = {}

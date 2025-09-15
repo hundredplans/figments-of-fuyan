@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=24 format=3 uid="uid://3kb5xw23paj3"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://3kb5xw23paj3"]
 
 [ext_resource type="Image" uid="uid://bek6ns5qil350" path="res://assets/sprites/game/cards/art_pop/hocus_palmus.png" id="2_6ibk4"]
 [ext_resource type="Texture2D" uid="uid://dorudq0txf7sh" path="res://assets/sprites/game/cards/art_mini/hocus_palmus.png" id="2_6sx50"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://67ctyjxwvmxn" path="res://scripts/fof/cards/hocus_palmus.gd" id="3_pivk6"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_rgxih"]
 [ext_resource type="PackedScene" uid="uid://dnxhy7drwfn7x" path="res://assets/models/fof/cards/hocus_palmus.glb" id="5_cexjm"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_vsbbn"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_irtnv"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_wliwi"]
 
@@ -28,15 +27,6 @@ _bundled = {
 "version": 3
 }
 
-[sub_resource type="Resource" id="Resource_vsbbn"]
-script = ExtResource("11_vsbbn")
-name = "Cocus Pocus"
-description = "Heal the most injured ally on field [2] HP and TELEPORT them to a spawn tile"
-max_charges = 1
-camera_type = 1
-charges = 0
-used = false
-
 [sub_resource type="Resource" id="Resource_v8r6o"]
 script = ExtResource("13_wliwi")
 description = "ABILITY [[X]]: Heal the most injured ally on field [2] HP and TELEPORT them to a spawn tile"
@@ -49,18 +39,7 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_wy73v")]([])
-active_abilities = Array[ExtResource("11_vsbbn")]([SubResource("Resource_vsbbn")])
 description_datastore = SubResource("Resource_v8r6o")
-
-[sub_resource type="Resource" id="Resource_14kvw"]
-script = ExtResource("11_vsbbn")
-name = "Cocus Pocus"
-description = "Heal the [3] most injured ally on field to full HP and TELEPORT them to a spawn tile"
-max_charges = 1
-camera_type = 1
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_61dq0"]
 script = ExtResource("13_wliwi")
@@ -74,7 +53,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_wy73v")]([])
-active_abilities = Array[ExtResource("11_vsbbn")]([SubResource("Resource_14kvw")])
 description_datastore = SubResource("Resource_61dq0")
 
 [sub_resource type="Resource" id="Resource_yypan"]
@@ -89,7 +67,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_wy73v")]([])
-active_abilities = Array[ExtResource("11_vsbbn")]([SubResource("Resource_14kvw")])
 description_datastore = SubResource("Resource_yypan")
 
 [sub_resource type="Resource" id="Resource_wliwi"]
@@ -104,7 +81,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_wy73v")]([])
-active_abilities = Array[ExtResource("11_vsbbn")]([SubResource("Resource_14kvw")])
 description_datastore = SubResource("Resource_wliwi")
 
 [resource]

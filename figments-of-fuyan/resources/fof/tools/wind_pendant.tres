@@ -1,11 +1,10 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=19 format=3 uid="uid://bwguv3q34f3hf"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://bwguv3q34f3hf"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_j42uj"]
 [ext_resource type="Texture2D" uid="uid://c4ppdil4wx3h2" path="res://assets/sprites/game/tools/Wind Pendant.png" id="2_1oi71"]
 [ext_resource type="Script" uid="uid://6jfljie78gvc" path="res://scripts/fof/tools/pendant.gd" id="2_dbji6"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_knxsv"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_tugfb"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_ooxts"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_v2ujl"]
 
 [sub_resource type="Resource" id="Resource_xjxly"]
@@ -15,17 +14,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_onarg"]
 script = ExtResource("6_tugfb")
-active_abilities = Array[ExtResource("7_ooxts")]([])
 description_datastore = SubResource("Resource_xjxly")
-
-[sub_resource type="Resource" id="Resource_ooxts"]
-script = ExtResource("7_ooxts")
-name = "Wind Pendant"
-description = "Gain [1] SPD for [1] Turn"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_d3mh3"]
 script = ExtResource("8_v2ujl")
@@ -35,17 +24,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_k02qh"]
 script = ExtResource("6_tugfb")
-active_abilities = Array[ExtResource("7_ooxts")]([SubResource("Resource_ooxts")])
 description_datastore = SubResource("Resource_d3mh3")
-
-[sub_resource type="Resource" id="Resource_hf143"]
-script = ExtResource("7_ooxts")
-name = "Wind Pendant"
-description = "Gain [2] SPD for [1] Turn"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_v2ujl"]
 script = ExtResource("8_v2ujl")
@@ -55,17 +34,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_mf3u1"]
 script = ExtResource("6_tugfb")
-active_abilities = Array[ExtResource("7_ooxts")]([SubResource("Resource_hf143")])
 description_datastore = SubResource("Resource_v2ujl")
-
-[sub_resource type="Resource" id="Resource_3d3cb"]
-script = ExtResource("7_ooxts")
-name = "Wind Pendant"
-description = "Gain [2] SPD for [1] Turn"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_ctjng"]
 script = ExtResource("8_v2ujl")
@@ -75,7 +44,6 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_7i5fm"]
 script = ExtResource("6_tugfb")
-active_abilities = Array[ExtResource("7_ooxts")]([SubResource("Resource_3d3cb")])
 description_datastore = SubResource("Resource_ctjng")
 
 [resource]

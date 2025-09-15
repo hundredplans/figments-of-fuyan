@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://raq6xumlr4gf"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://raq6xumlr4gf"]
 
 [ext_resource type="Texture2D" uid="uid://om1e2n3pqmxe" path="res://assets/sprites/game/cards/art_mini/rich_allen.png" id="2_0tq5m"]
 [ext_resource type="Image" uid="uid://c05yulhatpn7c" path="res://assets/sprites/game/cards/art_pop/rich_allen.png" id="2_5cb6l"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_s81mi"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_nkxyp"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_duoiv"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_4mx61"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_jju8a"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_ph667"]
 
@@ -40,7 +39,6 @@ health = 6
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_0743c")]([])
-active_abilities = Array[ExtResource("11_4mx61")]([])
 description_datastore = SubResource("Resource_qvyfg")
 
 [sub_resource type="Resource" id="Resource_t3i8k"]
@@ -55,7 +53,6 @@ health = 6
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_0743c")]([])
-active_abilities = Array[ExtResource("11_4mx61")]([])
 description_datastore = SubResource("Resource_t3i8k")
 
 [sub_resource type="Resource" id="Resource_5vhrn"]
@@ -70,7 +67,6 @@ health = 6
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_0743c")]([])
-active_abilities = Array[ExtResource("11_4mx61")]([])
 description_datastore = SubResource("Resource_5vhrn")
 
 [sub_resource type="Resource" id="Resource_ph667"]
@@ -85,7 +81,6 @@ health = 6
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_0743c")]([])
-active_abilities = Array[ExtResource("11_4mx61")]([])
 description_datastore = SubResource("Resource_ph667")
 
 [resource]
@@ -103,18 +98,6 @@ collision_shape = SubResource("PackedScene_1xbhj")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("3_0743c")]([])
-attack = 1
-health = 6
-speed = 2
-energy = 3
-description = "RAMPAGE: Allies in vision gain +1 ATT"
-ascended_description = ""
-initial_traits = Array[ExtResource("3_0743c")]([])
 id = 34
 name = "Rich Allen"
 gdscript = ExtResource("4_sjeqx")

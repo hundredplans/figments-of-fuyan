@@ -12,7 +12,7 @@ const SHILLING_SPIN_TIME: float = 2.0
 @onready var BoonBox: Control = %BoonBox
 @onready var ShillingsLabel: Label = %ShillingsLabel
 @onready var StashAmountLabel: Label = %StashAmountLabel
-@onready var StashButton: TextureButton = %StashButton
+@onready var StashButton: TextureRect = %StashButton
 @onready var ShillingTxRect: TextureRect = %ShillingTxRect
 
 @onready var ExtraInfoManager: Control = %ExtraInfoManager
@@ -60,8 +60,17 @@ func setZIndex(_z_index: int) -> void:
 	StashButton.z_index = _z_index
 	ExtraInfoManager.z_index = _z_index
 
-func onFadeBackgroundNodes(end_value: float, only_boons: bool) -> void:
-	var nodes: Array = [StashButton, ExtraInfoManager, BoonBox] if !only_boons else [BoonBox] 
+func onFadeBackgroundNodes(end_value: float, condition: String = "", change_mouse_filter: bool = false) -> void:
+	var nodes: Array = []
+	match condition:
+		"OnlyBoonBox": nodes = [BoonBox]
+		"NoBoonBox": nodes = [StashButton, ExtraInfoManager]
+		_: nodes = [StashButton, ExtraInfoManager, BoonBox]
 	for node: Control in nodes:
 		var tween := create_tween()
 		tween.tween_property(node, "modulate:a", end_value, Game.FADE_TIME)
+		
+		if node == StashButton and change_mouse_filter:
+			node.setMouseFilter(Control.MOUSE_FILTER_IGNORE if end_value <= 0.01 else Control.MOUSE_FILTER_STOP)
+
+func getStashButton() -> Control: return StashButton

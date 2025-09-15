@@ -15,13 +15,13 @@ func onAdvanceTurn(team: int) -> void:
 func getValidActiveEffects(Card: CardGD) -> Array:
 	return active_effects if recharge == 0 and Card.isAdjacent(occupied_tiles[0].getCoords()) else []
 	
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore, Card: CardGD) -> bool:
-	return Card.getAttacks() == 0
+func isActiveEffectDisabled(Card: CardGD) -> bool:
+	return super(Card) or Card.getAttacks() == 0
 	
-func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
+func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffect(PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var animation_action := AnimationAction.new(Card, "Attack")
 	animation_action.setActionDelay(Game.ATTACK_DELAY)
 	var actions: Array = [ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), PickedTile)),
@@ -55,5 +55,5 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, DFL: DefaultFightLo
 	if !tiles_to_value.has(occupied_tiles[0]): return
 	tiles_to_value[occupied_tiles[0]] += NEGATIVE_TRANSFORM if (recharge > 0 or DFL.Card.health == 1 or !DFL.Card.isInCombat()) else POSITIVE_TRANSFORM
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0]

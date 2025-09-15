@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://dnj4apoa7jj86"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://dnj4apoa7jj86"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_7dqnd"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_nweuk"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_rw0i4"]
 [ext_resource type="PackedScene" uid="uid://c5hsoi1uughh0" path="res://assets/models/fof/objects/palm_sign.glb" id="3_3il4k"]
@@ -17,7 +16,6 @@ ignore_collisions = false
 solids = Array[bool]([false, false, false])
 models = Array[PackedScene]([ExtResource("3_3il4k"), ExtResource("4_405hr"), ExtResource("5_vg3bq")])
 points = Array[Array]([[Vector3(-0.00233934, 0.0987389, -0.0451837), Vector3(-0.00129995, 0.386399, -0.0456145), Vector3(-0.00491322, 0.681523, 0.0626278), Vector3(-0.00230338, 0.872699, 0.0626698), Vector3(-0.266731, 0.761004, 0.0634444), Vector3(0.286193, 0.741756, 0.0481665), Vector3(0.217646, 0.741804, 0.0535187), Vector3(-0.190783, 0.757689, 0.0461524), Vector3(0.0525501, 0.86902, 0.0461524), Vector3(0.0846045, 0.646392, 0.0461527), Vector3(0.00540512, 0.515623, 0.0439134), Vector3(0.0127151, 0.161511, 0.0408854)], [Vector3(-0.00233934, 0.0987389, -0.0451837), Vector3(-0.00129995, 0.386399, -0.0456145), Vector3(-0.00491322, 0.681523, 0.0626278), Vector3(-0.00230338, 0.872699, 0.0626698), Vector3(-0.266731, 0.761004, 0.0634444), Vector3(0.286193, 0.741756, 0.0481665), Vector3(0.217646, 0.741804, 0.0535187), Vector3(-0.190783, 0.757689, 0.0461524), Vector3(0.0525501, 0.86902, 0.0461524), Vector3(0.0846045, 0.646392, 0.0461527), Vector3(0.00540512, 0.515623, 0.0439134), Vector3(0.0127151, 0.161511, 0.0408854)], [Vector3(-0.00233934, 0.0987389, -0.0451837), Vector3(-0.00129995, 0.386399, -0.0456145), Vector3(-0.00491322, 0.681523, 0.0626278), Vector3(-0.00230338, 0.872699, 0.0626698), Vector3(-0.266731, 0.761004, 0.0634444), Vector3(0.286193, 0.741756, 0.0481665), Vector3(0.217646, 0.741804, 0.0535187), Vector3(-0.190783, 0.757689, 0.0461524), Vector3(0.0525501, 0.86902, 0.0461524), Vector3(0.0846045, 0.646392, 0.0461527), Vector3(0.00540512, 0.515623, 0.0439134), Vector3(0.0127151, 0.161511, 0.0408854)]])
-active_effects = Array[ExtResource("1_7dqnd")]([])
 area_ids = Array[int]([1])
 id = 21
 name = "Palm Sign"

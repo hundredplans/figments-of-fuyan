@@ -33,7 +33,7 @@ func onNotFirstLoad() -> void:
 
 func _ready() -> void:
 	Audio.onPlayMusic(Audio.MAIN_MENU)
-	selected_area_id = 3
+	selected_area_id = VALID_AREA_IDS.pick_random()
 	onLoadButtons(MAIN_MENU_BUTTONS, false)
 
 #region Mouse In UI

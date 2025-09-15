@@ -349,7 +349,7 @@ func onMapNodeHovered(map_node: MapNodeGD, state: bool, _HoverUI: Variant = null
 	
 func onMapNodePressed(map_node: MapNodeGD) -> void:
 	var EnteredMapNode: MapNodeGD = getEnteredMapNode()
-	if !(EnteredMapNode.isMapNodeLink(map_node) and EnteredMapNode.is_finished): return
+	if !(EnteredMapNode.isMapNodeLink(map_node)): return
 	get_tree().call_group("MapNodesGD", "setRayPickableGlobal", false)
 	
 	EnteredMapNode.onExitedVisual()

@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://cqvdw7yhnq3e4"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://cqvdw7yhnq3e4"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_lqhux"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_rdb1i"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_xt7cv"]
 [ext_resource type="PackedScene" uid="uid://dctgj2otkg7nx" path="res://assets/models/fof/objects/bonfire_small.glb" id="3_7bfah"]
@@ -15,7 +14,6 @@ ignore_collisions = false
 solids = Array[bool]([true])
 models = Array[PackedScene]([ExtResource("3_7bfah")])
 points = Array[Array]([[Vector3(0.0204062, 0.981732, 0.0246157), Vector3(-0.169192, 0.528565, -0.0771853), Vector3(0.203191, 0.600068, 0.131734), Vector3(-0.0964938, 0.541733, 0.258478), Vector3(-0.518222, 0.201822, 0.557537), Vector3(-0.707242, 0.206157, 0.0031687), Vector3(-0.402217, 0.207536, -0.569246), Vector3(0.389408, 0.220308, -0.528887), Vector3(0.721426, 0.200476, 0.0391358), Vector3(0.448368, 0.188795, 0.600663)]])
-active_effects = Array[ExtResource("1_lqhux")]([])
 area_ids = Array[int]([3])
 id = 44
 name = "Bonfire Small"

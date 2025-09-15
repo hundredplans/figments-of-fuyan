@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://c58m4rrwrubb1"]
+
+[ext_resource type="Material" uid="uid://x6fyhdi7l7lk" path="res://resources/materials/game/base_material_outline_3/outline/encounter_color.tres" id="1_l82ca"]
+[ext_resource type="Shader" uid="uid://bti0g8xnidary" path="res://resources/shaders/base_material.tres" id="2_kd2yx"]
+[ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="3_p4m6v"]
+[ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="4_sffi3"]
+[ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="5_mlg0b"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("1_l82ca")
+shader = ExtResource("2_kd2yx")
+shader_parameter/tx_attributes = ExtResource("3_p4m6v")
+shader_parameter/tx_color = ExtResource("4_sffi3")
+shader_parameter/tx_emission = ExtResource("5_mlg0b")
+shader_parameter/EmissionStrength = 1.0

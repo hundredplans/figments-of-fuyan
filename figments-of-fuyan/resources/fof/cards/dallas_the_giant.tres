@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://cg6kjer248lpx"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://cg6kjer248lpx"]
 
 [ext_resource type="Texture2D" uid="uid://1lcegcwya5ir" path="res://assets/sprites/game/cards/art_mini/dallas_the_giant.png" id="2_ft1wx"]
 [ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_xgvst"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_37xlm"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_tx4m7"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_jtomd"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_pipuu"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_rj6pr"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_of6pa"]
 
@@ -40,7 +39,6 @@ health = 5
 speed = 3
 energy = 5
 traits = Array[ExtResource("3_hvx5a")]([])
-active_abilities = Array[ExtResource("11_pipuu")]([])
 description_datastore = SubResource("Resource_aurn1")
 
 [sub_resource type="Resource" id="Resource_6emjl"]
@@ -55,7 +53,6 @@ health = 5
 speed = 3
 energy = 5
 traits = Array[ExtResource("3_hvx5a")]([])
-active_abilities = Array[ExtResource("11_pipuu")]([])
 description_datastore = SubResource("Resource_6emjl")
 
 [sub_resource type="Resource" id="Resource_bjyr5"]
@@ -70,7 +67,6 @@ health = 5
 speed = 3
 energy = 5
 traits = Array[ExtResource("3_hvx5a")]([])
-active_abilities = Array[ExtResource("11_pipuu")]([])
 description_datastore = SubResource("Resource_bjyr5")
 
 [sub_resource type="Resource" id="Resource_of6pa"]
@@ -85,7 +81,6 @@ health = 5
 speed = 3
 energy = 5
 traits = Array[ExtResource("3_hvx5a")]([])
-active_abilities = Array[ExtResource("11_pipuu")]([])
 description_datastore = SubResource("Resource_of6pa")
 
 [resource]
@@ -103,18 +98,6 @@ collision_shape = SubResource("PackedScene_1xbhj")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("3_hvx5a")]([])
-attack = 4
-health = 5
-speed = 3
-energy = 5
-description = "When a DUEL begins: This gains FERAL and +2 ATT +1 HP until the enemy dies"
-ascended_description = ""
-initial_traits = Array[ExtResource("3_hvx5a")]([])
 id = 50
 name = "Dallas the Giant"
 gdscript = ExtResource("4_h6hio")

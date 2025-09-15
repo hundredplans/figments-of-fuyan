@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ccs2u486tqe7w"]
+
+[ext_resource type="Shader" uid="uid://u841l0hqwqsu" path="res://resources/shaders/base_material_outline.tres" id="1_pixam"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_pixam")
+shader_parameter/albedo = Color(0.525101, 0.525101, 0.525101, 1)
+shader_parameter/grow = 0.03

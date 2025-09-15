@@ -1,5 +1,6 @@
 extends Control
 signal mouse_in_ui
+signal exit_start
 
 @onready var SettingsButton: DefaultButton = %SettingsButton
 @onready var ButtonsContainer: Container = %ButtonsContainer
@@ -60,6 +61,7 @@ func onExit() -> void:
 		
 	FadeCreamBackground.onFade(false)
 	
+	exit_start.emit()
 	await tween.finished
 	queue_free()
 

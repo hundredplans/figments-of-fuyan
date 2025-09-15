@@ -1,11 +1,10 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=16 format=3 uid="uid://c7opqdhm87hl"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://c7opqdhm87hl"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_mujmr"]
 [ext_resource type="Script" uid="uid://dtw83cg3ivykl" path="res://scripts/fof/tools/palmleaf.gd" id="2_7dnvl"]
 [ext_resource type="Texture2D" uid="uid://1kp2f181fpe7" path="res://assets/sprites/game/tools/Palmleaf.png" id="2_r1uui"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_u6616"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="7_mouxn"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="8_7v5q4"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="9_362t0"]
 
 [sub_resource type="Resource" id="Resource_1f7hj"]
@@ -15,7 +14,6 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_kgdh8"]
 script = ExtResource("7_mouxn")
-active_abilities = Array[ExtResource("8_7v5q4")]([])
 description_datastore = SubResource("Resource_1f7hj")
 
 [sub_resource type="Resource" id="Resource_ktwo5"]
@@ -25,7 +23,6 @@ default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_ldbt0"]
 script = ExtResource("7_mouxn")
-active_abilities = Array[ExtResource("8_7v5q4")]([])
 description_datastore = SubResource("Resource_ktwo5")
 
 [sub_resource type="Resource" id="Resource_7v5q4"]
@@ -35,7 +32,6 @@ default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_362t0"]
 script = ExtResource("7_mouxn")
-active_abilities = Array[ExtResource("8_7v5q4")]([])
 description_datastore = SubResource("Resource_7v5q4")
 
 [sub_resource type="Resource" id="Resource_ythwo"]
@@ -45,7 +41,6 @@ default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_35lx2"]
 script = ExtResource("7_mouxn")
-active_abilities = Array[ExtResource("8_7v5q4")]([])
 description_datastore = SubResource("Resource_ythwo")
 
 [resource]

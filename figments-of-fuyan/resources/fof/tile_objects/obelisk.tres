@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://bkgaislino4ig"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://bkgaislino4ig"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_3j27l"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_072ao"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_fu4ev"]
 [ext_resource type="PackedScene" uid="uid://bedxfuly0uns7" path="res://assets/models/fof/objects/obelisk.glb" id="3_mjky7"]
@@ -15,7 +14,6 @@ ignore_collisions = false
 solids = Array[bool]([true])
 models = Array[PackedScene]([ExtResource("3_mjky7")])
 points = Array[Array]([[Vector3(-0.534443, 0.176569, 0.515558), Vector3(-0.537287, 0.164009, -0.526176), Vector3(-0.533963, 0.178686, 0.0144356), Vector3(-0.405367, 0.799785, -0.394007), Vector3(-0.406219, 0.802029, 0.378658), Vector3(-0.0196258, 0.165318, 0.536991), Vector3(0.520146, 0.169338, 0.536081), Vector3(0.384819, 0.783018, 0.398994), Vector3(0.532073, 0.187029, 0.025465), Vector3(0.535741, 0.170834, -0.529011), Vector3(0.399898, 0.770632, -0.377203), Vector3(-0.00929284, 0.131015, -0.540762), Vector3(-0.400132, 1.56138, -0.385156), Vector3(-0.400132, 1.59074, 0.393028), Vector3(-0.400132, 2.23037, -0.39053), Vector3(-0.400132, 2.21592, 0.385904), Vector3(0.394241, 1.57559, 0.400132), Vector3(0.38505, 2.20267, 0.400132), Vector3(0.400132, 1.61681, -0.392121), Vector3(0.400132, 2.2376, -0.384608), Vector3(-0.411367, 3.13043, -0.45686), Vector3(0.443655, 3.14216, -0.454879), Vector3(-0.435975, 3.12749, 0.457357), Vector3(0.42563, 3.12202, 0.458282), Vector3(0.00663298, 3.66163, 0.00837517)]])
-active_effects = Array[ExtResource("1_3j27l")]([])
 area_ids = Array[int]([3])
 id = 57
 name = "Obelisk"

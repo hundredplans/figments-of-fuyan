@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=19 format=3 uid="uid://b830q0c71bj8k"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=18 format=3 uid="uid://b830q0c71bj8k"]
 
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_amlc3"]
 [ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_jki1r"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://nsl73xnqq64e" path="res://assets/models/fof/cards/palmer.glb" id="3_qrvjs"]
 [ext_resource type="Script" uid="uid://oqmwfxwpghch" path="res://scripts/fof/cards/palmer.gd" id="3_rgqu8"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_3cuwg"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_jq0oi"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_73env"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_0hcfp"]
 
@@ -40,7 +39,6 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 description_datastore = SubResource("Resource_0hcfp")
 
 [sub_resource type="Resource" id="Resource_73env"]
@@ -50,7 +48,6 @@ health = 5
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 description_datastore = SubResource("Resource_0hcfp")
 
 [sub_resource type="Resource" id="Resource_6l5bk"]
@@ -60,7 +57,6 @@ health = 7
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 description_datastore = SubResource("Resource_0hcfp")
 
 [sub_resource type="Resource" id="Resource_wff6e"]
@@ -70,7 +66,6 @@ health = 8
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_qc4i1")]([])
-active_abilities = Array[ExtResource("11_jq0oi")]([])
 description_datastore = SubResource("Resource_0hcfp")
 
 [resource]

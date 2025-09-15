@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://ccks1g3whxtcb"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://ccks1g3whxtcb"]
 
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="1_5wykw"]
 [ext_resource type="Texture2D" uid="uid://qe6xg7rfo7n3" path="res://assets/sprites/game/cards/art_mini/mr_mildflower.png" id="1_lijaw"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://mv1l5oygneow" path="res://assets/models/fof/cards/mr_mildflower.glb" id="3_qkak3"]
 [ext_resource type="Script" uid="uid://b1c7dhwye1fm1" path="res://scripts/fof/cards/mr_mildflower.gd" id="4_8tp78"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_0qfbd"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_pkikf"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_uo0l6"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_1htg6"]
 
@@ -40,7 +39,6 @@ health = 2
 speed = 2
 energy = 1
 traits = Array[ExtResource("1_5wykw")]([])
-active_abilities = Array[ExtResource("11_pkikf")]([])
 description_datastore = SubResource("Resource_rc35s")
 
 [sub_resource type="Resource" id="Resource_dkeur"]
@@ -55,7 +53,6 @@ health = 2
 speed = 2
 energy = 1
 traits = Array[ExtResource("1_5wykw")]([])
-active_abilities = Array[ExtResource("11_pkikf")]([])
 description_datastore = SubResource("Resource_dkeur")
 
 [sub_resource type="Resource" id="Resource_gqibu"]
@@ -70,7 +67,6 @@ health = 2
 speed = 2
 energy = 1
 traits = Array[ExtResource("1_5wykw")]([])
-active_abilities = Array[ExtResource("11_pkikf")]([])
 description_datastore = SubResource("Resource_gqibu")
 
 [sub_resource type="Resource" id="Resource_1htg6"]
@@ -85,7 +81,6 @@ health = 2
 speed = 2
 energy = 1
 traits = Array[ExtResource("1_5wykw")]([])
-active_abilities = Array[ExtResource("11_pkikf")]([])
 description_datastore = SubResource("Resource_1htg6")
 
 [resource]

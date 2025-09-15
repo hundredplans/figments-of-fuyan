@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://08q3be81deq4"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://08q3be81deq4"]
 
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_8abg6"]
 [ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_hw1s4"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_rhojd"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="4_kcfhw"]
 [ext_resource type="PackedScene" uid="uid://cqkw7xut50dq2" path="res://assets/models/fof/cards/palmfessor.glb" id="5_bcbbw"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_lwk41"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_gvyod"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rlmgp"]
 
@@ -40,7 +39,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_8abg6")]([])
-active_abilities = Array[ExtResource("11_lwk41")]([])
 description_datastore = SubResource("Resource_pb8it")
 
 [sub_resource type="Resource" id="Resource_kh856"]
@@ -55,7 +53,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_8abg6")]([])
-active_abilities = Array[ExtResource("11_lwk41")]([])
 description_datastore = SubResource("Resource_kh856")
 
 [sub_resource type="Resource" id="Resource_4xnl0"]
@@ -70,7 +67,6 @@ health = 2
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_8abg6")]([])
-active_abilities = Array[ExtResource("11_lwk41")]([])
 description_datastore = SubResource("Resource_4xnl0")
 
 [sub_resource type="Resource" id="Resource_rlmgp"]
@@ -85,7 +81,6 @@ health = 2
 speed = 3
 energy = 2
 traits = Array[ExtResource("2_8abg6")]([])
-active_abilities = Array[ExtResource("11_lwk41")]([])
 description_datastore = SubResource("Resource_rlmgp")
 
 [resource]

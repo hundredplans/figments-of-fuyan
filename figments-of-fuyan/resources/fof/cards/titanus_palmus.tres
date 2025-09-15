@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=20 format=3 uid="uid://bbs4jsd5bvnsy"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=19 format=3 uid="uid://bbs4jsd5bvnsy"]
 
 [ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_85t00"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_q3lc1"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://c4jv5giwgiwu7" path="res://scripts/fof/cards/titanus_palmus.gd" id="4_purx8"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="5_02yec"]
 [ext_resource type="PackedScene" uid="uid://nsl73xnqq64e" path="res://assets/models/fof/cards/palmer.glb" id="7_ogfv7"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_be3fu"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_acxbf"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_cehsq"]
 
@@ -24,7 +23,6 @@ health = 7
 speed = 2
 energy = 5
 traits = Array[ExtResource("2_q3lc1")]([])
-active_abilities = Array[ExtResource("11_be3fu")]([])
 description_datastore = SubResource("Resource_1dwlm")
 
 [sub_resource type="Resource" id="Resource_oi88f"]
@@ -39,7 +37,6 @@ health = 7
 speed = 2
 energy = 5
 traits = Array[ExtResource("2_q3lc1")]([])
-active_abilities = Array[ExtResource("11_be3fu")]([])
 description_datastore = SubResource("Resource_oi88f")
 
 [sub_resource type="Resource" id="Resource_0i047"]
@@ -54,7 +51,6 @@ health = 7
 speed = 2
 energy = 5
 traits = Array[ExtResource("2_q3lc1")]([])
-active_abilities = Array[ExtResource("11_be3fu")]([])
 description_datastore = SubResource("Resource_0i047")
 
 [sub_resource type="Resource" id="Resource_cehsq"]
@@ -69,7 +65,6 @@ health = 7
 speed = 2
 energy = 5
 traits = Array[ExtResource("2_q3lc1")]([])
-active_abilities = Array[ExtResource("11_be3fu")]([])
 description_datastore = SubResource("Resource_cehsq")
 
 [resource]
@@ -86,18 +81,6 @@ points = []
 stat = 0.0
 top = 0.0
 eye = 0.0
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("2_q3lc1")]([])
-attack = 2
-health = 7
-speed = 2
-energy = 5
-description = "ABILITY [2]: KNOCKBACK [2] adjacent enemies and Heal [1] HP per unit"
-ascended_description = ""
-initial_traits = Array[ExtResource("2_q3lc1")]([])
 id = 24
 name = "Titanus Palmus"
 gdscript = ExtResource("4_purx8")

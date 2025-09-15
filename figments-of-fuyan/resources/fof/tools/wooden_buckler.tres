@@ -1,11 +1,10 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=16 format=3 uid="uid://cxomgt4wjuql7"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://cxomgt4wjuql7"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_lsp2t"]
 [ext_resource type="Script" uid="uid://bubywjab3xr8x" path="res://scripts/fof/tools/wooden_buckler.gd" id="2_6aiby"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_ik5wq"]
 [ext_resource type="Texture2D" uid="uid://vyane8s1hbx3" path="res://assets/sprites/game/tools/Wooden Buckler.png" id="2_mbssm"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_rgxxd"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_esd0i"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_a4jb4"]
 
 [sub_resource type="Resource" id="Resource_ji7kl"]
@@ -15,7 +14,6 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_4aiuu"]
 script = ExtResource("6_rgxxd")
-active_abilities = Array[ExtResource("7_esd0i")]([])
 description_datastore = SubResource("Resource_ji7kl")
 
 [sub_resource type="Resource" id="Resource_xx23k"]
@@ -25,7 +23,6 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_ls4cy"]
 script = ExtResource("6_rgxxd")
-active_abilities = Array[ExtResource("7_esd0i")]([])
 description_datastore = SubResource("Resource_xx23k")
 
 [sub_resource type="Resource" id="Resource_esd0i"]
@@ -35,7 +32,6 @@ default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_a4jb4"]
 script = ExtResource("6_rgxxd")
-active_abilities = Array[ExtResource("7_esd0i")]([])
 description_datastore = SubResource("Resource_esd0i")
 
 [sub_resource type="Resource" id="Resource_ojg0f"]
@@ -45,7 +41,6 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_xse81"]
 script = ExtResource("6_rgxxd")
-active_abilities = Array[ExtResource("7_esd0i")]([])
 description_datastore = SubResource("Resource_ojg0f")
 
 [resource]

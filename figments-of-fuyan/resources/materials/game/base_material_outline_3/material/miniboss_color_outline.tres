@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dc184hsp3llqa"]
+
+[ext_resource type="Material" uid="uid://c1jxm7hgbk2m" path="res://resources/materials/game/base_material_outline_3/outline/miniboss_color.tres" id="1_umy42"]
+[ext_resource type="Shader" uid="uid://bti0g8xnidary" path="res://resources/shaders/base_material.tres" id="2_rn4ni"]
+[ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="3_1syga"]
+[ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="4_alh13"]
+[ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="5_vsiaf"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("1_umy42")
+shader = ExtResource("2_rn4ni")
+shader_parameter/tx_attributes = ExtResource("3_1syga")
+shader_parameter/tx_color = ExtResource("4_alh13")
+shader_parameter/tx_emission = ExtResource("5_vsiaf")
+shader_parameter/EmissionStrength = 1.0

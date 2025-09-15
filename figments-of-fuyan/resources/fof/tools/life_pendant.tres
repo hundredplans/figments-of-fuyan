@@ -1,11 +1,10 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=19 format=3 uid="uid://cbc0y6bf26rjh"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://cbc0y6bf26rjh"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_6vyux"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="2_cmi31"]
 [ext_resource type="Script" uid="uid://6jfljie78gvc" path="res://scripts/fof/tools/pendant.gd" id="2_kcm4r"]
 [ext_resource type="Texture2D" uid="uid://dxss0514at87d" path="res://assets/sprites/game/tools/Life Pendant.png" id="2_yomwt"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="6_fjffo"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="7_h5u4r"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="8_jp3jr"]
 
 [sub_resource type="Resource" id="Resource_c3iop"]
@@ -15,17 +14,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_nto8d"]
 script = ExtResource("6_fjffo")
-active_abilities = Array[ExtResource("7_h5u4r")]([])
 description_datastore = SubResource("Resource_c3iop")
-
-[sub_resource type="Resource" id="Resource_h5u4r"]
-script = ExtResource("7_h5u4r")
-name = "Life Pendant"
-description = "Heal [1] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_jtbrw"]
 script = ExtResource("8_jp3jr")
@@ -35,17 +24,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_f844k"]
 script = ExtResource("6_fjffo")
-active_abilities = Array[ExtResource("7_h5u4r")]([SubResource("Resource_h5u4r")])
 description_datastore = SubResource("Resource_jtbrw")
-
-[sub_resource type="Resource" id="Resource_r5jks"]
-script = ExtResource("7_h5u4r")
-name = "Life Pendant"
-description = "Heal [2] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_jp3jr"]
 script = ExtResource("8_jp3jr")
@@ -55,17 +34,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_krus7"]
 script = ExtResource("6_fjffo")
-active_abilities = Array[ExtResource("7_h5u4r")]([SubResource("Resource_r5jks")])
 description_datastore = SubResource("Resource_jp3jr")
-
-[sub_resource type="Resource" id="Resource_21fau"]
-script = ExtResource("7_h5u4r")
-name = "Life Pendant"
-description = "Heal [2] HP"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_blges"]
 script = ExtResource("8_jp3jr")
@@ -75,7 +44,6 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_vpjvo"]
 script = ExtResource("6_fjffo")
-active_abilities = Array[ExtResource("7_h5u4r")]([SubResource("Resource_21fau")])
 description_datastore = SubResource("Resource_blges")
 
 [resource]

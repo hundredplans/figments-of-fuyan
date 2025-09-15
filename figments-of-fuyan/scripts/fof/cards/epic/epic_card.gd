@@ -6,14 +6,6 @@ var boss_intent: BossIntent
 var BossFieldInfo: Node3D
 
 #region Default
-func onSave() -> SavedDataEpicCard:
-	onPreSave()
-	return SavedDataEpicCard.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, team, \
-	attack, health, speed, max_speed, max_health, energy, draw_order, card_place, turn_state, SavedData.onSaveGroup(status_effects), attacks, attack_range, delayed_stats,\
-	ability_save, active_effects, Tool.onSave() if Tool != null else null, SavedData.onSaveGroup(field_effects), anibility_datastore,\
-	is_temporary, is_awakened_in_combat, ai_datastore, base_stats,
-	overworld_traits, bounty_kills, boss_datastore, card_offset, tier)
-
 func onLoadData(data: SavedData) -> void:
 	super(data)
 	boss_datastore = data.boss_datastore

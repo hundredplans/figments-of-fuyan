@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://3dnn0anp5pxb"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://3dnn0anp5pxb"]
 
 [ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_14n8o"]
 [ext_resource type="Texture2D" uid="uid://lvbuhj1lrsdy" path="res://assets/sprites/game/cards/art_mini/marshall_morgan.png" id="2_id846"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_fodwi"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_eas53"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_kujcj"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_v13d3"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_5glti"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_cpefd"]
 
@@ -40,7 +39,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("3_p0oh2")]([])
-active_abilities = Array[ExtResource("11_v13d3")]([])
 description_datastore = SubResource("Resource_pg0mh")
 
 [sub_resource type="Resource" id="Resource_1qy5m"]
@@ -55,7 +53,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("3_p0oh2")]([])
-active_abilities = Array[ExtResource("11_v13d3")]([])
 description_datastore = SubResource("Resource_1qy5m")
 
 [sub_resource type="Resource" id="Resource_vjdjm"]
@@ -70,7 +67,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("3_p0oh2")]([])
-active_abilities = Array[ExtResource("11_v13d3")]([])
 description_datastore = SubResource("Resource_vjdjm")
 
 [sub_resource type="Resource" id="Resource_cpefd"]
@@ -85,7 +81,6 @@ health = 3
 speed = 3
 energy = 3
 traits = Array[ExtResource("3_p0oh2")]([])
-active_abilities = Array[ExtResource("11_v13d3")]([])
 description_datastore = SubResource("Resource_cpefd")
 
 [resource]
@@ -103,18 +98,6 @@ collision_shape = SubResource("PackedScene_1xbhj")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("3_p0oh2")]([])
-attack = 3
-health = 3
-speed = 3
-energy = 3
-description = "RANGED [1-2]; While DUELLING: This and the enemy have +1 ATT"
-ascended_description = ""
-initial_traits = Array[ExtResource("3_p0oh2")]([])
 id = 33
 name = "Marshal Morgan"
 gdscript = ExtResource("4_138qc")

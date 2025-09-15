@@ -18,29 +18,24 @@ func onProcessAction(action: Action) -> void:
 			onPushAction(RemoveOverworldTraitAction.new(self, armor_id, OverworldTrait.AddedBy.CRAB))
 			armor_id = 0
 
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Hardened Shell":
-		return ActiveEffectTiles.new([Tile], [Tile])
-	return null
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	return ActiveEffectTiles.new([Tile], [Tile])
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Hardened Shell":
-		var trait_data := SavedDataTrait.new(1, true, 0, getTierArmor())
-		armor_id = 1
-		ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN
-		
-		var actions: Array = []
-		var animation_action := AnimationAction.new(self, "Ability")
-		animation_action.setActionDelay(ABILITY_DELAY)
-		var overworld_trait_action := AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.CRAB, true), true)
-		
-		onPushAction([animation_action, overworld_trait_action])
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	var trait_data := SavedDataTrait.new(1, true, 0, getTierArmor())
+	armor_id = 1
+	ai_ability_cooldown_turns_left = AI_ABILITY_COOLDOWN
+	
+	var actions: Array = []
+	var animation_action := AnimationAction.new(self, "Ability")
+	animation_action.setActionDelay(ABILITY_DELAY)
+	var overworld_trait_action := AddOverworldTraitAction.new(self, OverworldTrait.new(trait_data, OverworldTrait.AddedBy.CRAB, true), true)
+	
+	onPushAction([animation_action, overworld_trait_action])
 
 # Use ability if enemies are within DISTANCE tiles below
 const HARDENED_SHELL_ENEMY_DISTANCE_TO_USE: int = 4
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	var enemies: Array = getVisibleFieldCardsEnemies()
 	var use_ability: bool = !enemies.is_empty() and ai_ability_cooldown_turns_left == 0 and\
 	enemies.any(func(x: CardGD): return Game.getCoordsDistance(x.getCoords(), getCoords()) <= HARDENED_SHELL_ENEMY_DISTANCE_TO_USE)

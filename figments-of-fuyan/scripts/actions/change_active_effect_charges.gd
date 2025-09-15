@@ -1,12 +1,12 @@
 class_name ChangeActiveEffectChargesAction extends Action
 
-var active_effect: ActiveEffectDatastore
+var item: FofGD
 var delta: int
 var set_to_infinite: bool
 
-func _init(_active_effect: ActiveEffectDatastore = null, _delta: int = 0, _set_to_infinite: bool = false) -> void:
+func _init(_item: FofGD = null, _delta: int = 0, _set_to_infinite: bool = false) -> void:
 	super()
-	active_effect = _active_effect
+	item = _item
 	delta = _delta
 	set_to_infinite = _set_to_infinite
 	
@@ -14,14 +14,12 @@ func onPreAction() -> void:
 	pass
 	
 func onPostAction() -> void:
+	var current_charges: int = item.getActiveEffectCharges()
 	if set_to_infinite:
-		active_effect.charges = -1
+		item.setActiveEffectCharges(-1)
 		
-	elif active_effect.charges != -1:
-		active_effect.charges += delta
+	elif current_charges >= 0:
+		item.setActiveEffectCharges(current_charges + delta)
 		
-	if active_effect.charges == 0 and active_effect.owner is ToolGD and active_effect.owner.getRarity() == Game.Rarities.MINI:
-		onPushAction(RemoveToolAction.new(active_effect.owner.Card))
-
-func getLogInfo() -> Array:
-	return ["ActiveEffect: " + active_effect.name, "Charges: " + str(active_effect.charges), "Delta: " + str(delta)]
+	if current_charges == 0 and item is ToolGD and item.getRarity() == Game.Rarities.MINI:
+		onPushAction(RemoveToolAction.new(item.Card))

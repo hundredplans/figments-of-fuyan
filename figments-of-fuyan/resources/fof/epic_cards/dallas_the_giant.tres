@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_2ecj3"]
 [ext_resource type="Script" uid="uid://bd0ljqheerbtm" path="res://scripts/fof_info/epic_cards/epic_card_info.gd" id="2_4kbwq"]
 [ext_resource type="Script" uid="uid://c18vvqrvd4cej" path="res://scripts/fof/cards/epic/epic_card.gd" id="2_nq8t6"]
-[ext_resource type="Script" uid="uid://unn6splqvb3v" path="res://scripts/saved_data/game_objects/saved_data_epic_card.gd" id="4_4eauj"]
+[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="3_hljbl"]
 
 [resource]
 script = ExtResource("2_4kbwq")
@@ -16,5 +16,5 @@ awaken_boss_intent_name = ""
 id = 4
 name = "Dallas the Giant"
 gdscript = ExtResource("2_nq8t6")
-saved_data = ExtResource("4_4eauj")
+saved_data = ExtResource("3_hljbl")
 metadata/_custom_type_script = "uid://bd0ljqheerbtm"

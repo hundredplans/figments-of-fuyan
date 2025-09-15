@@ -32,8 +32,6 @@ signal death
 signal turn_state_changing
 signal camera_change_action
 signal active_effect_used
-signal active_effect_added
-signal active_effect_removed
 signal tile_occupied
 signal set_rewards # Signal for area to interpret
 signal game_started
@@ -251,10 +249,6 @@ func onProcessAction(action: Action) -> void:
 		elif action is ActiveEffectUsedAction:
 			active_effect_used.emit(action.ActiveEffect)
 			onRecalculateAITurn(action.Card)
-		elif action is AddActiveEffectAction:
-			active_effect_added.emit(action.active_effect)
-		elif action is RemoveActiveEffectAction:
-			active_effect_removed.emit(action.active_effect)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
 			onRecalculateAITurnOccupy(action, action.Card)

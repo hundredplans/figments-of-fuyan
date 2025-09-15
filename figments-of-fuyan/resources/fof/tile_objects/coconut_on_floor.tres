@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://bs0ciwoaobupa"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://bs0ciwoaobupa"]
 
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_hth47"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="1_ims3d"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_muana"]
 [ext_resource type="PackedScene" uid="uid://dqnt0yk88e1ji" path="res://assets/models/fof/objects/coconut_on_floor.glb" id="2_vvxdu"]
 [ext_resource type="PackedScene" uid="uid://bfitba6m1gpv7" path="res://assets/models/fof/objects/coconut_on_floor1.glb" id="3_b8uwn"]
 [ext_resource type="PackedScene" uid="uid://cpkebaowv3lj5" path="res://assets/models/fof/objects/coconut_on_floor2.glb" id="4_40t2e"]
@@ -17,7 +16,6 @@ ignore_collisions = true
 solids = Array[bool]([false, false, false])
 models = Array[PackedScene]([ExtResource("2_vvxdu"), ExtResource("3_b8uwn"), ExtResource("4_40t2e")])
 points = Array[Array]([[Vector3(-0.031433, 0.164569, -0.00897849)], [Vector3(-0.027009, 0.143689, -0.00153434)], [Vector3(-0.0126234, 0.138993, 0.00962555)]])
-active_effects = Array[ExtResource("1_muana")]([])
 area_ids = Array[int]([1])
 id = 11
 name = "Coconut on Floor"

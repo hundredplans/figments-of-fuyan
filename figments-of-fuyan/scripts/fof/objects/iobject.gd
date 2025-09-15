@@ -53,57 +53,6 @@ func onSave() -> SavedDataIObject:
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if action.post:	
-		if action is ChangePhaseAction:
-			if action.phase == Game.Phases.START:
-				onCreateActiveEffects()
-
-#region Active Effects
-func getValidActiveEffects(_Card: CardGD) -> Array: # Returns the ability effects the Card can view
-	return []
-
-func onCreateActiveEffects() -> void:
-	var new_active_effects: Array = info.getActiveEffects()
-	if !new_active_effects.is_empty():
-		onPushAction(new_active_effects.map(func(x: ActiveEffectDatastore): return AddActiveEffectAction.new(self, x.duplicate())))
-
-func onAddActiveEffect(active_effect: ActiveEffectDatastore) -> void:
-	active_effects.append(active_effect)
-	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void:
-	pass
-	
-func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void:
-	pass
-	
-func setActiveEffectUsed(active_effect: ActiveEffectDatastore, used: bool) -> void:
-	active_effect.used = used
-	
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore, Card: CardGD) -> bool:
-	return Card == null
-	
-func getActiveEffect(effect_name: String) -> ActiveEffectDatastore:
-	for active_effect in active_effects:
-		if active_effect.name == effect_name: return active_effect
-	return null
-	
-func getActiveEffectDescription(_active_effect: ActiveEffectDatastore, description: String) -> String:
-	return description
-	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, _active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
-	return null
-	
-func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
-	return null
-	
-func onAIAbilityCheckerDefault(active_effect: ActiveEffectDatastore, Card: CardGD) -> ActiveEffectTiles:
-	if active_effect.getDefaultDisabled(Card): return null
-	
-	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles(active_effect, Card)
-	if active_effect_tiles == null or active_effect_tiles.pickable_tiles.is_empty(): return null
-	return active_effect_tiles
-#endregion
-
 #region Animation
 func onAbility() -> void:
 	if isLevelVisible():
@@ -112,9 +61,7 @@ func onAbility() -> void:
 
 func onAdvanceTurn(team: int) -> void:
 	if team != 0: return
-	var actions: Array =\
-		active_effects.filter(func(x: ActiveEffectDatastore): return x.used).\
-		map(func(x: ActiveEffectDatastore): return ChangeActiveEffectUsedAction.new(x, false))
+	var actions: Array = []
 	onPushAction(actions)
 	
 func setTopVertexY() -> void:
@@ -133,3 +80,5 @@ func onIObject(_action: Action) -> void:
 func onIObjectSpecificTransforms(_tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	pass
 	
+func isActiveEffectDisabled(_Card: CardGD) -> bool:
+	return false

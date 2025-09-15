@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=22 format=3 uid="uid://dgjdlhqnb1lsu"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://dgjdlhqnb1lsu"]
 
 [ext_resource type="Image" uid="uid://qk68le6o7ido" path="res://assets/sprites/game/cards/art_pop/c4ctus.png" id="2_jnes4"]
 [ext_resource type="Texture2D" uid="uid://ehqi1e884ebt" path="res://assets/sprites/game/cards/art_mini/c4ctus.png" id="2_mry01"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bxdixxrf3f7aa" path="res://assets/models/fof/cards/quickdraw_quentin.glb" id="5_2875h"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_7truy"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="7_erqtd"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="11_ku30v"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_y6i73"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_rqpfg"]
 
@@ -40,7 +39,6 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_lf2kf")]([])
-active_abilities = Array[ExtResource("11_ku30v")]([])
 description_datastore = SubResource("Resource_stbys")
 
 [sub_resource type="Resource" id="Resource_0mc8e"]
@@ -55,7 +53,6 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_lf2kf")]([])
-active_abilities = Array[ExtResource("11_ku30v")]([])
 description_datastore = SubResource("Resource_0mc8e")
 
 [sub_resource type="Resource" id="Resource_flsu3"]
@@ -70,7 +67,6 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_lf2kf")]([])
-active_abilities = Array[ExtResource("11_ku30v")]([])
 description_datastore = SubResource("Resource_flsu3")
 
 [sub_resource type="Resource" id="Resource_rqpfg"]
@@ -85,7 +81,6 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("3_lf2kf")]([])
-active_abilities = Array[ExtResource("11_ku30v")]([])
 description_datastore = SubResource("Resource_rqpfg")
 
 [resource]
@@ -103,18 +98,6 @@ collision_shape = SubResource("PackedScene_1xbhj")
 stat = 2.01124
 top = 1.86689
 eye = 1.642
-plus_attack = 0
-plus_health = 0
-plus_speed = 0
-plus_energy = 0
-ascended_traits = Array[ExtResource("3_lf2kf")]([])
-attack = 1
-health = 4
-speed = 2
-energy = 3
-description = "RANGED [1-3]; ABILITY [2]: Instead of attacking throw a Cactus Bomb in a [3] Tile range"
-ascended_description = ""
-initial_traits = Array[ExtResource("3_lf2kf")]([])
 id = 46
 name = "C4CTUS"
 gdscript = ExtResource("4_qgx5f")

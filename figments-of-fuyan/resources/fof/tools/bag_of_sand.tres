@@ -1,21 +1,11 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=20 format=3 uid="uid://bqot46bsqqcjn"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://bqot46bsqqcjn"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_shcwd"]
 [ext_resource type="Texture2D" uid="uid://co1meht67xmor" path="res://assets/sprites/game/tools/Bag of Sand.png" id="2_2k2l1"]
 [ext_resource type="Script" uid="uid://cp4dj61pvx2ge" path="res://scripts/fof/tools/bag_of_sand.gd" id="2_wbbhf"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_d285g"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="7_asy6v"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="8_3qcf7"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="9_bm5wq"]
-
-[sub_resource type="Resource" id="Resource_evls2"]
-script = ExtResource("8_3qcf7")
-name = "Bag of Sand"
-description = "DISARM an adjacent enemy with [2] or less ATTACK"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_7r50r"]
 script = ExtResource("9_bm5wq")
@@ -24,17 +14,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_u6fmo"]
 script = ExtResource("7_asy6v")
-active_abilities = Array[ExtResource("8_3qcf7")]([SubResource("Resource_evls2")])
 description_datastore = SubResource("Resource_7r50r")
-
-[sub_resource type="Resource" id="Resource_7n858"]
-script = ExtResource("8_3qcf7")
-name = "Bag of Sand"
-description = "DISARM an adjacent enemy with [3] or less ATTACK"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_kfcam"]
 script = ExtResource("9_bm5wq")
@@ -43,17 +23,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_ldvco"]
 script = ExtResource("7_asy6v")
-active_abilities = Array[ExtResource("8_3qcf7")]([SubResource("Resource_7n858")])
 description_datastore = SubResource("Resource_kfcam")
-
-[sub_resource type="Resource" id="Resource_asy6v"]
-script = ExtResource("8_3qcf7")
-name = "Bag of Sand"
-description = "DISARM an adjacent enemy with ATT [4] or less"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_3qcf7"]
 script = ExtResource("9_bm5wq")
@@ -62,17 +32,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_bm5wq"]
 script = ExtResource("7_asy6v")
-active_abilities = Array[ExtResource("8_3qcf7")]([SubResource("Resource_asy6v")])
 description_datastore = SubResource("Resource_3qcf7")
-
-[sub_resource type="Resource" id="Resource_hx2jn"]
-script = ExtResource("8_3qcf7")
-name = "Bag of Sand"
-description = "DISARM an adjacent enemy"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
 
 [sub_resource type="Resource" id="Resource_67p0o"]
 script = ExtResource("9_bm5wq")
@@ -81,7 +41,6 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_qdxdu"]
 script = ExtResource("7_asy6v")
-active_abilities = Array[ExtResource("8_3qcf7")]([SubResource("Resource_hx2jn")])
 description_datastore = SubResource("Resource_67p0o")
 
 [resource]

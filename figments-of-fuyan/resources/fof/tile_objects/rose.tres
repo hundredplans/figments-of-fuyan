@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=23 format=3 uid="uid://bkwayvxnobvfd"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=22 format=3 uid="uid://bkwayvxnobvfd"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_plhpj"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_0wbbv"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_q365o"]
 [ext_resource type="PackedScene" uid="uid://bghx2g1u4y0v1" path="res://assets/models/fof/objects/rose.glb" id="3_5n4eq"]
@@ -32,7 +31,6 @@ ignore_collisions = false
 solids = Array[bool]([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false])
 models = Array[PackedScene]([ExtResource("3_5n4eq"), ExtResource("4_5n4eq"), ExtResource("5_3njrh"), ExtResource("6_1dcgl"), ExtResource("7_lgbym"), ExtResource("8_qheqw"), ExtResource("9_qw4wt"), ExtResource("10_ehf3d"), ExtResource("11_7m86i"), ExtResource("12_46m61"), ExtResource("13_ia30a"), ExtResource("14_tsib6"), ExtResource("15_ae68s"), ExtResource("16_tfu16"), ExtResource("17_ackxu"), ExtResource("18_bhxy3"), ExtResource("19_e4aw7"), ExtResource("20_1ptaf")])
 points = Array[Array]([[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []])
-active_effects = Array[ExtResource("1_plhpj")]([])
 area_ids = Array[int]([3])
 id = 49
 name = "Rose"

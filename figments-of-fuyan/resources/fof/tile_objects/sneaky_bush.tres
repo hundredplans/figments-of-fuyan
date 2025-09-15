@@ -1,20 +1,9 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=7 format=3 uid="uid://b2q2ih1fh44tq"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://b2q2ih1fh44tq"]
 
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="1_a0rfk"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_raq7j"]
 [ext_resource type="Script" uid="uid://dcg0xharira2n" path="res://scripts/fof/objects/sneaky_bush.gd" id="2_djcfm"]
 [ext_resource type="PackedScene" uid="uid://6fux0y633is5" path="res://assets/models/fof/objects/sneaky_bush.glb" id="2_splvw"]
 [ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="4_rhxxl"]
-
-[sub_resource type="Resource" id="Resource_pnm47"]
-script = ExtResource("1_raq7j")
-name = "Stomp"
-description = "Destroy the bush"
-max_charges = 1
-delay = 0.0
-camera_type = 0
-charges = 0
-used = false
 
 [resource]
 script = ExtResource("1_a0rfk")
@@ -25,7 +14,6 @@ ignore_collisions = true
 solids = Array[bool]([false])
 models = Array[PackedScene]([ExtResource("2_splvw")])
 points = Array[Array]([[Vector3(0.0727144, 0.273456, -0.26195), Vector3(0.0141951, 0.330025, 0.204419), Vector3(-0.263456, 0.33464, -0.0609286)]])
-active_effects = Array[ExtResource("1_raq7j")]([SubResource("Resource_pnm47")])
 area_ids = Array[int]([])
 id = 18
 name = "Sneaky Bush"

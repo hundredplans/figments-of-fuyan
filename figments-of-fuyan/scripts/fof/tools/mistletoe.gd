@@ -11,18 +11,14 @@ func onToolHolderAwakened() -> void:
 	super()
 	onPushAction(getStatAction())
 	
-func getActiveEffectTiles(active_effect: ActiveEffectDatastore) -> ActiveEffectTiles:
-	super(active_effect)
-	if active_effect.name == "Mistletoe":
-		return ActiveEffectTiles.new([Card.getTile()], [Card.getTile()])
+func getActiveEffectTiles() -> ActiveEffectTiles:
+	return ActiveEffectTiles.new([Card.getTile()], [Card.getTile()])
 	return null
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
-	super(active_effect, PickedTile, active_effect_tiles)
-	if active_effect.name == "Mistletoe":
-		onPushAction(getStatAction())
+func onActiveEffect(PickedTile: TileGD, active_effect_tiles: ActiveEffectTiles) -> void:
+	onPushAction(getStatAction())
 	
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0]
 	
 func getStatAction() -> StatAction:
@@ -51,7 +47,6 @@ func getRandomCombination() -> Array:
 	return combinations.pick_random()
 
 func getDescription(use_default_values: bool = false) -> String:
-	var active_effect: ActiveEffectDatastore = getActiveEffectByName("Mistletoe")
-	if !use_default_values and active_effect != null:
-		return Helper.getDescription(super(), [active_effect.charges])
+	if !use_default_values:
+		return Helper.getDescription(super(), [active_effect_charges])
 	return super(true)

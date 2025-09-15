@@ -69,34 +69,34 @@ func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects
 	
 	if is_open and get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == Tile): return []
 	if !isAdjacent(Card.getCoords()): return []
-
-	return [getActiveEffect("Close Door") if is_open else getActiveEffect("Open Door")]
+	return []
+	#return [getActiveEffect("Close Door") if is_open else getActiveEffect("Open Door")]
 #endregion
 	
 #region Active Effect
-func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
+func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
-func onActiveEffect(active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var animation_action := AnimationAction.new(self, "Ability", !is_open)
 	animation_action.setActionDelay(ABILITY_DELAY)
 	
 	var actions: Array = [animation_action, VisionAction.new(Game.inVisionRangeCards(Card.getTile(), true))]
-	for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
-		actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
+	#for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
+		#actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
 	actions.append(CameraChangeAction.new(Card))
 	onPushAction(actions)
 		
-func onActiveEffectPre(active_effect: ActiveEffectDatastore, PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
-	if active_effect.name == "Open Door":
-		if isLevelVisible(): last_seen_open = true
-		is_open = true
-		onDoorIsOpen(false)
-		
-	elif active_effect.name == "Close Door":
-		if isLevelVisible(): last_seen_open = false
-		is_open = false
-		onDoorIsClosed(false)
+func onActiveEffectPre(PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+	#if active_effect.name == "Open Door":
+		#if isLevelVisible(): last_seen_open = true
+		#is_open = true
+		#onDoorIsOpen(false)
+		#
+	#elif active_effect.name == "Close Door":
+		#if isLevelVisible(): last_seen_open = false
+		#is_open = false
+		#onDoorIsClosed(false)
 	onForceAction(CameraChangeAction.new(self))
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, PickedTile)))
 #endregion
@@ -133,5 +133,6 @@ func onIObjectSpecificTransforms(tiles_to_value: Dictionary, _DFL: DefaultFightL
 			tiles_to_value[Tile] += GET_CLOSE_TO_DOOR_INCENTIVE
 
 # When possible open the door, never close it
-func onAIAbilityChecker(active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
-	return active_effect_tiles.pickable_tiles[0] if !is_open and active_effect.name == "Open Door" else null
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+	return null
+	#return active_effect_tiles.pickable_tiles[0] if !is_open and active_effect.name == "Open Door" else null

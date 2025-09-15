@@ -46,6 +46,7 @@ func onPostAction() -> void:
 		onAppendAction(EndGameAction.new(Defender.team, Game.getLevel().isEpic()))
 			
 	Defender.onRegularReset()
+	Audio.onSoundEffect(Defender.getInfo().getDeathAudio())
 			
 func onSwapCameraOnDeathInPlayerPhase() -> void:
 	if Game.getLevel().phase != Game.Phases.PLAYER: return

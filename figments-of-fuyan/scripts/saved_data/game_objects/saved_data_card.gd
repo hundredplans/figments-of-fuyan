@@ -15,7 +15,7 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var attack_range: int
 @export var delayed_stats: Array
 @export var ability_save: Dictionary
-@export var active_effects: Array[ActiveEffectDatastore]
+@export var active_effect_charges: int
 @export var tool_data: SavedDataTool
 @export var field_effects: Array
 @export var anibility_datastore: AnibilityDatastore
@@ -31,18 +31,19 @@ class_name SavedDataCard extends SavedDataGameObject
 @export var tier: int
 @export var death_ids: Array[int]
 @export var vision_range: int
+@export var active_effect_used: bool
 
 func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords := Vector4i.ZERO,\
  _tile_rotation: int = 0, _vision_datastore := VisionDatastoreCard.new(), _team: int = 0, _attack: int = 0, _health: int = 0,\
 	_speed: int = 0, _max_speed: int = 0, _max_health: int = 0, _energy: int = 0,\
 	_draw_order: int = 0, _card_place := Game.CardPlaces.NULL, _turn_state := Game.TurnStates.NULL,\
 	_status_effects: Array = [], _attacks: int = 0, _attack_range: int = 1, _delayed_stats: Array = [],\
-	_ability_save: Dictionary = {}, _active_effects: Array[ActiveEffectDatastore] = [], _tool_data: SavedDataTool = null,\
+	_ability_save: Dictionary = {}, _active_effect_charges: int = -2, _tool_data: SavedDataTool = null,\
 	_field_effects: Array = [], _anibility_datastore := AnibilityDatastore.new(), _is_temporary: bool = false,\
 	_is_awakened_in_combat: bool = false, _ai_datastore := AIDatastore.new(),\
 	_base_stats: StatsDatastore = null, _overworld_traits: Array[OverworldTrait] = [], _bounty_kills := BountyKills.new(),\
 	_boss_datastore: BossDatastore = null, _card_offset := CardOffset.new(), _tier: int = 1,\
-	_death_ids: Array[int] = [], _vision_range: int = 5) -> void:
+	_death_ids: Array[int] = [], _vision_range: int = 5, _active_effect_used: bool = false) -> void:
 		
 	super(_id, _first_init, _public_id, _coords, _tile_rotation, _vision_datastore)
 	
@@ -61,7 +62,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	attack_range = _attack_range
 	delayed_stats = _delayed_stats
 	ability_save = _ability_save
-	active_effects = _active_effects
+	active_effect_charges = _active_effect_charges
 	tool_data = _tool_data
 	field_effects = _field_effects
 	anibility_datastore = _anibility_datastore
@@ -76,6 +77,7 @@ func _init(_id: int = 0, _first_init: bool = false, _public_id: int = 0, _coords
 	tier = _tier
 	death_ids = _death_ids
 	vision_range = _vision_range
+	active_effect_used = _active_effect_used
 	
 func getInfoType() -> GDScript: return CardInfo
 func setBaseStats(stat_datastore: StatsDatastore) -> void:

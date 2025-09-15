@@ -50,6 +50,7 @@ func onPostAction() -> void:
 	Card.onRegularReset()
 	
 	onPushAction(actions)
+	Audio.onSoundEffect(Card.getInfo().getAwakenAudio())
 
 func getLogInfo() -> Array:
 	return ["Card: " + Card.info.name]

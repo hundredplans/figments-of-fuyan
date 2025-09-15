@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=25 format=3 uid="uid://ydjxvwsjb6df"]
+[gd_resource type="Resource" script_class="ChampionCardInfo" load_steps=24 format=3 uid="uid://ydjxvwsjb6df"]
 
 [ext_resource type="Image" uid="uid://b86c6f1uyjyd6" path="res://assets/sprites/game/cards/art_pop/frederic_the_fearless.png" id="2_d16dl"]
 [ext_resource type="Texture2D" uid="uid://cqe3wqg1v4gc" path="res://assets/sprites/game/cards/art_mini/frederic_the_fearless.png" id="2_n886d"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://da4sy8lgds3j5" path="res://scripts/fof/cards/frederic_the_fearless.gd" id="5_jvipk"]
 [ext_resource type="PackedScene" uid="uid://bd2esqpmo73tk" path="res://assets/models/fof/cards/frederic_the_fearless.glb" id="5_ks7mj"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="8_j10ap"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="14_c5w00"]
 [ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="15_blypd"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="16_0ikkh"]
 
@@ -47,7 +46,6 @@ health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_xdpta")]([])
-active_abilities = Array[ExtResource("14_c5w00")]([])
 description_datastore = SubResource("Resource_sky5f")
 
 [sub_resource type="Resource" id="Resource_udxuq"]
@@ -62,7 +60,6 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_xdpta")]([])
-active_abilities = Array[ExtResource("14_c5w00")]([])
 description_datastore = SubResource("Resource_udxuq")
 
 [sub_resource type="Resource" id="Resource_4gwjb"]
@@ -77,7 +74,6 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_xdpta")]([])
-active_abilities = Array[ExtResource("14_c5w00")]([])
 description_datastore = SubResource("Resource_4gwjb")
 
 [sub_resource type="Resource" id="Resource_0ikkh"]
@@ -92,7 +88,6 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("3_xdpta")]([])
-active_abilities = Array[ExtResource("14_c5w00")]([])
 description_datastore = SubResource("Resource_0ikkh")
 
 [resource]

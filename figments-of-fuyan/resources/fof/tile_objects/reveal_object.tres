@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://6fn5ws4dbq14"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://6fn5ws4dbq14"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_td1e1"]
 [ext_resource type="Script" uid="uid://dgbjgiy4bfpfo" path="res://scripts/fof/objects/reveal_object.gd" id="2_7qb02"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_obeho"]
 [ext_resource type="PackedScene" uid="uid://b4rw2tuq0q6br" path="res://assets/models/fof/objects/reveal_object.glb" id="3_fd6k8"]
@@ -15,7 +14,6 @@ ignore_collisions = true
 solids = Array[bool]([false])
 models = Array[PackedScene]([ExtResource("3_fd6k8")])
 points = Array[Array]([[]])
-active_effects = Array[ExtResource("1_td1e1")]([])
 area_ids = Array[int]([])
 id = 26
 name = "Reveal Object"

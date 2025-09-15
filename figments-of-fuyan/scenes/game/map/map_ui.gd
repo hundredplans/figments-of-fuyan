@@ -33,10 +33,24 @@ var BoonBox: Control
 #region Base Functions
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Back") and PauseMenu == null:
-		PauseMenu = Game.onCreatePauseMenu(self)
-		PauseMenu.mouse_in_ui.connect(onMouseInUI)
-		PauseMenu.tree_exited.connect(onScreenFinished.bind(PauseMenu))
-		onScreenCreated(PauseMenu)
+		onCreatePauseMenu()
+		
+func onCreatePauseMenu() -> void:
+	PauseMenu = Game.onCreatePauseMenu(self)
+	PauseMenu.mouse_in_ui.connect(onMouseInUI)
+	PauseMenu.exit_start.connect(onPauseMenuExitStart)
+	PauseMenu.tree_exited.connect(onRemovePauseMenu)
+	onScreenCreated(PauseMenu)
+	onFadeBackgroundNodes(0.0, "NoBoonBox" if isStashScreenActive() else "", true)
+	
+func onPauseMenuExitStart() -> void:
+	onFadeBackgroundNodes(1.0, "NoBoonBox" if isStashScreenActive() else "", true)
+	
+func onRemovePauseMenu() -> void:
+	onScreenFinished(PauseMenu)
+	
+func isStashScreenActive() -> bool:
+	return StashScreen != null
 
 func setInfo(_save_file: SaveFileGD) -> void:
 	Game.update_stash_screen.connect(onUpdateStashScreen)
@@ -131,10 +145,10 @@ func onCreateScreen(map_node: MapNodeGD, _ActiveScreen: Control) -> void:
 func onMapNodeFinished(_map_node: MapNodeGD) -> void:
 	FadeBackground.onFade(false)
 
-func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUI: Variant = null) -> void:
-	if HoverUI != null: Game.onEmptyTooltip(state, HoverUI, self)
-	if state and HoverUI != null:
-		HoverUI.setInfo(map_node)
+func onMapNodeHovered(map_node: MapNodeGD, state: bool, HoverUINode: Variant = null) -> void:
+	if HoverUINode != null: Game.onEmptyTooltip(state, HoverUINode, self)
+	if state and HoverUINode != null:
+		HoverUINode.setInfo(map_node)
 #endregion
 
 #region Deck
@@ -153,6 +167,7 @@ func onCreateStashScreen(ToolIcon: TbcUI = null) -> void:
 	StashScreen.deck_slot_changed.connect(onUpdateDeckCardAmountLabel)
 	StashScreen.exit_start.connect(func(): stash_screen_exit_start.emit())
 	StashScreen.active_tool_added.connect(func(x: TbcUI): active_tool_added.emit(x))
+	StashScreen.disable_stash_button.connect(CommonGameUI.getStashButton().setDisabled)
 	stash_screen_start.emit()
 	
 	var EnteredMapNode: MapNodeGD = Game.getArea().getEnteredMapNode()
@@ -165,7 +180,7 @@ func onUpdateStashScreen(created: bool) -> void:
 	var end_value: float = 0.0 if created else 1.0
 	if created: onScreenCreated(StashScreen)
 	else: onScreenFinished(StashScreen)
-	onFadeBackgroundNodes(end_value, true)
+	onFadeBackgroundNodes(end_value, "OnlyBoonBox")
 	
 func onScreenCreated(ignore_screen: Variant) -> void:
 	screen_created.emit(isAnotherScreen(ignore_screen))
@@ -179,8 +194,8 @@ func isAnotherScreen(ignore_screen: Variant) -> bool:
 		if screen != null: return true
 	return false
 		
-func onFadeBackgroundNodes(end_value: float, only_boons: bool = false) -> void:
-	CommonGameUI.onFadeBackgroundNodes(end_value, only_boons)
+func onFadeBackgroundNodes(end_value: float, condition: String = "", change_mouse_filter: bool = false) -> void:
+	CommonGameUI.onFadeBackgroundNodes(end_value, condition, change_mouse_filter)
 #endregion
 
 #region Deck Card Amount
@@ -198,7 +213,7 @@ func onMinimapMode(is_start: bool, nodes: Array = []) -> void:
 	if !is_start:
 		for map_node: MapNodeGD in get_tree().get_nodes_in_group("MapNodesGD"):
 			map_node.setRayPickable(false)
-			map_node.is_minimap = false
+			#map_node.is_minimap = false
 		
 		for node: Control in nodes:
 			node.visible = true
@@ -215,7 +230,7 @@ func onMinimapMode(is_start: bool, nodes: Array = []) -> void:
 	if is_start:
 		for map_node: MapNodeGD in get_tree().get_nodes_in_group("MapNodesGD"):
 			map_node.setRayPickable(is_start)
-			map_node.is_minimap = true
+			#map_node.is_minimap = true
 			
 		for node: Control in nodes:
 			node.visible = false
@@ -236,8 +251,6 @@ func onFadeBackgroundBlack() -> void:
 	onFadeBackgroundNodes(0.0)
 
 func onUpdateStashScreenExisting() -> void:
-	if StashScreen == null:
-		onCreateStashScreen()
-	else:
-		StashScreen.onExitButtonPressed()
+	if StashScreen == null: onCreateStashScreen()
+	else: StashScreen.onStartExit()
 	

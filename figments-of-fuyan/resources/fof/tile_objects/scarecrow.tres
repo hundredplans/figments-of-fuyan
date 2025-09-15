@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://doyvr8u1m64ps"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://doyvr8u1m64ps"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_2ai1x"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_g3cr3"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_kdj0v"]
 [ext_resource type="PackedScene" uid="uid://cp8vw3uwwbdgu" path="res://assets/models/fof/objects/scarecrow.glb" id="3_43r8c"]
@@ -15,7 +14,6 @@ ignore_collisions = false
 solids = Array[bool]([true])
 models = Array[PackedScene]([ExtResource("3_43r8c")])
 points = Array[Array]([[Vector3(0.707605, 1.14168, -0.0547278), Vector3(-0.651501, 1.1458, -0.0555065), Vector3(0.070414, 1.14983, -0.0897005), Vector3(-0.0227694, 0.632645, -0.0897365), Vector3(-0.0032317, 0.152465, -0.0308039), Vector3(0.0118826, 1.44641, -0.145145), Vector3(-0.0206839, 1.73282, -0.139126), Vector3(0.0389314, 1.67276, 0.166447), Vector3(-0.184308, 1.67688, 0.0723652), Vector3(0.122824, 1.67055, -0.0381445), Vector3(-0.0364736, 1.76835, 0.0165207), Vector3(0.433053, 1.56305, 0.00804305), Vector3(-0.455669, 1.47017, -0.0346395), Vector3(-0.0133795, 1.58935, -0.448679), Vector3(0.0155176, 1.44232, 0.444709)]])
-active_effects = Array[ExtResource("1_2ai1x")]([])
 area_ids = Array[int]([3])
 id = 39
 name = "Scarecrow"

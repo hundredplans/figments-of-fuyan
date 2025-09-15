@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://by2fuwvd5wt5v"]
+
+[ext_resource type="Shader" uid="uid://u841l0hqwqsu" path="res://resources/shaders/base_material_outline.tres" id="1_b4kbk"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_b4kbk")
+shader_parameter/albedo = Color(0.407843, 0.219608, 0.0980392, 1)
+shader_parameter/grow = 0.03

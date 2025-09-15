@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3 uid="uid://dcx74cvqwq87a"]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://dcx74cvqwq87a"]
 
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_44kmi"]
 [ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_3bqdv"]
 [ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_fbja6"]
 [ext_resource type="PackedScene" uid="uid://cpk6utdyby3h6" path="res://assets/models/fof/objects/axe.glb" id="3_wwldi"]
@@ -15,7 +14,6 @@ ignore_collisions = false
 solids = Array[bool]([false])
 models = Array[PackedScene]([ExtResource("3_wwldi")])
 points = Array[Array]([[Vector3(0.00338459, 0.00807345, 0.178296), Vector3(0.0160034, 0.182346, 0.156242), Vector3(0.027024, 0.192719, 0.356254), Vector3(0.0258727, 0.399054, 0.153847), Vector3(0.0330837, 0.546349, -0.0180712), Vector3(0.0350888, 0.725178, -0.203739), Vector3(-0.0353265, 0.658167, -0.140508), Vector3(-0.0332956, 0.472452, 0.0382709), Vector3(-0.034636, 0.290231, 0.234621)]])
-active_effects = Array[ExtResource("1_44kmi")]([])
 area_ids = Array[int]([3])
 id = 60
 name = "Axe"

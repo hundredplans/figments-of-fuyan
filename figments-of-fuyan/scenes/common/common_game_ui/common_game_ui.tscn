@@ -38,7 +38,7 @@ custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="StashButton" type="TextureButton" parent="MarginContainer/HBoxContainer/Control"]
+[node name="StashButton" type="TextureRect" parent="MarginContainer/HBoxContainer/Control"]
 unique_name_in_owner = true
 top_level = true
 texture_filter = 1
@@ -49,9 +49,9 @@ offset_top = 5.0
 offset_right = 165.0
 offset_bottom = 165.0
 pivot_offset = Vector2(80, 80)
+mouse_filter = 0
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("1_1s2qd")
-stretch_mode = 0
+texture = ExtResource("1_1s2qd")
 script = ExtResource("3_i1o8o")
 CLICK_NOISE = ExtResource("4_8tpmc")
 HOVER_NOISE = ExtResource("5_lv8m3")
@@ -132,7 +132,6 @@ BoonIconPacked = ExtResource("9_62j63")
 
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
 [connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onMouseInUI"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]
+[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]

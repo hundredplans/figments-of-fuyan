@@ -15,6 +15,7 @@ signal mouse_in_ui
 
 func _ready() -> void:
 	setModulate()
+	mouse_default_cursor_shape = Control.CURSOR_ARROW if !disabled else Control.CURSOR_POINTING_HAND
 
 var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:
@@ -34,8 +35,9 @@ func setModulate() -> void:
 var disabled: bool
 func setDisabled(state: bool) -> void:
 	disabled = state
+	mouse_default_cursor_shape = Control.CURSOR_ARROW if !disabled else Control.CURSOR_POINTING_HAND
 	
-	if is_mouse_in_ui:
+	if is_mouse_in_ui and disabled:
 		onMouseInUI(false)
 		
 	setModulate()
@@ -65,3 +67,6 @@ func onScaleSize(state: bool, instant: bool = false) -> void:
 		ScaleTween.tween_property(self, "scale", Vector2(target_value, target_value), SCALE_SPEED)\
 				.as_relative().set_trans(Tween.TRANS_SINE)
 	else: scale += Vector2(target_value, target_value)
+
+func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
+	mouse_filter = _mouse_filter

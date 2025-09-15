@@ -15,7 +15,7 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	var info: EpicCardInfo = Helper.getFofInfoID(EpicCardInfo, id)
-	var data := SavedDataEpicCard.new(id, true)
+	var data := SavedDataCard.new(id, true)
 	var base_tier: int = Game.getArea().getWorldDifficulty()
 	data.attack = info.getAttack(boss_datastore.phase, base_tier)
 	data.health = info.getHealth(boss_datastore.phase, base_tier)

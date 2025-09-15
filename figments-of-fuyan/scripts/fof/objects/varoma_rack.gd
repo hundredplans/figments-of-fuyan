@@ -23,16 +23,13 @@ func onProcessAction(action: Action) -> void:
 func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
 	return [getVariationActiveEffect()] if isAdjacent(Card.getCoords()) else []
 	
-func getActiveEffectDisabled(_active_effect: ActiveEffectDatastore, Card: CardGD) -> bool:
-	return Card in used_rack_cards
+func isActiveEffectDisabled(Card: CardGD) -> bool:
+	return super(Card) or Card in used_rack_cards
 	
-func getVariationActiveEffect() -> ActiveEffectDatastore:
-	return active_effects[variation]
+func getVariationActiveEffect() -> bool: # Remove this later
+	return false
 	
-func getActiveEffectTiles(_active_effect: ActiveEffectDatastore, _Card: CardGD) -> ActiveEffectTiles:
-	return ActiveEffectTiles.new([getTile()], [getTile()])
-	
-func onActiveEffect(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	var actions: Array = []
 	match variation:
 		0: # Shield
@@ -62,7 +59,7 @@ func onUpdateVisibleModels() -> void:
 	model_one.visible = last_seen_invisible_model_count == 0
 	model_two.visible = last_seen_invisible_model_count != 2
 	
-func onActiveEffectPre(_active_effect: ActiveEffectDatastore, _PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffectPre(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
 	onForceAction(CameraChangeAction.new(self))
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), getTile())))
 
@@ -86,5 +83,5 @@ func onLoadDataLevel() -> void:
 	super()
 	onUpdateVisibleModels()
 
-func onAIAbilityChecker(_active_effect: ActiveEffectDatastore, active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(active_effect_tiles: ActiveEffectTiles, _DFL: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return active_effect_tiles.pickable_tiles[0]

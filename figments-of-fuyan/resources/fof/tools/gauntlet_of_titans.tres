@@ -1,11 +1,10 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=16 format=3 uid="uid://cgdwwify3xv72"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://cgdwwify3xv72"]
 
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_cfjfy"]
 [ext_resource type="Script" uid="uid://bfu6xhmg3jpf8" path="res://scripts/fof/tools/gauntlet_of_titans.gd" id="1_vbdqf"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="2_fwh3s"]
 [ext_resource type="Texture2D" uid="uid://d25rdag0a3ki2" path="res://assets/sprites/game/tools/gauntlet_of_titans.png" id="2_n4rto"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_w05st"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="6_l8pet"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="7_galdu"]
 
 [sub_resource type="Resource" id="Resource_pu81o"]
@@ -16,7 +15,6 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_uoxew"]
 script = ExtResource("2_fwh3s")
-active_abilities = Array[ExtResource("6_l8pet")]([])
 description_datastore = SubResource("Resource_pu81o")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
 
@@ -28,7 +26,6 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_bqedd"]
 script = ExtResource("2_fwh3s")
-active_abilities = Array[ExtResource("6_l8pet")]([])
 description_datastore = SubResource("Resource_d4ahj")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
 
@@ -40,7 +37,6 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_2qdef"]
 script = ExtResource("2_fwh3s")
-active_abilities = Array[ExtResource("6_l8pet")]([])
 description_datastore = SubResource("Resource_jsosp")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
 
@@ -52,7 +48,6 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_e4rcv"]
 script = ExtResource("2_fwh3s")
-active_abilities = Array[ExtResource("6_l8pet")]([])
 description_datastore = SubResource("Resource_ghyw0")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
 

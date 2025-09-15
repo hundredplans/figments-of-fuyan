@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b8p5d81tuwbhj"]
+
+[node name="AbilityBoxUI" type="Control"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 70.0
+offset_bottom = 70.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_type_variation = &"WhitePanelContainer"

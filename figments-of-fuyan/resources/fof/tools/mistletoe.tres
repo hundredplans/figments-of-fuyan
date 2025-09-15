@@ -1,11 +1,10 @@
-[gd_resource type="Resource" script_class="ToolInfo" load_steps=19 format=3 uid="uid://cwvilimbxrpp7"]
+[gd_resource type="Resource" script_class="ToolInfo" load_steps=15 format=3 uid="uid://cwvilimbxrpp7"]
 
 [ext_resource type="Script" uid="uid://3vivscv4rv7s" path="res://scripts/fof/tools/mistletoe.gd" id="1_8e5s1"]
 [ext_resource type="Script" uid="uid://dq4qxtx6lyc2u" path="res://scripts/fof_info/tools/tool_info.gd" id="1_vj24k"]
 [ext_resource type="Script" uid="uid://bigyry2ykda2l" path="res://scripts/fof_info/tools/tool_tier_datastore.gd" id="2_4ypvh"]
 [ext_resource type="Texture2D" uid="uid://del8myelyuqxu" path="res://assets/sprites/game/tools/mistletoe.png" id="2_j04kc"]
 [ext_resource type="Script" uid="uid://ccxaxjnbobkaq" path="res://scripts/saved_data/tools/saved_data_tool.gd" id="3_ih3nk"]
-[ext_resource type="Script" uid="uid://cra1nahu5jsgt" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="6_faaxc"]
 [ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="7_1s5uc"]
 
 [sub_resource type="Resource" id="Resource_swhdn"]
@@ -16,19 +15,8 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_wigic"]
 script = ExtResource("2_4ypvh")
-active_abilities = Array[ExtResource("6_faaxc")]([])
 description_datastore = SubResource("Resource_swhdn")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
-
-[sub_resource type="Resource" id="Resource_8e5s1"]
-script = ExtResource("6_faaxc")
-name = "Mistletoe"
-description = "Shuffle your stats"
-max_charges = 1
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_8eulf"]
 script = ExtResource("7_1s5uc")
@@ -38,19 +26,8 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_hygpo"]
 script = ExtResource("2_4ypvh")
-active_abilities = Array[ExtResource("6_faaxc")]([SubResource("Resource_8e5s1")])
 description_datastore = SubResource("Resource_8eulf")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
-
-[sub_resource type="Resource" id="Resource_j04kc"]
-script = ExtResource("6_faaxc")
-name = "Mistletoe"
-description = "Shuffle your stats"
-max_charges = 2
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_ih3nk"]
 script = ExtResource("7_1s5uc")
@@ -60,19 +37,8 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_faaxc"]
 script = ExtResource("2_4ypvh")
-active_abilities = Array[ExtResource("6_faaxc")]([SubResource("Resource_j04kc")])
 description_datastore = SubResource("Resource_ih3nk")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
-
-[sub_resource type="Resource" id="Resource_1s5uc"]
-script = ExtResource("6_faaxc")
-name = "Mistletoe"
-description = "Shuffle your stats"
-max_charges = -1
-camera_type = 0
-charges = 0
-used = false
-metadata/_custom_type_script = "uid://cra1nahu5jsgt"
 
 [sub_resource type="Resource" id="Resource_k0ef1"]
 script = ExtResource("7_1s5uc")
@@ -82,7 +48,6 @@ metadata/_custom_type_script = "uid://d0rv4br3qqt4k"
 
 [sub_resource type="Resource" id="Resource_ufity"]
 script = ExtResource("2_4ypvh")
-active_abilities = Array[ExtResource("6_faaxc")]([SubResource("Resource_1s5uc")])
 description_datastore = SubResource("Resource_k0ef1")
 metadata/_custom_type_script = "uid://bigyry2ykda2l"
 
