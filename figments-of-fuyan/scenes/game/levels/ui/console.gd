@@ -86,8 +86,9 @@ func tool(name_id: Variant, _tier: int = 1) -> void:
 		
 	var info: ToolInfo = getNameIDFofInfo(name_id, ToolInfo)
 	if info != null:
-		var Tool: ToolGD = SavedData.onLoadModel(info.saved_data.new(info.id, true, 0), ToolCard)
-		Tool.tier = _tier
+		var tool_data: SavedDataTool = info.saved_data.new(info.id, true, 0)
+		tool_data.tier = _tier
+		var Tool: ToolGD = SavedData.onLoadModel(tool_data, ToolCard)
 		Game.getArea().onPushAction(AddToolAction.new(ToolCard, Tool))
 
 func stat(type: Game.Stats, value: int) -> void:

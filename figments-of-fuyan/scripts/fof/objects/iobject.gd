@@ -6,17 +6,18 @@ signal update_active_effect_description
 const IOBJECT_OUTLINE_PATH: String = "res://resources/materials/game/base_material_outline_thick/material/yellow_outline.tres"
 
 var AniPlayer: AnimationPlayer
-var active_effects: Array = []
+
+var active_effect_charges: int
+var active_effect_used: bool
+
 var ability_save: Dictionary = {}
 var top_vertex_y: float # The y position of the top vertex
 
 func onLoadData(data: SavedData) -> void:
 	super(data)
-	active_effects = data.active_effects
+	active_effect_charges = data.active_effect_charges
+	active_effect_used = data.active_effect_used
 	ability_save = data.ability_save
-
-	for active_effect in active_effects:
-		active_effect.owner = self
 
 	for custom_variable in ability_save:
 		set(custom_variable, ability_save[custom_variable])
@@ -34,6 +35,13 @@ func onLoadDataLevelFofInit() -> void:
 	super()
 	ability_save = {}
 	
+	var _active_effect_charges: int = getDefaultActiveEffectCharges()
+	if _active_effect_charges == -2: return
+	
+	var new_charges: int = _active_effect_charges - active_effect_charges 
+	var set_to_infinite: bool = _active_effect_charges == -1
+	onPushAction(ChangeActiveEffectChargesAction.new(self, new_charges, set_to_infinite))
+	
 func onLoadModel() -> void:
 	super()
 	setTopVertexY()
@@ -49,7 +57,7 @@ func setOccupiedTiles(tile_position_to_tile: Dictionary) -> void:
 
 func onSave() -> SavedDataIObject:
 	return SavedDataIObject.new(info.id, false, public_id, coords, tile_rotation, vision_datastore, variation, map_rotation, map_position, height,\
-	occupied_tiles.map(func(x: TileGD): return x.getCoords()), groups, active_effects, ability_save)
+	occupied_tiles.map(func(x: TileGD): return x.getCoords()), groups, active_effect_charges, ability_save, active_effect_used)
 
 func onProcessAction(action: Action) -> void:
 	super(action)
@@ -60,8 +68,8 @@ func onAbility() -> void:
 #endregion
 
 func onAdvanceTurn(team: int) -> void:
-	if team != 0: return
-	var actions: Array = []
+	if team != 0 and active_effect_charges != -2: return
+	var actions: Array = [ChangeActiveEffectUsedAction.new(self, false)]
 	onPushAction(actions)
 	
 func setTopVertexY() -> void:
@@ -80,5 +88,31 @@ func onIObject(_action: Action) -> void:
 func onIObjectSpecificTransforms(_tiles_to_value: Dictionary, _DFL: DefaultFightLogic) -> void:
 	pass
 	
-func isActiveEffectDisabled(_Card: CardGD) -> bool:
-	return false
+func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void: pass
+func onActiveEffectPre(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, _Card: CardGD) -> void: pass
+func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles: return null
+
+func isValidActiveEffect(_Card: CardGD) -> bool: # Can show up
+	return active_effect_charges != -2
+	
+func isActiveEffectDisabled(Card: CardGD) -> bool: # Is greyedo ut
+	return isValidActiveEffect(Card) and (active_effect_charges == 0 or active_effect_used)
+	
+func onAIAbilityChecker(_active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD: # Card is inside DFL
+	return null
+	
+func onAIAbilityCheckerDefault(Card: CardGD) -> ActiveEffectTiles:
+	if isActiveEffectDisabled(Card): return null
+	
+	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles(Card)
+	if active_effect_tiles == null or active_effect_tiles.pickable_tiles.is_empty(): return null
+	return active_effect_tiles
+	
+func setActiveEffectUsed(state: bool) -> void: active_effect_used = state
+func getActiveEffectUsed() -> bool: return active_effect_used
+func getActiveEffectCharges() -> int: return active_effect_charges
+func setActiveEffectCharges(value: int) -> void: active_effect_charges = value
+func getDefaultActiveEffectCharges() -> int: return getInfo().getActiveEffectCharges()
+
+func getInfo() -> ObjectInfo:
+	return info

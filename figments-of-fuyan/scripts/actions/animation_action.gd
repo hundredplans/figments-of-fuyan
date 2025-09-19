@@ -8,7 +8,7 @@ func _init(_GameObject: GameObjectGD = null, _animation_name: String = "", _play
 	super()
 	GameObject = _GameObject
 	animation_name = _animation_name
-	play_backwards
+	play_backwards = _play_backwards
 	
 func onPreAction() -> void:
 	if !GameObject.isLevelVisible(): onFailAction()

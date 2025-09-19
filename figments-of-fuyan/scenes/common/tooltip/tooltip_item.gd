@@ -2,6 +2,8 @@ extends Control
 
 @export var CardTooltipExtraPacked: PackedScene
 
+@onready var StatManager: Control = %StatManager
+@onready var MainContainer: Container = %MainContainer
 @onready var RarityLabel: Label = %RarityLabel
 @onready var TierLabel: Label = %TierLabel
 @onready var InnerPanelContainer: PanelContainer = %InnerPanelContainer
@@ -44,8 +46,10 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 	
 	if info is CardInfo:
 		var CardTooltipExtra: Control = CardTooltipExtraPacked.instantiate()
-		Topside.add_child(CardTooltipExtra)
+		StatManager.add_child(CardTooltipExtra)
+		StatManager.move_child(CardTooltipExtra, CardTooltipExtra.get_index() - 1)
 		CardTooltipExtra.setInfo(info, tier)
+		CardTooltipExtra.position -= (CardTooltipExtra.size / 2.0)
 	
 	if info is BoonInfo or info is ToolInfo or info is CardInfo:
 		RarityLabel.text = Game.getRarityString(info.rarity)
@@ -58,8 +62,8 @@ func setInfo(info_or_fof: Variant, stop_mouse: bool = false) -> void:
 		NameLabel.modulate = Game.getRarityColor(info.rarity)
 	else:
 		NameLabel.text = "%s" % info.name
-		theme_type_variation = "YellowPanelContainer"
-		InnerPanelContainer.visible = false
+		RarityLabel.text = ""
+		TierLabel.text = ""
 	
 	mouse_filter = Control.MOUSE_FILTER_STOP if stop_mouse else Control.MOUSE_FILTER_IGNORE
 	TextLabel.setText(description)

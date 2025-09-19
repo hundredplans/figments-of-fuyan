@@ -91,8 +91,8 @@ func onLoadModel() -> void:
 #endregion
 
 #region Active Effects
-func getValidActiveEffects(Card: CardGD) -> Array:
-	return active_effects if Card.Tile == ActiveStartTile else []
+func isValidActiveEffect(Card: CardGD) -> bool:
+	return super(Card) and Card.Tile == ActiveStartTile
 		
 func isActiveEffectDisabled(Card: CardGD) -> bool:
 	var Tile: TileGD = end_tiles[start_tiles.find(ActiveStartTile)]

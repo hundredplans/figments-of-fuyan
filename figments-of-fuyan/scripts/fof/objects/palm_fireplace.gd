@@ -14,9 +14,8 @@ func onProcessAction(action: Action) -> void:
 func onLoadDataLevel() -> void:
 	super()
 
-func getValidActiveEffects(Card: CardGD) -> Array:
-	if Card.getTile().getHeight() != getTile().getHeight(): return []
-	return active_effects if isAdjacent(Card.getCoords()) else []
+func isValidActiveEffect(Card: CardGD) -> bool:
+	return super(Card) and Card.getTile() != null and isAdjacent(Card.getCoords()) and Card.getTile().getHeight() == getTile().getHeight()
 
 func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([getTile()], [getTile()])
@@ -30,10 +29,6 @@ func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles
 	var units: Array = Game.get_tree().get_nodes_in_group("FieldCardsGD").filter(func(x: CardGD): return x.Tile in tiles)
 	actions.append(StatAction.new(units.map(func(x: CardGD): return StatInfo.new(x, Game.Stats.ATTACK, 1, ATTACK_TURNS))))
 	was_extinguished = true
-	
-	for owned_active_effect in active_effects:
-		if owned_active_effect.name == "Add Fuel":
-			actions.append(ChangeActiveEffectChargesAction.new(owned_active_effect, -1))
 	actions.append(CameraChangeAction.new(Card))
 	onPushAction(actions)
 		
@@ -42,7 +37,6 @@ func onActiveEffectPre(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTi
 	onForceAction(CameraChangeAction.new(self))
 	
 func onSave() -> SavedDataIObject:
-	ability_save['was_fuel_added'] = was_fuel_added
 	ability_save['was_extinguished'] = was_extinguished
 	return super()
 

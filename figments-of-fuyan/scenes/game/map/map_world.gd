@@ -175,8 +175,7 @@ func onUpdateActionLock() -> void:
 
 #region Environment
 func setEnvironment() -> void:
-	WorldEnv.environment = area.info.base_environment\
-	if !area.isAfterMiniboss() else area.info.elite_environment
+	WorldEnv.environment = area.info.base_environment
 #endregion
 
 #region World Screen

@@ -1,0 +1,168 @@
+[gd_scene load_steps=13 format=3 uid="uid://dc2nx1i8qcwpa"]
+
+[ext_resource type="Texture2D" uid="uid://c6m2vx6yd57ns" path="res://assets/sprites/game/cards/common/stats/attack_icon.png" id="1_86wno"]
+[ext_resource type="Script" uid="uid://c5gvtrmhh7wv7" path="res://scenes/game/levels/ui/unit_status_ui_stats_manager.gd" id="1_d7o4h"]
+[ext_resource type="LabelSettings" uid="uid://d1fxesog2wasm" path="res://resources/ui/label_settings/spicyrice_medium.tres" id="2_d7o4h"]
+[ext_resource type="Texture2D" uid="uid://de1l5iyvymvpq" path="res://assets/sprites/game/cards/common/stats/health_icon.png" id="3_mduji"]
+[ext_resource type="Texture2D" uid="uid://d2uo58hiywsw8" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up2.png" id="3_o5vpu"]
+[ext_resource type="Texture2D" uid="uid://cyypgr821ykya" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up1.png" id="4_2udlh"]
+[ext_resource type="Texture2D" uid="uid://bpduccrmfydxb" path="res://assets/sprites/game/cards/common/stats/speed_icon.png" id="4_solbp"]
+[ext_resource type="Texture2D" uid="uid://cqx55eb3klkcq" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up3.png" id="5_2udlh"]
+[ext_resource type="Texture2D" uid="uid://6uvisuxpsm3b" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/down1.png" id="5_gj7uj"]
+[ext_resource type="LabelSettings" uid="uid://b51ruxet4uo0b" path="res://resources/ui/label_settings/spicyrice_tiny.tres" id="5_je0rr"]
+[ext_resource type="Texture2D" uid="uid://dv3jhp5egmstr" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/down2.png" id="6_t7fuh"]
+[ext_resource type="Texture2D" uid="uid://cl2hceh4b5qh7" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/down3.png" id="7_wrvt6"]
+
+[node name="StatsManager" type="HBoxContainer"]
+custom_minimum_size = Vector2(158, 100)
+offset_right = 158.0
+offset_bottom = 99.0
+mouse_filter = 2
+script = ExtResource("1_d7o4h")
+up_arrow_one = ExtResource("4_2udlh")
+up_arrow_two = ExtResource("3_o5vpu")
+up_arrow_three = ExtResource("5_2udlh")
+down_arrow_one = ExtResource("5_gj7uj")
+down_arrow_two = ExtResource("6_t7fuh")
+down_arrow_three = ExtResource("7_wrvt6")
+up_arrow_color = Color(0, 1, 0, 1)
+down_arrow_color = Color(1, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_86wno")
+stretch_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="AttackLabel" type="Label" parent="VBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 50.0
+offset_bottom = 45.0
+text = "2"
+label_settings = ExtResource("2_d7o4h")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="AttackArrowLabel" type="Label" parent="VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 2
+label_settings = ExtResource("5_je0rr")
+horizontal_alignment = 1
+
+[node name="AttackArrowTx" type="TextureRect" parent="VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer2"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_mduji")
+stretch_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer2"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HealthLabel" type="Label" parent="VBoxContainer2/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 50.0
+offset_bottom = 45.0
+text = "2"
+label_settings = ExtResource("2_d7o4h")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="HealthArrowLabel" type="Label" parent="VBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 2
+label_settings = ExtResource("5_je0rr")
+horizontal_alignment = 1
+
+[node name="HealthArrowTx" type="TextureRect" parent="VBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer3"]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_solbp")
+stretch_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="SpeedLabel" type="Label" parent="VBoxContainer3/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 50.0
+offset_bottom = 45.0
+text = "2"
+label_settings = ExtResource("2_d7o4h")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer3"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="SpeedArrowLabel" type="Label" parent="VBoxContainer3/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 2
+layout_mode = 2
+label_settings = ExtResource("5_je0rr")
+horizontal_alignment = 1
+
+[node name="SpeedArrowTx" type="TextureRect" parent="VBoxContainer3/VBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+stretch_mode = 3

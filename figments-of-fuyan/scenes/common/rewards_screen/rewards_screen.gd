@@ -53,22 +53,22 @@ func setInfo(_rewards: Rewards, _level_type: Game.FightTypes) -> void:
 	LeftArrowButton.BASE_COLOR = main_color
 	LeftArrowButton.HOVER_COLOR = secondary_color
 	LeftArrowButton.DISABLED_COLOR = tertiary_color
-	LeftArrowButton.setModulate()
+	LeftArrowButton.onUpdateModulate()
 	
 	RightArrowButton.BASE_COLOR = main_color
 	RightArrowButton.HOVER_COLOR = secondary_color
 	RightArrowButton.DISABLED_COLOR = tertiary_color
-	RightArrowButton.setModulate()
+	RightArrowButton.onUpdateModulate()
 	
 	ViewStashButton.BASE_COLOR = main_color
 	ViewStashButton.HOVER_COLOR = secondary_color
 	ViewStashButton.DISABLED_COLOR = tertiary_color
-	ViewStashButton.setModulate()
+	ViewStashButton.onUpdateModulate()
 	
 	ExitButton.BASE_COLOR = main_color
 	ExitButton.HOVER_COLOR = secondary_color
 	ExitButton.DISABLED_COLOR = tertiary_color
-	ExitButton.setModulate()
+	ExitButton.onUpdateModulate()
 	
 func setRewardUI() -> void:
 	if rewards_ui != null: rewards_ui.queue_free()

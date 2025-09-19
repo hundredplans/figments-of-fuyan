@@ -69,18 +69,22 @@ func onToolHolderAwakened() -> void:
 func onToolHolderDeath() -> void:
 	pass
 	
-func onReset(override: bool = false) -> void:
+func onReset(override: bool = false) -> void: # Doesnt call regular reset as Card already calls it
 	if info.rarity == Game.Rarities.MINI:
 		onPushAction(RemoveToolAction.new(Card))
-	
-	if !override: return
-	active_effect_used = false
-	active_effect_charges = getDefaultActiveEffectCharges()
 	
 func onRegularReset() -> void: #  Fof Init, Awakened, Death, Level Start, Level End
 	if info.auto_reset_charges:
 		onResetCharges()
-	
+		
+	var new_charges: int = getDefaultActiveEffectCharges() - active_effect_charges
+	var actions: Array = []
+	if new_charges != -2:
+		var set_to_infinite: bool = new_charges == -1
+		actions.append(ChangeActiveEffectChargesAction.new(self, new_charges, set_to_infinite))
+		actions.append(ChangeActiveEffectUsedAction.new(self, false))
+	onPushAction(actions)
+			
 func onCardTurnPassed() -> void:
 	pass
 	
@@ -146,10 +150,10 @@ func isValidActiveEffect() -> bool: # Can show up
 func isActiveEffectDisabled() -> bool: # Is greyedo ut
 	return active_effect_charges == 0 or Card.getTurnState() == Game.TurnStates.PASSED or active_effect_used
 	
-func onAIActiveEffectChecker(_active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(_active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return null
 	
-func onAIActiveEffectCheckerDefault() -> ActiveEffectTiles:
+func onAIAbilityCheckerDefault() -> ActiveEffectTiles:
 	if isActiveEffectDisabled(): return null
 	
 	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles()
@@ -160,5 +164,7 @@ func setActiveEffectUsed(state: bool) -> void: active_effect_used = state
 func getActiveEffectUsed() -> bool: return active_effect_used
 func getActiveEffectCharges() -> int: return active_effect_charges
 func setActiveEffectCharges(value: int) -> void: active_effect_charges = value
-func getDefaultActiveEffectCharges() -> int: return -1
+func getDefaultActiveEffectCharges() -> int: return getInfo().getTierDatastore(tier).getActiveEffectCharges()
 #endregion
+
+func getInfo() -> ToolInfo: return info

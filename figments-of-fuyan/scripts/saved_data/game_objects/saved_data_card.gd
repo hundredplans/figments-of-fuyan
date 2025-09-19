@@ -91,3 +91,5 @@ func setBaseStats(stat_datastore: StatsDatastore) -> void:
 
 func onTierUp() -> void:
 	tier = min(tier + 1, 4)
+
+func getTier() -> int: return tier

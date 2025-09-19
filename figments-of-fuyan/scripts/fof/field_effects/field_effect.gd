@@ -1,6 +1,4 @@
-class_name FieldEffectGD extends FofGD
-
-signal update_display_number
+class_name FieldEffectGD extends GameEffectGD
 
 var Card: CardGD
 var FofObject: FofGD # Equivalent to owner
@@ -31,6 +29,7 @@ func setTurns(_turns: int) -> void:
 	turns = _turns
 	if info.display_number_type == FieldEffectInfo.DisplayNumberType.TURNS:
 		setDisplayNumber(turns)
+	update_turns.emit(turns)
 
 func getDescription() -> String:
 	return info.description
@@ -80,3 +79,4 @@ func getCharges() -> int:
 func getFofObject() -> FofGD: return FofObject
 func onForceUpdateDisplayNumber() -> void: pass
 func onFieldEffectAdded() -> void: pass
+func getTurns() -> int: return turns

@@ -5,6 +5,8 @@ const ARMOR_AMOUNT: int = 1
 const RANGED_TRAIT_ID: int = 2
 const RANGED_AMOUNT: int = 2
 
+const VAROMA_RACK_DELAY: float = 1.5
+
 var used_rack_cards: Array = []
 var used_rack_cards_public_ids: Array = []
 
@@ -20,17 +22,17 @@ var variation_to_model_name: Dictionary = {
 func onProcessAction(action: Action) -> void:
 	super(action)
 	
-func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
-	return [getVariationActiveEffect()] if isAdjacent(Card.getCoords()) else []
+func isValidActiveEffect(Card: CardGD) -> bool: # Returns the ability effects the Card can view
+	return super(Card) and isAdjacent(Card.getCoords())
+	
+func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles:
+	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
 func isActiveEffectDisabled(Card: CardGD) -> bool:
 	return super(Card) or Card in used_rack_cards
 	
-func getVariationActiveEffect() -> bool: # Remove this later
-	return false
-	
 func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
-	var actions: Array = []
+	var actions: Array = [DelayAction.new(VAROMA_RACK_DELAY)]
 	match variation:
 		0: # Shield
 			actions.append(Card.onGainShieldAction())

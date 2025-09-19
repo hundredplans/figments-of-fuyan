@@ -14,6 +14,7 @@ default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_nto8d"]
 script = ExtResource("6_fjffo")
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_c3iop")
 
 [sub_resource type="Resource" id="Resource_jtbrw"]
@@ -24,6 +25,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_f844k"]
 script = ExtResource("6_fjffo")
+description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_jtbrw")
 
 [sub_resource type="Resource" id="Resource_jp3jr"]
@@ -34,6 +36,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_krus7"]
 script = ExtResource("6_fjffo")
+description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_jp3jr")
 
 [sub_resource type="Resource" id="Resource_blges"]
@@ -44,6 +47,7 @@ default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_vpjvo"]
 script = ExtResource("6_fjffo")
+description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_blges")
 
 [resource]

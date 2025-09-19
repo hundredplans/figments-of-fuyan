@@ -1,7 +1,12 @@
 extends Control
 
-@onready var StatsLabel: FancyTextLabel = %StatsLabel
+@onready var AttackLabel: Label = %AttackLabel
+@onready var HealthLabel: Label = %HealthLabel
+@onready var SpeedLabel: Label = %SpeedLabel
+
 func setInfo(info: CardInfo, tier: int) -> void:
 	var stats: StatsDatastore = info.getStats(tier)
-	var text: String = str(stats.attack) + " ATT " + str(stats.health) + " HP " + str(stats.speed) + " SPD " + str(stats.energy) + " ENE"
-	StatsLabel.setText(text)
+	
+	AttackLabel.text = str(stats.attack)
+	HealthLabel.text = str(stats.health)
+	SpeedLabel.text = str(stats.speed)

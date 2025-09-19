@@ -37,7 +37,6 @@ func onPostAction() -> void:
 	
 	Card.onAwaken()
 	Card.onCreateInitialTraits()
-	Card.onCreateInitialActiveAbilities()
 	
 	var actions: Array = []
 	var phase: Game.Phases = Game.getLevel().getPhase()

@@ -18,7 +18,7 @@ func onPostAction() -> void:
 	if set_to_infinite:
 		item.setActiveEffectCharges(-1)
 		
-	elif current_charges >= 0:
+	elif current_charges != -1:
 		item.setActiveEffectCharges(current_charges + delta)
 		
 	if current_charges == 0 and item is ToolGD and item.getRarity() == Game.Rarities.MINI:

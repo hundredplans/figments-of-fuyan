@@ -2,6 +2,8 @@ extends Control
 
 
 #region Onready
+@onready var SpectatedUnitStatusUI: Control = %SpectatedUnitStatusUI
+@onready var GameEffectsLevelUI: Control = %GameEffectsLevelUI
 @onready var EnemyStatusManager: Control = %EnemyStatusManager
 @onready var AllyStatusManager: Control = %AllyStatusManager
 @onready var FadeBackground: Control = %FadeBackground
@@ -46,12 +48,12 @@ extends Control
 #endregion
 
 #region Globals
+signal active_effect_pressed
 signal mouse_signal
 signal camera_button_pressed
 signal action_lock
 signal camera_direction_changed
 signal vision_mode_changed
-signal active_effect_box_pressed
 signal create_movement_range
 
 signal drag_begin
@@ -87,30 +89,29 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.energy_changed.connect(onUpdateEnergy)
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.awakened.connect(onAwakened)
-	level.active_effect_used.connect(onActiveEffectUsed)
 	level.tile_occupied.connect(onTileOccupied)
 	level.game_started.connect(onGameStarted)
 	level.game_started_post.connect(onGameStartedPost)
 	level.game_ended.connect(onGameEnded)
-	level.tool_removed.connect(onToolRemoved)
 	level.death.connect(onDeath)
 	action_lock.connect(level.onActionLock)
 	
 	area.process_action.connect(onProcessAction)
-	
-	level.update_active_effects.connect(onUpdateActiveEffects)
 	level.camera_change_action.connect(onCameraUpdated)
 	
 	ArtMiniRect.texture = save_file.getChampionCard().info.getArtMini()
 	LevelLabel.text = level.info.name
-	World.active_effect_activated.connect(onActiveEffectActivated)
 	World.active_effect_deselected.connect(onActiveEffectDeselected)
 	World.active_effect_selected.connect(onActiveEffectSelected)
+	World.active_effect_activated.connect(onActiveEffectActivated)
+	AllyStatusManager.active_effect_pressed.connect(onActiveEffectPressed)
+	AllyStatusManager.pressed.connect(onUnitStatusUIPressed)
+	EnemyStatusManager.pressed.connect(onUnitStatusUIPressed)
+	SpectatedUnitStatusUI.pressed.connect(onUnitStatusUIPressed)
+	
 	Console.level = level
 	HandBox.level = level
 	
-	setHeroNameLabel()
-	setActiveEffectLabel()
 	onUpdateShillings()
 	onUpdateDeckCardAmountLabel()
 	onCameraUpdated(level.getSpectateObject())
@@ -152,6 +153,10 @@ func onUpdateActionLock(previous_state: bool) -> void:
 			if btn == PassButton: btn.setActionLock(state)
 			elif btn is Button: btn.setActionLock(state)
 			elif btn is HighlightTxButton: btn.setDisabled(state)
+		AllyStatusManager.setActionLock(state)
+		AllyStatusManager.setDisabled(state)
+		EnemyStatusManager.setDisabled(state)
+		SpectatedUnitStatusUI.setDisabled(state)
 
 func getActionLock() -> bool:
 	return is_action_playing
@@ -246,10 +251,9 @@ func _on_camera_button_pressed() -> void:
 	
 func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> void:
 	if !World.CameraManager.isCycle():
-		setHeroNameLabel(SpectateObject)
 		PassButton.setAllySpectating(SpectateObject)
 		
-		onUpdateActiveEffects(SpectateObject)
+		AllyStatusManager.onUpdateAbilityBoxes(SpectateObject if SpectateObject is CardGD else null)
 		Console.onCameraUpdated(SpectateObject)
 		
 		LeftCameraArrow.setIsInFreelook(SpectateObject == null)
@@ -274,21 +278,7 @@ func _on_pass_button_pressed() -> void:
 func onTurnStateChanging(Card: CardGD, _action: ChangeTurnStateAction) -> void:
 	PassButton.setTurnStates(Card)
 	if Card == level.SpectateObject:
-		onUpdateActiveEffects()
-#endregion
-
-#region Hero + Ability Labels
-func setHeroNameLabel(SpectateObject: GameObjectGD = null) -> void:
-	var text: String = ""
-	var color := Color.WHITE
-	if SpectateObject != null and SpectateObject is CardGD:
-		text = SpectateObject.info.name
-		color = Game.getRarityColor(SpectateObject.getRarity())
-	HeroNameLabel.text = text
-	HeroNameLabel.modulate = color
-	
-func setActiveEffectLabel(text: String = "") -> void:
-	ActiveEffectLabel.text = text
+		AllyStatusManager.onUpdateAbilityBoxes(Card)
 #endregion
 
 #region Minimap
@@ -354,49 +344,29 @@ func onAwakened(Card: CardGD) -> void:
 
 #region Death
 func onDeath(Card: CardGD) -> void:
+	if Card.isAlly(0): AllyStatusManager.onRemoveUnitStatusUI(Card)
+	else: EnemyStatusManager.onRemoveUnitStatusUI(Card)
+	
 	if !Card.isAlly(0): return
 	PassButton.setEveryonePassedTurn()
 #endregion
 
 #region Active Effects
-func onActiveEffectBoxPressed() -> void:
-	pass
-	#var tiles: ActiveEffectTiles = null
-	#if active_effect.owner is IObjectGD: tiles = active_effect.owner.getActiveEffectTiles(active_effect, level.getAllySpectateObject())
-	#else: tiles = active_effect.owner.getActiveEffectTiles(active_effect)
-	#
-	#if !tiles.in_range_tiles.is_empty():
-		#setActiveEffectLabel(active_effect.name)
-		#active_effect_box_pressed.emit(active_effect, tiles)
-		
 func onActiveEffectDeselected() -> void:
-	setActiveEffectLabel("")
 	onCameraUpdated(level.getSpectateObject())
 	PassButton.setAbilityMode(false)
-	create_movement_range.emit(level.getAllySpectateObject())
-		
+
 func onActiveEffectSelected() -> void:
 	PassButton.setAbilityMode(true)
-		
+	
 func onActiveEffectActivated() -> void:
-	onUpdateActiveEffects()
-	
-func onUpdateActiveEffects(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
-	pass
-#endregion
-
-#region Active Effects
-func onActiveEffectUsed() -> void:
-	onUpdateActiveEffects()
-	
-func onToolRemoved() -> void:
-	onUpdateActiveEffects()
+	AllyStatusManager.onUpdateAbilityBoxes(level.getCardSpectateObject())
 #endregion
 
 #region Occupy Tile
 func onTileOccupied(Card: CardGD, _Tile: TileGD) -> void:
-	if Card.isAlly(0) and Card == level.getSpectateObject():
-		onUpdateActiveEffects()
+	if Card == level.getSpectateObject():
+		AllyStatusManager.onUpdateAbilityBoxes(Card)
 #endregion
 
 #region Game Changers
@@ -506,6 +476,8 @@ func onProcessAction(action: Action) -> void:
 			onUpdateDeckCardAmountLabel()
 		elif action is InsertAction: # For champion, who inserts himself
 			onUpdateDeckCardAmountLabel()
+		elif action is DamageAction:
+			AllyStatusManager.onUpdateAbilityBoxes(level.getCardSpectateObject())
 		elif action is AddBoonAction:
 			BoonBox.onUpdate(action.Boon)
 		elif action is RemoveBoonAction:
@@ -529,9 +501,22 @@ func onProcessAction(action: Action) -> void:
 		elif action is FinishAwakenAction:
 			if action.Card.isAlly(0): AllyStatusManager.onCreateUnitStatusUI(action.Card)
 			else: EnemyStatusManager.onCreateUnitStatusUI(action.Card)
-			
+		elif action is ChangeActiveEffectChargesAction:
+			AllyStatusManager.onUpdateAbilityBox(action.item, level.getCardSpectateObject())
+		elif action is ChangeActiveEffectUsedAction:
+			AllyStatusManager.onUpdateAbilityBox(action.item, level.getCardSpectateObject())
+		elif action is AddToolAction:
+			onToolAdded(action)
+		elif action is ClearTileObjectAction:
+			AllyStatusManager.onUpdateIObjectAbilityBox(level.getCardSpectateObject())
+		elif (action is AddStatusEffectAction or action is AddFieldEffectAction or action is AddTraitAction) and action.getCard() == level.getCardSpectateObject():
+			GameEffectsLevelUI.onAddIcon(action.getGameEffect())
+		elif (action is RemoveStatusEffectAction or action is RemoveFieldEffectAction or action is RemoveTraitAction) and action.getCard() == level.getCardSpectateObject():
+			GameEffectsLevelUI.onRemoveIcon(action.getGameEffect())
+		elif action is VisionNewUnitAction and action.Discoverer == level.getSpectateObject():
+			onUpdateInVisionRange()
 		if level.isEpic():
-			var BossCard: CardGD = level.getBoss() 
+			var BossCard: CardGD = level.getBoss()
 			if action is AwakenBossAction:
 				setEpicFightControlInfo()
 			elif action is StatAction and action.hasCard(BossCard):
@@ -549,6 +534,8 @@ func onProcessAction(action: Action) -> void:
 	elif !action.post:
 		if action is StartLoadingScreenAction:
 			onHideLevelUI()
+		elif action is RemoveToolAction:
+			onToolRemoved(action)
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:
@@ -592,3 +579,39 @@ func onEndLoadingScreen() -> void:
 
 func onCameraChangeFinish(SpectateObject: GameObjectGD) -> void:
 	AllyStatusManager.onUpdateSpectatedUnitStatusUI(SpectateObject)
+	GameEffectsLevelUI.onCreateGameEffects(SpectateObject)
+	onUpdateInVisionRange(SpectateObject)
+	
+func onUpdateInVisionRange(SpectateObject: GameObjectGD = level.getSpectateObject()) -> void:
+	AllyStatusManager.onUpdateInVisionRange(SpectateObject)
+	EnemyStatusManager.onUpdateInVisionRange(SpectateObject)
+
+func onActiveEffectPressed(item: Variant) -> void:
+	var active_effect_tiles: ActiveEffectTiles = item.getActiveEffectTiles()
+	active_effect_pressed.emit(item, active_effect_tiles)
+
+func onUnitStatusUIPressed(Card: CardGD) -> void:
+	await get_tree().process_frame
+	Game.getLevel().onPushAction(CameraChangeAction.new(Card))
+
+func onToolAdded(action: AddToolAction) -> void:
+	var Card: CardGD = action.Tool.getCard()
+	if Card == level.getCardSpectateObject():
+		AllyStatusManager.onUpdateToolAbilityBox(action.Tool)
+	
+	if Card.isAlly(0): AllyStatusManager.onUpdateTool(Card)
+	else: EnemyStatusManager.onUpdateTool(Card)
+	
+	if Card == level.getCardSpectateObject():
+		SpectatedUnitStatusUI.onUpdateTool(Card.getTool())
+		
+func onToolRemoved(action: RemoveToolAction) -> void:
+	var Card: CardGD = action.Card
+	if Card == level.getCardSpectateObject():
+		AllyStatusManager.onUpdateToolAbilityBox(action.Card.getTool())
+		
+	if Card.isAlly(0): AllyStatusManager.onUpdateTool(Card)
+	else: EnemyStatusManager.onUpdateTool(Card)
+	
+	if Card == level.getCardSpectateObject():
+		SpectatedUnitStatusUI.onUpdateTool(Card.getTool())

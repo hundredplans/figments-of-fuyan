@@ -1,102 +1,40 @@
-[gd_scene load_steps=8 format=3 uid="uid://ddpfmylff2ujc"]
+[gd_scene load_steps=6 format=3 uid="uid://ddpfmylff2ujc"]
 
 [ext_resource type="Script" uid="uid://cjwvsp58kxuvf" path="res://scenes/game/levels/ui/unit_status_ui.gd" id="1_2ittu"]
-[ext_resource type="Texture2D" uid="uid://c6m2vx6yd57ns" path="res://assets/sprites/game/cards/common/stats/attack_icon.png" id="2_c3pqe"]
-[ext_resource type="LabelSettings" uid="uid://d1fxesog2wasm" path="res://resources/ui/label_settings/spicyrice_medium.tres" id="3_8v60u"]
-[ext_resource type="Texture2D" uid="uid://de1l5iyvymvpq" path="res://assets/sprites/game/cards/common/stats/health_icon.png" id="4_0mpa1"]
-[ext_resource type="Texture2D" uid="uid://bpduccrmfydxb" path="res://assets/sprites/game/cards/common/stats/speed_icon.png" id="5_sw0cm"]
+[ext_resource type="PackedScene" uid="uid://c6ysmkbktusco" path="res://scenes/game/levels/ui/unit_status_ui_stats_manager_small.tscn" id="2_tfqou"]
+[ext_resource type="PackedScene" uid="uid://dc2nx1i8qcwpa" path="res://scenes/game/levels/ui/unit_status_ui_stats_manager_big.tscn" id="3_hdo2m"]
+[ext_resource type="Texture2D" uid="uid://dggh3akwp8wl6" path="res://assets/sprites/ui/icons/in_vision.png" id="5_hdo2m"]
 [ext_resource type="PackedScene" uid="uid://bk7ao27fc3efw" path="res://scenes/common/fof_ui_box/fof_ui_box.tscn" id="6_4bw53"]
-[ext_resource type="Texture2D" uid="uid://5wren2gj2c38" path="res://assets/sprites/game/cards/art_mini/cacteye_jake.png" id="7_8v60u"]
 
-[node name="UnitStatusUI" type="Control"]
-custom_minimum_size = Vector2(266, 100)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 266.0
+[node name="UnitStatusUI" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+offset_right = 100.0
 offset_bottom = 100.0
-script = ExtResource("1_2ittu")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(266, 100)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="EffectsManager" type="Control" parent="HBoxContainer"]
-layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 2
+script = ExtResource("1_2ittu")
+PASSED_TURN_STATE_COLOR = Color(0.374139, 0.374139, 0.374139, 1)
+UnitStatusUIStatsManagerSmallPacked = ExtResource("2_tfqou")
+UnitStatusUIStatsManagerBigPacked = ExtResource("3_hdo2m")
 
-[node name="StatsManager" type="HBoxContainer" parent="HBoxContainer"]
+[node name="ArtMiniBox" parent="." instance=ExtResource("6_4bw53")]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_default_cursor_shape = 2
+disable_tooltip = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/StatsManager"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/StatsManager/VBoxContainer"]
-texture_filter = 1
-layout_mode = 2
-texture = ExtResource("2_c3pqe")
-stretch_mode = 2
-
-[node name="AttackLabel" type="Label" parent="HBoxContainer/StatsManager/VBoxContainer"]
-unique_name_in_owner = true
-modulate = Color(0.976471, 0.454902, 0.105882, 1)
-layout_mode = 2
-text = "2"
-label_settings = ExtResource("3_8v60u")
-horizontal_alignment = 1
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/StatsManager"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/StatsManager/VBoxContainer2"]
-texture_filter = 1
-layout_mode = 2
-texture = ExtResource("4_0mpa1")
-stretch_mode = 2
-
-[node name="HealthLabel" type="Label" parent="HBoxContainer/StatsManager/VBoxContainer2"]
-unique_name_in_owner = true
-modulate = Color(1, 0, 0, 1)
-layout_mode = 2
-text = "2"
-label_settings = ExtResource("3_8v60u")
-horizontal_alignment = 1
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/StatsManager"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/StatsManager/VBoxContainer3"]
-texture_filter = 1
-layout_mode = 2
-texture = ExtResource("5_sw0cm")
-stretch_mode = 2
-
-[node name="SpeedLabel" type="Label" parent="HBoxContainer/StatsManager/VBoxContainer3"]
-unique_name_in_owner = true
-modulate = Color(0.282353, 0.678431, 0.113725, 1)
-layout_mode = 2
-text = "2"
-label_settings = ExtResource("3_8v60u")
-horizontal_alignment = 1
-
-[node name="ArtMiniBox" parent="HBoxContainer" instance=ExtResource("6_4bw53")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="VisibleTxRect" type="TextureRect" parent="."]
+[node name="VisibleTxRect" type="TextureRect" parent="ArtMiniBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 0
-offset_left = 250.0
-offset_top = -6.0
-offset_right = 275.0
-offset_bottom = 19.0
-rotation = 0.261799
+offset_left = 73.0
+offset_right = 98.0
+offset_bottom = 25.0
 pivot_offset = Vector2(12.5, 12.5)
-texture = ExtResource("7_8v60u")
+mouse_filter = 2
+texture = ExtResource("5_hdo2m")
 expand_mode = 3
+
+[connection signal="mouse_in_ui" from="ArtMiniBox" to="." method="onMouseInUI"]
+[connection signal="pressed" from="ArtMiniBox" to="." method="onPressed"]

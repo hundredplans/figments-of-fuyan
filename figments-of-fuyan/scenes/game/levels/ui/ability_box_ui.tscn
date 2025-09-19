@@ -1,4 +1,10 @@
-[gd_scene format=3 uid="uid://b8p5d81tuwbhj"]
+[gd_scene load_steps=6 format=3 uid="uid://b8p5d81tuwbhj"]
+
+[ext_resource type="Script" uid="uid://bxgwawrwucav7" path="res://scenes/game/levels/ui/ability_box_ui.gd" id="1_1851s"]
+[ext_resource type="Texture2D" uid="uid://chuvrtq4sm0k6" path="res://assets/sprites/game/cards/art_mini/palmon.png" id="2_cm0aa"]
+[ext_resource type="Texture2D" uid="uid://bya3i5mfjn6m1" path="res://assets/sprites/ui/icons/iobject.png" id="2_dlcx6"]
+[ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/default_press.mp3" id="3_7a22u"]
+[ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="4_bkrnh"]
 
 [node name="AbilityBoxUI" type="Control"]
 custom_minimum_size = Vector2(70, 70)
@@ -6,10 +12,32 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 70.0
 offset_bottom = 70.0
+script = ExtResource("1_1851s")
+iobject_sprite = ExtResource("2_dlcx6")
+CLICK_NOISE = ExtResource("3_7a22u")
+HOVER_NOISE = ExtResource("4_bkrnh")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="MainContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 0
 offset_right = 20.0
 offset_bottom = 20.0
-theme_type_variation = &"WhitePanelContainer"
+mouse_filter = 2
+theme_type_variation = &"EmptyPanelContainer"
+
+[node name="BackgroundRect" type="ColorRect" parent="MainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TxRect" type="TextureRect" parent="MainContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_cm0aa")
+expand_mode = 2
+
+[connection signal="mouse_entered" from="." to="." method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="." to="." method="onMouseInUI" binds= [false]]

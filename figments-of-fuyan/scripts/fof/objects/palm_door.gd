@@ -14,8 +14,10 @@ func onLoadDataLevel() -> void:
 	for ExistingBody in Helper.getNodeTypeRecursive(self, StaticBody3D):
 		ExistingBody.queue_free()
 	
+	static_bodies = []
 	var StaticBody := StaticBody3D.new()
 	getMeshes()[0].add_child(StaticBody)
+	static_bodies.append(StaticBody)
 	
 	CollisionShape = CollisionShape3D.new()
 	StaticBody.add_child(CollisionShape)
@@ -62,15 +64,12 @@ func onUpdateLevelVisible() -> void:
 #endregion
 	
 #region Valid / Disabled
-func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
+func isValidActiveEffect(Card: CardGD) -> bool: # Returns the ability effects the Card can view
 	var Tile: TileGD = getTile()
-	
-	if Card.getTile().getHeight() != getTile().getHeight(): return []
-	
-	if is_open and get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == Tile): return []
-	if !isAdjacent(Card.getCoords()): return []
-	return []
-	#return [getActiveEffect("Close Door") if is_open else getActiveEffect("Open Door")]
+	if Card.getTile().getHeight() != getTile().getHeight(): return false
+	if is_open and get_tree().get_nodes_in_group("FieldCardsGD").any(func(x: CardGD): return x.Tile == Tile): return false
+	if !isAdjacent(Card.getCoords()): return false
+	return true
 #endregion
 	
 #region Active Effect
@@ -82,21 +81,18 @@ func onActiveEffect(_PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles
 	animation_action.setActionDelay(ABILITY_DELAY)
 	
 	var actions: Array = [animation_action, VisionAction.new(Game.inVisionRangeCards(Card.getTile(), true))]
-	#for owned_active_effect in active_effects.filter(func(x: ActiveEffectDatastore): return x != active_effect):
-		#actions.append(ChangeActiveEffectUsedAction.new(owned_active_effect, true))
 	actions.append(CameraChangeAction.new(Card))
 	onPushAction(actions)
 		
 func onActiveEffectPre(PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
-	#if active_effect.name == "Open Door":
-		#if isLevelVisible(): last_seen_open = true
-		#is_open = true
-		#onDoorIsOpen(false)
-		#
-	#elif active_effect.name == "Close Door":
-		#if isLevelVisible(): last_seen_open = false
-		#is_open = false
-		#onDoorIsClosed(false)
+	if !is_open:
+		if isLevelVisible(): last_seen_open = true
+		is_open = true
+		onDoorIsOpen(false)
+	elif is_open:
+		if isLevelVisible(): last_seen_open = false
+		is_open = false
+		onDoorIsClosed(false)
 	onForceAction(CameraChangeAction.new(self))
 	onForceAction(ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.Tile, PickedTile)))
 #endregion

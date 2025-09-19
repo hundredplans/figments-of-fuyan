@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=29 format=3 uid="uid://divjktvvya1ee"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=28 format=3 uid="uid://divjktvvya1ee"]
 
 [ext_resource type="PackedScene" uid="uid://y5ytdt7d7c61" path="res://scenes/game/levels/world/coconut_springs/water_repeating.tscn" id="1_1r76i"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/palm_day_environment.tres" id="1_nr01x"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://dyvdkimog5nh1" path="res://scripts/fof/levels/palm_level.gd" id="2_48x5e"]
 [ext_resource type="Resource" uid="uid://dg2y7tm72ptbv" path="res://resources/fof/tile_objects/palm_tile.tres" id="2_lcnma"]
 [ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_omppq"]
-[ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="3_w51i3"]
 [ext_resource type="AudioStream" uid="uid://cn8nvead0m051" path="res://assets/sounds/music/coconut_springs_boss_music.mp3" id="4_otepg"]
 [ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="4_xelp4"]
 [ext_resource type="Resource" uid="uid://bjaaoyrx2freu" path="res://resources/datastore/decorations/PalmOverworld.tres" id="5_at1h3"]
@@ -71,10 +70,8 @@ champion_id = 2
 card_background = ExtResource("1_xwfqh")
 champion_entrance_packed = ExtResource("6_48x5e")
 card_ids = Array[int]([2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 78, 79])
-encounter_ids = Array[int]([1, 2, 3, 4, 5, 6])
 overworld_decoration = ExtResource("5_at1h3")
 base_environment = ExtResource("1_nr01x")
-elite_environment = ExtResource("3_w51i3")
 base_level_script = ExtResource("2_48x5e")
 base_tile_info = ExtResource("2_lcnma")
 default_light = ExtResource("5_mg38q")

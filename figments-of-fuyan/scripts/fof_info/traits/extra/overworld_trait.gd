@@ -7,17 +7,16 @@ enum AddedBy {NULL, REGULAR, CRAB, BUCKLER, ELDER_PALMER, LONE_RIDER, HAVEL_ROCK
 @export var added_by: AddedBy
 @export var level_trait_data: SavedDataTrait # Reload / save
 @export var only_for_level: bool
-@export var turns: int
 var Trait: TraitGD
 
 func getData() -> SavedDataTrait:
 	return data
 
-func _init(_data: SavedDataTrait = null, _added_by: AddedBy = AddedBy.NULL, _only_for_level: bool = false, _turns: int = -1):
+func _init(_data: SavedDataTrait = null, _added_by: AddedBy = AddedBy.NULL, _only_for_level: bool = false, turns: int = -1):
 	data = _data
 	added_by = _added_by
 	only_for_level = _only_for_level
-	turns = _turns
+	data.turns = turns
 
 func isUnregularAdded() -> bool:
 	return !(added_by == AddedBy.REGULAR)
@@ -47,12 +46,9 @@ func isActive() -> bool:
 	return Trait != null
 	
 func onReset(Card: CardGD) -> void:
-	if Trait != null and (only_for_level or turns != -1): # If for level or turn based (so automatically for level)
+	if Trait != null and (only_for_level or Trait.getTurns() != -1): # If for level or turn based (so automatically for level)
 		Trait.onPushAction(RemoveOverworldTraitAction.new(Card, data.id, added_by))
 		
 func onCardTurnPassed() -> void:
-	if turns == -1: return
-	turns -= 1
-	
-	if turns == 0 and Trait != null:
-		Trait.onPushAction(RemoveOverworldTraitAction.new(Trait.Card, Trait.info.id, added_by))
+	if Trait == null: return
+	Trait.onCardTurnPassed(added_by)

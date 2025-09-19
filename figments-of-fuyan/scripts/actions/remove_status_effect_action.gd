@@ -13,3 +13,6 @@ func onPostAction() -> void:
 
 func getLogInfo() -> Array:
 	return ["StatusEffect: " + StatusEffect.info.name if StatusEffect != null else ""]
+
+func getGameEffect() -> GameEffectGD: return StatusEffect
+func getCard() -> CardGD: return StatusEffect.Card

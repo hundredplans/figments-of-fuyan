@@ -21,3 +21,6 @@ func onCheckFail() -> void:
 	var id: int = overworld_trait.getData().id
 	if Card.getFieldTraits().any(func(x: TraitGD): return x.info.id == id):
 		onFailAction()
+
+func getGameEffect() -> GameEffectGD: return overworld_trait.Trait
+func getCard() -> CardGD: return Card

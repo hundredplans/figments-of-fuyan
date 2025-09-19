@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=32 format=3 uid="uid://b7lnksd1egi7b"]
+[gd_resource type="Resource" script_class="EpicCardInfo" load_steps=30 format=3 uid="uid://b7lnksd1egi7b"]
 
 [ext_resource type="Script" uid="uid://bnp3nwlcsibyl" path="res://scripts/fof_info/cards/extra/boss_phase_datastore.gd" id="1_d1qqb"]
 [ext_resource type="Script" uid="uid://baum84o21f7jw" path="res://scripts/fof/cards/epic/blade_of_the_palms_epic.gd" id="1_wc1av"]
@@ -16,11 +16,9 @@
 [ext_resource type="Resource" uid="uid://cxcmjs0iae406" path="res://resources/datastore/boss_intents/blade_of_the_palms/double_teleport_attack.tres" id="13_8g5ul"]
 [ext_resource type="Resource" uid="uid://ddns60xv08b60" path="res://resources/datastore/boss_intents/blade_of_the_palms/mist_attack.tres" id="14_hhvwj"]
 [ext_resource type="Resource" uid="uid://b02t6qh4ymrvy" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_phase_change.tres" id="15_hhvwj"]
-[ext_resource type="Environment" uid="uid://ccj8myeinjes5" path="res://assets/environments/palm_evening_environment.tres" id="16_e0d1a"]
 [ext_resource type="Resource" uid="uid://gah3cxhrmedq" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_minifan_attack.tres" id="17_lofdk"]
 [ext_resource type="Resource" uid="uid://ttm21xdoahcv" path="res://resources/datastore/boss_intents/blade_of_the_palms/hammer_attack.tres" id="18_5epeo"]
 [ext_resource type="Resource" uid="uid://8qu8qls78321" path="res://resources/datastore/boss_intents/blade_of_the_palms/clone_summon.tres" id="18_e0d1a"]
-[ext_resource type="Environment" uid="uid://xe2w2q3kwjv" path="res://assets/environments/palm_night_environment.tres" id="20_e0d1a"]
 [ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="21_e0d1a"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x8gyx"]
@@ -99,7 +97,6 @@ stat = 2.649
 top = 2.444
 eye = 1.897
 speed_order_override = 0
-env = ExtResource("16_e0d1a")
 change_delay = 2.4
 boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("7_hhvwj"), ExtResource("13_8g5ul"), ExtResource("8_qd2jx"), ExtResource("9_qq5yi"), ExtResource("14_hhvwj"), ExtResource("6_8g5ul"), ExtResource("15_hhvwj")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"
@@ -116,7 +113,6 @@ stat = 2.649
 top = 2.444
 eye = 1.897
 speed_order_override = 0
-env = ExtResource("20_e0d1a")
 change_delay = 2.4
 boss_intents = Array[ExtResource("5_tlf4i")]([ExtResource("14_hhvwj"), ExtResource("13_8g5ul"), ExtResource("17_lofdk"), ExtResource("6_8g5ul"), ExtResource("18_e0d1a"), ExtResource("18_5epeo"), ExtResource("15_hhvwj")])
 metadata/_custom_type_script = "uid://bnp3nwlcsibyl"

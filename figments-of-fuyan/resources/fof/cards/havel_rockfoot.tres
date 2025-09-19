@@ -32,8 +32,8 @@ script = ExtResource("13_5crwq")
 description = "REVENGE: Gain
 +1 ATT +1 HP
 when you trigger your ability
-ABILITY [1]: Gain ARMOR [1]"
-default_values = Array[int]([])
+ABILITY [[X]]: Gain ARMOR [1]"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_h6t1n"]
 script = ExtResource("12_vwyj8")
@@ -42,6 +42,7 @@ health = 4
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
+description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_xw6wc")
 
 [sub_resource type="Resource" id="Resource_myut2"]
@@ -49,8 +50,8 @@ script = ExtResource("13_5crwq")
 description = "REVENGE: Gain
 +1 ATT +1 HP
 when you trigger your ability
-ABILITY [1]: Gain ARMOR [1]"
-default_values = Array[int]([])
+ABILITY [[X]]: Gain ARMOR [1]"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_hy8df"]
 script = ExtResource("12_vwyj8")
@@ -59,6 +60,7 @@ health = 6
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
+description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_myut2")
 
 [sub_resource type="Resource" id="Resource_wkkql"]
@@ -66,8 +68,8 @@ script = ExtResource("13_5crwq")
 description = "REVENGE: Gain
 +1 ATT +1 HP
 when you trigger your ability
-ABILITY [1]: Gain ARMOR [1]"
-default_values = Array[int]([])
+ABILITY [[X]]: Gain ARMOR [1]"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_vwyj8"]
 script = ExtResource("12_vwyj8")
@@ -76,6 +78,7 @@ health = 7
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
+description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_wkkql")
 
 [sub_resource type="Resource" id="Resource_5crwq"]
@@ -83,8 +86,8 @@ script = ExtResource("13_5crwq")
 description = "REVENGE: Gain
 +1 ATT +1 HP
 when you trigger your ability
-ABILITY [1]: Gain ARMOR [1]"
-default_values = Array[int]([])
+ABILITY [[X]]: Gain ARMOR [1]"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_jobq8"]
 script = ExtResource("12_vwyj8")
@@ -93,6 +96,7 @@ health = 9
 speed = 2
 energy = 4
 traits = Array[ExtResource("2_gdxwm")]([])
+description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_5crwq")
 
 [resource]

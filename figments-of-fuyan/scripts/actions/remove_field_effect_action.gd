@@ -22,3 +22,5 @@ func getCard() -> CardGD:
 func getFieldEffectId() -> int:
 	if FieldEffect == null: return -1
 	return FieldEffect.info.id
+
+func getGameEffect() -> GameEffectGD: return FieldEffect

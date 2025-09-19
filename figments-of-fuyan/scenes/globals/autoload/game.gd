@@ -95,10 +95,16 @@ const ELITE_PREVIEW_DEFAULT_AMOUNT: int = 2
 
 const FADE_TIME: float = 0.25
 
+var CARD_ID_TO_AREA_ID: Dictionary[int, int] = {}
+
 func _ready() -> void:
 	tile_face_directions = [Vector3((sqrt(3.0) / 4.0), 0, (3.0 / 4.0)), Vector3((sqrt(3.0) / 2.0), 0, 0),
 	Vector3(-(sqrt(3.0) / 4.0), 0, (3.0 / 4.0)), Vector3((sqrt(3.0) / 4.0), 0, -(3.0 / 4.0)),
 	Vector3(-(sqrt(3.0) / 4.0), 0, -(3.0 / 4.0)), Vector3(-(sqrt(3.0) / 2.0), 0, 0)]
+	
+	for area_info: AreaInfo in Helper.getFofInfoArray(AreaInfo):
+		for card_id: int in area_info.card_ids:
+			CARD_ID_TO_AREA_ID[card_id] = area_info.id
 	#for cube_direction in Game.cube_directions:
 		#var x: float = HEX_SIZE * (3.0 / 2.0 * cube_direction.x)
 		#var z: float = HEX_SIZE * (sqrt(3) * (cube_direction.y + cube_direction.x / 2.0))
@@ -162,6 +168,13 @@ func getTierColor(tier: int) -> Color:
 		5: return Color("c386fc")
 		6: return Color("c386fc")
 		7: return Color("c386fc")
+	return Color.WHITE
+	
+func getTeamColor(team: int) -> Color:
+	match team:
+		0: return Color(0, 1, 0)
+		1: return Color(1, 0, 0)
+		2: return Color("#7f3300")
 	return Color.WHITE
 
 func getShopType(shop_type: ShopTypes) -> String:
@@ -405,15 +418,14 @@ func getNextInactiveCard(team: int) -> CardGD:
 #region Tooltips
 const TOOLTIP_PACKED_PATH: String = "res://scenes/common/tooltip/tooltip.tscn"
 var Tooltip: Control
-func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = true, offset := Vector2(30, 0)) -> void:
+func onMouseInUITooltip(state: bool, item: Variant = null, parent: Control = null, create_inner_tooltips: bool = true, flip_side: bool = false, offset := Vector2(30, 0)) -> void:
 	if Tooltip != null: Tooltip.queue_free()
 	if state and !is_dragging:
 		if item is Array and item.is_empty(): return
 		if item is not Array: item = [item]
 		Tooltip = load(TOOLTIP_PACKED_PATH).instantiate()
 		parent.add_child(Tooltip)
-		Tooltip.setInfo(item, offset, create_inner_tooltips)
-		Tooltip.setPosition()
+		Tooltip.setInfo(item, offset, create_inner_tooltips, flip_side)
 		
 func onEmptyTooltip(state: bool, child: Control = null, parent: Control = null) -> Control:
 	if Tooltip != null: Tooltip.queue_free()
@@ -704,3 +716,5 @@ func getDuplicateCardData(_card_data: SavedDataCard) -> SavedDataCard:
 	
 func getMain() -> Node:
 	return main
+
+func getAreaIDFromCardID(card_id: int) -> int: return CARD_ID_TO_AREA_ID[card_id]

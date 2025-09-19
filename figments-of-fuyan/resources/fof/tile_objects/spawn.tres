@@ -1,13 +1,12 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=8 format=3 uid="uid://bftwqsawn7jqc"]
 
-[ext_resource type="Script" path="res://scripts/fof/objects/spawn.gd" id="1_3skul"]
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_x2fts"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_ally.glb" id="2_lni07"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_enemy.glb" id="3_i8hoe"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_neutral.glb" id="4_vn77s"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/spawn_boss.glb" id="6_6d6r6"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_j2ajy"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="6_uihc7"]
+[ext_resource type="Script" uid="uid://dx34no6v0uecq" path="res://scripts/fof/objects/spawn.gd" id="1_3skul"]
+[ext_resource type="PackedScene" uid="uid://bnj05m017ae8a" path="res://assets/models/fof/objects/spawn_ally.glb" id="2_lni07"]
+[ext_resource type="PackedScene" uid="uid://beha0dd3k3ait" path="res://assets/models/fof/objects/spawn_enemy.glb" id="3_i8hoe"]
+[ext_resource type="PackedScene" uid="uid://dbssvvp82qfme" path="res://assets/models/fof/objects/spawn_neutral.glb" id="4_vn77s"]
+[ext_resource type="PackedScene" uid="uid://q2me7nsdma2w" path="res://assets/models/fof/objects/spawn_boss.glb" id="6_6d6r6"]
+[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="6_j2ajy"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="6_uihc7"]
 
 [resource]
 script = ExtResource("6_uihc7")
@@ -18,7 +17,6 @@ ignore_collisions = true
 solids = Array[bool]([false, false, false, false])
 models = Array[PackedScene]([ExtResource("2_lni07"), ExtResource("3_i8hoe"), ExtResource("4_vn77s"), ExtResource("6_6d6r6")])
 points = Array[Array]([[], [], [], []])
-active_effects = Array[ExtResource("1_x2fts")]([])
 area_ids = Array[int]([])
 id = 2
 name = "Spawn"

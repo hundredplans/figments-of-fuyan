@@ -24,3 +24,6 @@ func onPostAction() -> void:
 
 func getLogInfo() -> Array:
 	return ["StatusEffect: " + StatusEffect.info.name, "Turns: " + str(StatusEffect.turns)]
+
+func getGameEffect() -> GameEffectGD: return StatusEffect
+func getCard() -> CardGD: return StatusEffect.Card

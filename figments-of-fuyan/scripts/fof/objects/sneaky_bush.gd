@@ -9,8 +9,8 @@ func onProcessAction(action: Action) -> void:
 func onIObject(action: Action) -> void:
 	action.Card.onCreateBaseStatusEffect(2, -1)
 	
-func getValidActiveEffects(Card: CardGD) -> Array: # Returns the ability effects the Card can view
-	return active_effects if Card.Tile in occupied_tiles else []
+func isValidActiveEffect(Card: CardGD) -> bool: # Returns the ability effects the Card can view
+	return super(Card) and Card.Tile in occupied_tiles
 	
 func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new(occupied_tiles, occupied_tiles)

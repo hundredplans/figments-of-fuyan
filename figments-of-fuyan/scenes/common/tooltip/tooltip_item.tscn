@@ -13,7 +13,7 @@
 self_modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(500, 0)
 offset_right = 500.0
-offset_bottom = 77.0
+offset_bottom = 84.0
 mouse_filter = 2
 theme = ExtResource("1_8puje")
 theme_type_variation = &"OuterPanelContainer"
@@ -32,17 +32,18 @@ theme_type_variation = &"InnerPanelContainer"
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="MainContainer" type="VBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TopSide" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TopSide" type="HBoxContainer" parent="MarginContainer/MainContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="TopIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/TopSide"]
+[node name="TopIcon" type="TextureRect" parent="MarginContainer/MainContainer/TopSide"]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 2
@@ -50,33 +51,49 @@ mouse_filter = 2
 texture = ExtResource("3_p4jm1")
 expand_mode = 2
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/TopSide"]
+[node name="NameLabel" type="Label" parent="MarginContainer/MainContainer/TopSide"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Frederic the Fearless"
 label_settings = ExtResource("4_s3p4v")
 
-[node name="RarityLabel" type="Label" parent="MarginContainer/VBoxContainer/TopSide"]
-unique_name_in_owner = true
+[node name="Filler" type="Control" parent="MarginContainer/MainContainer/TopSide"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="StatManager" type="Control" parent="MarginContainer/MainContainer/TopSide/Filler"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RarityLabel" type="Label" parent="MarginContainer/MainContainer/TopSide"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
 size_flags_vertical = 1
+text = "Common"
 label_settings = ExtResource("4_s3p4v")
 horizontal_alignment = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="TextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_p6trs")]
+[node name="TextLabel" parent="MarginContainer/MainContainer/HBoxContainer" instance=ExtResource("3_p6trs")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 settings = ExtResource("4_nifbc")
 center = false
 
-[node name="TierLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TierLabel" type="Label" parent="MarginContainer/MainContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1

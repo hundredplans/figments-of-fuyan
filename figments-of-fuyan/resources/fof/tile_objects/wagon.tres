@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="ObjectInfo" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="ObjectInfo" load_steps=5 format=3 uid="uid://d3r6sqix1ewa7"]
 
-[ext_resource type="Script" path="res://scripts/fof_info/extra/active_effect_datastore.gd" id="1_eiqg3"]
-[ext_resource type="Script" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_krbma"]
-[ext_resource type="Script" path="res://scripts/fof/objects/object.gd" id="2_sxaax"]
-[ext_resource type="PackedScene" path="res://assets/models/fof/objects/wagon.glb" id="3_jwebd"]
-[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="3_sxaax"]
+[ext_resource type="Script" uid="uid://bvxsmhoh3obu" path="res://scripts/fof_info/game_objects/object_info.gd" id="2_krbma"]
+[ext_resource type="Script" uid="uid://bjdh5jg7ecvli" path="res://scripts/fof/objects/object.gd" id="2_sxaax"]
+[ext_resource type="PackedScene" uid="uid://bb86y52gmvgii" path="res://assets/models/fof/objects/wagon.glb" id="3_jwebd"]
+[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="3_sxaax"]
 
 [resource]
 script = ExtResource("2_krbma")
@@ -15,7 +14,6 @@ ignore_collisions = false
 solids = Array[bool]([true])
 models = Array[PackedScene]([ExtResource("3_jwebd")])
 points = Array[Array]([[Vector3(0.599929, 1.09347, 0.454771), Vector3(0.592353, 1.11293, -0.0581225), Vector3(0.599169, 1.09542, -0.538211), Vector3(0.401987, 1.04606, -0.626999), Vector3(-0.155014, 0.847131, -0.718377), Vector3(-0.831362, 0.51181, -0.626999), Vector3(-0.844826, 0.546652, 0.587458), Vector3(-0.276376, 0.890358, 0.715864), Vector3(0.472499, 1.03064, 0.587458), Vector3(0.46647, 0.806199, -0.0744018), Vector3(0.0348873, 0.636936, -0.0590562), Vector3(-0.63595, 0.373838, -0.0424465), Vector3(0.469362, 0.809035, -0.519485), Vector3(0.100334, 0.66538, -0.529476), Vector3(-0.598787, 0.393224, -0.522823), Vector3(-0.595711, 0.396381, 0.383133), Vector3(0.0582707, 0.650964, 0.428447), Vector3(0.495173, 0.821043, 0.428379), Vector3(-1.44641, 0.032688, -0.22294), Vector3(-1.3938, 0.0531695, 0.165017), Vector3(-1.08302, 0.174151, 0.178925), Vector3(-1.08326, 0.174059, -0.231389), Vector3(0.0439539, 0.583147, 0.747225), Vector3(0.0656409, 0.0428233, 0.715864), Vector3(-0.417219, 0.343611, 0.715864), Vector3(0.548739, 0.543949, 0.715864), Vector3(0.0554504, 0.513399, -0.790308), Vector3(0.53288, 0.598131, -0.734822), Vector3(0.311946, 0.094959, -0.734822), Vector3(-0.29302, 0.163731, -0.734822), Vector3(-0.392082, 0.659966, -0.734822)]])
-active_effects = Array[ExtResource("1_eiqg3")]([])
 area_ids = Array[int]([3])
 id = 37
 name = "Wagon"

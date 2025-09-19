@@ -7,6 +7,7 @@ class_name ObjectInfo extends TileObjectInfo
 @export var solids: Array[bool]
 @export var models: Array[PackedScene]
 @export var points: Array[Array]
+@export var active_effect_charges: int = -2
 
 const SPAWN_PARTICLE_SCENE_PATH: String = "res://scenes/particles/spawn_particle.tscn"
 const SMOKE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/smoke_particle.tscn"
@@ -22,3 +23,5 @@ static func getFofName() -> String: return "Object"
 func getModel(variation: int) -> PackedScene:
 	return models[variation]
 	
+func getActiveEffectCharges() -> int:
+	return active_effect_charges

@@ -31,7 +31,6 @@ signal awakened
 signal death
 signal turn_state_changing
 signal camera_change_action
-signal active_effect_used
 signal tile_occupied
 signal set_rewards # Signal for area to interpret
 signal game_started
@@ -39,7 +38,6 @@ signal game_started_post
 signal game_ended
 signal rewards_finished # Signal for area to interpret
 signal tool_removed
-signal update_active_effects
 signal camera_change_pre
 signal spectate_group
 signal set_last_ally_spectate_object
@@ -247,7 +245,6 @@ func onProcessAction(action: Action) -> void:
 		elif action is ChangeTurnStateAction:
 			turn_state_changing.emit(action.Card, action)
 		elif action is ActiveEffectUsedAction:
-			active_effect_used.emit(action.ActiveEffect)
 			onRecalculateAITurn(action.Card)
 		elif action is OccupyAction:
 			tile_occupied.emit(action.Card, action.Tile)
@@ -281,10 +278,6 @@ func onProcessAction(action: Action) -> void:
 			onRecalculateAITurn(action.Defender, true, true, true, true)
 			speed_order.onDeath(action.Defender)
 			death.emit(action.Defender)
-		elif action is ChangeActiveEffectChargesAction:
-			update_active_effects.emit()
-		elif action is ClearTileObjectAction:
-			update_active_effects.emit()
 		elif action is CameraSpectateGroupAction:
 			spectate_group.emit(action.team)
 		elif action is StartLevelAction:
@@ -358,6 +351,9 @@ func setTileObjectSpectateCard(TileObject: TileObjectGD, SpectateCard: CardGD) -
 var SpectateObject: GameObjectGD
 func getSpectateObject() -> GameObjectGD:
 	return SpectateObject
+	
+func getCardSpectateObject() -> CardGD:
+	return SpectateObject if SpectateObject is CardGD else null
 	
 func getAllySpectateObject() -> CardGD:
 	if SpectateObject != null and SpectateObject is CardGD and SpectateObject.isAlly(0) and SpectateObject.card_place == Game.CardPlaces.FIELD: return SpectateObject

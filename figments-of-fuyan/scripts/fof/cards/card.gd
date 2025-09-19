@@ -58,6 +58,8 @@ const ALPHAGREY_CHANGE_SPEED: float = 0.5
 #endregion
 
 #region Signals
+signal update_turn_state
+signal update_delayed_stats
 signal update_level_visible
 signal update_stat
 signal inspect_screen_created
@@ -450,7 +452,7 @@ func isPlayable(_energy: int) -> bool:
 	return _energy >= energy
 
 func isAdjacent(_coords: Vector4i, distance: int = 1) -> bool:
-	return Tile.isAdjacent(_coords, distance)
+	return Tile.isAdjacent(_coords, distance) if Tile != null else false
 #endregion
 
 #region Inspect Card
@@ -472,6 +474,7 @@ func onInspectCard() -> void:
 func setTurnState(_turn_state: Game.TurnStates, instant: bool = false) -> void:
 	turn_state = _turn_state
 	if FieldInfo != null: FieldInfo.onUpdateTurnState(instant)
+	update_turn_state.emit(turn_state, instant)
 		
 func onCardTurnPassed(Card: CardGD) -> void:
 	if self != Card: return
@@ -1040,12 +1043,13 @@ func isValidActiveEffect() -> bool: # Can show up
 	return active_effect_charges != -2
 	
 func isActiveEffectDisabled() -> bool: # Is greyedo ut
-	return active_effect_charges == 0 or turn_state == Game.TurnStates.PASSED or active_effect_used
+	return isValidActiveEffect() and (active_effect_charges == 0\
+	or turn_state == Game.TurnStates.PASSED or active_effect_used)
 	
-func onAIActiveEffectChecker(_active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
+func onAIAbilityChecker(_active_effect_tiles: ActiveEffectTiles, _dfl: DefaultFightLogic, type := Game.AbilityAI.NULL) -> TileGD:
 	return null
 	
-func onAIActiveEffectCheckerDefault() -> ActiveEffectTiles:
+func onAIAbilityCheckerDefault() -> ActiveEffectTiles:
 	if isActiveEffectDisabled(): return null
 	
 	var active_effect_tiles: ActiveEffectTiles = getActiveEffectTiles()
@@ -1056,7 +1060,7 @@ func setActiveEffectUsed(state: bool) -> void: active_effect_used = state
 func getActiveEffectUsed() -> bool: return active_effect_used
 func getActiveEffectCharges() -> int: return active_effect_charges
 func setActiveEffectCharges(value: int) -> void: active_effect_charges = value
-func getDefaultActiveEffectCharges() -> int: return -1
+func getDefaultActiveEffectCharges() -> int: return getInfo().getTierDatastore(tier).getActiveEffectCharges()
 #endregion
 
 #region Advance Turn
@@ -1073,24 +1077,29 @@ func onAdvanceTurn(turn_team: int) -> void:
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
 	if Tool != null:
 		Tool.onAdvanceTurn()
+	update_delayed_stats.emit()
 #endregion
 
 #region Delayed Stats
 func onAddDelayedStatInfo(stat_info: StatInfo) -> void:
 	delayed_stats.append(stat_info)
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
+	update_delayed_stats.emit()
 	
 func onRemoveDelayedStatInfo(stat_info: StatInfo) -> void:
 	delayed_stats.erase(stat_info)
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
+	update_delayed_stats.emit()
 	
 func onAddDelayedHealDatastore(heal_datastore: HealDatastore) -> void:
 	delayed_stats.append(heal_datastore)
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
+	update_delayed_stats.emit()
 	
 func onRemoveDelayedHealDatastore(heal_datastore: HealDatastore) -> void:
 	delayed_stats.erase(heal_datastore)
 	if FieldInfo != null: FieldInfo.onUpdateDelayedStats()
+	update_delayed_stats.emit()
 #endregion
 
 #region Action Checker
@@ -1464,8 +1473,6 @@ func onReset(override: bool = false) -> void: # Called when unit enters level (n
 	tile_rotation = 0
 	delayed_stats = []
 	
-	active_effect_charges = getDefaultActiveEffectCharges()
-	active_effect_used = false
 	status_effects = []
 	field_effects = []
 	ability_save = {}
@@ -1488,7 +1495,14 @@ func onReset(override: bool = false) -> void: # Called when unit enters level (n
 func onRegularReset() -> void: # Fof Init, Awakened, Death, Level Start, Level End
 	if Tool != null:
 		Tool.onRegularReset()
-	onPushAction(ChangeArchetypeAction.new(self, getArchetypeFromInfo()))
+		
+	var new_charges: int = getDefaultActiveEffectCharges() - active_effect_charges
+	var actions: Array = [ChangeArchetypeAction.new(self, getArchetypeFromInfo())]
+	if new_charges != -2:
+		var set_to_infinite: bool = new_charges == -1
+		actions.append(ChangeActiveEffectChargesAction.new(self, new_charges, set_to_infinite))
+		actions.append(ChangeActiveEffectUsedAction.new(self, false))
+	onPushAction(actions)
 	
 func getModel() -> Node3D:
 	return Model
@@ -1735,3 +1749,6 @@ func getStaticBodies() -> Array:
 	return [StaticBody]
 
 func getInfo() -> CardInfo: return info
+
+func getGameEffects() -> Array:
+	return field_effects + status_effects + getFieldTraits()

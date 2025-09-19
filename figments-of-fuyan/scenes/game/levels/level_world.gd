@@ -53,13 +53,13 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	CameraManager.camera_change_finish.connect(onCameraChangeFinish)
 	CameraManager.setInfo(level.level_camera_data)
 	
+	UI.active_effect_pressed.connect(onActiveEffectPressed)
 	UI.action_lock.connect(CameraManager.setActionLock)
 	UI.action_lock.connect(onUpdateActionLock)
 	UI.mouse_signal.connect(onMouseInUI)
 	UI.camera_button_pressed.connect(CameraManager.onSwapCameraType)
 	UI.camera_direction_changed.connect(CameraManager.onChangeCameraInDirection)
 	UI.vision_mode_changed.connect(onVisionModeChanged)
-	UI.active_effect_box_pressed.connect(onActiveEffectBoxPressed)
 	UI.create_movement_range.connect(onCreateMovementRange)
 	
 	UI.drag_begin.connect(onCardDraggedBegin)
@@ -124,7 +124,7 @@ func getActionLock() -> bool:
 func onUpdateActionLock(state: bool) -> void:
 	onHoverTile()
 	
-	if state: onHideMovementRange() # ; onActiveEffectDeselected()
+	if state: onHideMovementRange(); onActiveEffectDeselected()
 	else: onCreateMovementRange(level.getAllySpectateObject())
 	
 func getMouseInUI() -> bool:
@@ -171,7 +171,7 @@ func onCardAwakened(Card: CardGD) -> void:
 func onTilePressed() -> void:
 	var Tile: TileGD = MouseHoverTile
 	
-	if Tile.isActiveEffectPickable() and current_active_effect != null:
+	if Tile.isActiveEffectPickable() and ActiveEffectItem != null:
 		onActiveEffectActivated(Tile)
 	elif Tile.getMovementPathDisplay():
 		var Card: CardGD = level.getAllySpectateObject()
@@ -233,7 +233,7 @@ func onCreateMovementRange(Card: CardGD) -> void:
 		if level.phase == Game.Phases.HAND:
 			onHideMovementRange()
 		return
-	if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED or current_active_effect != null: return
+	if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED or ActiveEffectItem != null: return
 	Card.getsetMovementRange()
 #endregion
 
@@ -331,18 +331,16 @@ func onVisionChanged() -> void:
 #endregion
 	
 #region Active Effects
-var current_active_effect: Variant
+var ActiveEffectItem: Variant
 var current_active_effect_tiles: ActiveEffectTiles
 
-func onActiveEffectBoxPressed(active_effect_tiles: ActiveEffectTiles) -> void:
-	pass
-	#if current_active_effect != active_effect:
-		#if current_active_effect != null: onActiveEffectDeselected()
-		#current_active_effect = active_effect
-		#current_active_effect_tiles = active_effect_tiles
-		#onActiveEffectSelected()
-	#else:
-		#onActiveEffectDeselected()
+func onActiveEffectPressed(item: Variant, active_effect_tiles: ActiveEffectTiles) -> void:
+	if (item is not ActiveIObjects and item != ActiveEffectItem) or (item is ActiveIObjects and (ActiveEffectItem == null or ActiveEffectItem is not ActiveIObjects)):
+		if ActiveEffectItem != null: onActiveEffectDeselected()
+		ActiveEffectItem = item
+		current_active_effect_tiles = active_effect_tiles
+		onActiveEffectSelected()
+	else: onActiveEffectDeselected()
 
 func onActiveEffectSelected() -> void:
 	onHideMovementRange()
@@ -355,25 +353,28 @@ func onActiveEffectSelected() -> void:
 	active_effect_selected.emit()
 		
 func onActiveEffectDeselected() -> void:
-	if current_active_effect != null:
+	if ActiveEffectItem != null:
 		for Tile in current_active_effect_tiles.in_range_tiles:
 			Tile.setInActiveEffectRange(false)
 			
 		for Tile in current_active_effect_tiles.pickable_tiles:
 			Tile.setInActiveEffectPickable(false)
 			
-		current_active_effect = null
+		ActiveEffectItem = null
 		current_active_effect_tiles = null
 		active_effect_deselected.emit()
-		
-func onActiveEffectActivated(Tile: TileGD) -> void:
-	pass
-	#level.onPushAction(ActiveEffectUsedAction.new(current_active_effect, Tile, current_active_effect_tiles, level.getSpectateObject()))
-	#active_effect_activated.emit(current_active_effect)
-	#onActiveEffectDeselected()
+		onCreateMovementRange(level.getAllySpectateObject())
 	
-func isActiveEffectCurrent() -> bool:
-	return current_active_effect != null
+func onActiveEffectActivated(Tile: TileGD) -> void:
+	var _ActiveEffectItem: Variant = ActiveEffectItem
+	var _current_active_effect_tiles: ActiveEffectTiles = current_active_effect_tiles
+	var Card: CardGD = null
+	if ActiveEffectItem is ActiveIObjects:
+		_ActiveEffectItem = ActiveEffectItem.getIObjectFromTile(Tile)
+		_current_active_effect_tiles = ActiveEffectItem.getActiveEffectTilesFromTile(Tile)
+		Card = ActiveEffectItem.getCard()
+	level.onPushAction(ActiveEffectUsedAction.new(_ActiveEffectItem, Tile, _current_active_effect_tiles, Card))
+	onActiveEffectDeselected()
 #endregion
 
 #region Pass
@@ -398,11 +399,7 @@ func setEnvironment(env: Environment = null) -> void:
 				env = BossCard.getEnvironmentFromInfo()
 			
 		if env == null: # If doesn't find boss card / doesn't have a set environment
-			match level.fight_type:
-				Game.FightTypes.REGULAR:
-					env = area.info.base_environment
-				_:
-					env = area.info.elite_environment
+			env = area.info.base_environment
 	WorldEnv.environment = env
 #endregion
 

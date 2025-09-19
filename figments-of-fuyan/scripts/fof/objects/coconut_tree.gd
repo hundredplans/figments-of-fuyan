@@ -12,8 +12,8 @@ func onAdvanceTurn(team: int) -> void:
 	if team == 0:
 		recharge = max(recharge - 1, 0)
 		
-func getValidActiveEffects(Card: CardGD) -> Array:
-	return active_effects if recharge == 0 and Card.isAdjacent(occupied_tiles[0].getCoords()) else []
+func isValidActiveEffect(Card: CardGD) -> bool:
+	return super(Card) and recharge == 0 and Card.isAdjacent(occupied_tiles[0].getCoords())
 	
 func isActiveEffectDisabled(Card: CardGD) -> bool:
 	return super(Card) or Card.getAttacks() == 0
@@ -21,7 +21,7 @@ func isActiveEffectDisabled(Card: CardGD) -> bool:
 func getActiveEffectTiles(_Card: CardGD) -> ActiveEffectTiles:
 	return ActiveEffectTiles.new([getTile()], [getTile()])
 	
-func onActiveEffect(PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD) -> void:
+func onActiveEffect(PickedTile: TileGD, _active_effect_tiles: ActiveEffectTiles, Card: CardGD = null) -> void:
 	var animation_action := AnimationAction.new(Card, "Attack")
 	animation_action.setActionDelay(Game.ATTACK_DELAY)
 	var actions: Array = [ChangeTileRotationAction.new(Card, Game.getRelativeTileRotation(Card.getTile(), PickedTile)),

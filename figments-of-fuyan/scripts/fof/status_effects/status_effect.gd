@@ -1,4 +1,4 @@
-class_name StatusEffectGD extends FofGD
+class_name StatusEffectGD extends GameEffectGD
 
 var Card: CardGD
 var turns: int
@@ -33,7 +33,7 @@ func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangeTurnStateAction:
 			if action.turn_state == Game.TurnStates.PASSED and action.Card == Card and (self is not FatigueGD) and turns >= 0:
-				turns -= 1
+				setTurns(turns - 1)
 				if turns <= 0:
 					onPushAction(RemoveStatusEffectAction.new(self))
 			
@@ -48,3 +48,9 @@ func onStatusEffectAdded(_action: AddStatusEffectAction) -> void:
 
 func onLevelEnded(_win: bool) -> void:
 	onClear()
+	
+func setTurns(_turns: int) -> void:
+	turns = _turns
+	update_turns.emit(turns)
+
+func getTurns() -> int: return turns

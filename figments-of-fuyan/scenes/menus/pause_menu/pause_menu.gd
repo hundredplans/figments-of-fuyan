@@ -27,7 +27,7 @@ func _ready() -> void:
 		btn.BASE_COLOR = main_color
 		btn.HOVER_COLOR = second_color
 		btn.DISABLED_COLOR = third_color
-		btn.setModulate()
+		btn.onUpdateModulate()
 	
 	var tween := create_tween()
 	tween.tween_property(ButtonsContainer, "scale", Vector2.ONE, SCALE_BUTTONS_TIME)\

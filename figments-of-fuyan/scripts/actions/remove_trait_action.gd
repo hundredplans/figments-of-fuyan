@@ -20,3 +20,9 @@ func onCheckFail() -> void:
 	
 func onPostAction() -> void:
 	Card.onRemoveFieldTrait(Card.getOverworldTraitByID(id))
+	
+func getGameEffect() -> GameEffectGD:
+	var overworld_trait: OverworldTrait = Card.getOverworldTraitByID(id)
+	return overworld_trait.Trait
+
+func getCard() -> CardGD: return Card
