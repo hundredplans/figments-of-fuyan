@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d3lgvy3r3xxo"]
+[gd_scene load_steps=42 format=3 uid="uid://d3lgvy3r3xxo"]
 
 [ext_resource type="Script" uid="uid://x7vlr4glcng3" path="res://scenes/game/levels/level_ui.gd" id="1_lmham"]
 [ext_resource type="Script" uid="uid://cjjlvqefk333u" path="res://scenes/game/levels/ui/hand_box.gd" id="2_5k44f"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://fi32a8tjx0k3" path="res://assets/sprites/game/cards/common/stats/energy_icon.png" id="4_fm1wf"]
 [ext_resource type="PackedScene" uid="uid://ip8hisyxk8ia" path="res://scenes/game/levels/ui/loss_ui.tscn" id="5_ruh78"]
 [ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="5_x67vg"]
+[ext_resource type="PackedScene" uid="uid://brlcl2ndapeef" path="res://scenes/common/common_game_ui/common_game_ui.tscn" id="5_yods1"]
 [ext_resource type="Script" uid="uid://b0rccm6ahttpk" path="res://scenes/game/levels/ui/phase_icon.gd" id="6_cffvb"]
 [ext_resource type="Script" uid="uid://drdirqjn7ibpf" path="res://scenes/game/levels/ui/epic_fight_control.gd" id="6_eg13e"]
 [ext_resource type="Texture2D" uid="uid://ujwl60lh0270" path="res://assets/sprites/ui/icons/start_icon.png" id="7_0g07y"]
@@ -132,6 +133,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="CommonGameUI" parent="Main" instance=ExtResource("5_yods1")]
 
 [node name="BackgroundDimmer" type="ColorRect" parent="Main"]
 unique_name_in_owner = true
@@ -638,7 +641,7 @@ offset_bottom = 365.0
 mouse_filter = 2
 alignment = 2
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="Main"]
+[node name="AllyStatusScroll" type="ScrollContainer" parent="Main"]
 layout_mode = 0
 offset_left = 1637.0
 offset_top = 398.0
@@ -646,7 +649,7 @@ offset_right = 1910.0
 offset_bottom = 986.0
 horizontal_scroll_mode = 0
 
-[node name="AllyStatusManager" type="VBoxContainer" parent="Main/ScrollContainer2" node_paths=PackedStringArray("SpectatedUnitStatusUI", "AbilityBoxes")]
+[node name="AllyStatusManager" type="VBoxContainer" parent="Main/AllyStatusScroll" node_paths=PackedStringArray("SpectatedUnitStatusUI", "AbilityBoxes")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -659,7 +662,7 @@ AbilityBoxes = NodePath("../../AbilityBoxes")
 UnitStatusUIPacked = ExtResource("33_qwq4a")
 AbilityBoxUIPacked = ExtResource("33_fcm67")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Main"]
+[node name="EnemyStatusScroll" type="ScrollContainer" parent="Main"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 398.0
@@ -667,7 +670,7 @@ offset_right = 280.0
 offset_bottom = 1080.0
 horizontal_scroll_mode = 0
 
-[node name="EnemyStatusManager" type="VBoxContainer" parent="Main/ScrollContainer"]
+[node name="EnemyStatusManager" type="VBoxContainer" parent="Main/EnemyStatusScroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -710,5 +713,5 @@ libraries = {
 [connection signal="mouse_in_ui" from="Main/Console" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="Main/BoonBox" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="Main/SpectatedUnitStatusUI" to="." method="onMouseInUI"]
-[connection signal="mouse_in_ui" from="Main/ScrollContainer2/AllyStatusManager" to="." method="onMouseInUI"]
-[connection signal="mouse_in_ui" from="Main/ScrollContainer/EnemyStatusManager" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="Main/AllyStatusScroll/AllyStatusManager" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="Main/EnemyStatusScroll/EnemyStatusManager" to="." method="onMouseInUI"]

@@ -915,7 +915,7 @@ func isValidAttackableInRange(GameObject: GameObjectGD, StartTile: TileGD) -> bo
 	
 func isValidAttackableInRangeSpeed(GameObject: GameObjectGD, StartTile: TileGD) -> bool:
 	var in_vision: bool = isValidAttackableInVision(GameObject)
-	if !in_vision: return false
+	if !in_vision or StartTile == null: return false
 	
 	var in_attack_range: bool = Game.getCoordsDistance(StartTile.getCoords(), GameObject.getAttackableTile().getCoords()) <= getAttackRange() + speed
 	return in_attack_range

@@ -887,7 +887,7 @@ func onProcessAction(action: Action) -> void:
 #endregion
 
 func getEnvironmentFromInfo(is_elite: bool) -> Environment:
-	return info.base_environment if !is_elite else info.elite_environment
+	return info.base_environment
 
 func onClearMapNodes() -> void:
 	if map_nodes_data.is_empty():

@@ -24,7 +24,7 @@ var in_vision_range: bool
 var disabled: bool
 var UnitStatusUIStatsManager: Control
 
-const SCALE_IN_TIME: float = 0.1
+const SCALE_IN_TIME: float = 0.2	
 signal pressed
 signal mouse_in_ui
 
