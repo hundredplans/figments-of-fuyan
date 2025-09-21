@@ -1,15 +1,17 @@
-[gd_resource type="Resource" script_class="ShopDatastore" load_steps=15 format=3 uid="uid://bed01udypuaph"]
+[gd_resource type="Resource" script_class="ShopDatastore" load_steps=17 format=3 uid="uid://bed01udypuaph"]
 
 [ext_resource type="Script" uid="uid://b48etdqq4rha8" path="res://scripts/common/shop/shop_item_datastore.gd" id="1_bnout"]
-[ext_resource type="Texture2D" uid="uid://cdtgandyuulnq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/general_shop_bg_icon.png" id="1_ijoxh"]
+[ext_resource type="Texture2D" uid="uid://ddcme2uauavpj" path="res://assets/sprites/ui/scene_specific/shop_screen/ozhars_bazaar/seer_icon.png" id="1_xxv14"]
 [ext_resource type="Script" uid="uid://doid1bi8h7kwu" path="res://scripts/common/shop/shop_datastore.gd" id="2_6eygx"]
-[ext_resource type="Texture2D" uid="uid://djap5j6ifmduq" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_base.png" id="2_flpv4"]
-[ext_resource type="Texture2D" uid="uid://dej0n6wiflwwt" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab1.png" id="3_xxv14"]
-[ext_resource type="Texture2D" uid="uid://btvht0n6tmf46" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab2.png" id="4_34niu"]
-[ext_resource type="Texture2D" uid="uid://1pe4roccy5x7" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_hand_open.png" id="5_clhy8"]
-[ext_resource type="Texture2D" uid="uid://bodfwk4s5uaqu" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_hand_closed.png" id="6_7fl5c"]
+[ext_resource type="Texture2D" uid="uid://c4tymo1s67sda" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_base.png" id="2_34niu"]
+[ext_resource type="BitMap" uid="uid://br8x3moh5p1i3" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_bitmap1.png" id="3_clhy8"]
+[ext_resource type="BitMap" uid="uid://bd5wog4itv1lr" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_bitmap2.png" id="4_7fl5c"]
+[ext_resource type="Texture2D" uid="uid://d4dc5hsi1fnu7" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_frame1.png" id="5_gosyh"]
+[ext_resource type="Texture2D" uid="uid://cq611r5umq8o6" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_frame2.png" id="6_dp7sx"]
+[ext_resource type="Texture2D" uid="uid://by474bwcl1e8q" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_hand_open.png" id="7_tvw3r"]
 [ext_resource type="Resource" uid="uid://ckgqhorrni7il" path="res://resources/datastore/encounters/rarity_prices/boon_rarity_prices.tres" id="8_gosyh"]
-[ext_resource type="Texture2D" uid="uid://b4kkkr8r2ttuc" path="res://assets/sprites/ui/scene_specific/shop_screen/general_shop/crab_buy.png" id="9_dp7sx"]
+[ext_resource type="Texture2D" uid="uid://cn0ukoiaavben" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_hand_closed.png" id="8_nuujg"]
+[ext_resource type="Texture2D" uid="uid://cprc5l6w2ynj7" path="res://assets/sprites/ui/scene_specific/shop_screen/seers_abode/seer_buy.png" id="11_4xwh6"]
 
 [sub_resource type="Resource" id="Resource_tvw3r"]
 script = ExtResource("1_bnout")
@@ -42,14 +44,14 @@ metadata/_custom_type_script = "uid://b48etdqq4rha8"
 [resource]
 script = ExtResource("2_6eygx")
 items = Array[ExtResource("1_bnout")]([SubResource("Resource_tvw3r"), SubResource("Resource_nuujg"), SubResource("Resource_4xwh6"), SubResource("Resource_llmde")])
-merchant_buy_frame = ExtResource("9_dp7sx")
+merchant_buy_frame = ExtResource("11_4xwh6")
 id = 16
-background_icon = ExtResource("1_ijoxh")
-background_main_color = Color(0.424762, 0.606788, 1, 1)
-base_sprite = ExtResource("2_flpv4")
-frames = Array[Texture2D]([ExtResource("3_xxv14"), ExtResource("4_34niu")])
-hands = Array[Texture2D]([ExtResource("5_clhy8"), ExtResource("6_7fl5c")])
-bitmap_frames = Array[BitMap]([])
+background_icon = ExtResource("1_xxv14")
+background_main_color = Color(0.411765, 0.360784, 0.631373, 1)
+base_sprite = ExtResource("2_34niu")
+frames = Array[Texture2D]([ExtResource("5_gosyh"), ExtResource("6_dp7sx")])
+hands = Array[Texture2D]([ExtResource("7_tvw3r"), ExtResource("8_nuujg")])
+bitmap_frames = Array[BitMap]([ExtResource("3_clhy8"), ExtResource("4_7fl5c")])
 drag_zone_name = ""
 drag_zone_label_color = Color(0, 0, 0, 1)
 metadata/_custom_type_script = "uid://doid1bi8h7kwu"

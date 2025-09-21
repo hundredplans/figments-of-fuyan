@@ -9,6 +9,9 @@ const SCALE_SPEED: float = 0.25
 const SHILLING_SPIN: float = PI / 4
 const SHILLING_SPIN_TIME: float = 2.0
 
+@onready var LevelTxRect: TextureRect = %LevelTxRect
+@onready var LevelNameLabel: Label = %LevelNameLabel
+
 @onready var BoonBox: Control = %BoonBox
 @onready var ShillingsLabel: Label = %ShillingsLabel
 @onready var StashAmountLabel: Label = %StashAmountLabel
@@ -74,3 +77,8 @@ func onFadeBackgroundNodes(end_value: float, condition: String = "", change_mous
 			node.setMouseFilter(Control.MOUSE_FILTER_IGNORE if end_value <= 0.01 else Control.MOUSE_FILTER_STOP)
 
 func getStashButton() -> Control: return StashButton
+
+func setLevelName(level_name: String, level_color: Color) -> void:
+	LevelTxRect.visible = true
+	LevelNameLabel.text = level_name
+	LevelNameLabel.modulate = level_color

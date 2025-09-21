@@ -13,10 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://cl2hceh4b5qh7" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/down3.png" id="7_wrvt6"]
 [ext_resource type="LabelSettings" uid="uid://cuykwjnblsktt" path="res://resources/ui/label_settings/spicyrice_minor.tres" id="10_o5vpu"]
 
-[node name="StatsManager" type="HBoxContainer"]
+[node name="StatsManager" type="HBoxContainer" node_paths=PackedStringArray("AttackArrowLabel", "HealthArrowLabel", "SpeedArrowLabel", "AttackArrowTx", "HealthArrowTx", "SpeedArrowTx")]
 custom_minimum_size = Vector2(158, 100)
 offset_right = 158.0
-offset_bottom = 99.0
+offset_bottom = 137.0
 mouse_filter = 2
 script = ExtResource("1_d7o4h")
 up_arrow_one = ExtResource("4_2udlh")
@@ -27,6 +27,12 @@ down_arrow_two = ExtResource("6_t7fuh")
 down_arrow_three = ExtResource("7_wrvt6")
 up_arrow_color = Color(0, 1, 0, 1)
 down_arrow_color = Color(1, 0, 0, 1)
+AttackArrowLabel = NodePath("VBoxContainer/VBoxContainer/AttackArrowLabel")
+HealthArrowLabel = NodePath("VBoxContainer2/VBoxContainer/HealthArrowLabel")
+SpeedArrowLabel = NodePath("VBoxContainer3/VBoxContainer/SpeedArrowLabel")
+AttackArrowTx = NodePath("VBoxContainer/VBoxContainer/AttackArrowTx")
+HealthArrowTx = NodePath("VBoxContainer2/VBoxContainer/HealthArrowTx")
+SpeedArrowTx = NodePath("VBoxContainer3/VBoxContainer/SpeedArrowTx")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

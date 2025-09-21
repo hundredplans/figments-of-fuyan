@@ -1,6 +1,5 @@
 extends HoverUI
 
-@onready var EncounterMainUI: Control = %EncounterMainUI
 @onready var NameLabel: Label = %NameLabel
 
 @onready var TypeLabel: Label = %TypeLabel

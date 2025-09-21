@@ -4,7 +4,6 @@ const SPIN_SPEED: float = 10
 
 @onready var NameLabel: Label = %NameLabel
 @onready var TierLabel: Label = %TierLabel
-@onready var RarityLabel: Label = %RarityLabel
 @onready var ToolTxRect: TextureRect = %ToolTextureRect
 var Tool: ToolGD
 

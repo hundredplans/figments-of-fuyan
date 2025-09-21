@@ -5,7 +5,6 @@ signal mouse_in_ui
 signal pressed
 
 @export_group("Nodes")
-@export var SpectatedUnitStatusUI: Control
 @export var AbilityBoxes: Control
 @export_group("")
 
@@ -21,7 +20,6 @@ var IObjectAbilityBox: Control
 const DEPENDANT_ID: int = 12
 
 func _ready() -> void:
-	if SpectatedUnitStatusUI != null: SpectatedUnitStatusUI.setInfo(true, true)
 	if AbilityBoxes != null: onCreateAbilityBoxes()
 		
 func onCreateUnitStatusUI(Card: CardGD) -> void:
@@ -39,27 +37,19 @@ func onRemoveUnitStatusUI(Card: CardGD) -> void:
 	if UnitStatusUI == null: return
 	UnitStatusUI.queue_free()
 	
-func onUpdateSpectatedUnitStatusUI(SpectateObject: GameObjectGD) -> void:
-	var PreviousCard: CardGD = SpectatedUnitStatusUI.getCard()
+func onUpdateSpectatedUnitStatusUI(PreviousCard: CardGD, NewCard: CardGD) -> void:
 	if PreviousCard != null:
 		var PreviousUnitStatusUI: Control = getUnitStatusUI(PreviousCard)
 		if PreviousUnitStatusUI != null:
 			PreviousUnitStatusUI.setSpectated(false)
-	
-	if SpectateObject == null or SpectateObject is ObjectGD:
-		SpectatedUnitStatusUI.visible = false
-		AbilityBoxes.visible = false
-		return
-		
-	AbilityBoxes.visible = true
-	SpectatedUnitStatusUI.visible = true
-	SpectatedUnitStatusUI.setCard(SpectateObject)
-	
-	var CurrentUnitStatusUI: Control = getUnitStatusUI(SpectateObject)
+			
+	var CurrentUnitStatusUI: Control = getUnitStatusUI(NewCard)
 	if CurrentUnitStatusUI != null:
 		CurrentUnitStatusUI.setSpectated(true)
-	
-	onUpdateAbilityBoxes(SpectateObject)
+			
+	if AbilityBoxes == null: return
+	AbilityBoxes.visible = NewCard != null
+	onUpdateAbilityBoxes(NewCard)
 	
 func onUpdateAbilityBoxes(Card: CardGD) -> void:
 	if isDependant(): return

@@ -718,3 +718,12 @@ func getMain() -> Node:
 	return main
 
 func getAreaIDFromCardID(card_id: int) -> int: return CARD_ID_TO_AREA_ID[card_id]
+
+func getPhaseColor(phase: Phases) -> Color:
+	match phase:
+		Phases.START: return Color("#475ac1")
+		Phases.HAND: return Color("#c39679")
+		Phases.PLAYER: return Color("#58993d")
+		Phases.AI: return Color("#c45050")
+		Phases.NEUTRAL: return Color("#d35400")
+	return Color.WHITE

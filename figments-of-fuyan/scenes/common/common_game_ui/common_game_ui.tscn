@@ -6,19 +6,19 @@
 [ext_resource type="Texture2D" uid="uid://byqpgk7qtluhe" path="res://assets/sprites/ui/icons/shilling.png" id="3_av872"]
 [ext_resource type="Script" uid="uid://dclswmoq0nxko" path="res://scenes/common/new/default_button.gd" id="3_i1o8o"]
 [ext_resource type="AudioStream" uid="uid://cv7fpbvjmtneo" path="res://assets/sounds/ui/default_press.mp3" id="4_8tpmc"]
-[ext_resource type="LabelSettings" uid="uid://cuykwjnblsktt" path="res://resources/ui/label_settings/spicyrice_minor.tres" id="4_ubqsg"]
 [ext_resource type="LabelSettings" uid="uid://d1fxesog2wasm" path="res://resources/ui/label_settings/spicyrice_medium.tres" id="4_xg8jk"]
 [ext_resource type="AudioStream" uid="uid://p2ron586kllu" path="res://assets/sounds/ui/default_hover.mp3" id="5_lv8m3"]
 [ext_resource type="PackedScene" uid="uid://db7lt6qbe4d0e" path="res://scenes/common/time_label/time_label.tscn" id="6_p1mhw"]
 [ext_resource type="Script" uid="uid://dnqf5f1jadalx" path="res://scenes/game/levels/boon_box.gd" id="8_kvjub"]
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="9_62j63"]
 [ext_resource type="Texture2D" uid="uid://b10d4u8mq4nud" path="res://assets/sprites/ui/icons/clock_icon.png" id="9_lv8m3"]
+[ext_resource type="Texture2D" uid="uid://bya3i5mfjn6m1" path="res://assets/sprites/ui/icons/iobject.png" id="11_lv8m3"]
 
 [node name="CommonGameUI" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 211.0
+offset_right = 674.0
+offset_bottom = 224.0
 mouse_filter = 2
 script = ExtResource("1_xg8jk")
 
@@ -117,21 +117,33 @@ mouse_filter = 2
 texture = ExtResource("9_lv8m3")
 
 [node name="TimeLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager" instance=ExtResource("6_p1mhw")]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-text = "00:02"
-label_settings = ExtResource("4_ubqsg")
+text = "888:88"
+label_settings = ExtResource("2_hifen")
+
+[node name="LevelTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("11_lv8m3")
+
+[node name="LevelNameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = ExtResource("2_hifen")
 
 [node name="BoonBox" type="GridContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 mouse_filter = 2
-columns = 16
+columns = 6
 script = ExtResource("8_kvjub")
 BoonIconPacked = ExtResource("9_62j63")
 
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
+[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]

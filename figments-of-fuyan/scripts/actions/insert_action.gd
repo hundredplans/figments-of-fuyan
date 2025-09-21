@@ -8,4 +8,4 @@ func _init(_Card: CardGD) -> void:
 
 func onPostAction() -> void:
 	Card.add_to_group("AllyCardsGD")
-	onForceAction(HandCardAction.new(Card))
+	onPushAction(HandCardAction.new(Card))

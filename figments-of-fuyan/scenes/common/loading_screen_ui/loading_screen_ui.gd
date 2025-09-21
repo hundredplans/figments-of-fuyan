@@ -18,7 +18,7 @@ func setInfo(action: StartLoadingScreenAction) -> void:
 	
 func setForLevel(action: StartLoadingScreenAction) -> void:
 	MainLabel.text = "%s-%s: %s" % [Game.getArea().getWorldDifficulty(), action.getProgress(), action.getLevelName()]
-	MainLabel.modulate = Game.getArea().getAreaColor()
+	MainLabel.modulate = Helper.getFofInfoID(AreaInfo, action.getAreaID()).getAreaColor()
 	
 	var curse_id: int = action.getCurseID()
 	if curse_id == 0: return

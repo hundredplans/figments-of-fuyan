@@ -11,3 +11,5 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	
 func onCreateVaromaDecorations() -> void:
 	pass
+
+func getAreaID() -> int: return 3

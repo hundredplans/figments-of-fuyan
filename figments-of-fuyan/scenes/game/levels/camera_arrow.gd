@@ -1,15 +1,15 @@
-extends Button
+extends DefaultButton
 
 var action_lock: bool
 var is_in_freelook_camera: bool
 
 func setActionLock(state: bool) -> void:
 	action_lock = state
-	updateDisabled()
+	onUpdateDisabled()
 	
 func setIsInFreelook(state: bool) -> void:
 	is_in_freelook_camera = state
-	updateDisabled()
+	onUpdateDisabled()
 	
-func updateDisabled() -> void:
-	disabled = action_lock or is_in_freelook_camera
+func onUpdateDisabled() -> void:
+	setDisabled(action_lock or is_in_freelook_camera)

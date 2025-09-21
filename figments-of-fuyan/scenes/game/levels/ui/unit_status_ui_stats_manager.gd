@@ -15,13 +15,13 @@ extends Control
 @onready var HealthLabel: Label = %HealthLabel
 @onready var SpeedLabel: Label = %SpeedLabel
 
-@onready var AttackArrowLabel: Label = %AttackArrowLabel
-@onready var HealthArrowLabel: Label = %HealthArrowLabel
-@onready var SpeedArrowLabel: Label = %SpeedArrowLabel
+@export var AttackArrowLabel: Label
+@export var HealthArrowLabel: Label
+@export var SpeedArrowLabel: Label
 
-@onready var AttackArrowTx: TextureRect = %AttackArrowTx
-@onready var HealthArrowTx: TextureRect = %HealthArrowTx
-@onready var SpeedArrowTx: TextureRect = %SpeedArrowTx
+@export var AttackArrowTx: TextureRect
+@export var HealthArrowTx: TextureRect
+@export var SpeedArrowTx: TextureRect
 
 var Card: CardGD
 
@@ -35,11 +35,11 @@ func setCard(_Card: CardGD) -> void:
 	onUpdateDelayedStats()
 
 func onUpdateDelayedStats() -> void:
-	var stats: Dictionary[Game.Stats, int] = {Game.Stats.ATTACK: 0, Game.Stats.HEALTH: 0, Game.Stats.SPEED: 0}
+	var stats: Dictionary[Game.Stats, int] = {Game.Stats.ATTACK: 0, Game.Stats.MAX_HEALTH: 0, Game.Stats.MAX_SPEED: 0}
 	for delayed: Variant in Card.delayed_stats:
 		for i in range(delayed.getSize()):
 			var type: Game.Stats = delayed.getType(i)
-			if type not in [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.SPEED]: continue
+			if type not in [Game.Stats.ATTACK, Game.Stats.MAX_HEALTH, Game.Stats.MAX_SPEED]: continue
 			stats[delayed.getType(i)] += delayed.getValue(i)
 			
 	for stat: Game.Stats in stats:
@@ -63,8 +63,8 @@ func setDelayedStat(type: Game.Stats, value: int) -> void:
 	var label: Label
 	match type:
 		Game.Stats.ATTACK: TxRect = AttackArrowTx; label = AttackArrowLabel
-		Game.Stats.HEALTH: TxRect = HealthArrowTx; label = HealthArrowLabel
-		Game.Stats.SPEED: TxRect = SpeedArrowTx; label = SpeedArrowLabel
+		Game.Stats.MAX_HEALTH: TxRect = HealthArrowTx; label = HealthArrowLabel
+		Game.Stats.MAX_SPEED: TxRect = SpeedArrowTx; label = SpeedArrowLabel
 	
 	TxRect.texture = texture
 	label.text = (str(value) if value < 0 else "+%s" % [value]) if value != 0 else ""

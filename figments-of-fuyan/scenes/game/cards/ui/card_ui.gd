@@ -35,7 +35,6 @@ extends TbcUI
 
 @onready var TemporaryCardMarker: TextureRect = %TemporaryCardMarker
 @onready var AwakenedInCombatMarker: TextureRect = %AwakenedInCombatMarker
-@onready var Ring: Sprite2D = %Ring
 
 @export var bitmaps: Array[BitMap]
 @export var rarities: Array[Image]

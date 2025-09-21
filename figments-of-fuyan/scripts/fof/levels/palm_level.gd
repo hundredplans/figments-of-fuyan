@@ -67,3 +67,5 @@ func onCreatePalmDecorations() -> void:
 func onCreateLevelAreaDatastore() -> LevelAreaDatastore:
 	return PalmLevelAreaDatastore.new()
 #endregion
+
+func getAreaID() -> int: return 1

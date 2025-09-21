@@ -21,7 +21,9 @@ var spawn_group: int
 var curse_id: int
 var level_preview: LevelPreview
 var env: Environment
+var is_player_phase_no_action: bool
 
+signal update_player_phase_no_action
 signal set_spectate_card
 signal energy_changed
 signal request_camera_data
@@ -55,7 +57,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCardDatas(), phase, level_camera_data, energy, max_energy,\
 		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, level_area_datastore, speed_order, spawn_group,\
-		curse_id, level_preview, env)
+		curse_id, level_preview, env, is_player_phase_no_action)
 
 func onClear() -> void:
 	queue_free()
@@ -73,6 +75,7 @@ func onLoadData(data: SavedData) -> void:
 	curse_id = data.curse_id
 	level_preview = data.level_preview
 	env = data.env
+	is_player_phase_no_action = data.is_player_phase_no_action
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -529,3 +532,8 @@ func onCreateBackgroundScene() -> void:
 	add_child(Helper.getFofInfoID(AreaInfo, level_area_datastore.getAreaID()).getBackgroundScene())
 
 func getCurseID() -> int: return curse_id
+func getAreaID() -> int: return 1
+
+func setPlayerPhaseNoAction(state: bool, instant: bool = false) -> void:
+	is_player_phase_no_action = state
+	update_player_phase_no_action.emit(state, instant)

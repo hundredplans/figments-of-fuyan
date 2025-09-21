@@ -9,6 +9,7 @@ signal mouse_in_ui
 @export var BASE_COLOR := Color("ffffff")
 @export var HOVER_COLOR := Color("aaaaaa")
 @export var DISABLED_COLOR := Color("#888888")
+@export var use_self_modulate: bool
 
 var disabled: bool
 var is_mouse_in_ui: bool
@@ -26,7 +27,9 @@ func onMouseInUI(state: bool) -> void:
 	onScaleSize(is_mouse_in_ui)
 
 func onUpdateModulate() -> void:
-	modulate = (BASE_COLOR if !is_mouse_in_ui else HOVER_COLOR) if !disabled else DISABLED_COLOR
+	var color: Color = (BASE_COLOR if !is_mouse_in_ui else HOVER_COLOR) if !disabled else DISABLED_COLOR 
+	if !use_self_modulate: modulate = color
+	else: self_modulate = color
 	
 func setDisabled(state: bool) -> void:
 	disabled = state
