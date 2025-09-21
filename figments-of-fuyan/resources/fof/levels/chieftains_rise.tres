@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=455 format=3 uid="uid://dcwcvmgulpv6g"]
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=455 format=3]
 
-[ext_resource type="Script" uid="uid://df278rs03up0b" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_yl17f"]
-[ext_resource type="Script" uid="uid://3encclot053x" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_3an0e"]
-[ext_resource type="Script" uid="uid://ptqg2yb7m54y" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_pi3pi"]
-[ext_resource type="Script" uid="uid://c57vvj8uxhu4x" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_q7jxn"]
-[ext_resource type="Script" uid="uid://dabwqp16gynmr" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_5npf4"]
-[ext_resource type="Script" uid="uid://c76iyo8j5sdgv" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_3e2bc"]
-[ext_resource type="Script" uid="uid://bqrpess5o2brf" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="7_sx60x"]
-[ext_resource type="Script" uid="uid://dyvdkimog5nh1" path="res://scripts/fof/levels/palm_level.gd" id="8_dxbhr"]
-[ext_resource type="Script" uid="uid://bj5bltgdy7xbp" path="res://scripts/saved_data/levels/saved_data_level.gd" id="9_5oc46"]
-[ext_resource type="Script" uid="uid://bml6vtchj31b0" path="res://scripts/fof_info/levels/level_info.gd" id="10_e3ae4"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_tile.gd" id="1_yl17f"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/revealed_datastore.gd" id="2_3an0e"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore_tile.gd" id="3_pi3pi"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_object.gd" id="4_q7jxn"]
+[ext_resource type="Script" path="res://scripts/fof_info/game_objects/extra/vision_datastore.gd" id="5_5npf4"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_iobject.gd" id="6_3e2bc"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_spawn.gd" id="7_sx60x"]
+[ext_resource type="Script" path="res://scripts/fof/levels/palm_level.gd" id="8_dxbhr"]
+[ext_resource type="Script" path="res://scripts/saved_data/levels/saved_data_level.gd" id="9_5oc46"]
+[ext_resource type="Script" path="res://scripts/fof_info/levels/level_info.gd" id="10_e3ae4"]
 
 [sub_resource type="Resource" id="Resource_nsrd5"]
 script = ExtResource("3_pi3pi")
@@ -1308,7 +1308,8 @@ reveals = Array[ExtResource("2_3an0e")]([])
 
 [sub_resource type="Resource" id="Resource_jdv0y"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "was_extinguished": false,
 "was_fuel_added": false
@@ -1843,7 +1844,8 @@ reveals = Array[ExtResource("2_3an0e")]([])
 
 [sub_resource type="Resource" id="Resource_6cctw"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "was_extinguished": false,
 "was_fuel_added": false
@@ -1863,7 +1865,8 @@ public_id = 0
 
 [sub_resource type="Resource" id="Resource_a34rf"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "was_extinguished": false,
 "was_fuel_added": false
@@ -2561,7 +2564,8 @@ reveals = Array[ExtResource("2_3an0e")]([])
 
 [sub_resource type="Resource" id="Resource_58imi"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "was_extinguished": false,
 "was_fuel_added": false
@@ -2581,7 +2585,8 @@ public_id = 0
 
 [sub_resource type="Resource" id="Resource_e2dg3"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "was_extinguished": false,
 "was_fuel_added": false
@@ -2601,7 +2606,8 @@ public_id = 0
 
 [sub_resource type="Resource" id="Resource_0yaej"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "was_extinguished": false,
 "was_fuel_added": false
@@ -4425,7 +4431,8 @@ reveals = Array[ExtResource("2_3an0e")]([])
 
 [sub_resource type="Resource" id="Resource_pvaxa"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "is_open": false,
 "last_seen_open": false
@@ -4445,7 +4452,8 @@ public_id = 0
 
 [sub_resource type="Resource" id="Resource_o54hn"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "is_open": false,
 "last_seen_open": false
@@ -5026,7 +5034,8 @@ reveals = Array[ExtResource("2_3an0e")]([])
 
 [sub_resource type="Resource" id="Resource_2ipul"]
 script = ExtResource("6_3e2bc")
-active_effects = []
+active_effect_charges = -2
+active_effect_used = false
 ability_save = {
 "recharge": 0
 }
