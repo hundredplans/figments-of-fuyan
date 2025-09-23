@@ -10,7 +10,7 @@ func onPreAction() -> void:
 		onFailAction()
 		
 func onPostAction() -> void:
-	Game.getLevel().onCameraChange(self)
+	Game.getLevel().onCameraChange(self)	
 	
 func getLogInfo() -> Array:
 	return ["SpectateObject: " + SpectateObject.info.name if SpectateObject != null else "Freelook"]

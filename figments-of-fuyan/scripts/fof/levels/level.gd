@@ -21,9 +21,7 @@ var spawn_group: int
 var curse_id: int
 var level_preview: LevelPreview
 var env: Environment
-var is_player_phase_no_action: bool
 
-signal update_player_phase_no_action
 signal set_spectate_card
 signal energy_changed
 signal request_camera_data
@@ -35,8 +33,6 @@ signal turn_state_changing
 signal camera_change_action
 signal tile_occupied
 signal set_rewards # Signal for area to interpret
-signal game_started
-signal game_started_post
 signal game_ended
 signal rewards_finished # Signal for area to interpret
 signal tool_removed
@@ -57,7 +53,7 @@ func onSave() -> SavedData:
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCardDatas(), phase, level_camera_data, energy, max_energy,\
 		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, level_area_datastore, speed_order, spawn_group,\
-		curse_id, level_preview, env, is_player_phase_no_action)
+		curse_id, level_preview, env)
 
 func onClear() -> void:
 	queue_free()
@@ -75,7 +71,6 @@ func onLoadData(data: SavedData) -> void:
 	curse_id = data.curse_id
 	level_preview = data.level_preview
 	env = data.env
-	is_player_phase_no_action = data.is_player_phase_no_action
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -164,9 +159,6 @@ func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 		return
 	
 	onCreateBackgroundScene()
-	for Card in get_tree().get_nodes_in_group("HandCardsGD"):
-		onPushAction(HandCardAction.new(Card))
-		
 	onChangePhase(data.phase, true, true)
 	if is_ended:
 		onGameEnded()
@@ -203,7 +195,6 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false, reload: bool = fa
 	var old_phase: Game.Phases = phase
 	match old_phase:
 		Game.Phases.START:
-			onDrawStarterHand()
 			setAlliesTurnState(Game.TurnStates.INACTIVE, true)
 			
 	phase = _phase
@@ -212,17 +203,7 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false, reload: bool = fa
 	if reload: return
 	match phase:
 		Game.Phases.START:
-			onForceAction(InsertAction.new(Game.getSaveFile().getChampionCard()))
-		Game.Phases.HAND:
-			var default_hand_size: int = Game.getSaveFile().getDefaultHandSize()
-			var hand_count: int = get_tree().get_node_count_in_group("HandCardsGD")
-			if hand_count < default_hand_size:
-				var draw_amount: int = min(default_hand_size - hand_count, Game.getSaveFile().getEndOfTurnCardDraw())
-				for __: int in range(draw_amount):
-					onForceAction(DrawAction.new())
-			if isEpic() and old_phase != Game.Phases.START: # Gain energy per turn for bosses
-				onForceAction(EnergyAction.new(Game.getArea().getWorldDifficulty()))
-			onCheckSkipHandPhase()
+			onAppendAction(CreateHandAction.new())
 		Game.Phases.AI: onAppendAction(AITurnStartAction.new(1))
 		Game.Phases.NEUTRAL: onAppendAction(AITurnStartAction.new(2))
 			
@@ -240,7 +221,6 @@ func onProcessAction(action: Action) -> void:
 		elif action is ChangeEnvironmentAction:
 			env = action.environment
 		elif action is FinishAwakenAction:
-			onCheckSkipHandPhase()
 			onCardFinishedAwakening(action)
 		elif action is EnergyAction:
 			energy = min(action.delta + energy, max_energy)
@@ -283,9 +263,6 @@ func onProcessAction(action: Action) -> void:
 			death.emit(action.Defender)
 		elif action is CameraSpectateGroupAction:
 			spectate_group.emit(action.team)
-		elif action is StartLevelAction:
-			if action.getDelay() == 0: return
-			game_started_post.emit()
 	elif !action.post:
 		if action is ChangePhaseAction:
 			if action.phase == phase: action.onFailAction(); return
@@ -295,31 +272,12 @@ func onProcessAction(action: Action) -> void:
 				camera_change_pre.emit(action.SpectateObject, getSpectateObject())
 		elif action is MovementFinishAction:
 			action.setPhaseByLevel(phase)
-		elif action is StartLevelAction:
-			if action.getDelay() == 0: return # Means admin is on
-			game_started.emit()
-#endregion
-
-#region Hand
-func onDrawStarterHand() -> void:
-	var draw_count: int = Game.getSaveFile().getDefaultHandSize()
-	for __ in range(draw_count):
-		onForceAction(DrawAction.new())
-		
-func onCheckSkipHandPhase() -> void:
-	var hand: Array = get_tree().get_nodes_in_group("HandCardsGD")
-	var is_hand_playable: bool = hand.any(func(x: CardGD): return x.isPlayable(energy))
-	var are_spawns_occupied: bool = get_tree().get_nodes_in_group("AllySpawnsGD").all(func(x: SpawnGD): return x.isSpawnOccupied())
-	
-	if phase == Game.Phases.HAND and (hand.is_empty() or !is_hand_playable or are_spawns_occupied):
-		onAppendAction(ChangePhaseAction.new(Game.Phases.PLAYER))
 #endregion
 
 #region Pass Turn
 func onPassTurn() -> void:
 	var new_phase: Game.Phases
 	match phase:
-		Game.Phases.HAND: new_phase = Game.Phases.PLAYER
 		Game.Phases.PLAYER:
 			var ally_units: Array = Game.getAllyUnits(0)
 			var Card: CardGD = getAllySpectateObject()
@@ -444,14 +402,11 @@ func onCreateLevelAreaDatastore() -> LevelAreaDatastore:
 func onCardAwakened(action: AwakenAction) -> void:
 	awakened.emit(action.Card)
 	speed_order.onAwaken(action.Card)
-	if phase == Game.Phases.START and action.Card.isAlly(0):
-		onAppendAction(ChangePhaseAction.new(Game.Phases.HAND))
 	
 func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
 	if !action.Card.isLevelVisible(): return
 	
 	if phase == Game.Phases.START:
-		onPushAfterAction(CameraChangeAction.new(action.Card), ChangePhaseAction)
 		return
 		
 	var arrive_action: ArriveAction = Game.ActionManagerReference.onFindFirstAction(ArriveAction)
@@ -463,14 +418,6 @@ func onCardFinishedAwakening(action: FinishAwakenAction) -> void:
 		var spectate_awakened_card_temporarily := CameraChangeAction.new(action.Card)
 		spectate_awakened_card_temporarily.setActionDelay(CARD_PLACED_SPECTATE_DELAY)
 		actions.append(spectate_awakened_card_temporarily)
-	
-	if phase == Game.Phases.HAND:
-		setLastAllySpectateObject()
-		if LastAllySpectateObject == null: return
-		
-		actions.append(CameraChangeAction.new(LastAllySpectateObject))
-		onPushAfterAction(actions, ChangePhaseAction)
-		return
 		
 	if !action.override_spectate:
 		actions.append(CameraChangeAction.new(getSpectateObject()))
@@ -533,7 +480,3 @@ func onCreateBackgroundScene() -> void:
 
 func getCurseID() -> int: return curse_id
 func getAreaID() -> int: return 1
-
-func setPlayerPhaseNoAction(state: bool, instant: bool = false) -> void:
-	is_player_phase_no_action = state
-	update_player_phase_no_action.emit(state, instant)

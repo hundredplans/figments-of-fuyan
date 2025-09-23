@@ -1,11 +1,10 @@
-[gd_scene load_steps=37 format=3 uid="uid://d3lgvy3r3xxo"]
+[gd_scene load_steps=36 format=3 uid="uid://d3lgvy3r3xxo"]
 
 [ext_resource type="Script" uid="uid://x7vlr4glcng3" path="res://scenes/game/levels/level_ui.gd" id="1_lmham"]
 [ext_resource type="Script" uid="uid://cjjlvqefk333u" path="res://scenes/game/levels/ui/hand_box.gd" id="2_5k44f"]
 [ext_resource type="PackedScene" uid="uid://cxlxc8c2lbnux" path="res://scenes/game/levels/ui/energy_icon.tscn" id="2_62g83"]
 [ext_resource type="PackedScene" uid="uid://dry5b1uioo2j7" path="res://scenes/game/levels/ui/graveyard_screen.tscn" id="3_f17gx"]
 [ext_resource type="PackedScene" uid="uid://ip8hisyxk8ia" path="res://scenes/game/levels/ui/loss_ui.tscn" id="5_ruh78"]
-[ext_resource type="Texture2D" uid="uid://drju02m4wqrw1" path="res://assets/sprites/ui/icons/card.png" id="5_x67vg"]
 [ext_resource type="PackedScene" uid="uid://brlcl2ndapeef" path="res://scenes/common/common_game_ui/common_game_ui.tscn" id="5_yods1"]
 [ext_resource type="Script" uid="uid://b0rccm6ahttpk" path="res://scenes/game/levels/ui/phase_icon.gd" id="6_cffvb"]
 [ext_resource type="Script" uid="uid://drdirqjn7ibpf" path="res://scenes/game/levels/ui/epic_fight_control.gd" id="6_eg13e"]
@@ -32,6 +31,46 @@
 [ext_resource type="Script" uid="uid://3y1bx7gtoicc" path="res://scenes/game/levels/ui/unit_status_manager.gd" id="33_thuap"]
 [ext_resource type="Script" uid="uid://cred8w5bl5bey" path="res://scenes/game/levels/ui/game_effects_level_ui.gd" id="34_thuap"]
 [ext_resource type="PackedScene" uid="uid://d2wom0q5wlg36" path="res://scenes/game/levels/ui/game_effect_icon.tscn" id="35_fcm67"]
+
+[sub_resource type="Animation" id="Animation_thuap"]
+resource_name = "DrawCard"
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Main/Extra/DrawManager:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667, 0.4, 0.433333, 0.466667, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(2060, 646), Vector2(2052.64, 643.88), Vector2(2030.86, 637.614), Vector2(1995.64, 627.475), Vector2(1948.5, 613.906), Vector2(1891.5, 597.5), Vector2(1827.14, 578.975), Vector2(1758.23, 559.139), Vector2(1687.77, 538.861), Vector2(1618.86, 519.025), Vector2(1554.5, 500.5), Vector2(1497.5, 484.094), Vector2(1450.36, 470.525), Vector2(1415.14, 460.386), Vector2(1393.36, 454.12), Vector2(1386, 452)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Main/Extra/DrawManager:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0001, 0.0002, 0.0335333, 0.0668667, 0.1002, 0.133533, 0.166867, 0.2002, 0.233533, 0.266867, 0.3002, 0.333533, 0.366867, 0.4002, 0.433533, 0.466867, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [-1.25664, -0.674755, -1.0449, -1.03347, -0.999693, -0.945041, -0.871905, -0.783483, -0.683644, -0.576754, -0.467489, -0.360628, -0.260845, -0.172504, -0.0994702, -0.0449368, -0.0112896, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Main/Extra/DrawManager:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667, 0.4, 0.433333, 0.466667, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.00546, 1.00546), Vector2(1.02161, 1.02161), Vector2(1.04775, 1.04775), Vector2(1.08272, 1.08272), Vector2(1.125, 1.125), Vector2(1.17275, 1.17275), Vector2(1.22387, 1.22387), Vector2(1.27613, 1.27613), Vector2(1.32725, 1.32725), Vector2(1.375, 1.375), Vector2(1.41728, 1.41728), Vector2(1.45225, 1.45225), Vector2(1.47839, 1.47839), Vector2(1.49454, 1.49454), Vector2(1.5, 1.5)]
+}
 
 [sub_resource type="Animation" id="Animation_qwq4a"]
 length = 0.001
@@ -77,46 +116,6 @@ resource_name = "RewardsScreenCreated"
 length = 0.25
 step = 0.25
 
-[sub_resource type="Animation" id="Animation_thuap"]
-resource_name = "DrawCard"
-step = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Main/Extra/DrawManager:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667, 0.4, 0.433333, 0.466667, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(2060, 646), Vector2(2052.64, 643.88), Vector2(2030.86, 637.614), Vector2(1995.64, 627.475), Vector2(1948.5, 613.906), Vector2(1891.5, 597.5), Vector2(1827.14, 578.975), Vector2(1758.23, 559.139), Vector2(1687.77, 538.861), Vector2(1618.86, 519.025), Vector2(1554.5, 500.5), Vector2(1497.5, 484.094), Vector2(1450.36, 470.525), Vector2(1415.14, 460.386), Vector2(1393.36, 454.12), Vector2(1386, 452)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Main/Extra/DrawManager:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0001, 0.0002, 0.0335333, 0.0668667, 0.1002, 0.133533, 0.166867, 0.2002, 0.233533, 0.266867, 0.3002, 0.333533, 0.366867, 0.4002, 0.433533, 0.466867, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [-1.25664, -0.674755, -1.0449, -1.03347, -0.999693, -0.945041, -0.871905, -0.783483, -0.683644, -0.576754, -0.467489, -0.360628, -0.260845, -0.172504, -0.0994702, -0.0449368, -0.0112896, 0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Main/Extra/DrawManager:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667, 0.4, 0.433333, 0.466667, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.00546, 1.00546), Vector2(1.02161, 1.02161), Vector2(1.04775, 1.04775), Vector2(1.08272, 1.08272), Vector2(1.125, 1.125), Vector2(1.17275, 1.17275), Vector2(1.22387, 1.22387), Vector2(1.27613, 1.27613), Vector2(1.32725, 1.32725), Vector2(1.375, 1.375), Vector2(1.41728, 1.41728), Vector2(1.45225, 1.45225), Vector2(1.47839, 1.47839), Vector2(1.49454, 1.49454), Vector2(1.5, 1.5)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_thuap"]
 _data = {
 &"DrawCard": SubResource("Animation_thuap"),
@@ -149,6 +148,9 @@ mouse_filter = 2
 
 [node name="CommonGameUI" parent="Main" instance=ExtResource("5_yods1")]
 unique_name_in_owner = true
+offset_left = -6.0
+offset_right = 668.0
+show_card_amount_label = false
 
 [node name="EpicFightControl" type="MarginContainer" parent="Main"]
 unique_name_in_owner = true
@@ -265,10 +267,11 @@ BASE_COLOR = Color(0.851769, 0.851769, 0.851769, 1)
 [node name="HandBox" type="HBoxContainer" parent="Main" node_paths=PackedStringArray("AniPlayer", "DrawManager")]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 415.0
-offset_top = 670.0
-offset_right = 1503.0
+offset_top = 650.0
+offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
+theme_override_constants/separation = 0
 alignment = 1
 script = ExtResource("2_5k44f")
 AniPlayer = NodePath("../Extra/AniPlayer")
@@ -503,7 +506,6 @@ texture = ExtResource("7_0g07y")
 expand_mode = 2
 script = ExtResource("6_cffvb")
 start_phase_icon = ExtResource("7_0g07y")
-hand_phase_icon = ExtResource("5_x67vg")
 player_phase_icon = ExtResource("8_vlrs0")
 ai_phase_icon = ExtResource("9_chyqt")
 neutral_phase_icon = ExtResource("10_ese7j")

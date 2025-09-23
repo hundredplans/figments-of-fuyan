@@ -2,7 +2,6 @@ extends TextureRect
 
 const SWAP_SPEED: float = 0.5
 @export var start_phase_icon: Texture2D
-@export var hand_phase_icon: Texture2D
 @export var player_phase_icon: Texture2D
 @export var ai_phase_icon: Texture2D
 @export var neutral_phase_icon: Texture2D
@@ -25,7 +24,6 @@ func getPhaseTexture() -> Texture2D:
 	var next_icon: Texture2D
 	match current_phase:
 		Game.Phases.START: next_icon = start_phase_icon
-		Game.Phases.HAND: next_icon = hand_phase_icon
 		Game.Phases.PLAYER: next_icon = player_phase_icon
 		Game.Phases.AI: next_icon = ai_phase_icon
 		Game.Phases.NEUTRAL: next_icon = neutral_phase_icon

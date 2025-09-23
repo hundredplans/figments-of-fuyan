@@ -21,7 +21,6 @@ class_name AdminDatastore extends Resource
 
 @export_group("Fight")
 @export var force_elite_fight_curse_id: int
-@export var skip_level_start_animation: bool
 @export var see: bool
 @export var action_debug: ActionDebugType
 @export_group("")

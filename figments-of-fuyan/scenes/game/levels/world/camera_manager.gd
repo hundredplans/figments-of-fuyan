@@ -316,9 +316,8 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	
 #region Game Started
-const START_Y: int = 15
-const START_UP_OFFSET: int = 5
-const TOTAL_ROTATION: float = 2 * PI
+const START_Y: int = 30
+const START_Z: int = 5
 const MINUS_TRAVEL_TIME: float = 0.5
 const LOOK_AT_OFFSET: float = 5
 const ENDGAME_SPIN_SPEED: int = 5
@@ -327,33 +326,18 @@ var is_camera_travelling: bool = false
 func onGameStarted() -> void:
 	setCameraType(true)
 	FreelookCamera.disable_freelook = true
-	
-	await get_tree().process_frame
-	
 	is_camera_travelling = true
 	
-	position.y += START_Y
-	FreelookCamera.position.x = 5
+	FreelookCamera.rotation = Vector3(0, -PI / 2, 0)
+	FreelookCamera.position = Vector3(0, START_Y, START_Z)
 	FreelookCamera.disable_movement = true
 	
-	var pos_tween := create_tween()
-	pos_tween.tween_property(self, "position:y", -START_Y + START_UP_OFFSET, StartLevelAction.START_TIME - MINUS_TRAVEL_TIME)\
-		.as_relative().set_trans(Tween.TRANS_SINE)
-	
-	var rot_tween := create_tween()
-	rot_tween.tween_property(self, "rotation:y", TOTAL_ROTATION, StartLevelAction.START_TIME - MINUS_TRAVEL_TIME).as_relative()
-	
-	await get_tree().create_timer(StartLevelAction.START_TIME).timeout
-	
-	is_camera_travelling = false
-	position.y -= START_UP_OFFSET
-	rotation.y = 0
-	onSpectateSpawn()
-	
-	await get_tree().process_frame
-	FreelookCamera.position = Vector3.ZERO
-	FreelookCamera.rotation_degrees = Vector3.ZERO
-	FreelookCamera.disable_movement = false
+	#onSpectateSpawn()
+	#
+	#await get_tree().process_frame
+	#FreelookCamera.position = Vector3.ZERO
+	#FreelookCamera.rotation_degrees = Vector3.ZERO
+	#FreelookCamera.disable_movement = false
 	
 func onDisableFreelook(state: bool) -> void:
 	LevelCamera.onDisableFreelook(state)

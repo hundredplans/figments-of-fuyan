@@ -108,14 +108,6 @@ func shillings(delta: int) -> void:
 func addboon(name_id: Variant, _tier: int = 1) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
 	Game.getArea().onPushAction(AddBoonAction.new(info.id, _tier))
-
-func insert(name_id: Variant, _tier: int = 1) -> void:
-	var card_info: CardInfo = getNameIDFofInfo(name_id, CardInfo)
-	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
-	card_data.tier = _tier
-	Game.setCardDataFromInfo(card_data, card_info)
-	var Card: CardGD = SavedData.onLoadModel(card_data, level)
-	Game.getArea().onPushAction(InsertAction.new(Card))
 	
 func brain(state: bool) -> void:
 	Game.brain = state

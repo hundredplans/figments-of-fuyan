@@ -21,25 +21,25 @@ func onBoon(_action: Action = null) -> void:
 
 func onBoonAdded() -> void:
 	super()
-	var actions: Array = [ChangeDefaultHandSizeAction.new(getTierDefaultHandSize()),
-		ChangeEndOfTurnCardDrawAction.new(getTierEndOfTurnCardDraw())]
-	onPushAction(actions)
+	#var actions: Array = [ChangeDefaultHandSizeAction.new(getTierDefaultHandSize()),
+		#ChangeEndOfTurnCardDrawAction.new(getTierEndOfTurnCardDraw())]
+	#onPushAction(actions)
 	
 func onRetiered(_tier: int) -> void:
 	var old_tier: int = tier
 	super(_tier)
-	if old_tier == tier: return
-	var actions: Array = []
-	var new_max_hand_size: int = getTierDefaultHandSize(tier)
-	var old_default_hand_size: int = getTierDefaultHandSize(old_tier)
-	var value: int = new_max_hand_size - old_default_hand_size
-	actions.append(ChangeDefaultHandSizeAction.new(value))
-	
-	var new_eot_card_draw: int = getTierEndOfTurnCardDraw(tier)
-	var old_eot_card_draw: int = getTierEndOfTurnCardDraw(old_tier)
-	var eot: int = new_eot_card_draw - old_eot_card_draw
-	actions.append(ChangeEndOfTurnCardDrawAction.new(eot))
-	onPushAction(actions)
+	#if old_tier == tier: return
+	#var actions: Array = []
+	#var new_max_hand_size: int = getTierDefaultHandSize(tier)
+	#var old_default_hand_size: int = getTierDefaultHandSize(old_tier)
+	#var value: int = new_max_hand_size - old_default_hand_size
+	#actions.append(ChangeDefaultHandSizeAction.new(value))
+	#
+	#var new_eot_card_draw: int = getTierEndOfTurnCardDraw(tier)
+	#var old_eot_card_draw: int = getTierEndOfTurnCardDraw(old_tier)
+	#var eot: int = new_eot_card_draw - old_eot_card_draw
+	#actions.append(ChangeEndOfTurnCardDrawAction.new(eot))
+	#onPushAction(actions)
 
 func getDisabled() -> bool:
 	return super()

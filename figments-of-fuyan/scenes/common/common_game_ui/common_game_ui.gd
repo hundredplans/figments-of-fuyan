@@ -19,11 +19,13 @@ const SHILLING_SPIN_TIME: float = 2.0
 @onready var ShillingTxRect: TextureRect = %ShillingTxRect
 
 @onready var ExtraInfoManager: Control = %ExtraInfoManager
+@export var show_card_amount_label: bool = true
 
 var is_mouse_in_ui: bool
 
 func _ready() -> void:
 	ShillingTxRect.rotation -= (SHILLING_SPIN / 2)
+	StashAmountLabel.visible = show_card_amount_label
 	onSpinShillings()
 
 func getBoonBox() -> Control:

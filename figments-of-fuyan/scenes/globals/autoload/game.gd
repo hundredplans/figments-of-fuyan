@@ -18,7 +18,7 @@ const BLACK_SCREEN_WAIT_TIME: float = 0.5
 const SELECTED_MAP_NODE_TRAVEL_SPEED: float = 1
 enum Rarities {SCRAP, NEUTRAL, MINI, COMMON, RARE, EXALT, MINIBOSS, BOSS, CHAMPION}
 enum ShopTypes {CARD, BOON, TOOL, DECK}
-enum Phases {NULL, START, HAND, PLAYER, AI, NEUTRAL}
+enum Phases {NULL, START, PLAYER, AI, NEUTRAL}
 enum SpectateTypes {ALLY, ENEMY, SPAWN}
 enum CardPlaces {NULL, HAND, DECK, FIELD, GRAVEYARD, STASH}
 enum TurnStates {NULL, PASSED, INACTIVE, ACTIVE}
@@ -722,7 +722,6 @@ func getAreaIDFromCardID(card_id: int) -> int: return CARD_ID_TO_AREA_ID[card_id
 func getPhaseColor(phase: Phases) -> Color:
 	match phase:
 		Phases.START: return Color("#475ac1")
-		Phases.HAND: return Color("#c39679")
 		Phases.PLAYER: return Color("#58993d")
 		Phases.AI: return Color("#c45050")
 		Phases.NEUTRAL: return Color("#d35400")

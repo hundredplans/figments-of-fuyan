@@ -39,8 +39,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.request_camera_data.connect(CameraManager.setCameraSaveables.bind(level))
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.camera_change_action.connect(onCameraChange)
-	level.game_ended.connect(onGameEnded)
-	level.game_started.connect(onGameStarted)
 	level.camera_change_pre.connect(onCameraChangePre)
 	level.spectate_group.connect(CameraManager.onSpectateGroup)
 	level.set_last_ally_spectate_object.connect(setLastAllySpectateObjectForLevel)
@@ -62,9 +60,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	UI.vision_mode_changed.connect(onVisionModeChanged)
 	UI.create_movement_range.connect(onCreateMovementRange)
 	
-	UI.drag_begin.connect(onCardDraggedBegin)
 	UI.drag_end.connect(onCardDraggedEnd)
-	
 	area.process_action.connect(onProcessAction)
 	
 func _input(event: InputEvent) -> void:
@@ -145,13 +141,9 @@ func onCameraPanning(state: bool) -> void:
 #region Phases
 func onPhaseChanged(phase: Game.Phases, previous_phase: Game.Phases, _instant: bool = false) -> void:
 	match phase:
-		Game.Phases.START: CameraManager.onSpectateSpawn(); onSpawnFX(true)
-		Game.Phases.HAND:
-			if previous_phase != Game.Phases.START:
-				CameraManager.onSpectateSpawn()
+		Game.Phases.START:
 			onSpawnFX(true)
 		Game.Phases.PLAYER:
-			onSpawnFX(false)
 			if Game.ActionManagerReference.onFindFirstAction(CameraChangeAction) != null: return
 			CameraManager.onSpectateAllies()
 #endregion
@@ -164,7 +156,6 @@ func onSpawnFX(state: bool) -> void:
 #region Awakening
 func onCardAwakened(Card: CardGD) -> void:
 	if Card.isEnemy(0): return
-	onSpawnFX(true)
 #endregion
 
 #region Tile Pressing
@@ -229,12 +220,9 @@ func onHideMovementRange() -> void:
 	get_tree().call_group("FieldCardsGD", "setEnemyInMovementRange", false)
 	
 func onCreateMovementRange(Card: CardGD) -> void:
-	if level.phase != Game.Phases.PLAYER:
-		if level.phase == Game.Phases.HAND:
-			onHideMovementRange()
-		return
-	if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED or ActiveEffectItem != null: return
-	Card.getsetMovementRange()
+	if level.phase == Game.Phases.PLAYER:
+		if Card == null or !Card.isAlly() or Card.turn_state == Game.TurnStates.PASSED or ActiveEffectItem != null: return
+		Card.getsetMovementRange()
 #endregion
 
 #region Turn State
@@ -404,10 +392,6 @@ func setEnvironment(env: Environment = null) -> void:
 #endregion
 
 #region Dragged
-func onCardDraggedBegin(_CardUI: Control) -> void:
-	if level.getSpectateObject() is not SpawnGD:
-		CameraManager.onSpectateSpawn(level.getAllySpectateObject())
-		
 func onCardDraggedEnd(CardUI: Control) -> void:
 	var Tile: TileGD = getMouseHoverTile()
 	if Tile != null and Tile.isAllySpawnTile() and !Tile.isOccupied():
@@ -420,7 +404,7 @@ func onProcessAction(action: Action) -> void:
 		if action is ChangeEnvironmentAction:
 			onChangeEnvironment(action)
 		elif action is StartLevelAction:
-			CameraManager.setCurrent(true)
+			onGameStarted()
 			
 func onChangeEnvironment(action: ChangeEnvironmentAction) -> void:
 	setEnvironment(action.environment)

@@ -10,7 +10,7 @@ func _init(_team: int = 0) -> void:
 	
 func onPostAction() -> void:
 	@warning_ignore("incompatible_ternary")
-	var action: Action = AITurnAction.new(Card, true) if Card != null else ChangePhaseAction.new(Game.Phases.NEUTRAL if team == 1 else Game.Phases.HAND)
+	var action: Action = AITurnAction.new(Card, true) if Card != null else ChangePhaseAction.new(Game.Phases.NEUTRAL if team == 1 else Game.Phases.PLAYER)
 	onAppendAction(action)
 
 func onPreAction() -> void:

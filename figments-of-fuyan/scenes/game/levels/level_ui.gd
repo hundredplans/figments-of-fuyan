@@ -73,11 +73,8 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.awakened.connect(onAwakened)
 	level.tile_occupied.connect(onTileOccupied)
-	level.game_started.connect(onGameStarted)
-	level.game_started_post.connect(onGameStartedPost)
 	level.game_ended.connect(onGameEnded)
 	level.death.connect(onDeath)
-	level.update_player_phase_no_action.connect(HandBox.onUpdatePlayerPhaseNoAction)
 	action_lock.connect(level.onActionLock)
 	
 	area.process_action.connect(onProcessAction)
@@ -94,7 +91,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	Console.level = level
 	
 	onCreateEnergyIcons()
-	onUpdateDeckCardAmountLabel()
 	onCameraUpdated(level.getSpectateObject())
 	
 	EpicFightControl.visible = false # Important
@@ -167,9 +163,7 @@ const CHANGE_PASS_BUTTON_COLOR_TIME: float = 0.35
 func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = false) -> void:
 	PhaseIcon.setPhase(phase)
 	PassButton.setPhase(phase)
-	HandBox.setPhase(phase, instant)
 	
-	level.setPlayerPhaseNoAction(true, instant)
 	match phase:
 		Game.Phases.PLAYER:
 			PassButton.setAllySpectating(level.getAllySpectateObject())
@@ -184,14 +178,15 @@ func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = fal
 #endregion
 
 #region Hand
+func onCreateHand(cards: Array) -> void:
+	var card_uis: Array = await HandBox.onCreateHand(cards)
+	for CardUI: TbcUI in card_uis:
+		CardUI.drag_begin.connect(onCardDraggedBegin)
+		CardUI.drag_end.connect(onCardDraggedEnd)
+		CardUI.mouse_in_ui.connect(onMouseInUI)
+		CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
+	
 @onready var HandBox: Container = %HandBox
-func onDrawCardUI(Card: CardGD) -> void:
-	var CardUI: TbcUI = await HandBox.onCreateHandCardUI(Card)
-	Card.setInspectable(true, self)
-	CardUI.drag_begin.connect(onCardDraggedBegin)
-	CardUI.drag_end.connect(onCardDraggedEnd)
-	CardUI.mouse_in_ui.connect(onMouseInUI)
-	CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
 	
 func onRemoveCardUI(Card: CardGD) -> void:
 	for CardUI in HandBox.get_children():
@@ -219,8 +214,6 @@ func onUpdateEnergy(energy: int, action: EnergyAction = null) -> void:
 			EnergyIcon.onRefreshed()
 		elif (i + 1) > energy and !EnergyIcon.is_used:
 			EnergyIcon.onUsed()
-	
-	HandBox.onUpdateEnergy(energy)
 	
 func onCreateEnergyIcons() -> void:
 	var energy: int = level.energy
@@ -372,8 +365,6 @@ func onGameEnded(rewards: Rewards) -> void:
 		for child in [BoonBox]:
 			child.reparent(RewardsUI)
 	
-	onUpdateDeckCardAmountLabel()
-	
 	is_action_playing = true
 	onUpdateActionLock(false)
 	
@@ -393,19 +384,6 @@ func onRewardsStashScreenFade(fade_in: bool) -> void:
 	await boon_tween.finished
 	if fade_in and stash_screen_previous_fade == fade_in:
 		BoonBox.visible = false
-	
-func onGameStarted() -> void:
-	HandBox.onUnpin(true)
-	HandBox.onSelectableCards(false)
-	
-func onGameStartedPost() -> void:
-	HandBox.onPin(true)
-	HandBox.onSelectableCards(true)
-#endregion
-
-#region Deck Amount
-func onUpdateDeckCardAmountLabel() -> void:
-	CommonGameUI.onUpdateStashAmountLabel()
 #endregion
 
 #region Created
@@ -442,15 +420,7 @@ func onHideUI(state: bool) -> void:
 #region Action
 func onProcessAction(action: Action) -> void:
 	if action.post:
-		if action is AddToDeckAction:
-			onUpdateDeckCardAmountLabel()
-		elif action is RemoveFromDeckAction:
-			onUpdateDeckCardAmountLabel()
-		elif action is DrawAction:
-			onUpdateDeckCardAmountLabel()
-		elif action is InsertAction: # For champion, who inserts himself
-			onUpdateDeckCardAmountLabel()
-		elif action is DamageAction:
+		if action is DamageAction:
 			AllyStatusManager.onUpdateAbilityBoxes(level.getCardSpectateObject())
 		elif action is AddBoonAction:
 			BoonBox.onUpdate(action.Boon)
@@ -464,8 +434,6 @@ func onProcessAction(action: Action) -> void:
 			onRemoveCardUI(action.Card)
 		elif action is BoonActivatedAction:
 			onBoonEffectTemp(action)
-		elif action is HandCardAction:
-			onDrawCardUI(action.Card)
 		elif action is CardEnergyAction:
 			HandBox.onUpdateCardEnergy()
 		elif action is StartLoadingScreenAction and active_minimap:
@@ -510,6 +478,8 @@ func onProcessAction(action: Action) -> void:
 			onHideLevelUI()
 		elif action is RemoveToolAction:
 			onToolRemoved(action)
+		elif action is CreateHandAction:
+			onCreateHand(action.getCards())
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:

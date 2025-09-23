@@ -16,6 +16,7 @@ extends Node
 @onready var World: Node3D = %World
 @onready var Camera: Camera3D = %Camera3D
 
+@onready var GenocideLineEdit: LineEdit = %GenocideLineEdit
 @onready var BudgetEdit: LineEdit = %BudgetEdit
 @onready var LevelNameEdit: LineEdit = %LevelNameEdit
 @onready var SearchResultsPanel: PanelContainer = %SearchResultsPanel
@@ -740,6 +741,15 @@ func onShowGroup(num: int) -> void:
 		Obj.visible = is_show or (num in Obj.groups or Obj.groups.is_empty())
 		
 
-
 func onBudgetEditTextChanged(_new_text: String) -> void:
 	onApplyLevelFilters()
+
+
+func onGenocideButtonPressed() -> void:
+	var spawn_group: int = -1 if GenocideLineEdit.text == "" else int(GenocideLineEdit.text)
+	for Spawn: SpawnGD in get_tree().get_nodes_in_group("SpawnsGD"):
+		if Spawn.isInGroup(spawn_group):
+			Spawn.onClear()
+
+func onGenocideTextSubmitted(new_text: String) -> void:
+	GenocideLineEdit.release_focus()

@@ -58,6 +58,17 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Tile Lock"
 
+[node name="GenocideLineEdit" type="LineEdit" parent="UI/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Group"
+alignment = 1
+
+[node name="GenocideButton" type="Button" parent="UI/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " Genocide "
+
 [node name="SearchResultsPanel" type="PanelContainer" parent="UI"]
 unique_name_in_owner = true
 clip_contents = true
@@ -239,9 +250,9 @@ text = "Overworld"
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 layout_mode = 0
-offset_left = 984.0
+offset_left = 1434.0
 offset_right = 1920.0
-offset_bottom = 81.0
+offset_bottom = 98.0
 
 [node name="TopRightBar" type="HBoxContainer" parent="UI/MarginContainer"]
 layout_mode = 2
@@ -339,6 +350,8 @@ unique_name_in_owner = true
 [connection signal="mouse_entered" from="UI/TopBar/TileLockButton" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="UI/TopBar/TileLockButton" to="." method="onMouseInUI" binds= [false]]
 [connection signal="pressed" from="UI/TopBar/TileLockButton" to="." method="onTileLockButtonPressed"]
+[connection signal="text_submitted" from="UI/TopBar/GenocideLineEdit" to="." method="onGenocideTextSubmitted"]
+[connection signal="pressed" from="UI/TopBar/GenocideButton" to="." method="onGenocideButtonPressed"]
 [connection signal="mouse_entered" from="UI/SearchResultsPanel" to="." method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="UI/SearchResultsPanel" to="." method="onMouseInUI" binds= [false]]
 [connection signal="mouse_in_ui" from="UI/BottomBar/LoadButton" to="." method="onMouseInUI"]
@@ -369,6 +382,6 @@ unique_name_in_owner = true
 [connection signal="mouse_in_ui" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="UI/MarginContainer/TopRightBar/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="camera_changed_speed" from="World/Camera3D" to="." method="_on_camera_3d_camera_changed_speed"]
-[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="camera_panning" from="World/Camera3D" to="." method="_on_camera_3d_camera_panning"]
+[connection signal="camera_panning" from="World/Camera3D" to="." method="onMouseInUI"]
 [connection signal="timeout" from="MouseWheelDelayTimer" to="." method="_on_mouse_wheel_delay_timer_timeout"]

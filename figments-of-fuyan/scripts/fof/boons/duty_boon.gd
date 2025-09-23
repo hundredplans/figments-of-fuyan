@@ -14,15 +14,16 @@ func getDescription(use_default_values: bool = false) -> String:
 	return super(use_default_values)
 
 func onBoon(action: DeathAction) -> void:
-	var DefenderCard: CardGD = action.Defender
-	var card_info: CardInfo = Helper.getFofInfoID(CardInfo, DefenderCard.info.id)
-	var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
-	Game.setCardDataFromInfo(card_data, card_info)
-	
-	var Card: CardGD = SavedData.onLoadModel(card_data, Game.getArea().active_level)
-	var actions: Array = [ChangeBoonChargesAction.new(self, -1),
-		InsertAction.new(Card), CardEnergyAction.new(Card, -getTierEnergy(Card))]
-	onPushAction(actions)
+	pass
+	#var DefenderCard: CardGD = action.Defender
+	#var card_info: CardInfo = Helper.getFofInfoID(CardInfo, DefenderCard.info.id)
+	#var card_data: SavedDataCard = card_info.saved_data.new(card_info.id, true)
+	#Game.setCardDataFromInfo(card_data, card_info)
+	#
+	#var Card: CardGD = SavedData.onLoadModel(card_data, Game.getArea().active_level)
+	#var actions: Array = [ChangeBoonChargesAction.new(self, -1),
+		#InsertAction.new(Card), CardEnergyAction.new(Card, -getTierEnergy(Card))]
+	#onPushAction(actions)
 
 func onBoonAdded() -> void:
 	super()

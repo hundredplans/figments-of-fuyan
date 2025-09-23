@@ -210,4 +210,7 @@ func onChangeSpawnGroup(group_index: int) -> void:
 	
 	GroupLabel.setGroups(groups)
 	
+func isInGroup(index: int) -> bool:
+	return groups.has(index)
+	
 func getStaticBodies() -> Array: return static_bodies

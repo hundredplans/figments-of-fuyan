@@ -11,12 +11,12 @@ func onChangeHandCardsEnergy(delta: int) -> void:
 
 func onProcessAction(action: Action) -> void:
 	super(action)
-	if isValidArrive(action):
-		onChangeHandCardsEnergy(-getTierEnergy())
-	elif isValidLastWill(action):
-		onChangeHandCardsEnergy(getTierEnergy())
-	elif action.post and action is HandCardAction and isAlive():
-		onPushAction(CardEnergyAction.new(action.Card, -getTierEnergy()))
+	#if isValidArrive(action):
+		#onChangeHandCardsEnergy(-getTierEnergy())
+	#elif isValidLastWill(action):
+		#onChangeHandCardsEnergy(getTierEnergy())
+	#elif action.post and action is HandCardAction and isAlive():
+		#onPushAction(CardEnergyAction.new(action.Card, -getTierEnergy()))
 	
 func getTierEnergy() -> int:
 	match tier:
