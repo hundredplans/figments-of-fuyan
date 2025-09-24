@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3 uid="uid://devkkol3v8n2s"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=25 format=3]
 
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_3o6f8"]
-[ext_resource type="Texture2D" uid="uid://cqwda4xuuilox" path="res://assets/sprites/game/cards/art_mini/henry_hurst.png" id="2_cern8"]
-[ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_dvvd4"]
-[ext_resource type="Image" uid="uid://dudnvce7ajsd" path="res://assets/sprites/game/cards/art_pop/henry_hurst.png" id="2_pfd0t"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_m1a3h"]
-[ext_resource type="Script" uid="uid://bo1poidn0lfrb" path="res://scripts/fof/cards/henry_hurst.gd" id="6_dvvd4"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_e5wu5"]
-[ext_resource type="PackedScene" uid="uid://dl8aewc588yt8" path="res://assets/models/fof/cards/henry_hurst.glb" id="7_t72mn"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_nfaeg"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_chffd"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_3o6f8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/henry_hurst.png" id="2_cern8"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/warden.tres" id="2_dvvd4"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/henry_hurst.png" id="2_pfd0t"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_m1a3h"]
+[ext_resource type="Script" path="res://scripts/fof/cards/henry_hurst.gd" id="6_dvvd4"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_e5wu5"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/henry_hurst.glb" id="7_t72mn"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_nfaeg"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_chffd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -36,9 +36,10 @@ default_values = Array[int]([])
 [sub_resource type="Resource" id="Resource_1gsbs"]
 script = ExtResource("2_3o6f8")
 display_number = 1
+turns = -1
 id = 1
 first_init = true
-public_id = 0
+public_id = 85
 metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_jnxfo"]
@@ -48,6 +49,7 @@ health = 3
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_1gsbs")])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_s8aw2")
 
 [sub_resource type="Resource" id="Resource_p48tj"]
@@ -59,9 +61,10 @@ default_values = Array[int]([])
 [sub_resource type="Resource" id="Resource_t72mn"]
 script = ExtResource("2_3o6f8")
 display_number = 1
+turns = -1
 id = 1
 first_init = true
-public_id = 0
+public_id = 82
 metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_cnj7q"]
@@ -71,6 +74,7 @@ health = 4
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_t72mn")])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_p48tj")
 
 [sub_resource type="Resource" id="Resource_2mjfi"]
@@ -82,9 +86,10 @@ default_values = Array[int]([])
 [sub_resource type="Resource" id="Resource_gb4cf"]
 script = ExtResource("2_3o6f8")
 display_number = 1
+turns = -1
 id = 1
 first_init = true
-public_id = 0
+public_id = 86
 metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_nfaeg"]
@@ -94,6 +99,7 @@ health = 6
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_gb4cf")])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_2mjfi")
 
 [sub_resource type="Resource" id="Resource_chffd"]
@@ -105,6 +111,7 @@ default_values = Array[int]([])
 [sub_resource type="Resource" id="Resource_htnm5"]
 script = ExtResource("2_3o6f8")
 display_number = 2
+turns = -1
 id = 1
 first_init = true
 public_id = 0
@@ -117,6 +124,7 @@ health = 5
 speed = 2
 energy = 3
 traits = Array[ExtResource("2_3o6f8")]([SubResource("Resource_htnm5")])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_chffd")
 
 [resource]

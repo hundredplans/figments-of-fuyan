@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://b1rqeh73368ma"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3]
 
-[ext_resource type="Resource" uid="uid://31nmui4k0kfh" path="res://resources/fof/archetypes/tactician.tres" id="2_a55fc"]
-[ext_resource type="Image" uid="uid://d2ks2sqp8ojlm" path="res://assets/sprites/game/cards/art_pop/axel_pearse.png" id="2_acjsm"]
-[ext_resource type="Texture2D" uid="uid://c1sfsveor5mw2" path="res://assets/sprites/game/cards/art_mini/axel_pearse.png" id="2_x7rxs"]
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_0dvgo"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="4_8j3o7"]
-[ext_resource type="Script" uid="uid://dti3xtuqh8yx7" path="res://scripts/fof/cards/axel_pearse.gd" id="6_a55fc"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ikjpp"]
-[ext_resource type="PackedScene" uid="uid://2o4s4grovus1" path="res://assets/models/fof/cards/axel_pearse.glb" id="7_llebb"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_fqlag"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_yvma7"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/tactician.tres" id="2_a55fc"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/axel_pearse.png" id="2_acjsm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/axel_pearse.png" id="2_x7rxs"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="3_0dvgo"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="4_8j3o7"]
+[ext_resource type="Script" path="res://scripts/fof/cards/axel_pearse.gd" id="6_a55fc"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_ikjpp"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/axel_pearse.glb" id="7_llebb"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_fqlag"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_yvma7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -39,6 +39,7 @@ health = 1
 speed = 3
 energy = 2
 traits = Array[ExtResource("3_0dvgo")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_147te")
 
 [sub_resource type="Resource" id="Resource_02p1n"]
@@ -53,6 +54,7 @@ health = 3
 speed = 3
 energy = 2
 traits = Array[ExtResource("3_0dvgo")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_02p1n")
 
 [sub_resource type="Resource" id="Resource_a6lft"]
@@ -67,6 +69,7 @@ health = 3
 speed = 4
 energy = 2
 traits = Array[ExtResource("3_0dvgo")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_a6lft")
 
 [sub_resource type="Resource" id="Resource_yvma7"]
@@ -81,6 +84,7 @@ health = 4
 speed = 4
 energy = 2
 traits = Array[ExtResource("3_0dvgo")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_yvma7")
 
 [resource]

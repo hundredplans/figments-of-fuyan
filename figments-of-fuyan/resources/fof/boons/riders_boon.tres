@@ -9,7 +9,7 @@
 
 [sub_resource type="Resource" id="Resource_k343n"]
 script = ExtResource("6_6mifs")
-description = "When [4] allies die: Your next unit placed gains +1 SPD"
+description = "When [3] allies die: A random ally gains +1 SPD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_6dwh4"]
@@ -18,7 +18,7 @@ description_datastore = SubResource("Resource_k343n")
 
 [sub_resource type="Resource" id="Resource_tl87h"]
 script = ExtResource("6_6mifs")
-description = "When [3] allies die: Your next unit placed gains +1 SPD"
+description = "When [2] allies die: A random ally gains +1 SPD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_600of"]
@@ -27,7 +27,7 @@ description_datastore = SubResource("Resource_tl87h")
 
 [sub_resource type="Resource" id="Resource_88ntv"]
 script = ExtResource("6_6mifs")
-description = "When [3] allies die; Your next unit placed gains +2 SPD"
+description = "When [2] allies die: A random ally gains +1 ATT +1 SPD"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ppxk3"]
@@ -36,7 +36,7 @@ description_datastore = SubResource("Resource_88ntv")
 
 [sub_resource type="Resource" id="Resource_6mifs"]
 script = ExtResource("6_6mifs")
-description = "When [2] allies die; Your next unit placed gains +2 SPD"
+description = "When [2] allies die: A random ally gains +1 ATT +1 HP +1 SPD "
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_klhfg"]
@@ -49,7 +49,6 @@ tiers = Array[ExtResource("5_tl87h")]([SubResource("Resource_6dwh4"), SubResourc
 icon = ExtResource("2_4khgn")
 rarity = 6
 curse = false
-elite_fight_curse = false
 display_trigger = true
 use_charges = true
 auto_reset_charges = false

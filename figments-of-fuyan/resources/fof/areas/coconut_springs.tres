@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=28 format=3 uid="uid://divjktvvya1ee"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=29 format=3 uid="uid://divjktvvya1ee"]
 
 [ext_resource type="PackedScene" uid="uid://y5ytdt7d7c61" path="res://scenes/game/levels/world/coconut_springs/water_repeating.tscn" id="1_1r76i"]
+[ext_resource type="Texture2D" uid="uid://bjmhj206k5xo3" path="res://assets/sprites/game/areas/coconut_springs.png" id="1_7o35x"]
 [ext_resource type="Environment" uid="uid://g3ihmrpunr2b" path="res://assets/environments/palm_day_environment.tres" id="1_nr01x"]
 [ext_resource type="Image" uid="uid://crmlvrqh52rb8" path="res://assets/sprites/game/cards/common/art_background/palm_background.png" id="1_xwfqh"]
 [ext_resource type="Script" uid="uid://dyvdkimog5nh1" path="res://scripts/fof/levels/palm_level.gd" id="2_48x5e"]
@@ -85,6 +86,7 @@ tile_fill_material = ExtResource("16_u3c60")
 tile_fill_greyscale_material = ExtResource("15_ow43y")
 background_scene = ExtResource("1_1r76i")
 loading_screens = Array[ExtResource("11_myjy2")]([SubResource("Resource_1sxdl"), SubResource("Resource_7o35x"), SubResource("Resource_rkxbf"), SubResource("Resource_bwwa7")])
+area_icon = ExtResource("1_7o35x")
 id = 1
 name = "Coconut Springs"
 gdscript = ExtResource("4_xelp4")

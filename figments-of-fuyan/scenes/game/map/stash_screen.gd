@@ -29,8 +29,6 @@ var DragIconUI: TbcUI
 var draggable_rarities: Array = [Game.Rarities.COMMON, Game.Rarities.RARE, Game.Rarities.EXALT,\
 	Game.Rarities.MINIBOSS, Game.Rarities.BOSS]
 
-@onready var MaxEnergyLabel: Label = %MaxEnergyLabel
-
 @onready var DragZoneRect: ColorRect = %DragZoneRect
 @onready var DragZoneLabel: Label = %DragZoneLabel
 @onready var DragZoneFillBar: Control = %DragZoneFillBar
@@ -66,6 +64,7 @@ const DECK_SLOT_SIZE := Vector2(400, 500)
 const SCROLL_TIME: float = 0.5
 
 const DECK_CONTAINER_SPLIT_POINT: Dictionary[int, int] = { # Amount of slots to split point
+	3: 3,
 	4: 4,
 	5: 5,
 	6: 3,
@@ -84,8 +83,6 @@ func setInfo() -> void:
 	BoonBox.onUpdate()
 	var deck_slots: Array = Game.getSaveFile().getDeckSlots()
 	setLimitLabels()
-	
-	MaxEnergyLabel.text = str(Game.getSaveFile().getMaxEnergy())
 	
 	DeckContainer.add_theme_constant_override("separation", DECK_SLOTS_GAP)
 	for __: int in range(ceil(deck_slots.size() / 5.0)):

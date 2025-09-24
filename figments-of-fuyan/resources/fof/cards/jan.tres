@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://cdtrfdogjtqy6"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3]
 
-[ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_254me"]
-[ext_resource type="Resource" uid="uid://dk07sndke2px0" path="res://resources/fof/archetypes/brute.tres" id="2_baliy"]
-[ext_resource type="Image" uid="uid://bqe27chdvpwem" path="res://assets/sprites/game/cards/art_pop/jan.png" id="2_c8rg0"]
-[ext_resource type="Texture2D" uid="uid://djhaiqrvptuj2" path="res://assets/sprites/game/cards/art_mini/jan.png" id="2_qtlet"]
-[ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="3_6m1pe"]
-[ext_resource type="Script" uid="uid://clx63sy4p6o36" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_1h5jh"]
-[ext_resource type="Script" uid="uid://b4j4e1455ghvr" path="res://scripts/fof/cards/jan.gd" id="6_6shb5"]
-[ext_resource type="PackedScene" uid="uid://ht2o4oxr8c17" path="res://assets/models/fof/cards/jan.glb" id="7_6shb5"]
-[ext_resource type="Script" uid="uid://cjm3olmgxwuse" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_vxg4q"]
-[ext_resource type="Script" uid="uid://d0rv4br3qqt4k" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_j7ake"]
+[ext_resource type="Script" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_254me"]
+[ext_resource type="Resource" path="res://resources/fof/archetypes/brute.tres" id="2_baliy"]
+[ext_resource type="Image" path="res://assets/sprites/game/cards/art_pop/jan.png" id="2_c8rg0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/game/cards/art_mini/jan.png" id="2_qtlet"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/card_info.gd" id="3_6m1pe"]
+[ext_resource type="Script" path="res://scripts/saved_data/game_objects/saved_data_card.gd" id="6_1h5jh"]
+[ext_resource type="Script" path="res://scripts/fof/cards/jan.gd" id="6_6shb5"]
+[ext_resource type="PackedScene" path="res://assets/models/fof/cards/jan.glb" id="7_6shb5"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/card_tier_datastore.gd" id="12_vxg4q"]
+[ext_resource type="Script" path="res://scripts/fof_info/cards/extra/description_datastore.gd" id="13_j7ake"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ex838"]
 size = Vector3(0.663147, 1.94543, 0.526978)
@@ -40,6 +40,7 @@ health = 1
 speed = 3
 energy = 1
 traits = Array[ExtResource("2_254me")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_avtfr")
 
 [sub_resource type="Resource" id="Resource_tfbt6"]
@@ -55,6 +56,7 @@ health = 3
 speed = 3
 energy = 1
 traits = Array[ExtResource("2_254me")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_tfbt6")
 
 [sub_resource type="Resource" id="Resource_sganv"]
@@ -70,6 +72,7 @@ health = 3
 speed = 3
 energy = 1
 traits = Array[ExtResource("2_254me")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_sganv")
 
 [sub_resource type="Resource" id="Resource_j7ake"]
@@ -85,6 +88,7 @@ health = 4
 speed = 3
 energy = 1
 traits = Array[ExtResource("2_254me")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_j7ake")
 
 [resource]

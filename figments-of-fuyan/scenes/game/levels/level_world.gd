@@ -139,11 +139,13 @@ func onCameraPanning(state: bool) -> void:
 #endregion
 	
 #region Phases
-func onPhaseChanged(phase: Game.Phases, previous_phase: Game.Phases, _instant: bool = false) -> void:
+func onPhaseChanged(phase: Game.Phases, previous_phase: Game.Phases, _instant: bool = false, reload: bool = false) -> void:
+	CameraManager.onPhaseChanged(phase)
 	match phase:
 		Game.Phases.START:
 			onSpawnFX(true)
 		Game.Phases.PLAYER:
+			if !reload: onSpawnFX(false)
 			if Game.ActionManagerReference.onFindFirstAction(CameraChangeAction) != null: return
 			CameraManager.onSpectateAllies()
 #endregion
@@ -168,10 +170,8 @@ func onTilePressed() -> void:
 		var Card: CardGD = level.getAllySpectateObject()
 		if Card != null:
 			level.onPushAction(MovementAction.new(Card, Tile.getMovementPathTiles()))
-	elif Tile.isOccupied() and Tile.isLevelVisible() and Tile.getCard().isLevelVisible():
+	elif Tile.isOccupied() and Tile.isLevelVisible() and Tile.getCard().isLevelVisible() and level.getPhase() != Game.Phases.START:
 		onCreateCameraChangeAction(Tile.getCard())
-	elif Tile.getOccupiedObjects().any(func(x: ObjectGD): return x is SpawnGD and x.variation == 0) and Tile.isLevelVisible():
-		onCreateCameraChangeAction(Tile.getOccupiedObjects().filter(func(x: ObjectGD): return x is SpawnGD and x.variation == 0)[0])
 	
 func onTileInspected() -> void:
 	var Tile: TileGD = MouseHoverTile
@@ -374,8 +374,6 @@ func onPassButtonPressed() -> void:
 func onGameEnded(_rewards: Rewards) -> void:
 	CameraManager.onGameEnded()
 	
-func onGameStarted() -> void:
-	CameraManager.onGameStarted()
 #endregion
 
 #region Environment
@@ -392,19 +390,20 @@ func setEnvironment(env: Environment = null) -> void:
 #endregion
 
 #region Dragged
-func onCardDraggedEnd(CardUI: Control) -> void:
+func onCardDraggedEnd(CardUI: TbcUI) -> void:
 	var Tile: TileGD = getMouseHoverTile()
 	if Tile != null and Tile.isAllySpawnTile() and !Tile.isOccupied():
+		CardUI.setIgnoreDragPositionReset(true)
+		CardUI.setHoverable(false)
+		CardUI.setAutoscale(false)
+		CardUI.setDraggable(false)
 		level.onAppendAction(PlayCardAction.new(CardUI.Card, Tile))
-		CardUI.queue_free()
 #endregion
 
 func onProcessAction(action: Action) -> void:
 	if action.post:
 		if action is ChangeEnvironmentAction:
 			onChangeEnvironment(action)
-		elif action is StartLevelAction:
-			onGameStarted()
 			
 func onChangeEnvironment(action: ChangeEnvironmentAction) -> void:
 	setEnvironment(action.environment)

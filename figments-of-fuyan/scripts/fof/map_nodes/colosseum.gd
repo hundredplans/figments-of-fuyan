@@ -1,7 +1,7 @@
 extends EncounterGD
 
 var SPECIAL_FIGHT_TYPES: Array = ["Mirror Fight", "Curse Fight", "Advanced Fight", "Foreign Fight"]
-const CURSE_IDS: Array = [11, 12, 13, 14, 15]
+const CURSE_IDS: Array = [11, 12, 14, 15]
 
 var chosen_special_fights: Array
 var level_public_id: int

@@ -9,7 +9,6 @@ const PRECALCULATED_CLAIMED_LABEL_POSITION_CARD := Vector2(-190, 100)
 @export var IconUpgradeRewardPacked: PackedScene
 
 @export var energy_limit_icon: Texture2D
-@export var max_energy_icon: Texture2D
 @export var deck_limit_icon: Texture2D
 
 @export_multiline var energy_limit_text: String
@@ -31,7 +30,7 @@ func setInfo(_reward: Reward) -> void:
 	var i: int = 0
 	for action: Action in action_wrapper.getActions():
 		var ControlUI: Control
-		if action is MaxEnergyAction or action is EnergyLimitAction or action is CardLimitAction:
+		if action is EnergyLimitAction or action is CardLimitAction:
 			var IconUpgradeReward: Control = IconUpgradeRewardPacked.instantiate()
 			RewardsContainer.add_child(IconUpgradeReward)
 			var tx: Texture2D = getIconFromAction(action)
@@ -63,13 +62,11 @@ func onRewardPressed(action: Action, control: Control) -> void:
 func getIconFromAction(action: Action) -> Texture2D:
 	if action is EnergyLimitAction: return energy_limit_icon
 	elif action is CardLimitAction: return deck_limit_icon
-	elif action is MaxEnergyAction: return max_energy_icon
 	return null
 	
 func getTextFromAction(action: Action) -> String:
 	if action is EnergyLimitAction: return energy_limit_text % action.getDelta()
 	elif action is CardLimitAction: return deck_limit_text % action.getDelta()
-	elif action is MaxEnergyAction: return max_energy_text % action.getDelta()
 	return ""
 
 func onCreateUpgradedChampionCard(action: CardRetieredAction) -> Control:

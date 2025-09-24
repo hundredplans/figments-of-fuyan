@@ -112,6 +112,7 @@ script = ExtResource("5_amvjx")
 [node name="FreeLookCamera" type="Camera3D" parent="CameraManager"]
 unique_name_in_owner = true
 script = ExtResource("2_k01hc")
+enable_only_sideways = true
 disable_freelook = true
 
 [node name="MouseRaycast" type="RayCast3D" parent="."]

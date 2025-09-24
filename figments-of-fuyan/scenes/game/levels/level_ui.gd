@@ -2,7 +2,9 @@ extends Control
 
 
 #region Onready
-@onready var EnergyContainer: Container = %EnergyContainer
+@onready var TopCenter: Control = %TopCenter
+@onready var HandBox: Container = %HandBox
+@onready var CameraButton: DefaultButton = %CameraButton
 @onready var CommonGameUI: Control = %CommonGameUI
 @onready var SpectatedUnitStatusUI: Control = %SpectatedUnitStatusUI
 @onready var GameEffectsLevelUI: Control = %GameEffectsLevelUI
@@ -48,11 +50,11 @@ var area: AreaGD
 var World: Node3D
 var mouse_in_ui: bool
 var PauseMenu: Control
+var StashScreen: Control
 var BoonBox: Control
 #endregion
 
 #region Exports
-@export var EnergyIconPacked: PackedScene
 @export var GraveyardScreenPacked: PackedScene
 @export var LossUIPacked: PackedScene
 #endregion
@@ -64,12 +66,13 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	area = save_file.area
 	level = area.active_level
 	
+	CommonGameUI.update_stash_screen.connect(onUpdateStashScreenExisting)
 	BoonBox = CommonGameUI.getBoonBox()
+	SpectatedUnitStatusUI.visible = false
 	
 	Game.ActionManagerReference.action_playing.connect(onActionPlaying)
 		
 	level.phase_changed.connect(onPhaseChanged)
-	level.energy_changed.connect(onUpdateEnergy)
 	level.turn_state_changing.connect(onTurnStateChanging)
 	level.awakened.connect(onAwakened)
 	level.tile_occupied.connect(onTileOccupied)
@@ -90,7 +93,6 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	
 	Console.level = level
 	
-	onCreateEnergyIcons()
 	onCameraUpdated(level.getSpectateObject())
 	
 	EpicFightControl.visible = false # Important
@@ -100,7 +102,7 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	SpectatedUnitStatusUI.setInfo(true, true)
 	
 	var area_color: Color = Helper.getFofInfoID(AreaInfo, level.getAreaID()).getAreaColor()
-	CommonGameUI.setLevelName(level.info.name, area_color)
+	CommonGameUI.setLevelName(level.info.name, area_color, level.getAreaID())
 	
 	for Tile: TileGD in get_tree().get_nodes_in_group("LevelTilesGD"):
 		onTileCreated(Tile)
@@ -134,10 +136,13 @@ func onUpdateActionLock(previous_state: bool) -> void:
 			if btn == PassButton: btn.setActionLock(state)
 			elif btn is Button: btn.setActionLock(state)
 			elif btn is HighlightTxButton: btn.setDisabled(state)
+			elif btn in [LeftCameraArrow, RightCameraArrow]: btn.setActionLock(state)
+			elif btn is DefaultControl: btn.setDisabled(state)
 		AllyStatusManager.setActionLock(state)
 		AllyStatusManager.setDisabled(state)
 		EnemyStatusManager.setDisabled(state)
 		SpectatedUnitStatusUI.setDisabled(state)
+		CommonGameUI.setActionLock(state)
 
 func getActionLock() -> bool:
 	return is_action_playing
@@ -160,38 +165,38 @@ func onActionPlaying(state: bool) -> void:
 var PhaseTween: Tween
 const CHANGE_PASS_BUTTON_COLOR_TIME: float = 0.35
 
-func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = false) -> void:
+func onPhaseChanged(phase: Game.Phases, _phase: Game.Phases, instant: bool = false, reload: bool = false) -> void:
 	PhaseIcon.setPhase(phase)
 	PassButton.setPhase(phase)
 	
 	match phase:
+		Game.Phases.START:
+			CameraButton.setDisabled(true)
+			if instant:
+				onCreateHand(level.getHandCards(), true)
 		Game.Phases.PLAYER:
+			if !reload:
+				CameraButton.setDisabled(false)
+				HandBox.onRemoveHand(level.getHandCards())
 			PassButton.setAllySpectating(level.getAllySpectateObject())
 	
 	var phase_color := Game.getPhaseColor(phase)
 	if !instant:
 		if PhaseTween: PhaseTween.kill()
 		PhaseTween = create_tween()
-		PhaseTween.tween_property(PassButton, "modulate", phase_color, CHANGE_PASS_BUTTON_COLOR_TIME)
+		PhaseTween.tween_property(TopCenter, "modulate", phase_color, CHANGE_PASS_BUTTON_COLOR_TIME)
 	else:
-		PassButton.modulate = phase_color
+		TopCenter.modulate = phase_color
 #endregion
 
 #region Hand
-func onCreateHand(cards: Array) -> void:
-	var card_uis: Array = await HandBox.onCreateHand(cards)
+func onCreateHand(cards: Array, instant: bool) -> void:
+	var card_uis: Array = await HandBox.onCreateHand(cards, instant)
 	for CardUI: TbcUI in card_uis:
 		CardUI.drag_begin.connect(onCardDraggedBegin)
 		CardUI.drag_end.connect(onCardDraggedEnd)
 		CardUI.mouse_in_ui.connect(onMouseInUI)
 		CardUI.mouse_in_ui.connect(HandBox.onMouseInUI)
-	
-@onready var HandBox: Container = %HandBox
-	
-func onRemoveCardUI(Card: CardGD) -> void:
-	for CardUI in HandBox.get_children():
-		if CardUI.Card == Card: CardUI.queue_free()
-#endregion
 
 #region Card Dragged
 func onCardDraggedEnd(CardUI: Control) -> void:
@@ -201,27 +206,6 @@ func onCardDraggedEnd(CardUI: Control) -> void:
 func onCardDraggedBegin(CardUI: Control) -> void:
 	drag_begin.emit(CardUI)
 	CardUI.setMouseFilter(Control.MOUSE_FILTER_IGNORE)
-#endregion
-	
-#region Energy
-var EnergyTween: Tween
-const ENERGY_SCALE_SPEED: float = 0.3
-const ENERGY_SCALE_OFFSET := Vector2(0.2, 0.2)
-func onUpdateEnergy(energy: int, action: EnergyAction = null) -> void:
-	for i: int in range(min(level.max_energy, EnergyContainer.get_child_count())):
-		var EnergyIcon: Control = EnergyContainer.get_child(i)
-		if (i + 1) <= energy and EnergyIcon.is_used:
-			EnergyIcon.onRefreshed()
-		elif (i + 1) > energy and !EnergyIcon.is_used:
-			EnergyIcon.onUsed()
-	
-func onCreateEnergyIcons() -> void:
-	var energy: int = level.energy
-	for i: int in range(level.max_energy):
-		var is_used: bool = i <= energy
-		var EnergyIcon: Control = EnergyIconPacked.instantiate()
-		EnergyContainer.add_child(EnergyIcon)
-		EnergyIcon.setInfo(is_used)
 #endregion
 
 #region Camera
@@ -244,7 +228,10 @@ func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> v
 
 #region Deck / Graveyard
 func _on_graveyard_button_pressed() -> void:
-	MainControl.add_child(GraveyardScreenPacked.instantiate())
+	var GraveyardScreen: Control = GraveyardScreenPacked.instantiate()
+	MainControl.add_child(GraveyardScreen)
+	GraveyardScreen.mouse_in_ui.connect(onMouseInUI)
+	GraveyardScreen.setInfo(Game.getArea().getAreaColor())
 #endregion
 
 #region Pass Button
@@ -431,7 +418,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is ChangeShillingsAction:
 			CommonGameUI.onUpdateShillings()
 		elif action is PlayCardAction:
-			onRemoveCardUI(action.Card)
+			onCardPlayed(action)
 		elif action is BoonActivatedAction:
 			onBoonEffectTemp(action)
 		elif action is CardEnergyAction:
@@ -457,6 +444,7 @@ func onProcessAction(action: Action) -> void:
 			GameEffectsLevelUI.onRemoveIcon(action.getGameEffect())
 		elif action is VisionNewUnitAction and action.Discoverer == level.getSpectateObject():
 			onUpdateInVisionRange()
+			
 		if level.isEpic():
 			var BossCard: CardGD = level.getBoss()
 			if action is AwakenBossAction:
@@ -479,7 +467,7 @@ func onProcessAction(action: Action) -> void:
 		elif action is RemoveToolAction:
 			onToolRemoved(action)
 		elif action is CreateHandAction:
-			onCreateHand(action.getCards())
+			onCreateHand(action.getCards(), false)
 #endregion
 const BOON_EFFECT_TEMP_DURATION: float = 1.2
 func onBoonEffectTemp(action: BoonActivatedAction) -> void:
@@ -543,6 +531,7 @@ func onActiveEffectPressed(item: Variant) -> void:
 	active_effect_pressed.emit(item, active_effect_tiles)
 
 func onUnitStatusUIPressed(Card: CardGD) -> void:
+	if level.getPhase() == Game.Phases.START: return
 	await get_tree().process_frame
 	Game.getLevel().onPushAction(CameraChangeAction.new(Card))
 
@@ -567,3 +556,16 @@ func onToolRemoved(action: RemoveToolAction) -> void:
 	
 	if Card == level.getCardSpectateObject():
 		SpectatedUnitStatusUI.onUpdateTool(Card.getTool())
+
+func onCardPlayed(action: PlayCardAction) -> void:
+	await HandBox.onCardPlayed(action.Card)
+	Game.getLevel().onCheckAutoskipStartPhase()
+
+func onUpdateStashScreenExisting() -> void:
+	if StashScreen == null: onCreateStashScreen()
+	else: StashScreen.onStartExit()
+	
+func onCreateStashScreen() -> void:
+	StashScreen = Game.onCreateStashScreen(self)
+	if StashScreen == null: return
+	StashScreen.mouse_in_ui.connect(onMouseInUI)

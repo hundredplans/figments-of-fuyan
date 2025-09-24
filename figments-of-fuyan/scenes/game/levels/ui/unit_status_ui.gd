@@ -47,12 +47,16 @@ func setInfo(_is_big_stats: bool = false, _flip_tooltip: bool = false, _alignmen
 	setInVisionRange(false)
 	
 func setCard(_Card: CardGD) -> void:
+	var OldCard: CardGD = Card
 	Card = _Card
 	
-	if !Card.is_connected("update_turn_state", onUpdateTurnState):
-		Card.update_turn_state.connect(onUpdateTurnState)
-		Card.update_stat.connect(onUpdateStat)
-		Card.update_level_visible.connect(onUpdateLevelVisible)
+	if OldCard != null and OldCard.is_connected("update_turn_state", onUpdateTurnState):
+		OldCard.disconnect("update_turn_state", onUpdateTurnState)
+		OldCard.disconnect("update_stat", onUpdateStat)
+		OldCard.disconnect("update_level_visible", onUpdateLevelVisible)
+	Card.update_turn_state.connect(onUpdateTurnState)
+	Card.update_stat.connect(onUpdateStat)
+	Card.update_level_visible.connect(onUpdateLevelVisible)
 		
 	if is_big_stats:
 		UnitStatusUIStatsManager.setCard(Card)

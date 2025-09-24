@@ -44,6 +44,9 @@ var _ctrl = false
 @export_range(0, 90) var freelook_clamp_top: int = 90
 @export_group("")
 var ANTI_INTERACT_BUTTON: int = MOUSE_BUTTON_RIGHT
+var spawn_camera_mode: bool
+
+const CAMERA_ROTATION_SPEED: float = 3.0
 
 func setDisableFreelook(state: bool) -> void:
 	disable_freelook = state
@@ -53,6 +56,9 @@ func setDisableFreelook(state: bool) -> void:
 func _input(event):
 	if !current: return
 	# Receives mouse motion
+	if spawn_camera_mode and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
+		setCameraPointAlongCircle((event.relative.x / 10000) * CAMERA_ROTATION_SPEED)
+	
 	if event is InputEventMouseMotion:
 		_mouse_position = event.relative
 	
@@ -104,13 +110,15 @@ func _process(delta):
 	_update_movement(delta)
 	onUpdateFreelookInput()
 	
+	if spawn_camera_mode: setCameraPointAlongCircle()
+	
 func onUpdateFreelookInput() -> void:
-	if Input.is_action_just_pressed("AltInput") and !disable_freelook:
+	if Input.is_action_just_pressed("AltInput") and (!disable_freelook or spawn_camera_mode):
 		camera_panning.emit(true)
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		get_viewport().update_mouse_cursor_state()
 		
-	elif Input.is_action_just_released("AltInput") and !disable_freelook:
+	elif Input.is_action_just_released("AltInput") and (!disable_freelook or spawn_camera_mode):
 		camera_panning.emit(false)
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_viewport().update_mouse_cursor_state()
@@ -173,3 +181,20 @@ func onDisableMovement(state: bool) -> void:
 	disable_movement = state
 	_velocity = Vector3.ZERO
 	
+func setSpawnCameraMode(state: bool) -> void:
+	spawn_camera_mode = state
+	
+const CAMERA_RADIUS: float = 20.0
+var total_progress: float
+func setCameraPointAlongCircle(progress: float = 0.0) -> void:
+	if progress != 0:
+		total_progress = clampf(total_progress + progress, 0, 1)
+		if total_progress <= 0: total_progress = 1
+		elif total_progress >= 1: total_progress = 0
+	
+	var x: float = (CAMERA_RADIUS * cos(total_progress * TAU))
+	var z: float = (CAMERA_RADIUS * sin(total_progress * TAU))
+
+	position.x = x
+	position.z = z
+	look_at(Vector3.ZERO)

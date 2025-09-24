@@ -147,7 +147,6 @@ func setCameraPointAlongCircle(progress := Vector2.ZERO) -> void:
 	CurrentCamera.position.y = sin(phi) * camera_radius + central_point.y
 	CurrentCamera.position.z = cos(phi) * sin(theta) * camera_radius + central_point.z
 	CurrentCamera.look_at(central_point)
-	onUpdateCameraPosition()
 	
 func setCameraRadius(direction: int) -> void:
 	camera_radius = clamp(camera_radius + (CAMERA_RADIUS_INCREMENT * direction), CAMERA_RADIUS_LOWER_BOUND, CAMERA_RADIUS_UPPER_BOUND)
@@ -295,6 +294,8 @@ func _process(delta: float) -> void:
 		
 	if game_ended:
 		FreelookCamera.rotation_degrees.y += ENDGAME_SPIN_SPEED * delta
+		
+	onUpdateCameraPosition()
 #endregion
 
 #region Cycle
@@ -316,22 +317,23 @@ func onMouseInUI(state: bool) -> void:
 	is_mouse_in_ui = state
 	
 #region Game Started
-const START_Y: int = 30
-const START_Z: int = 5
+const START_Y: int = 15
 const MINUS_TRAVEL_TIME: float = 0.5
 const LOOK_AT_OFFSET: float = 5
 const ENDGAME_SPIN_SPEED: int = 5
 var is_camera_travelling: bool = false
 
-func onGameStarted() -> void:
-	setCameraType(true)
-	FreelookCamera.disable_freelook = true
-	is_camera_travelling = true
-	
-	FreelookCamera.rotation = Vector3(0, -PI / 2, 0)
-	FreelookCamera.position = Vector3(0, START_Y, START_Z)
-	FreelookCamera.disable_movement = true
-	
+func onPhaseChanged(phase: Game.Phases) -> void:
+	if phase == Game.Phases.START:
+		setCameraType(true)
+		FreelookCamera.disable_freelook = true
+		FreelookCamera.disable_movement = true
+		is_camera_travelling = true
+		
+		FreelookCamera.position.y = START_Y
+		FreelookCamera.rotation = Vector3(0, -PI / 2, 0)
+		FreelookCamera.setSpawnCameraMode(true)
+
 	#onSpectateSpawn()
 	#
 	#await get_tree().process_frame
@@ -359,9 +361,6 @@ func onGameEnded() -> void:
 
 func getLastAllySpectateObject() -> CardGD:
 	return LastAllySpectateObject
-
-func onUpdateCameraPosition() -> void:
-	camera_position_updated.emit(CurrentCamera.position if CurrentCamera != null else Vector3.ZERO)
 	
 func setCurrent(state: bool) -> void:
 	current = state
@@ -371,3 +370,5 @@ func setCurrent(state: bool) -> void:
 	elif isFreelook(): FreelookCamera.current = true
 	else: LevelCamera.current = true
 		
+func onUpdateCameraPosition() -> void:
+	camera_position_updated.emit(CurrentCamera.position if CurrentCamera != null else Vector3.ZERO)

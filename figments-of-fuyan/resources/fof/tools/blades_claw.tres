@@ -9,38 +9,45 @@
 
 [sub_resource type="Resource" id="Resource_cucju"]
 script = ExtResource("8_ag0yh")
-description = "RAMPAGE [2]: OVERKILL DMG is gained as DMG for this unit's next attack"
-default_values = Array[int]([])
+description = "RAMPAGE {[X]/2}: OVERKILL DMG is gained as DMG for this unit's next attack"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_u30a7"]
 script = ExtResource("6_au6bx")
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_cucju")
 
 [sub_resource type="Resource" id="Resource_ojk2t"]
 script = ExtResource("8_ag0yh")
-description = "RAMPAGE: OVERKILL DMG is gained as DMG for this unit's next attack"
-default_values = Array[int]([])
+description = "This has +1 ATT
+RAMPAGE {[X]/2}: OVERKILL DMG is gained as DMG for this unit's next attack"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_xsd46"]
 script = ExtResource("6_au6bx")
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_ojk2t")
 
 [sub_resource type="Resource" id="Resource_71umx"]
 script = ExtResource("8_ag0yh")
-description = "RAMPAGE: OVERKILL DMG is gained as 2x DMG for this unit's next attack"
-default_values = Array[int]([])
+description = "This has +2 ATT
+RAMPAGE {[X]/2}: OVERKILL DMG is gained as DMG for this unit's next attack"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_ag0yh"]
 script = ExtResource("6_au6bx")
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_71umx")
 
 [sub_resource type="Resource" id="Resource_uk2eb"]
 script = ExtResource("8_ag0yh")
-description = "RAMPAGE: OVERKILL DMG is gained as 4x DMG for this unit's next attack"
+description = "This has +2 ATT
+RAMPAGE: OVERKILL DMG is gained as DMG for this unit's next attack"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_k1la7"]
 script = ExtResource("6_au6bx")
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_uk2eb")
 
 [resource]

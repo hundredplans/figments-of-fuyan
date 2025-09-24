@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="AreaInfo" load_steps=28 format=3 uid="uid://dvlxu5qrn822j"]
+[gd_resource type="Resource" script_class="AreaInfo" load_steps=29 format=3 uid="uid://dvlxu5qrn822j"]
 
 [ext_resource type="PackedScene" uid="uid://bg5qw5gnyr5vp" path="res://scenes/game/levels/world/varoma/grass_repeating.tscn" id="1_6mquc"]
 [ext_resource type="Environment" uid="uid://bt4oumun6a8kw" path="res://assets/environments/varoma_day_environment.tres" id="1_8fijj"]
 [ext_resource type="Image" uid="uid://c2cuf22wj0rnf" path="res://assets/sprites/game/cards/common/art_background/varoma_background.png" id="1_co4xt"]
+[ext_resource type="Texture2D" uid="uid://bo43tloyo2kv" path="res://assets/sprites/game/areas/varoma.png" id="1_j6t7y"]
 [ext_resource type="Script" uid="uid://bdrcevdqecvdg" path="res://scripts/fof_info/areas/area_info.gd" id="2_0a3gj"]
 [ext_resource type="Script" uid="uid://b7tnfbmcbq6rn" path="res://scripts/fof/areas/area.gd" id="2_3vnxq"]
 [ext_resource type="Script" uid="uid://j3gava8i61i7" path="res://scripts/fof_info/areas/extra/epic_area_datastore.gd" id="2_6hpxj"]
@@ -15,8 +16,8 @@
 [ext_resource type="Script" uid="uid://c4ctb2tm8w44a" path="res://scripts/fof_info/areas/extra/loading_screen_datastore.gd" id="9_cw20m"]
 [ext_resource type="PackedScene" uid="uid://dvev7ayy8isjb" path="res://scenes/game/areas/coconut_springs/loading_screen_camera_one_palms.tscn" id="10_6mquc"]
 [ext_resource type="Resource" uid="uid://cmceqsyn15umk" path="res://resources/datastore/decorations/VaromaOverworld.tres" id="10_153du"]
-[ext_resource type="Resource" uid="uid://cxuwhsvounmcn" path="res://resources/datastore/decorations/VaromaDeco1.tres" id="11_vjfl3"]
-[ext_resource type="Resource" uid="uid://b6hoe5qhsmrun" path="res://resources/datastore/decorations/VaromaDeco2.tres" id="12_j6t7y"]
+[ext_resource type="Resource" uid="uid://dws7gxib3ct8f" path="res://resources/datastore/decorations/VaromaDeco1.tres" id="11_vjfl3"]
+[ext_resource type="Resource" uid="uid://b7fritf3j38ii" path="res://resources/datastore/decorations/VaromaDeco2.tres" id="12_j6t7y"]
 [ext_resource type="Material" uid="uid://b30a7ejxylfva" path="res://resources/materials/game/tile_material/varoma_tile/varoma_tile_fill_greyscale_material.tres" id="13_fy5xq"]
 [ext_resource type="Resource" uid="uid://b68mk5yyoo6h" path="res://resources/datastore/decorations/VaromaDeco3.tres" id="13_tmu8h"]
 [ext_resource type="Resource" uid="uid://dcqudocnt7rws" path="res://resources/datastore/decorations/VaromaDeco4.tres" id="14_jwql3"]
@@ -72,7 +73,6 @@ champion_entrance_packed = ExtResource("7_vjfl3")
 card_ids = Array[int]([1, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77])
 overworld_decoration = ExtResource("10_153du")
 base_environment = ExtResource("1_8fijj")
-elite_environment = ExtResource("1_8fijj")
 base_level_script = ExtResource("2_153du")
 base_tile_info = ExtResource("2_t1onc")
 default_light = ExtResource("6_8fijj")
@@ -86,6 +86,7 @@ tile_fill_material = ExtResource("14_qps0y")
 tile_fill_greyscale_material = ExtResource("13_fy5xq")
 background_scene = ExtResource("1_6mquc")
 loading_screens = Array[ExtResource("9_cw20m")]([SubResource("Resource_xwswi"), SubResource("Resource_ygfrp"), SubResource("Resource_d54kv"), SubResource("Resource_l4ru2")])
+area_icon = ExtResource("1_j6t7y")
 id = 3
 name = "Varoma"
 gdscript = ExtResource("2_3vnxq")

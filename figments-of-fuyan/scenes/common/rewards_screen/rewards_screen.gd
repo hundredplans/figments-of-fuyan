@@ -200,5 +200,5 @@ func setClaimInfoLabelModulate(reward: Reward) -> void:
 	ClaimInfoLabel.modulate = Color(0.5, 0.5, 0.5, 1.0) if reward.isTaken() else Color.WHITE
 
 func isUpgradeReward(item: ActionWrapper) -> bool:
-	return item.getActions().any(func(x: Action): return x is MaxEnergyAction or x is CardLimitAction or x is CardRetieredAction or x is EnergyLimitAction)
+	return item.getActions().any(func(x: Action): return x is CardLimitAction or x is CardRetieredAction or x is EnergyLimitAction)
 	

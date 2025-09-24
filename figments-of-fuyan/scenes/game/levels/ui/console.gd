@@ -109,11 +109,11 @@ func addboon(name_id: Variant, _tier: int = 1) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)
 	Game.getArea().onPushAction(AddBoonAction.new(info.id, _tier))
 	
+func decklimit(delta: int) -> void:
+	Game.getSaveFile().onPushAction(CardLimitAction.new(delta))
+	
 func brain(state: bool) -> void:
 	Game.brain = state
-
-func energy(delta: int) -> void:
-	Game.getArea().onPushAction(EnergyAction.new(delta))
 
 func removeboon(name_id: Variant) -> void:
 	var info: BoonInfo = getNameIDFofInfo(name_id, BoonInfo)

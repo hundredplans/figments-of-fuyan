@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://1kd1ppwnuqtn"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://bpjlqj62tmais"]
 
 [ext_resource type="Image" uid="uid://cp6mthlsnebq0" path="res://assets/sprites/game/cards/art_pop/palmita.png" id="2_6e25m"]
 [ext_resource type="Texture2D" uid="uid://casdghvavfct7" path="res://assets/sprites/game/cards/art_mini/palmita.png" id="2_doo6g"]
@@ -29,7 +29,7 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_p4qc6"]
 script = ExtResource("13_iuas3")
-description = "ABILITY: This dies to give an adjacent ally +1 HP when it RAMPAGES"
+description = "ABILITY: This dies to give an adjacent ally +1 HP and AWAKENS a [1card=13] when it dies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ar0ki"]
@@ -44,13 +44,13 @@ description_datastore = SubResource("Resource_p4qc6")
 
 [sub_resource type="Resource" id="Resource_ow28b"]
 script = ExtResource("13_iuas3")
-description = "ABILITY: This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+description = "ABILITY: This dies to give an adjacent ally +1 HP and AWAKENS a [1card=13] when it dies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_dp6m3"]
 script = ExtResource("12_a4xqi")
 attack = 1
-health = 1
+health = 3
 speed = 2
 energy = 1
 traits = Array[ExtResource("2_gibdl")]([])
@@ -59,14 +59,14 @@ description_datastore = SubResource("Resource_ow28b")
 
 [sub_resource type="Resource" id="Resource_vyjta"]
 script = ExtResource("13_iuas3")
-description = "ABILITY: This dies to give an adjacent ally +1 HP instantly and when it RAMPAGES"
+description = "ABILITY: This dies to give an adjacent ally +2 HP and AWAKENS a [1card=13] when it dies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_a4xqi"]
 script = ExtResource("12_a4xqi")
 attack = 1
-health = 2
-speed = 3
+health = 3
+speed = 2
 energy = 1
 traits = Array[ExtResource("2_gibdl")]([])
 description_index_for_active_effect_charges = -1
@@ -74,13 +74,13 @@ description_datastore = SubResource("Resource_vyjta")
 
 [sub_resource type="Resource" id="Resource_iuas3"]
 script = ExtResource("13_iuas3")
-description = "ABILITY: This dies to give an adjacent ally +2 HP instantly and when it RAMPAGES"
+description = "ABILITY: This dies to give an adjacent ally +2 HP and AWAKENS a [1card=13] when it dies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_pn3bc"]
 script = ExtResource("12_a4xqi")
 attack = 1
-health = 2
+health = 4
 speed = 3
 energy = 1
 traits = Array[ExtResource("2_gibdl")]([])

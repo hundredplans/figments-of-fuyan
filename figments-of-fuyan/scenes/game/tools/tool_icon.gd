@@ -73,4 +73,5 @@ func onUpdateTier(tier: int) -> void:
 	#ToolTxRect.modulate = Game.getTierColor(tier)
 
 func onUpdateCursorVisual(state: bool) -> void:
+	super(state)
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if state else Control.CURSOR_ARROW

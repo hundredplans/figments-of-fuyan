@@ -432,7 +432,6 @@ func setRewards(is_win: bool) -> void:
 	
 func getUpgradeRewards() -> ActionWrapper: # [ActionWrapper]
 	var options: Array = [
-		MaxEnergyAction.new(MAX_ENERGY_UPGRADE),
 		EnergyLimitAction.new(ENERGY_LIMIT_UPGRADE),
 		CardLimitAction.new(CARD_LIMIT_UPGRADE)]
 		

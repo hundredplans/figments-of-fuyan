@@ -21,9 +21,9 @@ var spawn_group: int
 var curse_id: int
 var level_preview: LevelPreview
 var env: Environment
+var hand_cards: Array
 
 signal set_spectate_card
-signal energy_changed
 signal request_camera_data
 signal request_camera_position_update
 signal phase_changed
@@ -50,10 +50,11 @@ func onSave() -> SavedData:
 	if rewards != null: rewards.onSave()
 	if speed_order != null: speed_order.onSave()
 	var old_player_vision_public_ids: Array = old_player_vision.map(func(x: GameObjectGD): return x.public_id)
+	var hand_cards_public_ids: Array = hand_cards.map(func(x: CardGD): return x.public_id)
 	
 	return SavedDataLevel.new(info.id, false, public_id, data, enemy_cards, getFieldCardDatas(), phase, level_camera_data, energy, max_energy,\
 		fight_type, is_ended, rewards, anti_boons, old_player_vision_public_ids, level_area_datastore, speed_order, spawn_group,\
-		curse_id, level_preview, env)
+		curse_id, level_preview, env, hand_cards_public_ids)
 
 func onClear() -> void:
 	queue_free()
@@ -71,6 +72,7 @@ func onLoadData(data: SavedData) -> void:
 	curse_id = data.curse_id
 	level_preview = data.level_preview
 	env = data.env
+	hand_cards = data.hand_cards_public_ids.map(func(x: int): return Game.onFindPublicIDObject(x))
 	
 	for light in info.lights:
 		add_child(light.instantiate())
@@ -126,7 +128,6 @@ func onLoadTileObjectInit(data: SavedDataTileObject) -> TileObjectGD:
 func onLoadActiveLevel(data: SavedDataLevel, _save_file: SaveFileGD) -> void:
 	# Triggers after UI and World have loaded
 	save_file = _save_file
-	energy_changed.emit(energy)
 	
 	var actions: Array = []
 	if isEpic() and !is_ended:
@@ -198,7 +199,7 @@ func onChangePhase(_phase: Game.Phases, instant: bool = false, reload: bool = fa
 			setAlliesTurnState(Game.TurnStates.INACTIVE, true)
 			
 	phase = _phase
-	phase_changed.emit(phase, old_phase, instant)
+	phase_changed.emit(phase, old_phase, instant, reload)
 	
 	if reload: return
 	match phase:
@@ -222,9 +223,6 @@ func onProcessAction(action: Action) -> void:
 			env = action.environment
 		elif action is FinishAwakenAction:
 			onCardFinishedAwakening(action)
-		elif action is EnergyAction:
-			energy = min(action.delta + energy, max_energy)
-			energy_changed.emit(energy, action)
 		elif action is ChangeTurnStateAction:
 			turn_state_changing.emit(action.Card, action)
 		elif action is ActiveEffectUsedAction:
@@ -278,6 +276,9 @@ func onProcessAction(action: Action) -> void:
 func onPassTurn() -> void:
 	var new_phase: Game.Phases
 	match phase:
+		Game.Phases.START:
+			if !Game.getAllyUnits(0).is_empty():
+				new_phase = Game.Phases.PLAYER
 		Game.Phases.PLAYER:
 			var ally_units: Array = Game.getAllyUnits(0)
 			var Card: CardGD = getAllySpectateObject()
@@ -480,3 +481,14 @@ func onCreateBackgroundScene() -> void:
 
 func getCurseID() -> int: return curse_id
 func getAreaID() -> int: return 1
+
+func onCheckAutoskipStartPhase() -> void:
+	var ally_spawns: Array = get_tree().get_nodes_in_group("AllySpawnsGD")
+	var ally_spawns_occupied: bool = ally_spawns.is_empty()\
+		or ally_spawns.all(func(x: SpawnGD): return x.isSpawnOccupied())
+	var no_cards: bool = hand_cards.all(func(x: CardGD): return !x.is_in_group("HandCardsGD"))
+	if ally_spawns_occupied or no_cards:
+		onPushAction(ChangePhaseAction.new(Game.Phases.PLAYER))
+
+func setHandCards(_hand_cards: Array) -> void: hand_cards = _hand_cards
+func getHandCards() -> Array: return hand_cards

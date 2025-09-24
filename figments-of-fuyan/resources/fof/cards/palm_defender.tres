@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://1bytr723e1jw"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=23 format=3 uid="uid://dpo6nypbgf7am"]
 
 [ext_resource type="Image" uid="uid://cdwhck256lnad" path="res://assets/sprites/game/cards/art_pop/palm_defender.png" id="2_0ye06"]
 [ext_resource type="Resource" uid="uid://dk14kkjps176t" path="res://resources/fof/archetypes/warden.tres" id="2_f0m57"]
@@ -29,8 +29,8 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_wf7wx"]
 script = ExtResource("13_2ronn")
-description = "BLOODTHIRST: Gain +1 HP if the killer was a Palm"
-default_values = Array[int]([])
+description = "REVENGE [[X]]: Gain +1 HP per ally Palm in vision"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_5caay"]
 script = ExtResource("12_5caay")
@@ -39,40 +39,42 @@ health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_rtj64")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_wf7wx")
 
 [sub_resource type="Resource" id="Resource_2ronn"]
 script = ExtResource("13_2ronn")
-description = "ARMOR [1]
-BLOODTHIRST: Gain +1 HP if the killer was a Palm"
-default_values = Array[int]([])
+description = "REVENGE [[X]]: Gain +1 HP per ally Palm in vision"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_hx7t3"]
 script = ExtResource("2_rtj64")
 display_number = 1
+turns = -1
 id = 1
 first_init = true
-public_id = 0
+public_id = 80
 metadata/_custom_type_script = "uid://dag3a8ejplko8"
 
 [sub_resource type="Resource" id="Resource_wp15d"]
 script = ExtResource("12_5caay")
-attack = 1
-health = 3
+attack = 2
+health = 4
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_rtj64")]([SubResource("Resource_hx7t3")])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_2ronn")
 
 [sub_resource type="Resource" id="Resource_lle5h"]
 script = ExtResource("13_2ronn")
-description = "ARMOR [1]
-BLOODTHIRST: Gain +1 HP if the killer was a Palm"
-default_values = Array[int]([])
+description = "REVENGE [[X]]: Gain +1 HP per ally Palm in vision"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_oibkk"]
 script = ExtResource("2_rtj64")
 display_number = 1
+turns = -1
 id = 1
 first_init = true
 public_id = 0
@@ -85,21 +87,23 @@ health = 4
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_rtj64")]([SubResource("Resource_oibkk")])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_lle5h")
 
 [sub_resource type="Resource" id="Resource_lisr1"]
 script = ExtResource("13_2ronn")
 description = "ARMOR [1]
-BLOODTHIRST: Gain +1 HP if the killer was a Palm"
-default_values = Array[int]([])
+REVENGE [[X]]: Gain +1 HP per ally Palm in vision"
+default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_ug81y"]
 script = ExtResource("12_5caay")
 attack = 2
-health = 6
+health = 4
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_rtj64")]([])
+description_index_for_active_effect_charges = -2
 description_datastore = SubResource("Resource_lisr1")
 
 [resource]

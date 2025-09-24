@@ -52,3 +52,5 @@ func onReset(Card: CardGD) -> void:
 func onCardTurnPassed() -> void:
 	if Trait == null: return
 	Trait.onCardTurnPassed(added_by)
+
+func getTurns() -> int: return Trait.turns if Trait != null else -1

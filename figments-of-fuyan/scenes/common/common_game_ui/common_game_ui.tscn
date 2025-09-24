@@ -117,9 +117,7 @@ mouse_filter = 2
 texture = ExtResource("9_lv8m3")
 
 [node name="TimeLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager" instance=ExtResource("6_p1mhw")]
-custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-text = "888:88"
 label_settings = ExtResource("2_hifen")
 
 [node name="LevelTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
@@ -133,10 +131,19 @@ unique_name_in_owner = true
 layout_mode = 2
 label_settings = ExtResource("2_hifen")
 
-[node name="BoonBox" type="GridContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 174.0
+offset_top = 60.0
+offset_right = 674.0
+offset_bottom = 224.0
+mouse_filter = 2
+
+[node name="BoonBox" type="GridContainer" parent="ScrollContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(500, 164)
 layout_mode = 2
+size_flags_vertical = 3
 mouse_filter = 2
 columns = 6
 script = ExtResource("8_kvjub")
@@ -144,6 +151,6 @@ BoonIconPacked = ExtResource("9_62j63")
 
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Control/StashButton" to="MarginContainer/HBoxContainer/Control/StashButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
 [connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonMouseInUI"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Control/StashButton" to="." method="onStashButtonPressed"]

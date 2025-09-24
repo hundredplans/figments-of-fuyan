@@ -24,14 +24,17 @@ var current_mouse_filter: Control.MouseFilter
 var is_mouse_in_ui: bool
 var disabled: bool
 var disable_tooltip: bool
+var default_alpha: float = 1.0
 
 var autoscale: bool
 var draggable: bool
 var is_dragging: bool
 var hoverable: bool
+var keep_rotation_drag_end: bool
 
 var original_tooltip_state: bool
 var original_icon_position: Vector2
+var original_icon_rotation: float
 var original_mouse_filter: Control.MouseFilter
 
 const SCALE_SPEED: float = 0.25
@@ -98,6 +101,7 @@ func onUpdateModulate() -> void:
 	if disabled: color = Color(0.2, 0.2, 0.2)
 	elif isHoveredColor(): color = Color(0.5, 0.5, 0.5)
 	else: color = Color.WHITE
+	color.a = default_alpha
 	ModulateMain.modulate = color
 	
 func isHoveredColor() -> bool:
@@ -124,6 +128,7 @@ func onDragBegin() -> void:
 	is_dragging = true
 	original_tooltip_state = disable_tooltip
 	original_icon_position = position
+	original_icon_rotation = rotation
 	disable_tooltip = true
 	
 	original_mouse_filter = current_mouse_filter
@@ -162,11 +167,14 @@ var ignore_drag_position_reset: bool
 func setIgnoreDragPositionReset(_ignore_drag_position_reset: bool) -> void:
 	ignore_drag_position_reset = _ignore_drag_position_reset
 	
+func setKeepRotationDragEnd(state: bool) -> void:
+	keep_rotation_drag_end = state
+	
 func onDragPositionReset() -> void:
 	if ignore_drag_position_reset: return
 	top_level = false
 	position = original_icon_position
-	rotation_degrees = 0
+	rotation = 0 if !keep_rotation_drag_end else original_icon_rotation
 	
 func onPressed() -> void:
 	if disabled: return
@@ -246,3 +254,6 @@ func onItemGainedVisual() -> void:
 		.as_relative().set_trans(Tween.TRANS_SINE)
 
 func onUpdateCursorVisual(state: bool) -> void: pass
+func setDefaultAlpha(_default_alpha: float) -> void:
+	default_alpha = _default_alpha
+	onUpdateModulate()

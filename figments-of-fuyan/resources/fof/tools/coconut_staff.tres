@@ -9,7 +9,7 @@
 
 [sub_resource type="Resource" id="Resource_tr0e8"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [[X]]: Heal allies in vision [1] HP"
+description = "On Hit: Heal an injured ally in vision [1] HP"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_sj3uk"]
@@ -17,19 +17,19 @@ script = ExtResource("6_iil5n")
 description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_tr0e8")
 
-[sub_resource type="Resource" id="Resource_xjk8v"]
+[sub_resource type="Resource" id="Resource_iil5n"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [[X]]: Heal allies in vision [2] HP"
+description = "On Hit: Heal an injured ally in vision [2] HP"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_odp78"]
 script = ExtResource("6_iil5n")
 description_index_for_active_effect_charges = 0
-description_datastore = SubResource("Resource_xjk8v")
+description_datastore = SubResource("Resource_iil5n")
 
 [sub_resource type="Resource" id="Resource_fus8k"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [[X]]: Heal all allies [2] HP"
+description = "On Hit: Heal an injured ally in vision [3] HP"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_sr3gn"]
@@ -37,21 +37,21 @@ script = ExtResource("6_iil5n")
 description_index_for_active_effect_charges = 0
 description_datastore = SubResource("Resource_fus8k")
 
-[sub_resource type="Resource" id="Resource_bd8v1"]
+[sub_resource type="Resource" id="Resource_xr6sq"]
 script = ExtResource("8_fus8k")
-description = "ABILITY [[X]]: Heal all allies [3] HP"
+description = "On Hit: Heal an injured ally in vision [4] HP"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_46vcf"]
 script = ExtResource("6_iil5n")
 description_index_for_active_effect_charges = 0
-description_datastore = SubResource("Resource_bd8v1")
+description_datastore = SubResource("Resource_xr6sq")
 
 [resource]
 script = ExtResource("1_washl")
 tiers = Array[ExtResource("6_iil5n")]([SubResource("Resource_sj3uk"), SubResource("Resource_odp78"), SubResource("Resource_sr3gn"), SubResource("Resource_46vcf")])
 icon = ExtResource("2_w3w6p")
-rarity = 5
+rarity = 4
 use_charges = false
 auto_reset_charges = false
 reset_to_default = false

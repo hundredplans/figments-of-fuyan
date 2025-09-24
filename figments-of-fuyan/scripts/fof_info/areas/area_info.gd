@@ -26,6 +26,7 @@ class_name AreaInfo extends FofInfo
 
 @export var background_scene: PackedScene
 @export var loading_screens: Array[LoadingScreenDatastore]
+@export var area_icon: Texture2D
 
 static func getInfoPath() -> String: return "res://resources/fof/areas"
 static func getFofName() -> String: return "Area"
@@ -36,6 +37,7 @@ func getAreaColor() -> Color: return area_color
 func getSecondAreaColor() -> Color: return secondary_area_color
 func getThirdAreaColor() -> Color: return tertiary_area_color
 func getBackgroundScene() -> Node3D: return background_scene.instantiate()
+func getAreaIcon() -> Texture2D: return area_icon
 
 func getRandomLoadingScreenDatastore() -> LoadingScreenDatastore:
 	return loading_screens.pick_random()

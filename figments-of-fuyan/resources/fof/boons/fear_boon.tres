@@ -9,7 +9,7 @@
 
 [sub_resource type="Resource" id="Resource_117bl"]
 script = ExtResource("6_p05qy")
-description = "Enemies are DAZED for the first [2] Turns"
+description = "Your first kill applies BLIND [1] to all enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_ka1u6"]
@@ -18,7 +18,7 @@ description_datastore = SubResource("Resource_117bl")
 
 [sub_resource type="Resource" id="Resource_ii08n"]
 script = ExtResource("6_p05qy")
-description = "Enemies are STUNNED for the first [2] Turns"
+description = "Your first kill applies BLIND [2] to all enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_gh145"]
@@ -27,7 +27,7 @@ description_datastore = SubResource("Resource_ii08n")
 
 [sub_resource type="Resource" id="Resource_lw0r1"]
 script = ExtResource("6_p05qy")
-description = "Enemies are STUNNED for the first [3] Turns"
+description = "Your first kill applies BLIND [3] to all enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_7gb4p"]
@@ -36,7 +36,7 @@ description_datastore = SubResource("Resource_lw0r1")
 
 [sub_resource type="Resource" id="Resource_bmsjf"]
 script = ExtResource("6_p05qy")
-description = "Enemies are STUNNED for the first [4] Turns"
+description = "Your first kill applies BLIND [4] to all enemies"
 default_values = Array[int]([])
 
 [sub_resource type="Resource" id="Resource_p05qy"]
@@ -49,7 +49,6 @@ tiers = Array[ExtResource("5_ii08n")]([SubResource("Resource_ka1u6"), SubResourc
 icon = ExtResource("2_oyqu1")
 rarity = 3
 curse = false
-elite_fight_curse = false
 display_trigger = true
 use_charges = true
 auto_reset_charges = true

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://dkb5xkt6xq6lv"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://bh01lehpxuumu"]
 
 [ext_resource type="Resource" uid="uid://bbqdeswvpt0y6" path="res://resources/fof/archetypes/support.tres" id="2_0yrhv"]
 [ext_resource type="Script" uid="uid://dag3a8ejplko8" path="res://scripts/saved_data/traits/saved_data_trait.gd" id="2_85cop"]
@@ -29,13 +29,13 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_2yrh6"]
 script = ExtResource("13_2bsll")
-description = "ABILITY [[X]]: Give +1 ATT for [1] Turn to a double adjacent ally and Heal [1] HP the turn after"
+description = "When an ally is injured in vision [[X]]: They Heal [1] HP and gain +1 SPD for [1] Turn"
 default_values = Array[int]([2])
 
 [sub_resource type="Resource" id="Resource_oc82m"]
 script = ExtResource("12_71lmq")
-attack = 2
-health = 1
+attack = 1
+health = 2
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_85cop")]([])
@@ -44,13 +44,13 @@ description_datastore = SubResource("Resource_2yrh6")
 
 [sub_resource type="Resource" id="Resource_0ilmr"]
 script = ExtResource("13_2bsll")
-description = "ABILITY [[X]]: Give +2 ATT for [1] Turn to a double adjacent ally and Heal [1] HP the turn after"
-default_values = Array[int]([2])
+description = "When an ally is injured in vision [[X]]: They Heal [1] HP and gain +1 SPD for [1] Turn"
+default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_6886s"]
 script = ExtResource("12_71lmq")
-attack = 2
-health = 1
+attack = 1
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_85cop")]([])
@@ -59,13 +59,13 @@ description_datastore = SubResource("Resource_0ilmr")
 
 [sub_resource type="Resource" id="Resource_171g2"]
 script = ExtResource("13_2bsll")
-description = "ABILITY [[X]]: Give +2 ATT for [1] Turn to a double adjacent ally and Heal [1] HP the turn after"
+description = "When an ally is injured in vision [[X]]: They Heal [2] HP and gain +1 SPD for [1] Turn"
 default_values = Array[int]([3])
 
 [sub_resource type="Resource" id="Resource_71lmq"]
 script = ExtResource("12_71lmq")
-attack = 2
-health = 1
+attack = 1
+health = 3
 speed = 2
 energy = 2
 traits = Array[ExtResource("2_85cop")]([])
@@ -74,14 +74,14 @@ description_datastore = SubResource("Resource_171g2")
 
 [sub_resource type="Resource" id="Resource_2bsll"]
 script = ExtResource("13_2bsll")
-description = "ABILITY [[X]]: Give +2 ATT for [1] Turn to a double adjacent ally and Heal [2] HP the turn after"
-default_values = Array[int]([3])
+description = "When an ally is injured in vision [[X]]: They Heal [2] HP and gain +1 SPD for [1] Turn"
+default_values = Array[int]([4])
 
 [sub_resource type="Resource" id="Resource_r16p1"]
 script = ExtResource("12_71lmq")
-attack = 2
-health = 1
-speed = 3
+attack = 1
+health = 4
+speed = 2
 energy = 2
 traits = Array[ExtResource("2_85cop")]([])
 description_index_for_active_effect_charges = 0

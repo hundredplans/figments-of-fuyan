@@ -11,6 +11,7 @@ func onPreAction() -> void:
 		Card.add_to_group("AllyCardsGD")
 		Card.onChangeCardPlace(Game.CardPlaces.HAND)
 
+	Game.getLevel().setHandCards(cards)
 	setActionDelay(CREATE_HAND_DELAY * cards.size())
 
 func onPostAction() -> void:

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://pudlbmekhwjv"]
+[gd_resource type="Resource" script_class="CardInfo" load_steps=21 format=3 uid="uid://cijd5v4eogwnb"]
 
 [ext_resource type="Image" uid="uid://dwaxgobdb2kxy" path="res://assets/sprites/game/cards/art_pop/sellus_palmus.png" id="2_3b8rb"]
 [ext_resource type="Script" uid="uid://c4ung4opynmre" path="res://scripts/fof_info/cards/card_info.gd" id="2_8byqm"]
@@ -29,7 +29,7 @@ _bundled = {
 
 [sub_resource type="Resource" id="Resource_smg26"]
 script = ExtResource("13_nrtu7")
-description = "ABILITY [[X]]: Heal [1] HP to adjacent allies"
+description = "ABILITY [[X]]: Heal [2] HP to an adjacent ally or self"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_u67wb"]
@@ -44,7 +44,7 @@ description_datastore = SubResource("Resource_smg26")
 
 [sub_resource type="Resource" id="Resource_i6nb6"]
 script = ExtResource("13_nrtu7")
-description = "ABILITY [[X]]: Heal [1] HP to adjacent allies"
+description = "ABILITY [[X]]: Heal [2] HP to an adjacent ally or self"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_keks8"]
@@ -59,7 +59,7 @@ description_datastore = SubResource("Resource_i6nb6")
 
 [sub_resource type="Resource" id="Resource_bibs7"]
 script = ExtResource("13_nrtu7")
-description = "ABILITY [[X]]: Heal [2] HP to adjacent allies"
+description = "ABILITY [[X]]: Heal [3] HP to an adjacent ally or self"
 default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_burdn"]
@@ -74,8 +74,8 @@ description_datastore = SubResource("Resource_bibs7")
 
 [sub_resource type="Resource" id="Resource_nrtu7"]
 script = ExtResource("13_nrtu7")
-description = "ABILITY [[X]]: Heal [2] HP to adjacent allies"
-default_values = Array[int]([2])
+description = "ABILITY [[X]]: Heal [5] HP to an adjacent ally or self"
+default_values = Array[int]([1])
 
 [sub_resource type="Resource" id="Resource_qdr0r"]
 script = ExtResource("12_burdn")

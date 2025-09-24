@@ -22,9 +22,10 @@ func onChangeCharges(delta: int) -> void:
 		onPushAction(BoonActivatedAction.new(self, null))
 
 func onBoon(_action: Action = null) -> void:
-	var actions: Array = [ChangeBoonChargesAction.new(self, -charges),\
-	EnergyAction.new(ENERGY_GAIN)]
-	onPushAction(actions)
+	#var actions: Array = [ChangeBoonChargesAction.new(self, -charges),\
+	#EnergyAction.new(ENERGY_GAIN)]
+	#onPushAction(actions)
+	pass
 
 func onRetiered(_tier: int) -> void:
 	super(_tier)

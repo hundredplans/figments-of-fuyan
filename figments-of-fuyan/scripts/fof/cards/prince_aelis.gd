@@ -6,8 +6,9 @@ const TIER_THREE_ENERGY: int = 2
 const TIER_FOUR_ENERGY: int = 3
 
 func onChangeHandCardsEnergy(delta: int) -> void:
-	for HandCard: CardGD in get_tree().get_nodes_in_group("HandCardsGD"):
-		onPushAction(CardEnergyAction.new(HandCard, delta))
+	pass
+	#for HandCard: CardGD in get_tree().get_nodes_in_group("HandCardsGD"):
+		#onPushAction(CardEnergyAction.new(HandCard, delta))
 
 func onProcessAction(action: Action) -> void:
 	super(action)

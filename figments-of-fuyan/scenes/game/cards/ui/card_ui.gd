@@ -38,6 +38,7 @@ extends TbcUI
 
 @export var bitmaps: Array[BitMap]
 @export var rarities: Array[Image]
+@export var TEAM_OUTLINE_CANVAS: Material
 
 #region Globals
 var Card: CardGD
@@ -213,5 +214,11 @@ func onToolIconMouseInUI(_state: bool) -> void:
 	onUpdateModulate()
 
 func onUpdateCursorVisual(state: bool) -> void:
-	PressButton.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if draggable and is_mouse_in_ui and !disabled else Control.CURSOR_ARROW
-		
+	super(state)
+	PressButton.set_default_cursor_shape(Control.CURSOR_POINTING_HAND if state else Control.CURSOR_ARROW)
+	
+func onCreateTeamIdentifier() -> void:
+	var team: int = Card.getTeam()
+	Background.material = TEAM_OUTLINE_CANVAS
+	Background.set_instance_shader_parameter("outline_color", Game.getTeamColor(team))
+	Background.set_instance_shader_parameter("border_size", OUTLINE_PIXEL_SIZE)

@@ -80,7 +80,11 @@ func onFadeBackgroundNodes(end_value: float, condition: String = "", change_mous
 
 func getStashButton() -> Control: return StashButton
 
-func setLevelName(level_name: String, level_color: Color) -> void:
+func setLevelName(level_name: String, level_color: Color, area_id: int) -> void:
 	LevelTxRect.visible = true
 	LevelNameLabel.text = level_name
 	LevelNameLabel.modulate = level_color
+	LevelTxRect.texture = Helper.getFofInfoID(AreaInfo, area_id).getAreaIcon()
+
+func setActionLock(state: bool) -> void:
+	StashButton.setDisabled(state)
