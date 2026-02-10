@@ -1,0 +1,9 @@
+# Figments of Fuyan Screenshots
+![Figments of Fuyan Screenshot 1](/screenshots/figments_of_fuyan1.png)
+![Figments of Fuyan Screenshot 2](/screenshots/figments_of_fuyan2.png)
+![Figments of Fuyan Screenshot 3](/screenshots/figments_of_fuyan3.png)
+![Figments of Fuyan Screenshot 4](/screenshots/figments_of_fuyan4.png)
+![Figments of Fuyan Screenshot 5](/screenshots/figments_of_fuyan5.png)
+![Figments of Fuyan Screenshot 6](/screenshots/figments_of_fuyan6.png)
+![Figments of Fuyan Screenshot 7](/screenshots/figments_of_fuyan7.png)
+![Figments of Fuyan Screenshot 8](/screenshots/figments_of_fuyan8.png)
