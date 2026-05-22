@@ -13,8 +13,7 @@ func onPreAction() -> void:
 	
 func onPostAction() -> void:
 	FieldEffect.FofObject = FieldEffectOwner
-	FieldEffect.Card.onAddFieldEffect(FieldEffect)
-	FieldEffect.onFieldEffectAdded()
+	FieldEffect.Card.onAddFieldEffect(FieldEffect, true)
 	
 func getLogInfo() -> Array:
 	return ["FieldEffect: " + FieldEffect.info.name]

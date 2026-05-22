@@ -7,11 +7,12 @@ var is_passed_turn: bool
 var is_inactive_with_another_active: bool
 var phase: Game.Phases
 var is_ability_mode: bool
-var everyone_passed_turn: bool
+var unpassed_turns: int
 
 func onUpdateDisabled() -> void:
-	var player_phase_checks: bool = is_ally_spectating and (!is_passed_turn or everyone_passed_turn) and !is_inactive_with_another_active
-	setDisabled(action_lock or (phase == Game.Phases.PLAYER and !player_phase_checks) or is_ability_mode)
+	var player_phase_checks: bool = is_ally_spectating and (!is_passed_turn or unpassed_turns) and !is_inactive_with_another_active
+	setDisabled(action_lock or (phase == Game.Phases.PLAYER and !player_phase_checks) or is_ability_mode\
+		 or (phase == Game.Phases.START and Game.getAllyUnits(0).is_empty()))
 	onUpdateModulate()
 	
 func setActionLock(state: bool) -> void:
@@ -32,17 +33,17 @@ func setTurnStates(Card: CardGD, override: bool = false) -> void:
 		is_passed_turn = Card.turn_state == Game.TurnStates.PASSED
 		is_inactive_with_another_active = Card.turn_state == Game.TurnStates.INACTIVE and\
 			Game.getAllyUnits().any(func(x: CardGD): return x != Card and x.turn_state == Game.TurnStates.ACTIVE)
-		everyone_passed_turn = Game.getAllyUnits().all(func(x: CardGD): return x.turn_state == Game.TurnStates.PASSED)
+		setUnpassedTurns()
 	onUpdateDisabled()
 	
-func setEveryonePassedTurn() -> void:
-	everyone_passed_turn = Game.getAllyUnits().all(func(x: CardGD): return x.turn_state == Game.TurnStates.PASSED)
+func setUnpassedTurns() -> void:
+	unpassed_turns = Game.getAllyUnits().filter(func(x: CardGD): return x.turn_state != Game.TurnStates.PASSED).size()
 	onUpdateDisabled()
 	onUpdatePassLabelText()
 
 func setPhase(_phase: Game.Phases) -> void:
 	phase = _phase
-	everyone_passed_turn = false
+	unpassed_turns = -1
 	onUpdateDisabled()
 	onUpdatePassLabelText()
 
@@ -77,4 +78,4 @@ func _on_pressed() -> void:
 		.as_relative().set_trans(Tween.TRANS_SINE)
 
 func onUpdatePassLabelText() -> void:
-	PassButtonLabel.text = "Pass Turn" if !everyone_passed_turn and phase == Game.Phases.PLAYER else "Pass Phase"
+	PassButtonLabel.text = "Pass Turn" if unpassed_turns > 1 and phase == Game.Phases.PLAYER else "Pass Phase"

@@ -7,6 +7,7 @@ func onAddBoon(Boon: BoonGD, visual: bool = false) -> void:
 	var BoonIcon: Control = BoonIconPacked.instantiate()
 	add_child(BoonIcon)
 	BoonIcon.setInfo(Boon, false, false, true)
+	BoonIcon.mouse_in_ui.connect(onMouseInUI)
 	BoonIcon.onShowTierLabel()
 	BoonIcon.setDisabled(Boon.getDisabled())
 	

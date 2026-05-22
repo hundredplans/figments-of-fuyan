@@ -2,6 +2,9 @@ extends Control
 
 
 #region Onready
+@onready var MinimapButton: DefaultButton = %MinimapButton
+@onready var VisionModeButton: DefaultButton = %VisionModeButton
+@onready var GraveyardButton: DefaultButton = %GraveyardButton
 @onready var TopCenter: Control = %TopCenter
 @onready var HandBox: Container = %HandBox
 @onready var CameraButton: DefaultButton = %CameraButton
@@ -27,6 +30,8 @@ extends Control
 @onready var HoverCardControl: Control = %HoverCardControl
 @onready var BoonEffectFiller: Control = %BoonEffectFiller
 @onready var EpicFightControl: Control = %EpicFightControl
+@onready var AllyStatusScroll: ScrollContainer = %AllyStatusScroll
+@onready var EnemyStatusScroll: ScrollContainer = %EnemyStatusScroll
 #endregion
 
 #region Globals
@@ -69,6 +74,12 @@ func setInfo(_save_file: SaveFileGD) -> void:
 	CommonGameUI.update_stash_screen.connect(onUpdateStashScreenExisting)
 	BoonBox = CommonGameUI.getBoonBox()
 	SpectatedUnitStatusUI.visible = false
+	
+	AllyStatusScroll.get_v_scroll_bar().mouse_entered.connect(onMouseInUI.bind(true))
+	AllyStatusScroll.get_v_scroll_bar().mouse_exited.connect(onMouseInUI.bind(false))
+	
+	EnemyStatusScroll.get_v_scroll_bar().mouse_entered.connect(onMouseInUI.bind(true))
+	EnemyStatusScroll.get_v_scroll_bar().mouse_exited.connect(onMouseInUI.bind(false))
 	
 	Game.ActionManagerReference.action_playing.connect(onActionPlaying)
 		
@@ -227,11 +238,40 @@ func onCameraUpdated(SpectateObject: GameObjectGD, __: GameObjectGD = null) -> v
 #endregion
 
 #region Deck / Graveyard
+var GraveyardScreen: Control
+var is_graveyard_fading: bool
 func _on_graveyard_button_pressed() -> void:
-	var GraveyardScreen: Control = GraveyardScreenPacked.instantiate()
-	MainControl.add_child(GraveyardScreen)
-	GraveyardScreen.mouse_in_ui.connect(onMouseInUI)
-	GraveyardScreen.setInfo(Game.getArea().getAreaColor())
+	if is_graveyard_fading: return
+	if GraveyardScreen == null:
+		is_graveyard_fading = true
+		GraveyardScreen = GraveyardScreenPacked.instantiate()
+		GraveyardScreen.mouse_in_ui.connect(onMouseInUI)
+		MainControl.add_child(GraveyardScreen)
+		GraveyardScreen.exit_start.connect(onGraveyardExitStart)
+		
+		CommonGameUI.onFadeStashButton(true)
+		var original_pos: Vector2 = GraveyardButton.global_position
+		GraveyardButton.top_level = true
+		GraveyardButton.global_position = original_pos
+		PassButton.onFade(false)
+		LeftCameraArrow.onFade(false)
+		RightCameraArrow.onFade(false)
+		await GraveyardScreen.setInfo(Game.getArea().getAreaColor())
+		is_graveyard_fading = false
+	else:
+		is_graveyard_fading = true
+		await onGraveyardExitStart()
+		is_graveyard_fading = false
+	
+func onGraveyardExitStart() -> void:
+	CommonGameUI.onFadeStashButton(false)
+	PassButton.onFade(true)
+	LeftCameraArrow.onFade(true)
+	RightCameraArrow.onFade(true)
+	await GraveyardScreen.onFade(false)
+	GraveyardButton.top_level = false
+	GraveyardButton.position = Vector2.ZERO
+	get_viewport().call_deferred("update_mouse_cursor_state")
 #endregion
 
 #region Pass Button
@@ -303,7 +343,7 @@ func onAwakened(Card: CardGD) -> void:
 	Card.inspect_screen_created.connect(onInspectScreenCreated)
 	#Card.FieldInfo.visible = visible
 	if !Card.isAlly(0): return
-	PassButton.setEveryonePassedTurn()
+	PassButton.setUnpassedTurns()
 #endregion
 
 #region Death
@@ -312,7 +352,7 @@ func onDeath(Card: CardGD) -> void:
 	else: EnemyStatusManager.onRemoveUnitStatusUI(Card)
 	
 	if !Card.isAlly(0): return
-	PassButton.setEveryonePassedTurn()
+	PassButton.setUnpassedTurns()
 #endregion
 
 #region Active Effects
@@ -358,7 +398,7 @@ func onGameEnded(rewards: Rewards) -> void:
 	for btn in get_tree().get_nodes_in_group("ActionLockDisabled").filter(func(x: Control): return x is HighlightTxButton):
 		btn.setDisabled(btn.is_in_group("EndGameDisabled"))
 	
-	HandBox.onUnpin(true)
+	CommonGameUI.setGameEnded(true)
 	
 var stash_screen_previous_fade: bool
 func onRewardsStashScreenFade(fade_in: bool) -> void:
@@ -563,9 +603,23 @@ func onCardPlayed(action: PlayCardAction) -> void:
 
 func onUpdateStashScreenExisting() -> void:
 	if StashScreen == null: onCreateStashScreen()
-	else: StashScreen.onStartExit()
+	else: onRemoveStashScreen()
+		
 	
 func onCreateStashScreen() -> void:
 	StashScreen = Game.onCreateStashScreen(self)
 	if StashScreen == null: return
+	StashScreen.onStashInLevel()
 	StashScreen.mouse_in_ui.connect(onMouseInUI)
+	CommonGameUI.onStashInLevel(false)
+	onStashScreenUpdated(true)
+	
+func onRemoveStashScreen() -> void:
+	StashScreen.onStartExit()
+	CommonGameUI.onStashInLevel(true)
+	onStashScreenUpdated(false)
+	
+func onStashScreenUpdated(is_created: bool) -> void:
+	for node: Control in [LeftCameraArrow, PassButton, RightCameraArrow, CameraButton,
+	GraveyardButton, MinimapButton, VisionModeButton]:
+		node.onFade(!is_created)

@@ -35,9 +35,15 @@ func setData(_data: SavedData) -> void:
 		ToolIconRect.visible = false
 		MainTexture.texture = null
 		MainPanel.theme_type_variation = ""
-		
-func setBorderColor(color: Color) -> void:
-	MainPanel.self_modulate = color
+
+var BorderColorTween: Tween
+func setBorderColor(color: Color, instant: bool = true) -> void:
+	if BorderColorTween: BorderColorTween.kill()
+	if instant:
+		MainPanel.self_modulate = color
+	else:
+		BorderColorTween = create_tween()
+		BorderColorTween.tween_property(MainPanel, "self_modulate", color, Game.FADE_TIME)
 		
 var is_mouse_in_ui: bool
 func onMouseInUI(state: bool) -> void:

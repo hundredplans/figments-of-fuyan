@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://brlcl2ndapeef"]
+[gd_scene load_steps=15 format=3 uid="uid://brlcl2ndapeef"]
 
 [ext_resource type="Texture2D" uid="uid://do8qr6q0dyyiy" path="res://assets/sprites/ui/icons/deck.png" id="1_1s2qd"]
 [ext_resource type="Script" uid="uid://ct4bjhjew5r4g" path="res://scenes/common/common_game_ui/common_game_ui.gd" id="1_xg8jk"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://ct1cn5tc1ofmb" path="res://scenes/game/boons/boon_icon.tscn" id="9_62j63"]
 [ext_resource type="Texture2D" uid="uid://b10d4u8mq4nud" path="res://assets/sprites/ui/icons/clock_icon.png" id="9_lv8m3"]
 [ext_resource type="Texture2D" uid="uid://bya3i5mfjn6m1" path="res://assets/sprites/ui/icons/iobject.png" id="11_lv8m3"]
+[ext_resource type="Script" uid="uid://l62qjg4j0jkc" path="res://scenes/common/new/default_control.gd" id="12_umh2b"]
 
 [node name="CommonGameUI" type="Control"]
 layout_mode = 3
@@ -68,28 +69,20 @@ offset_bottom = 182.0
 text = "3/4"
 label_settings = ExtResource("4_xg8jk")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="ExtraInfoManager" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+[node name="ExtraInfoManager" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = 8
+script = ExtResource("12_umh2b")
 
-[node name="ShillingControl" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
+[node name="ShillingControl" type="Control" parent="MarginContainer/HBoxContainer/ExtraInfoManager"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ShillingTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager/ShillingControl"]
+[node name="ShillingTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/ExtraInfoManager/ShillingControl"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 1
@@ -103,7 +96,7 @@ size_flags_horizontal = 0
 mouse_filter = 2
 texture = ExtResource("3_av872")
 
-[node name="ShillingsLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
+[node name="ShillingsLabel" type="Label" parent="MarginContainer/HBoxContainer/ExtraInfoManager"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "15"
@@ -111,35 +104,38 @@ label_settings = ExtResource("2_hifen")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ClockTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
+[node name="ClockTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/ExtraInfoManager"]
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("9_lv8m3")
 
-[node name="TimeLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager" instance=ExtResource("6_p1mhw")]
+[node name="TimeLabel" parent="MarginContainer/HBoxContainer/ExtraInfoManager" instance=ExtResource("6_p1mhw")]
 layout_mode = 2
 label_settings = ExtResource("2_hifen")
 
-[node name="LevelTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
+[node name="LevelTxRect" type="TextureRect" parent="MarginContainer/HBoxContainer/ExtraInfoManager"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 texture = ExtResource("11_lv8m3")
 
-[node name="LevelNameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/ExtraInfoManager"]
+[node name="LevelNameLabel" type="Label" parent="MarginContainer/HBoxContainer/ExtraInfoManager"]
 unique_name_in_owner = true
 layout_mode = 2
 label_settings = ExtResource("2_hifen")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="BoonBoxContainer" type="ScrollContainer" parent="."]
+unique_name_in_owner = true
+layout_direction = 2
 layout_mode = 0
 offset_left = 174.0
 offset_top = 60.0
-offset_right = 674.0
+offset_right = 685.0
 offset_bottom = 224.0
 mouse_filter = 2
+script = ExtResource("12_umh2b")
 
-[node name="BoonBox" type="GridContainer" parent="ScrollContainer"]
+[node name="BoonBox" type="GridContainer" parent="BoonBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(500, 164)
 layout_mode = 2

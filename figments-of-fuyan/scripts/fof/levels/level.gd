@@ -277,8 +277,7 @@ func onPassTurn() -> void:
 	var new_phase: Game.Phases
 	match phase:
 		Game.Phases.START:
-			if !Game.getAllyUnits(0).is_empty():
-				new_phase = Game.Phases.PLAYER
+			new_phase = Game.Phases.PLAYER
 		Game.Phases.PLAYER:
 			var ally_units: Array = Game.getAllyUnits(0)
 			var Card: CardGD = getAllySpectateObject()

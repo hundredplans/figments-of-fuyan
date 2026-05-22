@@ -8,12 +8,14 @@
 
 [node name="UnitStatusUI" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
+layout_direction = 2
 offset_right = 100.0
 offset_bottom = 100.0
 mouse_filter = 2
 theme_override_constants/separation = 15
 alignment = 2
 script = ExtResource("1_2ittu")
+ACTIVE_COLOR = Color(1, 1, 0, 1)
 PASSED_TURN_STATE_COLOR = Color(0.374139, 0.374139, 0.374139, 1)
 UnitStatusUIStatsManagerSmallPacked = ExtResource("2_tfqou")
 UnitStatusUIStatsManagerBigPacked = ExtResource("3_hdo2m")

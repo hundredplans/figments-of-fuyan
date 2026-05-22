@@ -9,7 +9,7 @@ const UNIT_VISIBLE_PARTICLE_SCENE_PATH: String = "res://scenes/particles/unit_vi
 const BASE_MATERIAL_BROWN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_brown_transparent.tres"
 const BASE_MATERIAL_GREEN_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_green_transparent.tres"
 const BASE_MATERIAL_RED_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_red_transparent.tres"
-
+const BASE_MATERIAL_PASSED_TRANSPARENT_PATH: String = "res://resources/materials/game/base_material_colored/base_material_grey_transparent.tres"
 const BASE_MATERIAL_SPECULAR_PATH: String = "res://resources/materials/game/base_material_specular.tres"
 const BASE_MATERIAL_ALPHAGREY_PATH: String = "res://resources/materials/game/base_material_alphagrey_hashing.tres"
 
@@ -80,6 +80,9 @@ func getColoredBaseMaterial(team: int) -> ShaderMaterial:
 		1: return load(BASE_MATERIAL_RED_TRANSPARENT_PATH)
 		2: return load(BASE_MATERIAL_BROWN_TRANSPARENT_PATH)
 	return null
+	
+func getPassedBaseMaterial() -> ShaderMaterial:
+	return load(BASE_MATERIAL_PASSED_TRANSPARENT_PATH)
 	
 func getAwakenAudio() -> AudioStream: return awaken_audio
 func getDeathAudio() -> AudioStream: return death_audio

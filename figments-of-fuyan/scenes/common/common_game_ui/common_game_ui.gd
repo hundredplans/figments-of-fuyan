@@ -15,12 +15,15 @@ const SHILLING_SPIN_TIME: float = 2.0
 @onready var BoonBox: Control = %BoonBox
 @onready var ShillingsLabel: Label = %ShillingsLabel
 @onready var StashAmountLabel: Label = %StashAmountLabel
-@onready var StashButton: TextureRect = %StashButton
+@onready var StashButton: DefaultButton = %StashButton
 @onready var ShillingTxRect: TextureRect = %ShillingTxRect
 
+@onready var BoonBoxContainer: DefaultControl = %BoonBoxContainer
 @onready var ExtraInfoManager: Control = %ExtraInfoManager
 @export var show_card_amount_label: bool = true
 
+var is_game_ended: bool
+var is_action_lock: bool
 var is_mouse_in_ui: bool
 
 func _ready() -> void:
@@ -87,4 +90,20 @@ func setLevelName(level_name: String, level_color: Color, area_id: int) -> void:
 	LevelTxRect.texture = Helper.getFofInfoID(AreaInfo, area_id).getAreaIcon()
 
 func setActionLock(state: bool) -> void:
-	StashButton.setDisabled(state)
+	is_action_lock = state
+	onUpdateStashButtonDisabled()
+	
+func setGameEnded(state: bool) -> void:
+	is_game_ended = state
+	onUpdateStashButtonDisabled()
+	
+var FadeStashTween: Tween
+func onFadeStashButton(fade_out: bool) -> void:
+	StashButton.onFade(!fade_out)
+	
+func onStashInLevel(fade_in: bool) -> void:
+	for node: Control in [ExtraInfoManager, BoonBoxContainer]:
+		node.onFade(fade_in)
+
+func onUpdateStashButtonDisabled() -> void:
+	StashButton.setDisabled(is_action_lock and !is_game_ended)

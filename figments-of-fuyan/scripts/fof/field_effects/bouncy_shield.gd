@@ -9,8 +9,10 @@ func onProcessAction(action: Action) -> void:
 		if action is RemoveFieldEffectAction and action.FieldEffect != null and action.FieldEffect.info.id == SHIELD_ID and action.FieldEffect.Card == Card:
 			onPushAction(FieldEffectActivatedAction.new(self, action))
 	
-func onFieldEffectAdded() -> void:
-	Card.onGainShield(self)
+func onFieldEffectAdded(is_init: bool) -> void:
+	super(is_init)
+	if is_init:
+		Card.onGainShield(self)
 
 func onFieldEffect(_action: Action) -> void:
 	var enemy_cards: Array = Game.getAllyUnits(1)

@@ -78,5 +78,5 @@ func getCharges() -> int:
 
 func getFofObject() -> FofGD: return FofObject
 func onForceUpdateDisplayNumber() -> void: pass
-func onFieldEffectAdded() -> void: pass
+func onFieldEffectAdded(is_init: bool) -> void: pass
 func getTurns() -> int: return turns

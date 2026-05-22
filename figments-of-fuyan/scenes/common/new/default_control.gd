@@ -51,3 +51,21 @@ func onChangeHoverColor(color: Color) -> void:
 	
 func setMouseFilter(_mouse_filter: Control.MouseFilter) -> void:
 	mouse_filter = _mouse_filter
+
+var FadeTween: Tween
+func onFade(fade_in: bool) -> void:
+	var value: float = 1.0 if fade_in else 0.0
+	if FadeTween: FadeTween.kill()
+	FadeTween = create_tween()
+	FadeTween.tween_property(self, "modulate:a", value, Game.FADE_TIME)
+	
+	if !fade_in:
+		setMouseFilter(Control.MouseFilter.MOUSE_FILTER_IGNORE)
+		var OldFadeTween: Tween = FadeTween
+		await FadeTween.finished
+		if FadeTween == OldFadeTween: return
+		visible = false
+	else:
+		visible = true
+		await FadeTween.finished
+		setMouseFilter(Control.MouseFilter.MOUSE_FILTER_STOP)

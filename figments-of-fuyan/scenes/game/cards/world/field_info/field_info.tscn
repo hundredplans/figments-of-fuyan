@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://ct6euhy8orf2m"]
+[gd_scene load_steps=65 format=3 uid="uid://ct6euhy8orf2m"]
 
 [ext_resource type="Script" uid="uid://bsrlt8ui5oxuq" path="res://scenes/game/cards/world/field_info/field_info.gd" id="1_doj6w"]
 [ext_resource type="PackedScene" uid="uid://b7aqntno6susb" path="res://assets/models/general/numbers/stat_numbers/zero.glb" id="2_emwqa"]
@@ -59,8 +59,6 @@
 [ext_resource type="Texture2D" uid="uid://cyypgr821ykya" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up1.png" id="39_y8ii6"]
 [ext_resource type="Texture2D" uid="uid://d2uo58hiywsw8" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up2.png" id="40_y70rl"]
 [ext_resource type="Texture2D" uid="uid://cqx55eb3klkcq" path="res://assets/sprites/game/fof_object_icons/status_effects/delayed_stat/up3.png" id="41_cx6x4"]
-[ext_resource type="Script" uid="uid://lg15tqsjkfmh" path="res://scripts/fof/traits/extra/trait_combination_datastore.gd" id="43_1ekr7"]
-[ext_resource type="Resource" uid="uid://024pkvrpmwgy" path="res://resources/datastore/traits/resist_armor.tres" id="44_bxsc6"]
 [ext_resource type="Texture2D" uid="uid://bavmaqth0o8k4" path="res://assets/sprites/game/common/shine/default_shine.png" id="45_myci6"]
 [ext_resource type="Material" uid="uid://b08hwp8ifl8v5" path="res://resources/materials/unique/speed_field_info_material.tres" id="50_sbbn5"]
 [ext_resource type="Script" uid="uid://cqeu1p4km0fp6" path="res://scenes/game/cards/world/field_info/speed_model_script.gd" id="52_h4ovu"]
@@ -106,7 +104,6 @@ up_one = ExtResource("39_y8ii6")
 up_two = ExtResource("40_y70rl")
 up_three = ExtResource("41_cx6x4")
 FofObjectIconPacked = ExtResource("33_haxel")
-trait_combinations = Array[ExtResource("43_1ekr7")]([ExtResource("44_bxsc6")])
 default_shine = ExtResource("45_myci6")
 AttackDefaultPacked = ExtResource("2_v7j5s")
 HealthDefaultPacked = ExtResource("3_idggp")

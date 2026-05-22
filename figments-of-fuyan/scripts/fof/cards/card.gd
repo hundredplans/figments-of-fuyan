@@ -354,7 +354,7 @@ func onLoadStatusEffects() -> void:
 	
 func onLoadFieldEffects() -> void:
 	for field_effect_data in field_effects_datas:
-		onAddFieldEffect(SavedData.onLoadModel(field_effect_data, self))
+		onAddFieldEffect(SavedData.onLoadModel(field_effect_data, self), false)
 	
 func onChangeCardPlace(place: Game.CardPlaces) -> void:
 	if place != card_place:
@@ -475,6 +475,7 @@ func setTurnState(_turn_state: Game.TurnStates, instant: bool = false) -> void:
 	turn_state = _turn_state
 	if FieldInfo != null: FieldInfo.onUpdateTurnState(instant)
 	update_turn_state.emit(turn_state, instant)
+	setBaseMaterials()
 		
 func onCardTurnPassed(Card: CardGD) -> void:
 	if self != Card: return
@@ -1148,9 +1149,10 @@ func isInjured() -> bool:
 #endregion
 
 #region Field Effect
-func onAddFieldEffect(FieldEffect: FieldEffectGD) -> void:
+func onAddFieldEffect(FieldEffect: FieldEffectGD, is_init: bool) -> void:
 	field_effects.append(FieldEffect)
 	FieldEffect.Card = self
+	FieldEffect.onFieldEffectAdded(is_init)
 	
 	if FieldInfo != null:
 		FieldInfo.onAddIcon(FieldEffect)
@@ -1427,7 +1429,10 @@ func setBaseMaterials() -> void:
 	if is_in_alphagrey: return
 		
 	var mat: Material = load(info.BASE_MATERIAL_SPECULAR_PATH)
-	if level_visible_not_in_vision:
+	if turn_state == Game.TurnStates.PASSED and isAlly(0)\
+		and Game.getLevel() != null and Game.getLevel().getPhase() == Game.Phases.PLAYER:
+		mat = info.getPassedBaseMaterial()
+	elif level_visible_not_in_vision:
 		mat = info.getColoredBaseMaterial(team)
 	setMeshesMaterial(mat, Model)
 
@@ -1752,3 +1757,9 @@ func getInfo() -> CardInfo: return info
 
 func getGameEffects() -> Array:
 	return field_effects + status_effects + getFieldTraits()
+
+func onCreateShieldModel(ShieldModel: Node3D) -> void:
+	FieldInfo.onCreateShieldModel(ShieldModel)
+
+func onRemoveShieldModel() -> void:
+	FieldInfo.onRemoveShieldModel()

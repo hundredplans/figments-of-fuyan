@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://d3lgvy3r3xxo"]
+[gd_scene format=3 uid="uid://d3lgvy3r3xxo"]
 
 [ext_resource type="Script" uid="uid://x7vlr4glcng3" path="res://scenes/game/levels/level_ui.gd" id="1_lmham"]
 [ext_resource type="Script" uid="uid://cjjlvqefk333u" path="res://scenes/game/levels/ui/hand_box.gd" id="2_5k44f"]
@@ -122,7 +122,7 @@ _data = {
 &"RewardsScreenCreated": SubResource("Animation_gvdbv")
 }
 
-[node name="LevelUI" type="Control"]
+[node name="LevelUI" type="Control" unique_id=854539193]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -134,7 +134,7 @@ script = ExtResource("1_lmham")
 GraveyardScreenPacked = ExtResource("3_f17gx")
 LossUIPacked = ExtResource("5_ruh78")
 
-[node name="Main" type="Control" parent="."]
+[node name="Main" type="Control" parent="." unique_id=1401405681]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -144,16 +144,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="CommonGameUI" parent="Main" instance=ExtResource("5_yods1")]
+[node name="CommonGameUI" parent="Main" unique_id=1052547720 instance=ExtResource("5_yods1")]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = -6.0
 offset_right = 668.0
 show_card_amount_label = false
 
-[node name="EpicFightControl" type="MarginContainer" parent="Main"]
+[node name="EpicFightControl" type="MarginContainer" parent="Main" unique_id=424025569]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
+layout_mode = 0
 offset_left = 445.0
 offset_top = 969.0
 offset_right = 1515.0
@@ -162,18 +163,18 @@ size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("6_eg13e")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Main/EpicFightControl"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/EpicFightControl" unique_id=1939509943]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Main/EpicFightControl/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Main/EpicFightControl/VBoxContainer" unique_id=100115675]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 19
 alignment = 1
 
-[node name="BossNameLabel" type="Label" parent="Main/EpicFightControl/VBoxContainer/HBoxContainer2"]
+[node name="BossNameLabel" type="Label" parent="Main/EpicFightControl/VBoxContainer/HBoxContainer2" unique_id=739491167]
 unique_name_in_owner = true
 modulate = Color(0.662745, 0, 1, 1)
 layout_mode = 2
@@ -182,23 +183,23 @@ text = "Palmador Rider"
 label_settings = ExtResource("7_62g83")
 horizontal_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="Main/EpicFightControl/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Main/EpicFightControl/VBoxContainer" unique_id=928738305]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_type_variation = &"GreyPanelContainer"
 
-[node name="Filler" type="Control" parent="Main/EpicFightControl/VBoxContainer/PanelContainer"]
+[node name="Filler" type="Control" parent="Main/EpicFightControl/VBoxContainer/PanelContainer" unique_id=590325496]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HealthBar" type="ColorRect" parent="Main/EpicFightControl/VBoxContainer/PanelContainer/Filler"]
+[node name="HealthBar" type="ColorRect" parent="Main/EpicFightControl/VBoxContainer/PanelContainer/Filler" unique_id=1674996224]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
 offset_right = 410.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
-[node name="BossShieldUI" type="ColorRect" parent="Main/EpicFightControl/VBoxContainer/PanelContainer/Filler"]
+[node name="BossShieldUI" type="ColorRect" parent="Main/EpicFightControl/VBoxContainer/PanelContainer/Filler" unique_id=1435061370]
 unique_name_in_owner = true
 visible = false
 material = ExtResource("7_qwq4a")
@@ -209,7 +210,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TopCenter" type="HBoxContainer" parent="Main"]
+[node name="TopCenter" type="HBoxContainer" parent="Main" unique_id=1282113479]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
@@ -223,7 +224,7 @@ grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="LeftCameraArrow" type="Label" parent="Main/TopCenter" groups=["ActionLockDisabled", "EndGameDisabled"]]
+[node name="LeftCameraArrow" type="Label" parent="Main/TopCenter" unique_id=1624574120 groups=["ActionLockDisabled", "EndGameDisabled"]]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
@@ -232,14 +233,14 @@ label_settings = ExtResource("7_gvdbv")
 script = ExtResource("15_mtmiq")
 BASE_COLOR = Color(0.851769, 0.851769, 0.851769, 1)
 
-[node name="PassButton" type="Panel" parent="Main/TopCenter" groups=["ActionLockDisabled", "EndGameDisabled"]]
+[node name="PassButton" type="Panel" parent="Main/TopCenter" unique_id=1436888517 groups=["ActionLockDisabled", "EndGameDisabled"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"WhitePanelContainer"
 script = ExtResource("14_0yklm")
 
-[node name="PassButtonLabel" type="Label" parent="Main/TopCenter/PassButton"]
+[node name="PassButtonLabel" type="Label" parent="Main/TopCenter/PassButton" unique_id=2106085392]
 unique_name_in_owner = true
 modulate = Color(0.851769, 0.851769, 0.851769, 1)
 layout_mode = 1
@@ -253,7 +254,7 @@ label_settings = ExtResource("13_62g83")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RightCameraArrow" type="Label" parent="Main/TopCenter" groups=["ActionLockDisabled", "EndGameDisabled"]]
+[node name="RightCameraArrow" type="Label" parent="Main/TopCenter" unique_id=1668503603 groups=["ActionLockDisabled", "EndGameDisabled"]]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
@@ -262,7 +263,7 @@ label_settings = ExtResource("7_gvdbv")
 script = ExtResource("15_mtmiq")
 BASE_COLOR = Color(0.851769, 0.851769, 0.851769, 1)
 
-[node name="HandBox" type="HBoxContainer" parent="Main" node_paths=PackedStringArray("AniPlayer", "DrawManager")]
+[node name="HandBox" type="HBoxContainer" parent="Main" unique_id=567864871 node_paths=PackedStringArray("AniPlayer", "DrawManager")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_top = 650.0
@@ -276,7 +277,7 @@ AniPlayer = NodePath("../Extra/AniPlayer")
 DrawManager = NodePath("../Extra/DrawManager")
 HandCardUIPacked = ExtResource("14_gvdbv")
 
-[node name="TopRightMargin" type="MarginContainer" parent="Main"]
+[node name="TopRightMargin" type="MarginContainer" parent="Main" unique_id=417322987]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -285,41 +286,89 @@ offset_left = -375.0
 offset_bottom = 100.0
 grow_horizontal = 0
 
-[node name="TopRightContainer" type="HBoxContainer" parent="Main/TopRightMargin"]
+[node name="TopRightContainer" type="HBoxContainer" parent="Main/TopRightMargin" unique_id=1432658164]
 layout_mode = 2
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="GraveyardButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
-unique_name_in_owner = true
+[node name="Control" type="Control" parent="Main/TopRightMargin/TopRightContainer" unique_id=1084200616]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
+mouse_filter = 2
+
+[node name="GraveyardButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer/Control" unique_id=831816679 groups=["ActionLockDisabled", "EndGameDisabled"]]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
 texture = ExtResource("12_0w5oe")
 script = ExtResource("32_thuap")
+autoscale = true
 
-[node name="VisionModeButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
-unique_name_in_owner = true
+[node name="Control2" type="Control" parent="Main/TopRightMargin/TopRightContainer" unique_id=1604162496]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
+mouse_filter = 2
+
+[node name="VisionModeButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer/Control2" unique_id=67627727 groups=["ActionLockDisabled", "EndGameDisabled"]]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
 texture = ExtResource("13_dowy1")
 script = ExtResource("32_thuap")
+autoscale = true
 
-[node name="CameraButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer" groups=["ActionLockDisabled", "EndGameDisabled"]]
-unique_name_in_owner = true
+[node name="Control3" type="Control" parent="Main/TopRightMargin/TopRightContainer" unique_id=988521602]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
+mouse_filter = 2
+
+[node name="CameraButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer/Control3" unique_id=2119384647 groups=["ActionLockDisabled", "EndGameDisabled"]]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
 texture = ExtResource("14_7bql6")
 script = ExtResource("32_thuap")
+autoscale = true
 
-[node name="Filler2" type="Control" parent="Main/TopRightMargin/TopRightContainer"]
+[node name="Filler2" type="Control" parent="Main/TopRightMargin/TopRightContainer" unique_id=100379551]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MinimapButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer" groups=["ActionLockDisabled"]]
-unique_name_in_owner = true
+[node name="Control4" type="Control" parent="Main/TopRightMargin/TopRightContainer" unique_id=27513853]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
+mouse_filter = 2
+
+[node name="MinimapButton" type="TextureRect" parent="Main/TopRightMargin/TopRightContainer/Control4" unique_id=977037448 groups=["ActionLockDisabled"]]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
 texture = ExtResource("18_kr3tm")
 script = ExtResource("32_thuap")
+autoscale = true
 
-[node name="Backgrounds" type="Control" parent="Main"]
+[node name="Backgrounds" type="Control" parent="Main" unique_id=978904046]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -328,7 +377,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="BackgroundDimmer" type="ColorRect" parent="Main/Backgrounds"]
+[node name="BackgroundDimmer" type="ColorRect" parent="Main/Backgrounds" unique_id=1007575232]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -340,7 +389,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.235294)
 
-[node name="FadeBackground" parent="Main/Backgrounds" instance=ExtResource("32_gvdbv")]
+[node name="FadeBackground" parent="Main/Backgrounds" unique_id=908329611 instance=ExtResource("32_gvdbv")]
 unique_name_in_owner = true
 top_level = true
 layout_mode = 0
@@ -356,7 +405,7 @@ color = Color(0, 0, 0, 1)
 DEFAULT_ALPHA = 255
 FADE_COLOR = Color(0, 0, 0, 1)
 
-[node name="UnitStatuses" type="Control" parent="Main"]
+[node name="UnitStatuses" type="Control" parent="Main" unique_id=1360275834]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -365,33 +414,45 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="AbilityBoxes" type="HBoxContainer" parent="Main/UnitStatuses"]
+[node name="AbilityBoxes" type="HBoxContainer" parent="Main/UnitStatuses" unique_id=153038800]
 custom_minimum_size = Vector2(0, 70)
-layout_mode = 2
-offset_left = 1637.0
+layout_mode = 0
+offset_left = 1628.0
 offset_top = 295.0
-offset_right = 1902.0
+offset_right = 1893.0
 offset_bottom = 365.0
 mouse_filter = 2
 alignment = 2
 
-[node name="SpectatedUnitStatusUI" parent="Main/UnitStatuses" instance=ExtResource("33_qwq4a")]
+[node name="SpectatedUnitStatusUI" parent="Main/UnitStatuses" unique_id=1467287050 instance=ExtResource("33_qwq4a")]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 1637.0
+layout_mode = 0
+offset_left = 1628.0
 offset_top = 175.0
-offset_right = 1902.0
+offset_right = 1893.0
 offset_bottom = 275.0
 
-[node name="AllyStatusScroll" type="ScrollContainer" parent="Main/UnitStatuses"]
+[node name="AllyStatusScroll" type="ScrollContainer" parent="Main/UnitStatuses" unique_id=1581329313]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1637.0
 offset_top = 398.0
 offset_right = 1910.0
 offset_bottom = 986.0
+mouse_filter = 2
 horizontal_scroll_mode = 0
 
-[node name="AllyStatusManager" type="VBoxContainer" parent="Main/UnitStatuses/AllyStatusScroll" node_paths=PackedStringArray("AbilityBoxes")]
+[node name="MarginContainer" type="MarginContainer" parent="Main/UnitStatuses/AllyStatusScroll" unique_id=1720873406]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="AllyStatusManager" type="VBoxContainer" parent="Main/UnitStatuses/AllyStatusScroll/MarginContainer" unique_id=829851161 node_paths=PackedStringArray("AbilityBoxes")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -399,19 +460,29 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 20
 script = ExtResource("33_thuap")
-AbilityBoxes = NodePath("../../AbilityBoxes")
+AbilityBoxes = NodePath("../../../AbilityBoxes")
 UnitStatusUIPacked = ExtResource("33_qwq4a")
 AbilityBoxUIPacked = ExtResource("33_fcm67")
 
-[node name="EnemyStatusScroll" type="ScrollContainer" parent="Main/UnitStatuses"]
+[node name="EnemyStatusScroll" type="ScrollContainer" parent="Main/UnitStatuses" unique_id=1393028308]
+unique_name_in_owner = true
+layout_direction = 3
 layout_mode = 0
-offset_left = 10.0
+offset_left = 1640.0
 offset_top = 398.0
-offset_right = 280.0
-offset_bottom = 1080.0
+offset_right = 1913.0
+offset_bottom = 986.0
+mouse_filter = 0
 horizontal_scroll_mode = 0
 
-[node name="EnemyStatusManager" type="VBoxContainer" parent="Main/UnitStatuses/EnemyStatusScroll"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/UnitStatuses/EnemyStatusScroll" unique_id=1062256836]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="EnemyStatusManager" type="VBoxContainer" parent="Main/UnitStatuses/EnemyStatusScroll/MarginContainer" unique_id=297766748]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -419,7 +490,7 @@ size_flags_vertical = 3
 script = ExtResource("33_thuap")
 UnitStatusUIPacked = ExtResource("33_qwq4a")
 
-[node name="GameEffectsLevelUI" type="GridContainer" parent="Main/UnitStatuses"]
+[node name="GameEffectsLevelUI" type="GridContainer" parent="Main/UnitStatuses" unique_id=1206449994]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 180)
 layout_direction = 3
@@ -435,16 +506,16 @@ columns = 2
 script = ExtResource("34_thuap")
 GameEffectIconPacked = ExtResource("35_fcm67")
 
-[node name="Extra" type="Control" parent="Main"]
+[node name="Extra" type="Control" parent="Main" unique_id=2034447525]
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="HoverCardControl" type="Control" parent="Main/Extra"]
+[node name="HoverCardControl" type="Control" parent="Main/Extra" unique_id=146471935]
 unique_name_in_owner = true
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="BoonEffectFiller" type="Control" parent="Main/Extra"]
+[node name="BoonEffectFiller" type="Control" parent="Main/Extra" unique_id=265952390]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -461,19 +532,17 @@ grow_vertical = 2
 scale = Vector2(4, 4)
 pivot_offset = Vector2(40, 40)
 
-[node name="Console" parent="Main/Extra" instance=ExtResource("25_8m8ju")]
+[node name="Console" parent="Main/Extra" unique_id=1083490554 instance=ExtResource("25_8m8ju")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="AniPlayer" type="AnimationPlayer" parent="Main/Extra"]
+[node name="AniPlayer" type="AnimationPlayer" parent="Main/Extra" unique_id=1573704503]
 unique_name_in_owner = true
 root_node = NodePath("../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_thuap")
-}
+libraries/ = SubResource("AnimationLibrary_thuap")
 
-[node name="PhaseIcon" type="TextureRect" parent="Main/Extra"]
+[node name="PhaseIcon" type="TextureRect" parent="Main/Extra" unique_id=407144255]
 unique_name_in_owner = true
 visible = false
 texture_filter = 1
@@ -497,7 +566,7 @@ player_phase_icon = ExtResource("8_vlrs0")
 ai_phase_icon = ExtResource("9_chyqt")
 neutral_phase_icon = ExtResource("10_ese7j")
 
-[node name="DrawManager" type="Control" parent="Main/Extra"]
+[node name="DrawManager" type="Control" parent="Main/Extra" unique_id=809552205]
 custom_minimum_size = Vector2(264, 400)
 anchors_preset = 0
 offset_left = 1920.0
@@ -507,6 +576,7 @@ offset_bottom = 1100.0
 pivot_offset = Vector2(132, 200)
 mouse_filter = 2
 
+[connection signal="mouse_in_ui" from="Main/CommonGameUI" to="." method="onMouseInUI"]
 [connection signal="mouse_entered" from="Main/TopCenter/LeftCameraArrow" to="Main/TopCenter/LeftCameraArrow" method="onMouseInUI" binds= [true]]
 [connection signal="mouse_exited" from="Main/TopCenter/LeftCameraArrow" to="Main/TopCenter/LeftCameraArrow" method="onMouseInUI" binds= [false]]
 [connection signal="mouse_in_ui" from="Main/TopCenter/LeftCameraArrow" to="." method="onMouseInUI"]
@@ -521,23 +591,23 @@ mouse_filter = 2
 [connection signal="mouse_in_ui" from="Main/TopCenter/RightCameraArrow" to="." method="onMouseInUI"]
 [connection signal="pressed" from="Main/TopCenter/RightCameraArrow" to="." method="onCameraDirectionChanged" binds= [1]]
 [connection signal="mouse_in_ui" from="Main/HandBox" to="." method="onMouseInUI"]
-[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/GraveyardButton" to="Main/TopRightMargin/TopRightContainer/GraveyardButton" method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/GraveyardButton" to="Main/TopRightMargin/TopRightContainer/GraveyardButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/GraveyardButton" to="." method="onMouseInUI"]
-[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/GraveyardButton" to="." method="_on_graveyard_button_pressed"]
-[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/VisionModeButton" to="Main/TopRightMargin/TopRightContainer/VisionModeButton" method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/VisionModeButton" to="Main/TopRightMargin/TopRightContainer/VisionModeButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/VisionModeButton" to="." method="onMouseInUI"]
-[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/VisionModeButton" to="." method="_on_vision_mode_button_pressed"]
-[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/CameraButton" to="Main/TopRightMargin/TopRightContainer/CameraButton" method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/CameraButton" to="Main/TopRightMargin/TopRightContainer/CameraButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/CameraButton" to="." method="onMouseInUI"]
-[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/CameraButton" to="." method="_on_camera_button_pressed"]
-[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/MinimapButton" to="Main/TopRightMargin/TopRightContainer/MinimapButton" method="onMouseInUI" binds= [true]]
-[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/MinimapButton" to="Main/TopRightMargin/TopRightContainer/MinimapButton" method="onMouseInUI" binds= [false]]
-[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/MinimapButton" to="." method="onMouseInUI"]
-[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/MinimapButton" to="." method="_on_minimap_button_pressed"]
+[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/Control/GraveyardButton" to="Main/TopRightMargin/TopRightContainer/Control/GraveyardButton" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/Control/GraveyardButton" to="Main/TopRightMargin/TopRightContainer/Control/GraveyardButton" method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/Control/GraveyardButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/Control/GraveyardButton" to="." method="_on_graveyard_button_pressed"]
+[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/Control2/VisionModeButton" to="Main/TopRightMargin/TopRightContainer/Control2/VisionModeButton" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/Control2/VisionModeButton" to="Main/TopRightMargin/TopRightContainer/Control2/VisionModeButton" method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/Control2/VisionModeButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/Control2/VisionModeButton" to="." method="_on_vision_mode_button_pressed"]
+[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/Control3/CameraButton" to="Main/TopRightMargin/TopRightContainer/Control3/CameraButton" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/Control3/CameraButton" to="Main/TopRightMargin/TopRightContainer/Control3/CameraButton" method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/Control3/CameraButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/Control3/CameraButton" to="." method="_on_camera_button_pressed"]
+[connection signal="mouse_entered" from="Main/TopRightMargin/TopRightContainer/Control4/MinimapButton" to="Main/TopRightMargin/TopRightContainer/Control4/MinimapButton" method="onMouseInUI" binds= [true]]
+[connection signal="mouse_exited" from="Main/TopRightMargin/TopRightContainer/Control4/MinimapButton" to="Main/TopRightMargin/TopRightContainer/Control4/MinimapButton" method="onMouseInUI" binds= [false]]
+[connection signal="mouse_in_ui" from="Main/TopRightMargin/TopRightContainer/Control4/MinimapButton" to="." method="onMouseInUI"]
+[connection signal="pressed" from="Main/TopRightMargin/TopRightContainer/Control4/MinimapButton" to="." method="_on_minimap_button_pressed"]
 [connection signal="mouse_in_ui" from="Main/UnitStatuses/SpectatedUnitStatusUI" to="." method="onMouseInUI"]
-[connection signal="mouse_in_ui" from="Main/UnitStatuses/AllyStatusScroll/AllyStatusManager" to="." method="onMouseInUI"]
-[connection signal="mouse_in_ui" from="Main/UnitStatuses/EnemyStatusScroll/EnemyStatusManager" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="Main/UnitStatuses/AllyStatusScroll/MarginContainer/AllyStatusManager" to="." method="onMouseInUI"]
+[connection signal="mouse_in_ui" from="Main/UnitStatuses/EnemyStatusScroll/MarginContainer/EnemyStatusManager" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="Main/Extra/Console" to="." method="onMouseInUI"]

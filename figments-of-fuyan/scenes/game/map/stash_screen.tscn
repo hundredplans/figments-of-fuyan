@@ -530,6 +530,7 @@ texture = ExtResource("3_ma1bm")
 
 [connection signal="mouse_in_ui" from="FadeCreamBackground" to="." method="onMouseInUI"]
 [connection signal="scroll_ended" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer" to="." method="_on_main_scroll_container_scroll_ended"]
+[connection signal="mouse_in_ui" from="ScreenManager/MarginContainer/VBoxContainer/MarginContainer/MainScrollContainer/VBoxContainer/HBoxContainer/BoonScrollContainer/MarginContainer/BoonBox" to="." method="onMouseInUI"]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onMouseInUI"]
 [connection signal="pressed" from="ScreenManager/MarginContainer3/HBoxContainer/SortByToolButton" to="." method="onSortByTool"]
 [connection signal="mouse_in_ui" from="ScreenManager/MarginContainer3/HBoxContainer/SortByTierButton" to="." method="onMouseInUI"]

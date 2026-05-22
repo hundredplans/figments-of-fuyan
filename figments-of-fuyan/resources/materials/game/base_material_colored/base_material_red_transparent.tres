@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://dnqex6mvoet46"]
 
-[ext_resource type="Shader" path="res://resources/shaders/base_material_colored_transparent.gdshader" id="1_u0im0"]
+[ext_resource type="Shader" uid="uid://i1oi6bh8ag4k" path="res://resources/shaders/base_material_colored_transparent.gdshader" id="1_u0im0"]
 [ext_resource type="Texture2D" uid="uid://b685s17cryxbp" path="res://assets/textures/base_texture_attributes.png" id="2_q48mf"]
 [ext_resource type="Texture2D" uid="uid://ddsn8uavsg04i" path="res://assets/textures/base_texture_color.png" id="3_wuwsv"]
 [ext_resource type="Texture2D" uid="uid://ywduaqhno8y0" path="res://assets/textures/base_texture_emission.png" id="4_oynb0"]
@@ -8,9 +8,9 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_u0im0")
-shader_parameter/albedo = Color(0.991448, 0.196918, 0.146369, 1)
-shader_parameter/max_grey = null
-shader_parameter/EmissionStrength = 3.0
 shader_parameter/tx_attributes = ExtResource("2_q48mf")
 shader_parameter/tx_color = ExtResource("3_wuwsv")
 shader_parameter/tx_emission = ExtResource("4_oynb0")
+shader_parameter/albedo = Color(0.991448, 0.196918, 0.146369, 1)
+shader_parameter/max_grey = 0.0
+shader_parameter/EmissionStrength = 3.0

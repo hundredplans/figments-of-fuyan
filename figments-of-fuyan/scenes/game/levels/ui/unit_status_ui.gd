@@ -1,5 +1,6 @@
 extends HBoxContainer
 
+@export var ACTIVE_COLOR: Color
 @export var PASSED_TURN_STATE_COLOR := Color("#888888")
 @export var UnitStatusUIStatsManagerSmallPacked: PackedScene
 @export var UnitStatusUIStatsManagerBigPacked: PackedScene
@@ -68,13 +69,16 @@ func setCard(_Card: CardGD) -> void:
 	onUpdateTurnState(Card.getTurnState(), true)
 	
 	ArtMiniBox.setInfo(Card.onSave(), true)
-	ArtMiniBox.setBorderColor(Game.getTeamColor(Card.getTeam()))
+	onUpdateBorderColor(true)
 	
 func onUpdateStat(type: Game.Stats, value: int, show_particles: bool = true, instant: bool = false) -> void:
 	if type not in [Game.Stats.ATTACK, Game.Stats.HEALTH, Game.Stats.SPEED]: return
 	
 	var tween: Tween
 	var label: Label
+	var above_green_value: int
+	var below_red_value: int
+	var stat_datastore := Card.getStatsFromInfo()
 	match type:
 		Game.Stats.ATTACK:
 			label = AttackLabel
@@ -82,26 +86,39 @@ func onUpdateStat(type: Game.Stats, value: int, show_particles: bool = true, ins
 				if AttackTween: AttackTween.kill()
 				AttackTween = create_tween()
 			tween = AttackTween
+			above_green_value = stat_datastore.attack
+			below_red_value = stat_datastore.attack
 		Game.Stats.HEALTH:
 			label = HealthLabel
 			if !instant:
 				if HealthTween: HealthTween.kill()
 				HealthTween = create_tween()
 			tween = HealthTween
+			above_green_value = stat_datastore.health
+			below_red_value = Card.getMaxHealth()
 		Game.Stats.SPEED:
 			label = SpeedLabel
 			if !instant:
 				if SpeedTween: SpeedTween.kill()
 				SpeedTween = create_tween()
 			tween = SpeedTween
+			above_green_value = stat_datastore.speed
+			below_red_value = value
 	
 	label.pivot_offset = label.size / 2.0
 	
 	if !instant:
 		tween.tween_property(label, "scale:x", 0.01, SCALE_IN_TIME)
-		tween.tween_callback(label.set_text.bind(str(value)))
+		tween.tween_callback(onUpdateStatLabelText.bind(label, value, above_green_value, below_red_value))
 		tween.tween_property(label, "scale:x", 1.0, SCALE_IN_TIME)
-	else: label.text = str(value)
+	else: label.text = str(value); onUpdateStatLabelText(label, value, above_green_value, below_red_value)
+	
+func onUpdateStatLabelText(label: Label, value: int, above_green_value: int, below_red_value: int) -> void:
+	label.text = str(value)
+	var label_color := Color.WHITE
+	if value < below_red_value: label_color = Color.RED
+	elif value > above_green_value: label_color = Color.GREEN
+	label.modulate = label_color
 	
 func onUpdateLevelVisible(_is_level_visible: bool) -> void:
 	onUpdateVisible()
@@ -122,16 +139,17 @@ func onUpdateTurnState(turn_state: Game.TurnStates, instant: bool = false) -> vo
 	var turn_state_to_color: Color
 	match turn_state:
 		Game.TurnStates.PASSED: turn_state_to_color = PASSED_TURN_STATE_COLOR
-		Game.TurnStates.INACTIVE: turn_state_to_color = Color(0.8, 0.8, 0.8)
+		Game.TurnStates.INACTIVE: turn_state_to_color = Color.WHITE
 		Game.TurnStates.ACTIVE: turn_state_to_color = Color.WHITE
 	
+	if TurnStateTween: TurnStateTween.kill()
 	if modulate != turn_state_to_color:
-		if TurnStateTween: TurnStateTween.kill()
 		if !instant:
 			TurnStateTween = create_tween()
 			TurnStateTween.tween_property(self, "modulate", turn_state_to_color, Game.FADE_TIME)
 		else: modulate = turn_state_to_color
-
+	onUpdateBorderColor(true)
+		
 func setInVisionRange(state: bool) -> void:
 	in_vision_range = state
 	VisibleTxRect.visible = state
@@ -151,3 +169,7 @@ func onMouseInUI(state: bool) -> void:
 
 func onUpdateTool(Tool: ToolGD) -> void:
 	ArtMiniBox.setToolData(Tool.onSave() if Tool != null else null)
+
+func onUpdateBorderColor(instant: bool) -> void:
+	var team_color: Color = Game.getTeamColor(Card.getTeam())
+	ArtMiniBox.setBorderColor(team_color if Card.getTurnState() != Game.TurnStates.ACTIVE else ACTIVE_COLOR, instant)

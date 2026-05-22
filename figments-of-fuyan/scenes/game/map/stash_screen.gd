@@ -925,3 +925,7 @@ func getAllCardUI() -> Array:
 func isSmithMaxTier(item: FofGD) -> bool:
 	return map_node.info.id == SMITH_ID and item.getTier() == Game.MAX_TIER
 #endregion
+
+func onStashInLevel() -> void:
+	for CardUI: TbcUI in getAllCardUI():
+		CardUI.setDisabled(true)
